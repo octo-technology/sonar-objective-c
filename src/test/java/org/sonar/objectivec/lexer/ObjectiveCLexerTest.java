@@ -54,8 +54,8 @@ public class ObjectiveCLexerTest {
 
     @Test
     public void lexEndOflineComment() {
-//      assertThat(lexer.lex("[self init]; // My Comment end of line"), hasComment("// My Comment end of line"));
-//      assertThat(lexer.lex("[self init]; //"), hasComment("//"));
+      assertThat(lexer.lex("[self init]; // My Comment end of line"), hasComment("// My Comment end of line"));
+      assertThat(lexer.lex("[self init]; //"), hasComment("//"));
     }
 
     @Test
