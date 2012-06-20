@@ -23,9 +23,9 @@ import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.TokenType;
 
 public enum ObjectiveCTokenType implements TokenType {
-	NUMERIC_LITERAL,
-  REGULAR_EXPRESSION_LITERAL;
 
+  NUMERIC_LITERAL;
+  
   public String getName() {
     return name();
   }

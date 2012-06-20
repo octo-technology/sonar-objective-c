@@ -24,61 +24,9 @@ import com.sonar.sslr.api.TokenType;
 
 public enum ObjectiveCKeyword implements TokenType {
 
-//Reserved words
-
- NULL("null"),
- TRUE("true"),
- FALSE("false"),
-
- // Keywords
-
- BREAK("break"),
- CASE("case"),
- CATCH("catch"),
- CONTINUE("continue"),
- DEBUGGER("debugger"),
- DEFAULT("default"),
- DELETE("delete"),
- DO("do"),
- ELSE("else"),
- FINALLY("finally"),
- FOR("for"),
- FUNCTION("function"),
- IF("if"),
- IN("in"),
- INSTANCEOF("instanceof"),
- NEW("new"),
- RETURN("return"),
- SWITCH("switch"),
- THIS("this"),
- THROW("throw"),
- TRY("try"),
- TYPEOF("typeof"),
- VAR("var"),
- VOID("void"),
- WHILE("while"),
- WITH("with"),
-
- // Future reserved words
-
- CLASS("class"),
- CONST("const"),
- ENUM("enum"),
- EXPORT("export"),
- EXTENDS("extends"),
- SUPER("super"),
-
- // Also considered to be "future reserved words" when parsing strict mode
-
- IMPLEMENTS("implements"),
- INTERFACE("interface"),
- YIELD("yield"),
- LET("let"),
- PACKAGE("package"),
- PRIVATE("private"),
- PROTECTED("protected"),
- PUBLIC("public"),
- STATIC("static");
+ NULL("nil"),
+ TRUE("YES"),
+ FALSE("NO");
 
  private final String value;
 

@@ -43,12 +43,6 @@ public class ObjectiveCLexer {
     return create(new ObjectiveCConfiguration());
   }
 
-  private static final String EXP = "([Ee][+-]?+[0-9_]++)";
-  private static final String BINARY_EXP = "([Pp][+-]?+[0-9_]++)";
-
-  private static final String FLOAT_SUFFIX = "[fFdD]";
-  private static final String INT_SUFFIX = "[lL]";
-
   public static Lexer create(ObjectiveCConfiguration conf) {
     return Lexer.builder()
         .withCharset(conf.getCharset())
@@ -59,36 +53,8 @@ public class ObjectiveCLexer {
         .withChannel(commentRegexp("//[^\\n\\r]*+"))
         .withChannel(commentRegexp("/\\*[\\s\\S]*?\\*/"))
 
-        // String Literals
-        .withChannel(regexp(LITERAL, "\"([^\"\\\\]*+(\\\\[\\s\\S])?+)*+\""))
-        .withChannel(regexp(LITERAL, "'([^'\\\\]*+(\\\\[\\s\\S])?+)*+'"))
-
-        // Regular Expression Literals
-        //.withChannel(new EcmaScriptRegexpChannel())
-
-        // Floating-Point Literals
-        // Decimal
-        .withChannel(regexp(NUMERIC_LITERAL, "[0-9]++\\.([0-9]++)?+" + EXP + "?+" + FLOAT_SUFFIX + "?+"))
-        // Decimal
-        .withChannel(regexp(NUMERIC_LITERAL, "\\.[0-9]++" + EXP + "?+" + FLOAT_SUFFIX + "?+"))
-        // Decimal
-        .withChannel(regexp(NUMERIC_LITERAL, "[0-9]++" + FLOAT_SUFFIX))
-        .withChannel(regexp(NUMERIC_LITERAL, "[0-9]++" + EXP + FLOAT_SUFFIX + "?+"))
-        // Hexadecimal
-        .withChannel(regexp(NUMERIC_LITERAL, "0[xX][0-9a-fA-F]++\\.[0-9a-fA-F_]*+" + BINARY_EXP + "?+" + FLOAT_SUFFIX + "?+"))
-        // Hexadecimal
-        .withChannel(regexp(NUMERIC_LITERAL, "0[xX][0-9a-fA-F]++" + BINARY_EXP + FLOAT_SUFFIX + "?+"))
-
-        // Integer Literals
-        // Hexadecimal
-        .withChannel(regexp(NUMERIC_LITERAL, "0[xX][0-9a-fA-F]++" + INT_SUFFIX + "?+"))
-        // Binary (Java 7)
-        .withChannel(regexp(NUMERIC_LITERAL, "0[bB][01]++" + INT_SUFFIX + "?+"))
-        // Decimal and Octal
-        .withChannel(regexp(NUMERIC_LITERAL, "[0-9]++" + INT_SUFFIX + "?+"))
-
-        .withChannel(new IdentifierAndKeywordChannel("\\p{javaJavaIdentifierStart}++\\p{javaJavaIdentifierPart}*+", true, ObjectiveCKeyword.values()))
-        .withChannel(new PunctuatorChannel(ObjectiveCPunctuator.values()))
+        // All other tokens
+        .withChannel(regexp(LITERAL, "[^\\s\\S]+"))
 
         .withChannel(new BlackHoleChannel("[\\s]"))
 

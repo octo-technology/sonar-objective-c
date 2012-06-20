@@ -24,110 +24,16 @@ import com.sonar.sslr.api.Rule;
 
 public class ObjectiveCGrammar extends Grammar {
 
-	public Rule eos;
-  public Rule eosNoLb;
-
   public Rule identifierName;
-
-  public Rule condition;
-
+    
   // A.1 Lexical
 
   public Rule literal;
   public Rule nullLiteral;
   public Rule booleanLiteral;
   public Rule stringLiteral;
-  public Rule regularExpressionLiteral;
 
-  // A.3 Expressions
-
-  public Rule primaryExpression;
-  public Rule arrayLiteral;
-  public Rule elementList;
-  public Rule elision;
-  public Rule objectLiteral;
-  public Rule propertyNameAndValueList;
-  public Rule propertyAssignment;
-  public Rule propertyName;
-  public Rule propertySetParameterList;
-  public Rule memberExpression;
-  public Rule newExpression;
-  public Rule callExpression;
-  public Rule arguments;
-  public Rule argumentList;
-  public Rule leftHandSideExpression;
-  public Rule postfixExpression;
-  public Rule unaryExpression;
-  public Rule multiplicativeExpression;
-  public Rule additiveExpression;
-  public Rule shiftExpression;
-  public Rule relationalExpression;
-  public Rule relationalExpressionNoIn;
-  public Rule equalityExpression;
-  public Rule equalityExpressionNoIn;
-  public Rule bitwiseAndExpression;
-  public Rule bitwiseAndExpressionNoIn;
-  public Rule bitwiseXorExpression;
-  public Rule bitwiseXorExpressionNoIn;
-  public Rule bitwiseOrExpression;
-  public Rule bitwiseOrExpressionNoIn;
-  public Rule logicalAndExpression;
-  public Rule logicalAndExpressionNoIn;
-  public Rule logicalOrExpression;
-  public Rule logicalOrExpressionNoIn;
-  public Rule conditionalExpression;
-  public Rule conditionalExpressionNoIn;
-  public Rule assignmentExpression;
-  public Rule assignmentExpressionNoIn;
-  public Rule assignmentOperator;
-  public Rule expression;
-  public Rule expressionNoIn;
-
-  // A.4 Statements
-
-  public Rule statement;
-  public Rule block;
-  public Rule statementList;
-  public Rule variableStatement;
-  public Rule variableDeclarationList;
-  public Rule variableDeclarationListNoIn;
-  public Rule variableDeclaration;
-  public Rule variableDeclarationNoIn;
-  public Rule initialiser;
-  public Rule initialiserNoIn;
-  public Rule emptyStatement;
-  public Rule expressionStatement;
-  public Rule ifStatement;
-  public Rule iterationStatement;
-  public Rule doWhileStatement;
-  public Rule whileStatement;
-  public Rule forInStatement;
-  public Rule forStatement;
-  public Rule continueStatement;
-  public Rule breakStatement;
-  public Rule returnStatement;
-  public Rule withStatement;
-  public Rule switchStatement;
-  public Rule caseBlock;
-  public Rule caseClauses;
-  public Rule caseClause;
-  public Rule defaultClause;
-  public Rule labelledStatement;
-  public Rule throwStatement;
-  public Rule tryStatement;
-  public Rule catch_;
-  public Rule finally_;
-  public Rule debuggerStatement;
-
-  // A.5 Functions and Programs
-
-  public Rule functionDeclaration;
-  public Rule functionExpression;
-  public Rule formalParameterList;
-  public Rule functionBody;
   public Rule program;
-  public Rule sourceElements;
-  public Rule sourceElement;
 
   @Override
   public Rule getRootRule() {

@@ -34,33 +34,7 @@ public final class CheckList {
 
   public static List<Class> getChecks() {
     return ImmutableList.<Class> of(
-//        ParsingErrorCheck.class,
-//        XPathCheck.class,
-//        CommentedCodeCheck.class,
-//        FunctionComplexityCheck.class,
-//        DebuggerStatementCheck.class,
-//        WithStatementCheck.class,
-//        EqEqEqCheck.class,
-//        CommentRegularExpressionCheck.class,
-//        EvalCheck.class,
-//        OneStatementPerLineCheck.class,
-//        SemicolonCheck.class,
-//        AlwaysUseCurlyBracesCheck.class,
-//        MultilineStringLiteralsCheck.class,
-//        SingleQuoteStringLiteralsCheck.class,
-//        ArrayAndObjectConstructorsCheck.class,
-//        BitwiseOperatorsCheck.class,
-//        PrimitiveWrappersCheck.class,
-//        ForInCheck.class,
-//        FunctionDeclarationsWithinBlocksCheck.class,
-//        TrailingCommaCheck.class,
-//        AssignmentWithinConditionCheck.class,
-//        LabelPlacementCheck.class,
-//        LineLengthCheck.class,
-//        UnreachableCodeCheck.class,
-//        ConditionalOperatorCheck.class,
-//        ParenthesesCheck.class,
-//        NestedIfDepthCheck.class
+
     		);
   }
 	
