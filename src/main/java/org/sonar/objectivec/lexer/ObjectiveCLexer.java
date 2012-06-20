@@ -41,14 +41,14 @@ public class ObjectiveCLexer {
     return Lexer.builder()
         .withCharset(conf.getCharset())
 
-        .withFailIfNoChannelToConsumeOneCharacter(true)
+        .withFailIfNoChannelToConsumeOneCharacter(false)
 
         // Comments
         .withChannel(commentRegexp("//[^\\n\\r]*+"))
         .withChannel(commentRegexp("/\\*[\\s\\S]*?\\*/"))
 
         // All other tokens
-        .withChannel(regexp(LITERAL, "^̈[\\s\\S]+"))
+        .withChannel(regexp(LITERAL, "[^\\r\\n]+\\r?\\n?"))
 
         .withChannel(new BlackHoleChannel("[\\s]"))
 

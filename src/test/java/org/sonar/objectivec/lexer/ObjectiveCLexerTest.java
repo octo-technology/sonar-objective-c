@@ -1,6 +1,6 @@
 /*
- * Sonar JavaScript Plugin
- * Copyright (C) 2011 Eriks Nukis and SonarSource
+ * Sonar Objective-C Plugin
+ * Copyright (C) 2012 François Helg, Cyril Picat and OCTO Technology
  * dev@sonar.codehaus.org
  *
  * This program is free software; you can redistribute it and/or
@@ -41,14 +41,6 @@ public class ObjectiveCLexerTest {
   }
 
   @Test
-  public void lexRegularExpressionLiteral() throws Exception {
-    //assertThat("simple", lexer.lex("/a/"), hasToken("/a/", ObjectiveCTokenType.REGULAR_EXPRESSION_LITERAL));
-    //assertThat("flags", lexer.lex("/a/g"), hasToken("/a/g", ObjectiveCTokenType.REGULAR_EXPRESSION_LITERAL));
-    //assertThat("escaped slash", lexer.lex("/\\/a/"), hasToken("/\\/a/", ObjectiveCTokenType.REGULAR_EXPRESSION_LITERAL));
-    assertThat("ambiguation", lexer.lex("1 / a == 1 / b"), hasTokens("1", "/", "a", "==", "1", "/", "b", "EOF"));
-  }
-
-  @Test
   public void lexMultiLinesComment() {
     assertThat(lexer.lex("/* My Comment \n*/"), hasComment("/* My Comment \n*/"));
     assertThat(lexer.lex("/**/"), hasComment("/**/"));
@@ -60,65 +52,15 @@ public class ObjectiveCLexerTest {
     assertThat(lexer.lex("//"), hasComment("//"));
   }
 
-  @Test
-  public void decimalLiteral() {
-    assertThat(lexer.lex("0"), hasToken("0", ObjectiveCTokenType.NUMERIC_LITERAL));
-    assertThat(lexer.lex("123"), hasToken("123", ObjectiveCTokenType.NUMERIC_LITERAL));
+    @Test
+    public void lexEndOflineComment() {
+//      assertThat(lexer.lex("[self init]; // My Comment end of line"), hasComment("// My Comment end of line"));
+//      assertThat(lexer.lex("[self init]; //"), hasComment("//"));
+    }
 
-    assertThat(lexer.lex("123.456"), hasToken("123.456", ObjectiveCTokenType.NUMERIC_LITERAL));
-
-    assertThat(lexer.lex("123.456e+10"), hasToken("123.456e+10", ObjectiveCTokenType.NUMERIC_LITERAL));
-    assertThat(lexer.lex("123.456e-10"), hasToken("123.456e-10", ObjectiveCTokenType.NUMERIC_LITERAL));
-
-    assertThat(lexer.lex("123.456E+10"), hasToken("123.456E+10", ObjectiveCTokenType.NUMERIC_LITERAL));
-    assertThat(lexer.lex("123.456E-10"), hasToken("123.456E-10", ObjectiveCTokenType.NUMERIC_LITERAL));
-
-    assertThat(lexer.lex(".123"), hasToken(".123", ObjectiveCTokenType.NUMERIC_LITERAL));
-
-    assertThat(lexer.lex(".123e+4"), hasToken(".123e+4", ObjectiveCTokenType.NUMERIC_LITERAL));
-    assertThat(lexer.lex(".123e-4"), hasToken(".123e-4", ObjectiveCTokenType.NUMERIC_LITERAL));
-
-    assertThat(lexer.lex(".123E+4"), hasToken(".123E+4", ObjectiveCTokenType.NUMERIC_LITERAL));
-    assertThat(lexer.lex(".123E-4"), hasToken(".123E-4", ObjectiveCTokenType.NUMERIC_LITERAL));
-  }
-
-  @Test
-  public void hexIntegerLiteral() {
-    assertThat(lexer.lex("0xFF"), hasToken("0xFF", ObjectiveCTokenType.NUMERIC_LITERAL));
-    assertThat(lexer.lex("0XFF"), hasToken("0XFF", ObjectiveCTokenType.NUMERIC_LITERAL));
-  }
-
-  @Test
-  public void stringLiteral() {
-    assertThat("empty", lexer.lex("''"), hasToken("''", GenericTokenType.LITERAL));
-    assertThat("empty", lexer.lex("\"\""), hasToken("\"\"", GenericTokenType.LITERAL));
-
-    assertThat(lexer.lex("'hello world'"), hasToken("'hello world'", GenericTokenType.LITERAL));
-    assertThat(lexer.lex("\"hello world\""), hasToken("\"hello world\"", GenericTokenType.LITERAL));
-
-    assertThat("escaped single quote", lexer.lex("'\\''"), hasToken("'\\''", GenericTokenType.LITERAL));
-    assertThat("escaped double quote", lexer.lex("\"\\\"\""), hasToken("\"\\\"\"", GenericTokenType.LITERAL));
-
-    assertThat("multiline", lexer.lex("'\\\n'"), hasToken("'\\\n'", GenericTokenType.LITERAL));
-    assertThat("multiline", lexer.lex("\"\\\n\""), hasToken("\"\\\n\"", GenericTokenType.LITERAL));
-  }
-
-  @Test
-  public void nullLiteral() {
-    assertThat(lexer.lex("null"), hasToken("null", ObjectiveCKeyword.NULL));
-  }
-
-  @Test
-  public void booleanLiteral() {
-    assertThat(lexer.lex("false"), hasToken("false", ObjectiveCKeyword.FALSE));
-    assertThat(lexer.lex("true"), hasToken("true", ObjectiveCKeyword.TRUE));
-  }
-
-  @Test
-  public void identifier() {
-    assertThat(lexer.lex("$"), hasToken("$", GenericTokenType.IDENTIFIER));
-    assertThat(lexer.lex("_"), hasToken("_", GenericTokenType.IDENTIFIER));
-    assertThat(lexer.lex("identifier"), hasToken("identifier", GenericTokenType.IDENTIFIER));
-  }
+    @Test
+    public void lexLineOfCode() {
+      assertThat(lexer.lex("[self init];"), hasToken("[self init];", GenericTokenType.LITERAL));
+    }
 
 }
