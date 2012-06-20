@@ -1,0 +1,170 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <artifactId>parent</artifactId>
+    <version>13</version>
+    <relativePath>../parent</relativePath>
+  </parent>
+  
+  <groupId>org.codehouse.sonar-plugin.objectivec</groupId>
+  <artifactId>sonar-objective-c-plugin</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <packaging>sonar-plugin</packaging>
+  
+  <name>Objective-C Sonar Plugin</name>
+  <description>Enables analysis of Objective-C projects into Sonar.</description>
+  <url>https://github.com/fhelg/sonar-objective-c</url>
+  
+  
+  <inceptionYear>2012</inceptionYear>
+  <organization>
+    <name>OCTO Technology</name>
+  </organization>
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>fhelg</id>
+      <name>François Helg</name>
+      <organization>OCTO Technology</organization>
+      <url>https://github.com/fhelg</url>
+    </developer>
+    <developer>
+      <id>cpicat</id>
+      <name>Cyril Picat</name>
+      <organization>OCTO Technology</organization>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git@github.com:fhelg/sonar-objective-c.git</connection>
+    <developerConnection>scm:git:git@github.com:fhelg/sonar-objective-c.git</developerConnection>
+    <url>https://github.com/fhelg/sonar-objective-c</url>
+  </scm>
+  
+  <!-- <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14683</url>
+  </issueManagement>
+  <ciManagement>
+    <system>Cloudbees</system>
+    <url>http://sonarplugins.ci.cloudbees.com/job/javascript</url>
+  </ciManagement>
+ -->
+  <properties>
+    <license.owner>François Helg, Cyril Picat and OCTO Technology</license.owner>
+    <license.title>Sonar Objective-C Plugin</license.title>
+
+    <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
+
+    <sonar.version>3.1</sonar.version>
+    
+    <!-- Configuration for sonar-packaging-maven-plugin -->
+    <sonar.pluginClass>org.sonar.plugins.objectivec.ObjectiveCPlugin</sonar.pluginClass>
+    <sonar.pluginName>ObjectiveC</sonar.pluginName>
+    
+  </properties>
+
+  <dependencies>
+  	<dependency>
+        <groupId>org.codehaus.sonar</groupId>
+        <artifactId>sonar-plugin-api</artifactId>
+        <version>${sonar.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.sonar</groupId>
+        <artifactId>sonar-testing-harness</artifactId>
+        <version>${sonar.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.codehaus.sonar.sslr</groupId>
+        <artifactId>sslr-core</artifactId>
+        <version>1.13</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.sonar.sslr</groupId>
+        <artifactId>sslr-xpath</artifactId>
+        <version>1.13</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.sonar.sslr</groupId>
+        <artifactId>sslr-devkit</artifactId>
+        <version>1.13</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.sonar.sslr</groupId>
+        <artifactId>sslr-testing-harness</artifactId>
+        <version>1.13</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.sonar.sslr-squid-bridge</groupId>
+        <artifactId>sslr-squid-bridge</artifactId>
+        <version>2.2</version>
+      </dependency>
+
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.10</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-all</artifactId>
+        <version>1.9.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hamcrest</groupId>
+        <artifactId>hamcrest-all</artifactId>
+        <version>1.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.easytesting</groupId>
+        <artifactId>fest-assert</artifactId>
+        <version>1.4</version>
+      </dependency>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>0.9.15</version>
+      </dependency>
+  </dependencies>
+  
+  <!-- <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-plugin-size</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <phase>verify</phase>
+            <configuration>
+              <rules>
+                <requireFilesSize>
+                  <maxsize>500000</maxsize>
+                  <minsize>400000</minsize>
+                  <files>
+                    <file>${project.build.directory}/${project.build.finalName}.jar</file>
+                  </files>
+                </requireFilesSize>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build> -->
+</project>
