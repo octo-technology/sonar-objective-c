@@ -99,21 +99,6 @@ public class ObjectiveCAstScanner {
     /* Files */
     builder.setFilesMetric(ObjectiveCMetric.FILES);
 
-    /* Functions */
-    builder.withSquidAstVisitor(new SourceCodeBuilderVisitor<ObjectiveCGrammar>(new SourceCodeBuilderCallback() {
-      public SourceCode createSourceCode(SourceCode parentSourceCode, AstNode astNode) {
-        String functionName = astNode.getChild(1).getTokenValue();
-        SourceFunction function = new SourceFunction(functionName + ":" + astNode.getToken().getLine());
-        function.setStartAtLine(astNode.getTokenLine());
-        return function;
-      }
-    }, parser.getGrammar().functionDeclaration, parser.getGrammar().functionExpression));
-
-    builder.withSquidAstVisitor(CounterVisitor.<ObjectiveCGrammar> builder()
-        .setMetricDef(ObjectiveCMetric.FUNCTIONS)
-        .subscribeTo(parser.getGrammar().functionDeclaration, parser.getGrammar().functionExpression)
-        .build());
-
     /* Metrics */
     builder.withSquidAstVisitor(new LinesVisitor<ObjectiveCGrammar>(ObjectiveCMetric.LINES));
     builder.withSquidAstVisitor(new LinesOfCodeVisitor<ObjectiveCGrammar>(ObjectiveCMetric.LINES_OF_CODE));
@@ -122,40 +107,6 @@ public class ObjectiveCAstScanner {
         .withNoSonar(true)
         .withIgnoreHeaderComment(conf.getIgnoreHeaderComments())
         .build());
-    builder.withSquidAstVisitor(CounterVisitor.<ObjectiveCGrammar> builder()
-        .setMetricDef(ObjectiveCMetric.STATEMENTS)
-        .subscribeTo(parser.getGrammar().statement)
-        .build());
-
-    AstNodeType[] complexityAstNodeType = new AstNodeType[] {
-      // Entry points
-      parser.getGrammar().functionDeclaration,
-      parser.getGrammar().functionExpression,
-
-      // Branching nodes
-      parser.getGrammar().ifStatement,
-      parser.getGrammar().iterationStatement,
-      parser.getGrammar().switchStatement,
-      parser.getGrammar().caseClause,
-      parser.getGrammar().defaultClause,
-      parser.getGrammar().catch_,
-      parser.getGrammar().returnStatement,
-      parser.getGrammar().throwStatement,
-
-      // Expressions
-      ObjectiveCPunctuator.QUERY,
-      ObjectiveCPunctuator.ANDAND,
-      ObjectiveCPunctuator.OROR
-    };
-    builder.withSquidAstVisitor(ComplexityVisitor.<ObjectiveCGrammar> builder()
-        .setMetricDef(ObjectiveCMetric.COMPLEXITY)
-        .subscribeTo(complexityAstNodeType)
-        .build());
-
-    /* External visitors (typically Check ones) */
-    for (SquidAstVisitor<ObjectiveCGrammar> visitor : visitors) {
-      builder.withSquidAstVisitor(visitor);
-    }
 
     return builder.build();
   }
