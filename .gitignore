@@ -2,3 +2,12 @@
 .project
 .settings/
 target/
+
+# Exclude OS X folder attributes
+.DS_Store
+
+# IntelliJ files
+*.ipr
+*.iml
+*.iws
+
