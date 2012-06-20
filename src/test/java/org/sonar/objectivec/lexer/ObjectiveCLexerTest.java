@@ -19,17 +19,20 @@
  */
 package org.sonar.objectivec.lexer;
 
-import com.sonar.sslr.api.GenericTokenType;
-import com.sonar.sslr.impl.Lexer;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.sonar.objectivec.api.ObjectiveCKeyword;
-import org.sonar.objectivec.api.ObjectiveCTokenType;
-
 import static com.sonar.sslr.test.lexer.LexerMatchers.hasComment;
 import static com.sonar.sslr.test.lexer.LexerMatchers.hasToken;
-import static com.sonar.sslr.test.lexer.LexerMatchers.hasTokens;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
+
+import java.io.File;
+import java.util.List;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import com.sonar.sslr.api.GenericTokenType;
+import com.sonar.sslr.api.Token;
+import com.sonar.sslr.impl.Lexer;
 
 public class ObjectiveCLexerTest {
 
@@ -61,6 +64,20 @@ public class ObjectiveCLexerTest {
     @Test
     public void lexLineOfCode() {
       assertThat(lexer.lex("[self init];"), hasToken("[self init];", GenericTokenType.LITERAL));
+    }
+    
+    @Test
+    public void lexEmptyLine() {
+    	List<Token> tokens = lexer.lex("\n");
+    	assertThat(tokens.size(), equalTo(1));
+      assertThat(tokens, hasToken(GenericTokenType.EOF));
+    }
+    
+    @Test
+    public void lexSampleFile() {
+    	List<Token> tokens = lexer.lex(new File("src/test/resources/objcSample.h"));
+    	assertThat(tokens.size(), equalTo(7));
+      assertThat(tokens, hasToken(GenericTokenType.EOF));
     }
 
 }

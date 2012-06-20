@@ -20,18 +20,8 @@
 package org.sonar.objectivec.parser;
 
 import static com.sonar.sslr.api.GenericTokenType.EOF;
-import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 import static com.sonar.sslr.api.GenericTokenType.LITERAL;
-import static com.sonar.sslr.impl.matcher.GrammarFunctions.Predicate.next;
-import static com.sonar.sslr.impl.matcher.GrammarFunctions.Predicate.not;
-import static com.sonar.sslr.impl.matcher.GrammarFunctions.Standard.and;
 import static com.sonar.sslr.impl.matcher.GrammarFunctions.Standard.o2n;
-import static com.sonar.sslr.impl.matcher.GrammarFunctions.Standard.one2n;
-import static com.sonar.sslr.impl.matcher.GrammarFunctions.Standard.opt;
-import static com.sonar.sslr.impl.matcher.GrammarFunctions.Standard.or;
-import static org.sonar.objectivec.api.ObjectiveCPunctuator.LCURLYBRACE;
-import static org.sonar.objectivec.api.ObjectiveCPunctuator.RCURLYBRACE;
-import static org.sonar.objectivec.api.ObjectiveCTokenType.NUMERIC_LITERAL;
 
 import org.sonar.objectivec.api.ObjectiveCGrammar;
 
@@ -39,24 +29,8 @@ public class ObjectiveCGrammarImpl extends ObjectiveCGrammar {
 
 	public ObjectiveCGrammarImpl() {
 
-    identifierName.is(IDENTIFIER);
+     program.is(o2n(LITERAL), EOF);
 
-    literal.is(or(
-        nullLiteral,
-        booleanLiteral,
-        NUMERIC_LITERAL,
-        stringLiteral));
-    stringLiteral.is(LITERAL);
-
-  }
-
-
-  /**
-   * Declares some constructs, which ES5 grammar does not support, but script engines support.
-   * For example prototype.js version 1.7 has a function declaration in a block, which is invalid under both ES3 and ES5.
-   */
-  private static Object permissive(Object object) {
-    return object;
   }
 	
 }

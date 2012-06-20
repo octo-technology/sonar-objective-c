@@ -48,7 +48,7 @@ public class ObjectiveCLexer {
         .withChannel(commentRegexp("/\\*[\\s\\S]*?\\*/"))
 
         // All other tokens
-        .withChannel(regexp(LITERAL, "[^\\r\\n/]+\\r?\\n?"))
+        .withChannel(regexp(LITERAL, "[^\r\n/]+"))
 
         .withChannel(new BlackHoleChannel("[\\s]"))
 

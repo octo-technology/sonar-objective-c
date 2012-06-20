@@ -24,17 +24,16 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import org.sonar.objectivec.ObjectiveCConfiguration;
-import org.sonar.objectivec.lexer.ObjectiveCLexer;
-
-import com.sonar.sslr.api.GenericTokenType;
-import com.sonar.sslr.api.Token;
-import com.sonar.sslr.impl.Lexer;
-
 import net.sourceforge.pmd.cpd.SourceCode;
 import net.sourceforge.pmd.cpd.TokenEntry;
 import net.sourceforge.pmd.cpd.Tokenizer;
 import net.sourceforge.pmd.cpd.Tokens;
+
+import org.sonar.objectivec.ObjectiveCConfiguration;
+import org.sonar.objectivec.lexer.ObjectiveCLexer;
+
+import com.sonar.sslr.api.Token;
+import com.sonar.sslr.impl.Lexer;
 
 public class ObjectiveCTokenizer implements Tokenizer {
 
@@ -56,9 +55,6 @@ public class ObjectiveCTokenizer implements Tokenizer {
 	}
 	
 	private String getTokenImage(Token token) {
-    if (token.getType() == GenericTokenType.LITERAL) {
-      return GenericTokenType.LITERAL.getValue();
-    }
     return token.getValue();
   }
 

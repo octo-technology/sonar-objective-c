@@ -24,26 +24,18 @@ import java.util.Collection;
 
 import org.sonar.objectivec.api.ObjectiveCGrammar;
 import org.sonar.objectivec.api.ObjectiveCMetric;
-import org.sonar.objectivec.api.ObjectiveCPunctuator;
 import org.sonar.objectivec.parser.ObjectiveCParser;
 import org.sonar.squid.api.SourceCode;
 import org.sonar.squid.api.SourceFile;
-import org.sonar.squid.api.SourceFunction;
 import org.sonar.squid.api.SourceProject;
 import org.sonar.squid.indexer.QueryByType;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.AstNodeType;
 import com.sonar.sslr.api.CommentAnalyser;
 import com.sonar.sslr.impl.Parser;
 import com.sonar.sslr.squid.AstScanner;
-import com.sonar.sslr.squid.SourceCodeBuilderCallback;
-import com.sonar.sslr.squid.SourceCodeBuilderVisitor;
 import com.sonar.sslr.squid.SquidAstVisitor;
 import com.sonar.sslr.squid.SquidAstVisitorContextImpl;
 import com.sonar.sslr.squid.metrics.CommentsVisitor;
-import com.sonar.sslr.squid.metrics.ComplexityVisitor;
-import com.sonar.sslr.squid.metrics.CounterVisitor;
 import com.sonar.sslr.squid.metrics.LinesOfCodeVisitor;
 import com.sonar.sslr.squid.metrics.LinesVisitor;
 

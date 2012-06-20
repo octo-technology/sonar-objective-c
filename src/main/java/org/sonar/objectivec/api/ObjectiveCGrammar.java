@@ -34,6 +34,9 @@ public class ObjectiveCGrammar extends Grammar {
   public Rule stringLiteral;
 
   public Rule program;
+  
+  public Rule sourceElements;
+  public Rule sourceElement;
 
   @Override
   public Rule getRootRule() {
