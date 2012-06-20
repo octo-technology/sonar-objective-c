@@ -63,7 +63,7 @@ public class ObjectiveCLexerTest {
 
     @Test
     public void lexLineOfCode() {
-      assertThat(lexer.lex("[self init];"), hasToken("[self init];", GenericTokenType.LITERAL));
+      assertThat(lexer.lex("[self init];"), hasToken("[self", GenericTokenType.LITERAL));
     }
     
     @Test
@@ -76,7 +76,7 @@ public class ObjectiveCLexerTest {
     @Test
     public void lexSampleFile() {
     	List<Token> tokens = lexer.lex(new File("src/test/resources/objcSample.h"));
-    	assertThat(tokens.size(), equalTo(7));
+    	assertThat(tokens.size(), equalTo(16));
       assertThat(tokens, hasToken(GenericTokenType.EOF));
     }
 
