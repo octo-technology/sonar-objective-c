@@ -55,7 +55,7 @@ public class ObjectiveCPlugin extends SonarPlugin {
 //Global JavaScript constants
 	public static final String FALSE = "false";
 
-	public static final String FILE_SUFFIXES_KEY = "sonar.javascript.file.suffixes";
+	public static final String FILE_SUFFIXES_KEY = "sonar.objectivec.file.suffixes";
 	public static final String FILE_SUFFIXES_DEFVALUE = "h,m";
 
   public static final String PROPERTY_PREFIX = "sonar.objectivec";
