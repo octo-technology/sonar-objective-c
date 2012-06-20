@@ -26,7 +26,7 @@ import org.sonar.plugins.objectivec.ObjectiveCPlugin;
 
 public class ObjectiveC extends AbstractLanguage {
 
-	public static final String KEY = "objectivec";
+	public static final String KEY = "objc";
 	
 	private Configuration configuration;
 	
