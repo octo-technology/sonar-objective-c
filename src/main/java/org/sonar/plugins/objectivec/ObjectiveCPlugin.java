@@ -56,23 +56,11 @@ public class ObjectiveCPlugin extends SonarPlugin {
 	public static final String FALSE = "false";
 
 	public static final String FILE_SUFFIXES_KEY = "sonar.javascript.file.suffixes";
-	public static final String FILE_SUFFIXES_DEFVALUE = "js";
+	public static final String FILE_SUFFIXES_DEFVALUE = "h,m";
 
-  public static final String PROPERTY_PREFIX = "sonar.javascript";
+  public static final String PROPERTY_PREFIX = "sonar.objectivec";
 
   public static final String TEST_FRAMEWORK_KEY = PROPERTY_PREFIX + ".testframework";
-  public static final String TEST_FRAMEWORK_DEFAULT = "jstestdriver";
-
-  // JSTestDriver
-  public static final String JSTESTDRIVER_FOLDER_KEY = PROPERTY_PREFIX + ".jstestdriver.reportsfolder";
-  public static final String JSTESTDRIVER_DEFAULT_FOLDER = "target/jstestdriver";
-  public static final String JSTESTDRIVER_COVERAGE_FILE_KEY = PROPERTY_PREFIX + ".jstestdriver.coveragefile";
-  public static final String JSTESTDRIVER_COVERAGE_REPORT_FILENAME = "jsTestDriver.conf-coverage.dat";
-
-  // JSTest
-  public static final String JSTEST_FOLDER_KEY = PROPERTY_PREFIX + ".jstest.reportsfolder";
-  public static final String JSTEST_DEFAULT_FOLDER = "target/jstest/report";
-  public static final String JSTEST_COVERAGE_FILE_KEY = PROPERTY_PREFIX + ".jstest.coveragefile";
-  public static final String JSTEST_COVERAGE_REPORT_FILENAME = "coverage.dat";
+  public static final String TEST_FRAMEWORK_DEFAULT = "ghunit";
 
 }
