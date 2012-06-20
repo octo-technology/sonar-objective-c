@@ -24,15 +24,9 @@ import static com.sonar.sslr.impl.channel.RegexpChannelBuilder.commentRegexp;
 import static com.sonar.sslr.impl.channel.RegexpChannelBuilder.regexp;
 
 import org.sonar.objectivec.ObjectiveCConfiguration;
-import org.sonar.objectivec.api.ObjectiveCKeyword;
-import org.sonar.objectivec.api.ObjectiveCPunctuator;
 
 import com.sonar.sslr.impl.Lexer;
 import com.sonar.sslr.impl.channel.BlackHoleChannel;
-import com.sonar.sslr.impl.channel.IdentifierAndKeywordChannel;
-import com.sonar.sslr.impl.channel.PunctuatorChannel;
-
-import static org.sonar.objectivec.api.ObjectiveCTokenType.NUMERIC_LITERAL;
 
 public class ObjectiveCLexer {
 
@@ -54,7 +48,7 @@ public class ObjectiveCLexer {
         .withChannel(commentRegexp("/\\*[\\s\\S]*?\\*/"))
 
         // All other tokens
-        .withChannel(regexp(LITERAL, "[^\\s\\S]+"))
+        .withChannel(regexp(LITERAL, "^̈[\\s\\S]+"))
 
         .withChannel(new BlackHoleChannel("[\\s]"))
 
