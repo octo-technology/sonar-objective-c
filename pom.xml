@@ -43,6 +43,10 @@
       <name>Cyril Picat</name>
       <organization>OCTO Technology</organization>
     </developer>
+    <developer>
+      <id>metebalci</id>
+      <name>Mete Balci</name>
+    </developer>
   </developers>
 
   <scm>
@@ -54,12 +58,12 @@
   <!-- <issueManagement>
     <system>JIRA</system>
     <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14683</url>
-  </issueManagement>
+  </issueManagement> -->
   <ciManagement>
     <system>Cloudbees</system>
-    <url>http://sonarplugins.ci.cloudbees.com/job/javascript</url>
+    <url>https://fhelg.ci.cloudbees.com/job/sonar-objective-c-plugin/</url>
   </ciManagement>
- -->
+ 
   <properties>
     <license.owner>François Helg, Cyril Picat and OCTO Technology</license.owner>
     <license.title>Sonar Objective-C Plugin</license.title>
