@@ -31,8 +31,10 @@ public enum ObjectiveCKeyword implements TokenType {
  BYCOPY("bycopy"),
  BYREF("byref"),
  ONEWAY("oneway"),
+
  // const is defined in c keywords
  // compiler directives
+
  AT_CLASS("@class"), // forward declaration
  AT_DEFS("@defs"), // returns layout of an obj-c class
  AT_PROTOCOL("@protocol"), // protocol declaration
@@ -47,24 +49,32 @@ public enum ObjectiveCKeyword implements TokenType {
  AT_IMPLEMENTATION("@implementation"), // class or category implementation
  AT_SYNTHESIZE("@synthesize"),
  AT_DYNAMIC("@dynamic"),
+
  // exception handling
+
  AT_THROW("@throw"),
- AT_TRY("@throw"),
- AT_CATCH("@throw"),
- AT_FINALLY("@throw"),
+ AT_TRY("@try"),
+ AT_CATCH("@catch"),
+ AT_FINALLY("@finally"),
+
  // remaining directives
+ 
  AT_END("@end"), // ends protocol/class/category declaration/implementation
  AT_SYNCHRONIZED("@synchronized"), // mutex
  AT_AUTORELEASEPOOL("@autoreleasepool"),
  AT_SELECTOR("@selector"), // returns SEL type of a method
  AT_ENCODE("@encode"), // return char encoding of a type
  AT_COMPATIBILITY_ALIAS("@compatibility_alias"),
+
  // memory management
+
  ALLOC("alloc"),
  RELEASE("release"),
  AUTORELEASE("autorelease"),
+
  // retain is defined in property modifiers
  // property modifiers
+
  READWRITE("readwrite"),
  READONLY("readonly"),
  ASSIGN("assign"),
@@ -74,7 +84,9 @@ public enum ObjectiveCKeyword implements TokenType {
  NONATOMIC("nonatomic"),
  STRONG("strong"),
  WEAK("weak"),
+
  // preprocessor directives
+
  HASH_IMPORT("#import"),
  HASH_INCLUDE("#include"),
  HASH_PRAGMA("#pragma"),
@@ -85,7 +97,9 @@ public enum ObjectiveCKeyword implements TokenType {
  HASH_IFNDEF("#ifndef"),
  HASH_ELSE("#else"),
  HASH_ENDIF("#endif"),
+
  // keywords from c
+
  AUTO("auto"),
  BREAK("break"),
  CASE("case"),
@@ -118,7 +132,9 @@ public enum ObjectiveCKeyword implements TokenType {
  VOID("void"),
  VOLATILE("volatile"),
  WHILE("while"),
+
  // obj-c specific
+
  BOOL("BOOL"),
  SUPER("super"),
  ID("id"),
