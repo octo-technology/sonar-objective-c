@@ -24,8 +24,72 @@ import com.sonar.sslr.api.TokenType;
 
 public enum ObjectiveCPunctuator implements TokenType {
 
+  // these are really only c operators
+  // http://en.wikipedia.org/wiki/Operators_in_C_and_C%2B%2B
+
+  PLUSPLUS("++"),
+  PLUSEQ("+="),
+  PLUS("+"),
+
+  MINUSMINUS("--"),
+  MINUSEQ("-="),
+  MINUS("-"),
+
+  STAREQ("*="),
+  STAR("*"),
+
+  SLASHEQ("/="),
+  SLASH("/"),
+
+  LT("<"),
+  LTLT("<<"),
+  LTEQ("<="),
+  LTLTEQ("<<="),
+
+  GT(">"),
+  GTGT(">>"),
+  GTEQ(">="),
+  GTGTEQ(">>="),
+
+  EQ("="),
+  EQEQ("=="),
+
+  TILDE("~"),
+
+  EXCL("!"),
+  EXCLEQ("!="),
+
+  AMP("&"),
+  AMPAMP("&&"),
+  AMPEQ("&="),
+  AMPAMPEX("&&="),
+
+  BAR("|"),
+  BARBAR("||"),
+  BAREQ("|="),
+  BARBAREQ("||="),
+
+  CARETEQ("^="),
+  CARET("^"),
+
+  PERCENT("%"),
+  PERCENTEQ("%="),
+
   LCURLYBRACE("{"),
-  RCURLYBRACE("}");
+  RCURLYBRACE("}"),
+  LPARENTHESIS("("),
+  RPARENTHESIS(")"),
+  LBRACKET("["),
+  RBRACKET("]"),
+
+  QUESTION("?"),
+  COLON(":"),
+  SEMICOLON(";"),
+  COMMA(","),
+
+  MINUSLT("->"),
+  MINUSLTSTAR("->*"),
+  DOTSTAR(".*");
 
   private final String value;
 
