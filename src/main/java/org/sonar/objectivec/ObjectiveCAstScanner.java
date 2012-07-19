@@ -38,6 +38,7 @@ import com.sonar.sslr.squid.SquidAstVisitorContextImpl;
 import com.sonar.sslr.squid.metrics.CommentsVisitor;
 import com.sonar.sslr.squid.metrics.LinesOfCodeVisitor;
 import com.sonar.sslr.squid.metrics.LinesVisitor;
+import com.sonar.sslr.squid.metrics.CounterVisitor;
 
 public class ObjectiveCAstScanner {
 
@@ -98,6 +99,10 @@ public class ObjectiveCAstScanner {
         .withBlankCommentMetric(ObjectiveCMetric.COMMENT_BLANK_LINES)
         .withNoSonar(true)
         .withIgnoreHeaderComment(conf.getIgnoreHeaderComments())
+        .build());
+    builder.withSquidAstVisitor(CounterVisitor.<ObjectiveCGrammar> builder()
+        .setMetricDef(ObjectiveCMetric.STATEMENTS)
+        .subscribeTo(parser.getGrammar().statement)
         .build());
 
     return builder.build();
