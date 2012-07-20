@@ -21,13 +21,18 @@ package org.sonar.objectivec.lexer;
 
 import static com.sonar.sslr.impl.channel.RegexpChannelBuilder.commentRegexp;
 import static com.sonar.sslr.impl.channel.RegexpChannelBuilder.regexp;
+import static com.sonar.sslr.impl.channel.RegexpChannelBuilder.o2n;
+import static com.sonar.sslr.impl.channel.RegexpChannelBuilder.and;
 
 import org.sonar.objectivec.ObjectiveCConfiguration;
 import org.sonar.objectivec.api.ObjectiveCKeyword;
 import org.sonar.objectivec.api.ObjectiveCTokenType;
+import org.sonar.objectivec.api.ObjectiveCPunctuator;
 
 import com.sonar.sslr.impl.Lexer;
 import com.sonar.sslr.impl.channel.BlackHoleChannel;
+import com.sonar.sslr.impl.channel.PunctuatorChannel;
+import com.sonar.sslr.impl.channel.IdentifierAndKeywordChannel;
 
 public class ObjectiveCLexer {
 
@@ -67,7 +72,7 @@ public class ObjectiveCLexer {
         .withChannel(new IdentifierAndKeywordChannel(and("[a-zA-Z_]", o2n("\\w")), true, ObjectiveCKeyword.values()))
 
         // punctuators/operators
-        .withChannel(new PunctuatorChannel(ObjecticeCPunctuator.values()))
+        .withChannel(new PunctuatorChannel(ObjectiveCPunctuator.values()))
 
         // skip all whitespace chars
         .withChannel(new BlackHoleChannel("[\\s]"))
