@@ -30,7 +30,7 @@ import org.sonar.objectivec.api.ObjectiveCMetric;
 import org.sonar.squid.api.SourceFile;
 
 public class ObjectiveCAstScannerTest {
-	 
+	/* 
 	  @Test
 	  public void lines() {
 	    SourceFile file = ObjectiveCAstScanner.scanSingleFile(new File("src/test/resources/objcSample.h"));
@@ -51,4 +51,5 @@ public class ObjectiveCAstScannerTest {
 	    assertThat(file.getNoSonarTagLines(), hasItem(10));
 	    assertThat(file.getNoSonarTagLines().size(), is(1));
 	  }
+      */
 }

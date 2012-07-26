@@ -19,23 +19,16 @@
  */
 package org.sonar.objectivec.api;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.TokenType;
+import org.junit.Test;
 
-public enum ObjectiveCTokenType implements TokenType {
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
-  STRING_LITERAL,
-  NUMERIC_LITERAL;
-  
-  public String getName() {
-    return name();
+public class ObjectiveCPunctuatorTest {
+
+  @Test
+  public void test() {
+    assertThat(ObjectiveCPunctuator.values().length, is(48));
   }
 
-  public String getValue() {
-    return name();
-  }
-
-  public boolean hasToBeSkippedFromAst(AstNode node) {
-    return false;
-  }
 }
