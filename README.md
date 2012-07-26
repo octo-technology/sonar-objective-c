@@ -11,6 +11,11 @@ Have a look at the [Contributing wiki page](https://github.com/fhelg/sonar-objec
 ###Build Status
 [![Build Status](https://buildhive.cloudbees.com/job/fhelg/job/sonar-objective-c/badge/icon)](https://buildhive.cloudbees.com/job/fhelg/job/sonar-objective-c/)
 
+###Credits
+* **François Helg**, *OCTO Technology*
+* **Cyril Picat**, *OCTO Technology*
+* **Mete Balci**
+
 ###License
 
 Sonar Plugin for Objective C is released under the GNU LGPL 3 license:
