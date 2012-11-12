@@ -9,7 +9,7 @@ Have a look at the [sample project](https://github.com/fhelg/sample-sonar-object
 Have a look at the [Contributing wiki page](https://github.com/fhelg/sonar-objective-c/wiki/Contributing).
 
 ###Build Status
-[![Build Status](https://fhelg.ci.cloudbees.com/job/sonar-objective-c-plugin/badge/icon)](https://fhelg.ci.cloudbees.com/job/sonar-objective-c-plugin/)
+[![Build Status](https://buildhive.cloudbees.com/job/fhelg/job/sonar-objective-c/badge/icon)](https://buildhive.cloudbees.com/job/fhelg/job/sonar-objective-c/)
 
 ###Credits
 * **François Helg**, *OCTO Technology*
