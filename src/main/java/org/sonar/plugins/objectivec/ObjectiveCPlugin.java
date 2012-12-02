@@ -22,6 +22,7 @@ package org.sonar.plugins.objectivec;
 import java.util.List;
 
 import org.sonar.api.SonarPlugin;
+import org.sonar.api.Extension;
 import org.sonar.plugins.objectivec.colorizer.ObjectiveCColorizerFormat;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
 import org.sonar.plugins.objectivec.core.ObjectiveCSourceImporter;
@@ -31,14 +32,15 @@ import com.google.common.collect.ImmutableList;
 
 public class ObjectiveCPlugin extends SonarPlugin {
 
-	public List getExtensions() {
+	public List<Class<? extends Extension>> getExtensions() {
 		return ImmutableList.of(
         ObjectiveC.class,
         ObjectiveCSourceImporter.class,
         ObjectiveCColorizerFormat.class,
         ObjectiveCCpdMapping.class,
 
-        ObjectiveCSquidSensor.class
+        ObjectiveCSquidSensor.class,
+        ObjectiveCProfile.class
 //        ObjectiveCRuleRepository.class,
 //        ObjectiveCProfile.class,
 //
