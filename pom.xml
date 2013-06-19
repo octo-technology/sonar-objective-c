@@ -51,14 +51,14 @@
   </developers>
 
   <scm>
-    <connection>scm:git:git@github.com:fhelg/sonar-objective-c.git</connection>
-    <developerConnection>scm:git:git@github.com:fhelg/sonar-objective-c.git</developerConnection>
-    <url>https://github.com/fhelg/sonar-objective-c</url>
+    <connection>scm:git:git@github.com:octo-technology/sonar-objective-c.git</connection>
+    <developerConnection>scm:git:git@github.com:octo-technology/sonar-objective-c.git</developerConnection>
+    <url>https://github.com/octo-technology/sonar-objective-c</url>
   </scm>
   
   <ciManagement>
     <system>Cloudbees</system>
-    <url>https://fhelg.ci.cloudbees.com/job/sonar-objective-c-plugin/</url>
+    <url>https://rfelden.ci.cloudbees.com/job/sonar-objective-c/</url>
   </ciManagement>
  
   <properties>
