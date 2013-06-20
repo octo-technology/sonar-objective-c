@@ -8,7 +8,7 @@
     <relativePath>../parent</relativePath>
   </parent>
   
-  <groupId>org.codehous.sonar-plugin.objectivec</groupId>
+  <groupId>org.codehaus.sonar-plugin.objectivec</groupId>
   <artifactId>sonar-objective-c-plugin</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   
