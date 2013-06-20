@@ -6,7 +6,7 @@ This repository hosts the Objective-C plugin for Sonar. The plugin is under acti
 Have a look at the [sample project](https://github.com/octo-technology/sample-sonar-objective-c), it explains how to setup and analyze an Objective-C project.
 
 ###Download
-Snapshot: [http://repository-rfelden.forge.cloudbees.com/snapshot/](http://repository-rfelden.forge.cloudbees.com/snapshot/)
+Snapshot: [http://repository-rfelden.forge.cloudbees.com/snapshot/](http://repository-rfelden.forge.cloudbees.com/snapshot/)  
 Release: [http://repository-rfelden.forge.cloudbees.com/release/](http://repository-rfelden.forge.cloudbees.com/release/)
 
 ###Contributing
@@ -22,5 +22,5 @@ Have a look at the [Contributing wiki page](https://github.com/octo-technology/s
 
 ###License
 
-Sonar Plugin for Objective C is released under the GNU LGPL 3 license:
+Sonar Plugin for Objective C is released under the GNU LGPL 3 license:  
 http://www.gnu.org/licenses/lgpl.txt
