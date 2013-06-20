@@ -16,7 +16,7 @@
   
   <name>Objective-C Sonar Plugin</name>
   <description>Enables analysis of Objective-C projects into Sonar.</description>
-  <url>https://github.com/fhelg/sonar-objective-c</url>
+  <url>https://github.com/octo-technology/sonar-objective-c</url>
   
   
   <inceptionYear>2012</inceptionYear>
@@ -144,11 +144,11 @@
   <distributionManagement>
     <repository>
       <id>sonar-objective-c-plugin-releases-repository</id>
-      <url>http://repository-fhelg.forge.cloudbees.com/release</url>
+      <url>http://repository-rfelden.forge.cloudbees.com/release</url>
     </repository>
     <snapshotRepository>
       <id>sonar-objective-c-plugin-snapshots-repository</id>
-      <url>http://repository-fhelg.forge.cloudbees.com/snapshot</url>
+      <url>http://repository-rfelden.forge.cloudbees.com/snapshot</url>
       <uniqueVersion>false</uniqueVersion>
     </snapshotRepository>
   </distributionManagement>
