@@ -141,15 +141,4 @@
       </dependency>
   </dependencies>
 
-  <distributionManagement>
-    <repository>
-      <id>sonar-objective-c-plugin-releases-repository</id>
-      <url>http://repository-rfelden.forge.cloudbees.com/release</url>
-    </repository>
-    <snapshotRepository>
-      <id>sonar-objective-c-plugin-snapshots-repository</id>
-      <url>http://repository-rfelden.forge.cloudbees.com/snapshot</url>
-      <uniqueVersion>false</uniqueVersion>
-    </snapshotRepository>
-  </distributionManagement>
 </project>
