@@ -6,8 +6,11 @@ This repository hosts the Objective-C plugin for Sonar. The plugin is under acti
 Have a look at the [sample project](https://github.com/octo-technology/sample-sonar-objective-c), it explains how to setup and analyze an Objective-C project.
 
 ###Download
-Snapshot: [http://repository-rfelden.forge.cloudbees.com/snapshot/](http://repository-rfelden.forge.cloudbees.com/snapshot/)  
-Release: [http://repository-rfelden.forge.cloudbees.com/release/](http://repository-rfelden.forge.cloudbees.com/release/)
+[Latest snapshot](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/lastSuccessfulBuild/artifact/target/)  
+
+Maven repositories:  
+snapshot: [http://repository-rfelden.forge.cloudbees.com/snapshot/](http://repository-rfelden.forge.cloudbees.com/snapshot/)  
+release: [http://repository-rfelden.forge.cloudbees.com/release/](http://repository-rfelden.forge.cloudbees.com/release/)
 
 ###Contributing
 Have a look at the [Contributing wiki page](https://github.com/octo-technology/sonar-objective-c/wiki/Contributing).
