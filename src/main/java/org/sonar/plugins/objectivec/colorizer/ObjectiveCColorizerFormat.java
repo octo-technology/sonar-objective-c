@@ -35,18 +35,18 @@ import com.google.common.collect.ImmutableList;
 
 public class ObjectiveCColorizerFormat extends CodeColorizerFormat {
 
-	public ObjectiveCColorizerFormat() {
-    super(ObjectiveC.KEY);
-  }
-	
-	@Override
-	public List<Tokenizer> getTokenizers() {
-		return ImmutableList.of(
-        new StringTokenizer("<span class=\"s\">", "</span>"),
-        new CDocTokenizer("<span class=\"cd\">", "</span>"),
-        new JavadocTokenizer("<span class=\"cppd\">", "</span>"),
-        new CppDocTokenizer("<span class=\"cppd\">", "</span>"),
-        new KeywordsTokenizer("<span class=\"k\">", "</span>", ObjectiveCKeyword.keywordValues()));
-	}
+    public ObjectiveCColorizerFormat() {
+        super(ObjectiveC.KEY);
+    }
+
+    @Override
+    public List<Tokenizer> getTokenizers() {
+        return ImmutableList.of(
+                new StringTokenizer("<span class=\"s\">", "</span>"),
+                new CDocTokenizer("<span class=\"cd\">", "</span>"),
+                new JavadocTokenizer("<span class=\"cppd\">", "</span>"),
+                new CppDocTokenizer("<span class=\"cppd\">", "</span>"),
+                new KeywordsTokenizer("<span class=\"k\">", "</span>", ObjectiveCKeyword.keywordValues()));
+    }
 
 }

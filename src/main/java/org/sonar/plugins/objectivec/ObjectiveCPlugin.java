@@ -32,37 +32,37 @@ import com.google.common.collect.ImmutableList;
 
 public class ObjectiveCPlugin extends SonarPlugin {
 
-	public List<Class<? extends Extension>> getExtensions() {
-		return ImmutableList.of(
-        ObjectiveC.class,
-        ObjectiveCSourceImporter.class,
-        ObjectiveCColorizerFormat.class,
-        ObjectiveCCpdMapping.class,
+    public List<Class<? extends Extension>> getExtensions() {
+        return ImmutableList.of(
+                ObjectiveC.class,
+                ObjectiveCSourceImporter.class,
+                ObjectiveCColorizerFormat.class,
+                ObjectiveCCpdMapping.class,
 
-        ObjectiveCSquidSensor.class,
-        ObjectiveCProfile.class
-//        ObjectiveCRuleRepository.class,
-//        ObjectiveCProfile.class,
+                ObjectiveCSquidSensor.class,
+                ObjectiveCProfile.class
+//                ObjectiveCRuleRepository.class,
+//                ObjectiveCProfile.class,
 //
-//        OCTestDriverSurefireSensor.class,
-//        OCTestDriverCoverageSensor.class,
+//                OCTestDriverSurefireSensor.class,
+//                OCTestDriverCoverageSensor.class,
 //
-//        OCTestMavenInitializer.class,
-//        OCTestMavenPluginHandler.class,
-//        OCTestCoverageSensor.class,
-//        OCTestSurefireSensor.class
-        );
-	}
+//                OCTestMavenInitializer.class,
+//                OCTestMavenPluginHandler.class,
+//                OCTestCoverageSensor.class,
+//                OCTestSurefireSensor.class
+                );
+    }
 
-//Global JavaScript constants
-	public static final String FALSE = "false";
+    //Global Objective C constants
+    public static final String FALSE = "false";
 
-	public static final String FILE_SUFFIXES_KEY = "sonar.objectivec.file.suffixes";
-	public static final String FILE_SUFFIXES_DEFVALUE = "h,m";
+    public static final String FILE_SUFFIXES_KEY = "sonar.objectivec.file.suffixes";
+    public static final String FILE_SUFFIXES_DEFVALUE = "h,m";
 
-  public static final String PROPERTY_PREFIX = "sonar.objectivec";
+    public static final String PROPERTY_PREFIX = "sonar.objectivec";
 
-  public static final String TEST_FRAMEWORK_KEY = PROPERTY_PREFIX + ".testframework";
-  public static final String TEST_FRAMEWORK_DEFAULT = "ghunit";
+    public static final String TEST_FRAMEWORK_KEY = PROPERTY_PREFIX + ".testframework";
+    public static final String TEST_FRAMEWORK_DEFAULT = "ghunit";
 
 }

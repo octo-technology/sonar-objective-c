@@ -36,48 +36,48 @@ import com.sonar.sslr.impl.Lexer;
 
 public class ObjectiveCLexerTest {
 
-  private static Lexer lexer;
+    private static Lexer lexer;
 
-  @BeforeClass
-  public static void init() {
-    lexer = ObjectiveCLexer.create();
-  }
+    @BeforeClass
+    public static void init() {
+        lexer = ObjectiveCLexer.create();
+    }
 
-  @Test
-  public void lexMultiLinesComment() {
-    assertThat(lexer.lex("/* My Comment \n*/"), hasComment("/* My Comment \n*/"));
-    assertThat(lexer.lex("/**/"), hasComment("/**/"));
-  }
+    @Test
+    public void lexMultiLinesComment() {
+        assertThat(lexer.lex("/* My Comment \n*/"), hasComment("/* My Comment \n*/"));
+        assertThat(lexer.lex("/**/"), hasComment("/**/"));
+    }
 
-  @Test
-  public void lexInlineComment() {
-    assertThat(lexer.lex("// My Comment \n new line"), hasComment("// My Comment "));
-    assertThat(lexer.lex("//"), hasComment("//"));
-  }
+    @Test
+    public void lexInlineComment() {
+        assertThat(lexer.lex("// My Comment \n new line"), hasComment("// My Comment "));
+        assertThat(lexer.lex("//"), hasComment("//"));
+    }
 
     @Test
     public void lexEndOflineComment() {
-      assertThat(lexer.lex("[self init]; // My Comment end of line"), hasComment("// My Comment end of line"));
-      assertThat(lexer.lex("[self init]; //"), hasComment("//"));
+        assertThat(lexer.lex("[self init]; // My Comment end of line"), hasComment("// My Comment end of line"));
+        assertThat(lexer.lex("[self init]; //"), hasComment("//"));
     }
 
     @Test
     public void lexLineOfCode() {
-      assertThat(lexer.lex("[self init];"), hasToken("[self", GenericTokenType.LITERAL));
+        assertThat(lexer.lex("[self init];"), hasToken("[self", GenericTokenType.LITERAL));
     }
-    
+
     @Test
     public void lexEmptyLine() {
-    	List<Token> tokens = lexer.lex("\n");
-    	assertThat(tokens.size(), equalTo(1));
-      assertThat(tokens, hasToken(GenericTokenType.EOF));
+        List<Token> tokens = lexer.lex("\n");
+        assertThat(tokens.size(), equalTo(1));
+        assertThat(tokens, hasToken(GenericTokenType.EOF));
     }
-    
+
     @Test
     public void lexSampleFile() {
-    	List<Token> tokens = lexer.lex(new File("src/test/resources/objcSample.h"));
-    	assertThat(tokens.size(), equalTo(16));
-      assertThat(tokens, hasToken(GenericTokenType.EOF));
+        List<Token> tokens = lexer.lex(new File("src/test/resources/objcSample.h"));
+        assertThat(tokens.size(), equalTo(16));
+        assertThat(tokens, hasToken(GenericTokenType.EOF));
     }
 
 }

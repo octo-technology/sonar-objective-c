@@ -30,29 +30,29 @@ import com.sonar.sslr.impl.channel.BlackHoleChannel;
 
 public class ObjectiveCLexer {
 
-	private ObjectiveCLexer() {
-  }
+    private ObjectiveCLexer() {
+    }
 
-  public static Lexer create() {
-    return create(new ObjectiveCConfiguration());
-  }
+    public static Lexer create() {
+        return create(new ObjectiveCConfiguration());
+    }
 
-  public static Lexer create(ObjectiveCConfiguration conf) {
-    return Lexer.builder()
-        .withCharset(conf.getCharset())
+    public static Lexer create(ObjectiveCConfiguration conf) {
+        return Lexer.builder()
+                .withCharset(conf.getCharset())
 
-        .withFailIfNoChannelToConsumeOneCharacter(false)
+                .withFailIfNoChannelToConsumeOneCharacter(false)
 
-        // Comments
-        .withChannel(commentRegexp("//[^\\n\\r]*+"))
-        .withChannel(commentRegexp("/\\*[\\s\\S]*?\\*/"))
+                // Comments
+                .withChannel(commentRegexp("//[^\\n\\r]*+"))
+                .withChannel(commentRegexp("/\\*[\\s\\S]*?\\*/"))
 
-        // All other tokens
-        .withChannel(regexp(LITERAL, "[^\r\n\\s/]+"))
+                // All other tokens
+                .withChannel(regexp(LITERAL, "[^\r\n\\s/]+"))
 
-        .withChannel(new BlackHoleChannel("[\\s]"))
+                .withChannel(new BlackHoleChannel("[\\s]"))
 
-        .build();
-  }
-	
+                .build();
+    }
+
 }

@@ -51,93 +51,93 @@ import com.sonar.sslr.squid.checks.SquidCheck;
 
 public class ObjectiveCSquidSensor implements Sensor {
 
-	private final Number[] FUNCTIONS_DISTRIB_BOTTOM_LIMITS = {1, 2, 4, 6, 8, 10, 12, 20, 30};
-  private final Number[] FILES_DISTRIB_BOTTOM_LIMITS = {0, 5, 10, 20, 30, 60, 90};
+    private final Number[] FUNCTIONS_DISTRIB_BOTTOM_LIMITS = {1, 2, 4, 6, 8, 10, 12, 20, 30};
+    private final Number[] FILES_DISTRIB_BOTTOM_LIMITS = {0, 5, 10, 20, 30, 60, 90};
 
-  private final AnnotationCheckFactory annotationCheckFactory;
+    private final AnnotationCheckFactory annotationCheckFactory;
 
-  private Project project;
-  private SensorContext context;
-  private AstScanner<ObjectiveCGrammar> scanner;
+    private Project project;
+    private SensorContext context;
+    private AstScanner<ObjectiveCGrammar> scanner;
 
-  public ObjectiveCSquidSensor(RulesProfile profile) {
-    this.annotationCheckFactory = AnnotationCheckFactory.create(profile, CheckList.REPOSITORY_KEY, CheckList.getChecks());
-  }
-
-  public boolean shouldExecuteOnProject(Project project) {
-    return ObjectiveC.KEY.equals(project.getLanguageKey());
-  }
-
-  public void analyse(Project project, SensorContext context) {
-    this.project = project;
-    this.context = context;
-
-    Collection<SquidCheck> squidChecks = annotationCheckFactory.getChecks();
-    this.scanner = ObjectiveCAstScanner.create(createConfiguration(project), squidChecks.toArray(new SquidCheck[squidChecks.size()]));
-    scanner.scanFiles(InputFileUtils.toFiles(project.getFileSystem().mainFiles(ObjectiveC.KEY)));
-
-    Collection<SourceCode> squidSourceFiles = scanner.getIndex().search(new QueryByType(SourceFile.class));
-    save(squidSourceFiles);
-  }
-
-  private ObjectiveCConfiguration createConfiguration(Project project) {
-    return new ObjectiveCConfiguration(project.getFileSystem().getSourceCharset());
-  }
-
-  private void save(Collection<SourceCode> squidSourceFiles) {
-    for (SourceCode squidSourceFile : squidSourceFiles) {
-      SourceFile squidFile = (SourceFile) squidSourceFile;
-
-      File sonarFile = File.fromIOFile(new java.io.File(squidFile.getKey()), project);
-
-      saveFilesComplexityDistribution(sonarFile, squidFile);
-      saveFunctionsComplexityDistribution(sonarFile, squidFile);
-      saveMeasures(sonarFile, squidFile);
-      saveViolations(sonarFile, squidFile);
+    public ObjectiveCSquidSensor(RulesProfile profile) {
+        this.annotationCheckFactory = AnnotationCheckFactory.create(profile, CheckList.REPOSITORY_KEY, CheckList.getChecks());
     }
-  }
 
-  private void saveMeasures(File sonarFile, SourceFile squidFile) {
-    context.saveMeasure(sonarFile, CoreMetrics.FILES, squidFile.getDouble(ObjectiveCMetric.FILES));
-    context.saveMeasure(sonarFile, CoreMetrics.LINES, squidFile.getDouble(ObjectiveCMetric.LINES));
-    context.saveMeasure(sonarFile, CoreMetrics.NCLOC, squidFile.getDouble(ObjectiveCMetric.LINES_OF_CODE));
-    context.saveMeasure(sonarFile, CoreMetrics.FUNCTIONS, squidFile.getDouble(ObjectiveCMetric.FUNCTIONS));
-    context.saveMeasure(sonarFile, CoreMetrics.STATEMENTS, squidFile.getDouble(ObjectiveCMetric.STATEMENTS));
-    context.saveMeasure(sonarFile, CoreMetrics.COMPLEXITY, squidFile.getDouble(ObjectiveCMetric.COMPLEXITY));
-    context.saveMeasure(sonarFile, CoreMetrics.COMMENT_BLANK_LINES, squidFile.getDouble(ObjectiveCMetric.COMMENT_BLANK_LINES));
-    context.saveMeasure(sonarFile, CoreMetrics.COMMENT_LINES, squidFile.getDouble(ObjectiveCMetric.COMMENT_LINES));
-  }
-
-  private void saveFunctionsComplexityDistribution(File sonarFile, SourceFile squidFile) {
-    Collection<SourceCode> squidFunctionsInFile = scanner.getIndex().search(new QueryByParent(squidFile), new QueryByType(SourceFunction.class));
-    RangeDistributionBuilder complexityDistribution = new RangeDistributionBuilder(CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION, FUNCTIONS_DISTRIB_BOTTOM_LIMITS);
-    for (SourceCode squidFunction : squidFunctionsInFile) {
-      complexityDistribution.add(squidFunction.getDouble(ObjectiveCMetric.COMPLEXITY));
+    public boolean shouldExecuteOnProject(Project project) {
+        return ObjectiveC.KEY.equals(project.getLanguageKey());
     }
-    context.saveMeasure(sonarFile, complexityDistribution.build().setPersistenceMode(PersistenceMode.MEMORY));
-  }
 
-  private void saveFilesComplexityDistribution(File sonarFile, SourceFile squidFile) {
-    RangeDistributionBuilder complexityDistribution = new RangeDistributionBuilder(CoreMetrics.FILE_COMPLEXITY_DISTRIBUTION, FILES_DISTRIB_BOTTOM_LIMITS);
-    complexityDistribution.add(squidFile.getDouble(ObjectiveCMetric.COMPLEXITY));
-    context.saveMeasure(sonarFile, complexityDistribution.build().setPersistenceMode(PersistenceMode.MEMORY));
-  }
+    public void analyse(Project project, SensorContext context) {
+        this.project = project;
+        this.context = context;
 
-  private void saveViolations(File sonarFile, SourceFile squidFile) {
-    Collection<CheckMessage> messages = squidFile.getCheckMessages();
-    if (messages != null) {
-      for (CheckMessage message : messages) {
-        Violation violation = Violation.create(annotationCheckFactory.getActiveRule(message.getChecker()), sonarFile)
-            .setLineId(message.getLine())
-            .setMessage(message.getText(Locale.ENGLISH));
-        context.saveViolation(violation);
-      }
+        Collection<SquidCheck> squidChecks = annotationCheckFactory.getChecks();
+        this.scanner = ObjectiveCAstScanner.create(createConfiguration(project), squidChecks.toArray(new SquidCheck[squidChecks.size()]));
+        scanner.scanFiles(InputFileUtils.toFiles(project.getFileSystem().mainFiles(ObjectiveC.KEY)));
+
+        Collection<SourceCode> squidSourceFiles = scanner.getIndex().search(new QueryByType(SourceFile.class));
+        save(squidSourceFiles);
     }
-  }
 
-  @Override
-  public String toString() {
-    return getClass().getSimpleName();
-  }
+    private ObjectiveCConfiguration createConfiguration(Project project) {
+        return new ObjectiveCConfiguration(project.getFileSystem().getSourceCharset());
+    }
+
+    private void save(Collection<SourceCode> squidSourceFiles) {
+        for (SourceCode squidSourceFile : squidSourceFiles) {
+            SourceFile squidFile = (SourceFile) squidSourceFile;
+
+            File sonarFile = File.fromIOFile(new java.io.File(squidFile.getKey()), project);
+
+            saveFilesComplexityDistribution(sonarFile, squidFile);
+            saveFunctionsComplexityDistribution(sonarFile, squidFile);
+            saveMeasures(sonarFile, squidFile);
+            saveViolations(sonarFile, squidFile);
+        }
+    }
+
+    private void saveMeasures(File sonarFile, SourceFile squidFile) {
+        context.saveMeasure(sonarFile, CoreMetrics.FILES, squidFile.getDouble(ObjectiveCMetric.FILES));
+        context.saveMeasure(sonarFile, CoreMetrics.LINES, squidFile.getDouble(ObjectiveCMetric.LINES));
+        context.saveMeasure(sonarFile, CoreMetrics.NCLOC, squidFile.getDouble(ObjectiveCMetric.LINES_OF_CODE));
+        context.saveMeasure(sonarFile, CoreMetrics.FUNCTIONS, squidFile.getDouble(ObjectiveCMetric.FUNCTIONS));
+        context.saveMeasure(sonarFile, CoreMetrics.STATEMENTS, squidFile.getDouble(ObjectiveCMetric.STATEMENTS));
+        context.saveMeasure(sonarFile, CoreMetrics.COMPLEXITY, squidFile.getDouble(ObjectiveCMetric.COMPLEXITY));
+        context.saveMeasure(sonarFile, CoreMetrics.COMMENT_BLANK_LINES, squidFile.getDouble(ObjectiveCMetric.COMMENT_BLANK_LINES));
+        context.saveMeasure(sonarFile, CoreMetrics.COMMENT_LINES, squidFile.getDouble(ObjectiveCMetric.COMMENT_LINES));
+    }
+
+    private void saveFunctionsComplexityDistribution(File sonarFile, SourceFile squidFile) {
+        Collection<SourceCode> squidFunctionsInFile = scanner.getIndex().search(new QueryByParent(squidFile), new QueryByType(SourceFunction.class));
+        RangeDistributionBuilder complexityDistribution = new RangeDistributionBuilder(CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION, FUNCTIONS_DISTRIB_BOTTOM_LIMITS);
+        for (SourceCode squidFunction : squidFunctionsInFile) {
+            complexityDistribution.add(squidFunction.getDouble(ObjectiveCMetric.COMPLEXITY));
+        }
+        context.saveMeasure(sonarFile, complexityDistribution.build().setPersistenceMode(PersistenceMode.MEMORY));
+    }
+
+    private void saveFilesComplexityDistribution(File sonarFile, SourceFile squidFile) {
+        RangeDistributionBuilder complexityDistribution = new RangeDistributionBuilder(CoreMetrics.FILE_COMPLEXITY_DISTRIBUTION, FILES_DISTRIB_BOTTOM_LIMITS);
+        complexityDistribution.add(squidFile.getDouble(ObjectiveCMetric.COMPLEXITY));
+        context.saveMeasure(sonarFile, complexityDistribution.build().setPersistenceMode(PersistenceMode.MEMORY));
+    }
+
+    private void saveViolations(File sonarFile, SourceFile squidFile) {
+        Collection<CheckMessage> messages = squidFile.getCheckMessages();
+        if (messages != null) {
+            for (CheckMessage message : messages) {
+                Violation violation = Violation.create(annotationCheckFactory.getActiveRule(message.getChecker()), sonarFile)
+                        .setLineId(message.getLine())
+                        .setMessage(message.getText(Locale.ENGLISH));
+                context.saveViolation(violation);
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
 
 }

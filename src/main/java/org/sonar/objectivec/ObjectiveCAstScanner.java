@@ -41,67 +41,66 @@ import com.sonar.sslr.squid.metrics.LinesVisitor;
 
 public class ObjectiveCAstScanner {
 
-	private ObjectiveCAstScanner() {
-  }
-
-  /**
-   * Helper method for testing checks without having to deploy them on a Sonar instance.
-   */
-  public static SourceFile scanSingleFile(File file, SquidAstVisitor<ObjectiveCGrammar>... visitors) {
-    if (!file.isFile()) {
-      throw new IllegalArgumentException("File '" + file + "' not found.");
+    private ObjectiveCAstScanner() {
     }
-    AstScanner<ObjectiveCGrammar> scanner = create(new ObjectiveCConfiguration(), visitors);
-    scanner.scanFile(file);
-    Collection<SourceCode> sources = scanner.getIndex().search(new QueryByType(SourceFile.class));
-    if (sources.size() != 1) {
-      throw new IllegalStateException("Only one SourceFile was expected whereas " + sources.size() + " has been returned.");
+
+    /**
+     * Helper method for testing checks without having to deploy them on a Sonar instance.
+     */
+    public static SourceFile scanSingleFile(File file, SquidAstVisitor<ObjectiveCGrammar>... visitors) {
+        if (!file.isFile()) {
+            throw new IllegalArgumentException("File '" + file + "' not found.");
+        }
+        AstScanner<ObjectiveCGrammar> scanner = create(new ObjectiveCConfiguration(), visitors);
+        scanner.scanFile(file);
+        Collection<SourceCode> sources = scanner.getIndex().search(new QueryByType(SourceFile.class));
+        if (sources.size() != 1) {
+            throw new IllegalStateException("Only one SourceFile was expected whereas " + sources.size() + " has been returned.");
+        }
+        return (SourceFile) sources.iterator().next();
     }
-    return (SourceFile) sources.iterator().next();
-  }
 
-  public static AstScanner<ObjectiveCGrammar> create(ObjectiveCConfiguration conf, SquidAstVisitor<ObjectiveCGrammar>... visitors) {
-    final SquidAstVisitorContextImpl<ObjectiveCGrammar> context = new SquidAstVisitorContextImpl<ObjectiveCGrammar>(new SourceProject("Objective-C Project"));
-    final Parser<ObjectiveCGrammar> parser = ObjectiveCParser.create(conf);
+    public static AstScanner<ObjectiveCGrammar> create(ObjectiveCConfiguration conf, SquidAstVisitor<ObjectiveCGrammar>... visitors) {
+        final SquidAstVisitorContextImpl<ObjectiveCGrammar> context = new SquidAstVisitorContextImpl<ObjectiveCGrammar>(new SourceProject("Objective-C Project"));
+        final Parser<ObjectiveCGrammar> parser = ObjectiveCParser.create(conf);
 
-    AstScanner.Builder<ObjectiveCGrammar> builder = AstScanner.<ObjectiveCGrammar> builder(context).setBaseParser(parser);
+        AstScanner.Builder<ObjectiveCGrammar> builder = AstScanner.<ObjectiveCGrammar> builder(context).setBaseParser(parser);
 
-    /* Metrics */
-    builder.withMetrics(ObjectiveCMetric.values());
+        /* Metrics */
+        builder.withMetrics(ObjectiveCMetric.values());
 
-    /* Comments */
-    builder.setCommentAnalyser(
-        new CommentAnalyser() {
-          @Override
-          public boolean isBlank(String line) {
-            for (int i = 0; i < line.length(); i++) {
-              if (Character.isLetterOrDigit(line.charAt(i))) {
-                return false;
-              }
-            }
-            return true;
-          }
+        /* Comments */
+        builder.setCommentAnalyser(
+                new CommentAnalyser() {
+                    @Override
+                    public boolean isBlank(String line) {
+                        for (int i = 0; i < line.length(); i++) {
+                            if (Character.isLetterOrDigit(line.charAt(i))) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
 
-          @Override
-          public String getContents(String comment) {
-            return comment.startsWith("//") ? comment.substring(2) : comment.substring(2, comment.length() - 2);
-          }
-        });
+                    @Override
+                    public String getContents(String comment) {
+                        return comment.startsWith("//") ? comment.substring(2) : comment.substring(2, comment.length() - 2);
+                    }
+                });
 
-    /* Files */
-    builder.setFilesMetric(ObjectiveCMetric.FILES);
+        /* Files */
+        builder.setFilesMetric(ObjectiveCMetric.FILES);
 
-    /* Metrics */
-    builder.withSquidAstVisitor(new LinesVisitor<ObjectiveCGrammar>(ObjectiveCMetric.LINES));
-    builder.withSquidAstVisitor(new LinesOfCodeVisitor<ObjectiveCGrammar>(ObjectiveCMetric.LINES_OF_CODE));
-    builder.withSquidAstVisitor(CommentsVisitor.<ObjectiveCGrammar> builder().withCommentMetric(ObjectiveCMetric.COMMENT_LINES)
-        .withBlankCommentMetric(ObjectiveCMetric.COMMENT_BLANK_LINES)
-        .withNoSonar(true)
-        .withIgnoreHeaderComment(conf.getIgnoreHeaderComments())
-        .build());
+        /* Metrics */
+        builder.withSquidAstVisitor(new LinesVisitor<ObjectiveCGrammar>(ObjectiveCMetric.LINES));
+        builder.withSquidAstVisitor(new LinesOfCodeVisitor<ObjectiveCGrammar>(ObjectiveCMetric.LINES_OF_CODE));
+        builder.withSquidAstVisitor(CommentsVisitor.<ObjectiveCGrammar> builder().withCommentMetric(ObjectiveCMetric.COMMENT_LINES)
+                .withBlankCommentMetric(ObjectiveCMetric.COMMENT_BLANK_LINES)
+                .withNoSonar(true)
+                .withIgnoreHeaderComment(conf.getIgnoreHeaderComments())
+                .build());
 
-    return builder.build();
-  }
+        return builder.build();
+    }
 
-	
 }

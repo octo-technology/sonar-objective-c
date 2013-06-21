@@ -26,21 +26,21 @@ import org.sonar.plugins.objectivec.ObjectiveCPlugin;
 
 public class ObjectiveC extends AbstractLanguage {
 
-	public static final String KEY = "objc";
-	
-	private Configuration configuration;
-	
-	public ObjectiveC(Configuration configuration) {
-		super(KEY, "Objective-C");
-		this.configuration = configuration;
-	}
-	
-	public String[] getFileSuffixes() {
-		String[] suffixes = configuration.getStringArray(ObjectiveCPlugin.FILE_SUFFIXES_KEY);
-    if (suffixes == null || suffixes.length == 0) {
-      suffixes = StringUtils.split(ObjectiveCPlugin.FILE_SUFFIXES_DEFVALUE, ",");
+    public static final String KEY = "objc";
+
+    private Configuration configuration;
+
+    public ObjectiveC(Configuration configuration) {
+        super(KEY, "Objective-C");
+        this.configuration = configuration;
     }
-    return suffixes;
-	}
+
+    public String[] getFileSuffixes() {
+        String[] suffixes = configuration.getStringArray(ObjectiveCPlugin.FILE_SUFFIXES_KEY);
+        if (suffixes == null || suffixes.length == 0) {
+            suffixes = StringUtils.split(ObjectiveCPlugin.FILE_SUFFIXES_DEFVALUE, ",");
+        }
+        return suffixes;
+    }
 
 }

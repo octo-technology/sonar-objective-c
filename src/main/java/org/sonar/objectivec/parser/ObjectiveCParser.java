@@ -28,16 +28,17 @@ import com.sonar.sslr.impl.events.ParsingEventListener;
 
 public class ObjectiveCParser {
 
-	private ObjectiveCParser() {
-  }
+    private ObjectiveCParser() {
+    }
 
-  public static Parser<ObjectiveCGrammar> create(ParsingEventListener... parsingEventListeners) {
-    return create(new ObjectiveCConfiguration(), parsingEventListeners);
-  }
+    public static Parser<ObjectiveCGrammar> create(ParsingEventListener... parsingEventListeners) {
+        return create(new ObjectiveCConfiguration(), parsingEventListeners);
+    }
 
-  public static Parser<ObjectiveCGrammar> create(ObjectiveCConfiguration conf, ParsingEventListener... parsingEventListeners) {
-    return Parser.builder((ObjectiveCGrammar) new ObjectiveCGrammarImpl())
-        .withLexer(ObjectiveCLexer.create(conf))
-        .setParsingEventListeners(parsingEventListeners).build();
-  }
+    public static Parser<ObjectiveCGrammar> create(ObjectiveCConfiguration conf, ParsingEventListener... parsingEventListeners) {
+        return Parser.builder((ObjectiveCGrammar) new ObjectiveCGrammarImpl())
+                .withLexer(ObjectiveCLexer.create(conf))
+                .setParsingEventListeners(parsingEventListeners).build();
+    }
+
 }

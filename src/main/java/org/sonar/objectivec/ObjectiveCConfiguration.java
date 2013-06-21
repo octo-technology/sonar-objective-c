@@ -25,21 +25,21 @@ import org.sonar.squid.api.SquidConfiguration;
 
 public class ObjectiveCConfiguration extends SquidConfiguration {
 
-	private boolean ignoreHeaderComments;
+    private boolean ignoreHeaderComments;
 
-  public ObjectiveCConfiguration() {
-  }
+    public ObjectiveCConfiguration() {
+    }
 
-  public ObjectiveCConfiguration(Charset charset) {
-    super(charset);
-  }
+    public ObjectiveCConfiguration(Charset charset) {
+        super(charset);
+    }
 
-  public void setIgnoreHeaderComments(boolean ignoreHeaderComments) {
-    this.ignoreHeaderComments = ignoreHeaderComments;
-  }
+    public void setIgnoreHeaderComments(boolean ignoreHeaderComments) {
+        this.ignoreHeaderComments = ignoreHeaderComments;
+    }
 
-  public boolean getIgnoreHeaderComments() {
-    return ignoreHeaderComments;
-  }
-  
+    public boolean getIgnoreHeaderComments() {
+        return ignoreHeaderComments;
+    }
+
 }

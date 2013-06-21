@@ -24,151 +24,152 @@ import com.sonar.sslr.api.TokenType;
 
 public enum ObjectiveCKeyword implements TokenType {
 
- // method param/return value annotations
- IN("in"),
- OUT("out"),
- INOUT("inout"),
- BYCOPY("bycopy"),
- BYREF("byref"),
- ONEWAY("oneway"),
+    // method param/return value annotations
+    IN("in"),
+    OUT("out"),
+    INOUT("inout"),
+    BYCOPY("bycopy"),
+    BYREF("byref"),
+    ONEWAY("oneway"),
 
- // const is defined in c keywords
- // compiler directives
+    // const is defined in c keywords
+    // compiler directives
 
- AT_CLASS("@class"), // forward declaration
- AT_DEFS("@defs"), // returns layout of an obj-c class
- AT_PROTOCOL("@protocol"), // protocol declaration
- AT_REQUIRED("@required"),
- AT_OPTIONAL("@optional"),
- AT_INTERFACE("@interface"), // class or category declaration
- AT_PUBLIC("@public"),
- AT_PACKAGE("@package"),
- AT_PROTECTED("@protected"),
- AT_PRIVATE("@private"),
- AT_PROPERTY("@property"),
- AT_IMPLEMENTATION("@implementation"), // class or category implementation
- AT_SYNTHESIZE("@synthesize"),
- AT_DYNAMIC("@dynamic"),
+    AT_CLASS("@class"), // forward declaration
+    AT_DEFS("@defs"), // returns layout of an obj-c class
+    AT_PROTOCOL("@protocol"), // protocol declaration
+    AT_REQUIRED("@required"),
+    AT_OPTIONAL("@optional"),
+    AT_INTERFACE("@interface"), // class or category declaration
+    AT_PUBLIC("@public"),
+    AT_PACKAGE("@package"),
+    AT_PROTECTED("@protected"),
+    AT_PRIVATE("@private"),
+    AT_PROPERTY("@property"),
+    AT_IMPLEMENTATION("@implementation"), // class or category implementation
+    AT_SYNTHESIZE("@synthesize"),
+    AT_DYNAMIC("@dynamic"),
 
- // exception handling
+    // exception handling
 
- AT_THROW("@throw"),
- AT_TRY("@try"),
- AT_CATCH("@catch"),
- AT_FINALLY("@finally"),
+    AT_THROW("@throw"),
+    AT_TRY("@try"),
+    AT_CATCH("@catch"),
+    AT_FINALLY("@finally"),
 
- // remaining directives
- 
- AT_END("@end"), // ends protocol/class/category declaration/implementation
- AT_SYNCHRONIZED("@synchronized"), // mutex
- AT_AUTORELEASEPOOL("@autoreleasepool"),
- AT_SELECTOR("@selector"), // returns SEL type of a method
- AT_ENCODE("@encode"), // return char encoding of a type
- AT_COMPATIBILITY_ALIAS("@compatibility_alias"),
+    // remaining directives
 
- // memory management
+    AT_END("@end"), // ends protocol/class/category declaration/implementation
+    AT_SYNCHRONIZED("@synchronized"), // mutex
+    AT_AUTORELEASEPOOL("@autoreleasepool"),
+    AT_SELECTOR("@selector"), // returns SEL type of a method
+    AT_ENCODE("@encode"), // return char encoding of a type
+    AT_COMPATIBILITY_ALIAS("@compatibility_alias"),
 
- ALLOC("alloc"),
- RELEASE("release"),
- AUTORELEASE("autorelease"),
+    // memory management
 
- // retain is defined in property modifiers
- // property modifiers
+    ALLOC("alloc"),
+    RELEASE("release"),
+    AUTORELEASE("autorelease"),
 
- READWRITE("readwrite"),
- READONLY("readonly"),
- ASSIGN("assign"),
- RETAIN("retain"),
- COPY("copy"),
- ATOMIC("atomic"),
- NONATOMIC("nonatomic"),
- STRONG("strong"),
- WEAK("weak"),
+    // retain is defined in property modifiers
+    // property modifiers
 
- // preprocessor directives
+    READWRITE("readwrite"),
+    READONLY("readonly"),
+    ASSIGN("assign"),
+    RETAIN("retain"),
+    COPY("copy"),
+    ATOMIC("atomic"),
+    NONATOMIC("nonatomic"),
+    STRONG("strong"),
+    WEAK("weak"),
 
- HASH_IMPORT("#import"),
- HASH_INCLUDE("#include"),
- HASH_PRAGMA("#pragma"),
- HASH_DEFINE("#define"),
- HASH_UNDEF("#undef"),
- HASH_IF("#if"),
- HASH_IFDEF("#ifdef"),
- HASH_IFNDEF("#ifndef"),
- HASH_ELSE("#else"),
- HASH_ENDIF("#endif"),
+    // preprocessor directives
 
- // keywords from c
+    HASH_IMPORT("#import"),
+    HASH_INCLUDE("#include"),
+    HASH_PRAGMA("#pragma"),
+    HASH_DEFINE("#define"),
+    HASH_UNDEF("#undef"),
+    HASH_IF("#if"),
+    HASH_IFDEF("#ifdef"),
+    HASH_IFNDEF("#ifndef"),
+    HASH_ELSE("#else"),
+    HASH_ENDIF("#endif"),
 
- AUTO("auto"),
- BREAK("break"),
- CASE("case"),
- CHAR("char"),
- CONST("const"),
- CONTINUE("continue"),
- DEFAULT("default"),
- DO("do"),
- DOUBLE("double"),
- ELSE("else"),
- ENUM("enum"),
- EXTERN("extern"),
- FLOAT("float"),
- FOR("for"),
- GOTO("goto"),
- IF("if"),
- INT("int"),
- LONG("long"),
- REGISTER("register"),
- RETURN("return"),
- SHORT("short"),
- SIGNED("signed"),
- SIZEOF("sizeof"),
- STATIC("static"),
- STRUCT("struct"),
- SWITCH("switch"),
- TYPEDEF("typedef"),
- UNION("union"),
- UNSIGNED("unsigned"),
- VOID("void"),
- VOLATILE("volatile"),
- WHILE("while"),
+    // keywords from c
 
- // obj-c specific
+    AUTO("auto"),
+    BREAK("break"),
+    CASE("case"),
+    CHAR("char"),
+    CONST("const"),
+    CONTINUE("continue"),
+    DEFAULT("default"),
+    DO("do"),
+    DOUBLE("double"),
+    ELSE("else"),
+    ENUM("enum"),
+    EXTERN("extern"),
+    FLOAT("float"),
+    FOR("for"),
+    GOTO("goto"),
+    IF("if"),
+    INT("int"),
+    LONG("long"),
+    REGISTER("register"),
+    RETURN("return"),
+    SHORT("short"),
+    SIGNED("signed"),
+    SIZEOF("sizeof"),
+    STATIC("static"),
+    STRUCT("struct"),
+    SWITCH("switch"),
+    TYPEDEF("typedef"),
+    UNION("union"),
+    UNSIGNED("unsigned"),
+    VOID("void"),
+    VOLATILE("volatile"),
+    WHILE("while"),
 
- BOOL("BOOL"),
- SUPER("super"),
- ID("id"),
- CLASS("Class"),
- IMP("IMP"),
- SEL("SEL"),
- NIL("nil"),
- YES("YES"),
- NO("NO");
+    // obj-c specific
 
- private final String value;
+    BOOL("BOOL"),
+    SUPER("super"),
+    ID("id"),
+    CLASS("Class"),
+    IMP("IMP"),
+    SEL("SEL"),
+    NIL("nil"),
+    YES("YES"),
+    NO("NO");
 
- private ObjectiveCKeyword(String value) {
-   this.value = value;
- }
+    private final String value;
 
- public String getName() {
-   return name();
- }
+    private ObjectiveCKeyword(String value) {
+        this.value = value;
+    }
 
- public String getValue() {
-   return value;
- }
+    public String getName() {
+        return name();
+    }
 
- public boolean hasToBeSkippedFromAst(AstNode node) {
-   return false;
- }
+    public String getValue() {
+        return value;
+    }
 
- public static String[] keywordValues() {
-	 ObjectiveCKeyword[] keywordsEnum = ObjectiveCKeyword.values();
-   String[] keywords = new String[keywordsEnum.length];
-   for (int i = 0; i < keywords.length; i++) {
-     keywords[i] = keywordsEnum[i].getValue();
-   }
-   return keywords;
- }
+    public boolean hasToBeSkippedFromAst(AstNode node) {
+        return false;
+    }
+
+    public static String[] keywordValues() {
+        ObjectiveCKeyword[] keywordsEnum = ObjectiveCKeyword.values();
+        String[] keywords = new String[keywordsEnum.length];
+        for (int i = 0; i < keywords.length; i++) {
+            keywords[i] = keywordsEnum[i].getValue();
+        }
+        return keywords;
+    }
+
 }

@@ -37,25 +37,25 @@ import com.sonar.sslr.impl.Lexer;
 
 public class ObjectiveCTokenizer implements Tokenizer {
 
-	 private final Charset charset;
+    private final Charset charset;
 
-	  public ObjectiveCTokenizer(Charset charset) {
-	    this.charset = charset;
-	  }
-	
-	public void tokenize(SourceCode source, Tokens cpdTokens) throws IOException {
-		Lexer lexer = ObjectiveCLexer.create(new ObjectiveCConfiguration(charset));
-    String fileName = source.getFileName();
-    List<Token> tokens = lexer.lex(new File(fileName));
-    for (Token token : tokens) {
-      TokenEntry cpdToken = new TokenEntry(getTokenImage(token), fileName, token.getLine());
-      cpdTokens.add(cpdToken);
+    public ObjectiveCTokenizer(Charset charset) {
+        this.charset = charset;
     }
-    cpdTokens.add(TokenEntry.getEOF());
-	}
-	
-	private String getTokenImage(Token token) {
-    return token.getValue();
-  }
+
+    public void tokenize(SourceCode source, Tokens cpdTokens) throws IOException {
+        Lexer lexer = ObjectiveCLexer.create(new ObjectiveCConfiguration(charset));
+        String fileName = source.getFileName();
+        List<Token> tokens = lexer.lex(new File(fileName));
+        for (Token token : tokens) {
+            TokenEntry cpdToken = new TokenEntry(getTokenImage(token), fileName, token.getLine());
+            cpdTokens.add(cpdToken);
+        }
+        cpdTokens.add(TokenEntry.getEOF());
+    }
+
+    private String getTokenImage(Token token) {
+        return token.getValue();
+    }
 
 }

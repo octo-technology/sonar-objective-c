@@ -24,23 +24,23 @@ import com.sonar.sslr.api.Rule;
 
 public class ObjectiveCGrammar extends Grammar {
 
-  public Rule identifierName;
-    
-  // A.1 Lexical
+    public Rule identifierName;
 
-  public Rule literal;
-  public Rule nullLiteral;
-  public Rule booleanLiteral;
-  public Rule stringLiteral;
+    // A.1 Lexical
 
-  public Rule program;
-  
-  public Rule sourceElements;
-  public Rule sourceElement;
+    public Rule literal;
+    public Rule nullLiteral;
+    public Rule booleanLiteral;
+    public Rule stringLiteral;
 
-  @Override
-  public Rule getRootRule() {
-    return program;
-  }
+    public Rule program;
+
+    public Rule sourceElements;
+    public Rule sourceElement;
+
+    @Override
+    public Rule getRootRule() {
+        return program;
+    }
 
 }

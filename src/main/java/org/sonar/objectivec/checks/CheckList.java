@@ -25,17 +25,17 @@ import com.google.common.collect.ImmutableList;
 
 public final class CheckList {
 
-	public static final String REPOSITORY_KEY = "objectivec";
+    public static final String REPOSITORY_KEY = "objectivec";
 
-  public static final String SONAR_WAY_PROFILE = "Sonar way";
+    public static final String SONAR_WAY_PROFILE = "Sonar way";
 
-  private CheckList() {
-  }
+    private CheckList() {
+    }
 
-  public static List<Class> getChecks() {
-    return ImmutableList.<Class> of(
+    public static List<Class> getChecks() {
+        return ImmutableList.<Class> of(
 
-    		);
-  }
-	
+                );
+    }
+
 }

@@ -27,10 +27,10 @@ import org.sonar.objectivec.api.ObjectiveCGrammar;
 
 public class ObjectiveCGrammarImpl extends ObjectiveCGrammar {
 
-	public ObjectiveCGrammarImpl() {
+    public ObjectiveCGrammarImpl() {
 
-     program.is(o2n(LITERAL), EOF);
+         program.is(o2n(LITERAL), EOF);
 
-  }
-	
+    }
+
 }

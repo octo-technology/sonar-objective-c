@@ -23,32 +23,32 @@ import org.sonar.squid.measures.CalculatedMetricFormula;
 import org.sonar.squid.measures.MetricDef;
 
 public enum ObjectiveCMetric implements MetricDef {
-	FILES,
-  LINES,
-  LINES_OF_CODE,
-  COMMENT_LINES,
-  COMMENT_BLANK_LINES,
-  STATEMENTS,
-  COMPLEXITY,
-  FUNCTIONS;
+    FILES,
+    LINES,
+    LINES_OF_CODE,
+    COMMENT_LINES,
+    COMMENT_BLANK_LINES,
+    STATEMENTS,
+    COMPLEXITY,
+    FUNCTIONS;
 
-  public String getName() {
-    return name();
-  }
+    public String getName() {
+        return name();
+    }
 
-  public boolean isCalculatedMetric() {
-    return false;
-  }
+    public boolean isCalculatedMetric() {
+        return false;
+    }
 
-  public boolean aggregateIfThereIsAlreadyAValue() {
-    return true;
-  }
+    public boolean aggregateIfThereIsAlreadyAValue() {
+        return true;
+    }
 
-  public boolean isThereAggregationFormula() {
-    return true;
-  }
+    public boolean isThereAggregationFormula() {
+        return true;
+    }
 
-  public CalculatedMetricFormula getCalculatedMetricFormula() {
-    return null;
-  }
+    public CalculatedMetricFormula getCalculatedMetricFormula() {
+        return null;
+    }
 }

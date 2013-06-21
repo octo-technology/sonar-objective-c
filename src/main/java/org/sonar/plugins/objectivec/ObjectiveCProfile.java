@@ -28,15 +28,15 @@ import org.sonar.plugins.objectivec.core.ObjectiveC;
 
 public class ObjectiveCProfile extends ProfileDefinition {
 
-  private final AnnotationProfileParser annotationProfileParser;
+    private final AnnotationProfileParser annotationProfileParser;
 
-  public ObjectiveCProfile(AnnotationProfileParser annotationProfileParser) {
-    this.annotationProfileParser = annotationProfileParser;
-  }
+    public ObjectiveCProfile(AnnotationProfileParser annotationProfileParser) {
+        this.annotationProfileParser = annotationProfileParser;
+    }
 
-  @Override
-  public RulesProfile createProfile(ValidationMessages validation) {
-    return annotationProfileParser.parse(CheckList.REPOSITORY_KEY, CheckList.SONAR_WAY_PROFILE, ObjectiveC.KEY, CheckList.getChecks(), validation);
-  }
+    @Override
+    public RulesProfile createProfile(ValidationMessages validation) {
+        return annotationProfileParser.parse(CheckList.REPOSITORY_KEY, CheckList.SONAR_WAY_PROFILE, ObjectiveC.KEY, CheckList.getChecks(), validation);
+    }
 
 }

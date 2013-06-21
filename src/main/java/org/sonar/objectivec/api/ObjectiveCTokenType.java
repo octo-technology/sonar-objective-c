@@ -24,17 +24,18 @@ import com.sonar.sslr.api.TokenType;
 
 public enum ObjectiveCTokenType implements TokenType {
 
-  NUMERIC_LITERAL;
-  
-  public String getName() {
-    return name();
-  }
+    NUMERIC_LITERAL;
 
-  public String getValue() {
-    return name();
-  }
+    public String getName() {
+        return name();
+    }
 
-  public boolean hasToBeSkippedFromAst(AstNode node) {
-    return false;
-  }
+    public String getValue() {
+        return name();
+    }
+
+    public boolean hasToBeSkippedFromAst(AstNode node) {
+        return false;
+    }
+
 }

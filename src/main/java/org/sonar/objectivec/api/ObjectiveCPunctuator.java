@@ -24,90 +24,89 @@ import com.sonar.sslr.api.TokenType;
 
 public enum ObjectiveCPunctuator implements TokenType {
 
-  // these are really only c operators
-  // http://en.wikipedia.org/wiki/Operators_in_C_and_C%2B%2B
+    // these are really only c operators
+    // http://en.wikipedia.org/wiki/Operators_in_C_and_C%2B%2B
 
-  PLUSPLUS("++"),
-  PLUSEQ("+="),
-  PLUS("+"),
+    PLUSPLUS("++"),
+    PLUSEQ("+="),
+    PLUS("+"),
 
-  MINUSMINUS("--"),
-  MINUSEQ("-="),
-  MINUS("-"),
+    MINUSMINUS("--"),
+    MINUSEQ("-="),
+    MINUS("-"),
 
-  STAREQ("*="),
-  STAR("*"),
+    STAREQ("*="),
+    STAR("*"),
 
-  SLASHEQ("/="),
-  SLASH("/"),
+    SLASHEQ("/="),
+    SLASH("/"),
 
-  LT("<"),
-  LTLT("<<"),
-  LTEQ("<="),
-  LTLTEQ("<<="),
+    LT("<"),
+    LTLT("<<"),
+    LTEQ("<="),
+    LTLTEQ("<<="),
 
-  GT(">"),
-  GTGT(">>"),
-  GTEQ(">="),
-  GTGTEQ(">>="),
+    GT(">"),
+    GTGT(">>"),
+    GTEQ(">="),
+    GTGTEQ(">>="),
 
-  EQ("="),
-  EQEQ("=="),
+    EQ("="),
+    EQEQ("=="),
 
-  TILDE("~"),
+    TILDE("~"),
 
-  EXCL("!"),
-  EXCLEQ("!="),
+    EXCL("!"),
+    EXCLEQ("!="),
 
-  AMP("&"),
-  AMPAMP("&&"),
-  AMPEQ("&="),
-  AMPAMPEX("&&="),
+    AMP("&"),
+    AMPAMP("&&"),
+    AMPEQ("&="),
+    AMPAMPEX("&&="),
 
-  BAR("|"),
-  BARBAR("||"),
-  BAREQ("|="),
-  BARBAREQ("||="),
+    BAR("|"),
+    BARBAR("||"),
+    BAREQ("|="),
+    BARBAREQ("||="),
 
-  CARETEQ("^="),
-  CARET("^"),
+    CARETEQ("^="),
+    CARET("^"),
 
-  PERCENT("%"),
-  PERCENTEQ("%="),
+    PERCENT("%"),
+    PERCENTEQ("%="),
 
-  LCURLYBRACE("{"),
-  RCURLYBRACE("}"),
-  LPARENTHESIS("("),
-  RPARENTHESIS(")"),
-  LBRACKET("["),
-  RBRACKET("]"),
+    LCURLYBRACE("{"),
+    RCURLYBRACE("}"),
+    LPARENTHESIS("("),
+    RPARENTHESIS(")"),
+    LBRACKET("["),
+    RBRACKET("]"),
 
-  QUESTION("?"),
-  COLON(":"),
-  SEMICOLON(";"),
-  COMMA(","),
+    QUESTION("?"),
+    COLON(":"),
+    SEMICOLON(";"),
+    COMMA(","),
 
-  MINUSLT("->"),
-  MINUSLTSTAR("->*"),
-  DOTSTAR(".*");
+    MINUSLT("->"),
+    MINUSLTSTAR("->*"),
+    DOTSTAR(".*");
 
-  private final String value;
+    private final String value;
 
-  private ObjectiveCPunctuator(String word) {
-    this.value = word;
-  }
+    private ObjectiveCPunctuator(String word) {
+        this.value = word;
+    }
 
-  public String getName() {
-    return name();
-  }
+    public String getName() {
+        return name();
+    }
 
-  public String getValue() {
-    return value;
-  }
+    public String getValue() {
+        return value;
+    }
 
-  public boolean hasToBeSkippedFromAst(AstNode node) {
-    return false;
-  }
+    public boolean hasToBeSkippedFromAst(AstNode node) {
+        return false;
+    }
 
-	
 }

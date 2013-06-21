@@ -29,22 +29,21 @@ import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
 
 public class ObjectiveCCpdMapping extends AbstractCpdMapping {
-  
-	private final ObjectiveC language;
-  private final Charset charset;
 
-  public ObjectiveCCpdMapping(ObjectiveC language, ProjectFileSystem fs) {
-    this.language = language;
-    this.charset = fs.getSourceCharset();
-  }
+    private final ObjectiveC language;
+    private final Charset charset;
 
-  public Tokenizer getTokenizer() {
-    return new ObjectiveCTokenizer(charset);
-  }
+    public ObjectiveCCpdMapping(ObjectiveC language, ProjectFileSystem fs) {
+        this.language = language;
+        this.charset = fs.getSourceCharset();
+    }
 
-  public Language getLanguage() {
-    return language;
-  }
+    public Tokenizer getTokenizer() {
+        return new ObjectiveCTokenizer(charset);
+    }
 
+    public Language getLanguage() {
+        return language;
+    }
 
 }
