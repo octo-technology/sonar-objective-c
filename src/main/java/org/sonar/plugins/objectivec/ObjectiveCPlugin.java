@@ -21,8 +21,10 @@ package org.sonar.plugins.objectivec;
 
 import java.util.List;
 
-import org.sonar.api.SonarPlugin;
 import org.sonar.api.Extension;
+import org.sonar.api.Properties;
+import org.sonar.api.Property;
+import org.sonar.api.SonarPlugin;
 import org.sonar.plugins.objectivec.colorizer.ObjectiveCColorizerFormat;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
 import org.sonar.plugins.objectivec.core.ObjectiveCSourceImporter;
@@ -30,6 +32,8 @@ import org.sonar.plugins.objectivec.cpd.ObjectiveCCpdMapping;
 
 import com.google.common.collect.ImmutableList;
 
+@Properties({
+	@Property(key = ObjectiveCCoverageSensor.REPORT_PATH_KEY, defaultValue = ObjectiveCCoverageSensor.DEFAULT_REPORT_PATH, name = "Path to unit test coverage report(s)", description = "Relative to projects' root. Ant patterns are accepted", global = false, project = true), })
 public class ObjectiveCPlugin extends SonarPlugin {
 
     public List<Class<? extends Extension>> getExtensions() {
@@ -40,7 +44,8 @@ public class ObjectiveCPlugin extends SonarPlugin {
                 ObjectiveCCpdMapping.class,
 
                 ObjectiveCSquidSensor.class,
-                ObjectiveCProfile.class
+                ObjectiveCProfile.class,
+                ObjectiveCCoverageSensor.class
 //                ObjectiveCRuleRepository.class,
 //                ObjectiveCProfile.class,
 //
