@@ -33,7 +33,7 @@ import org.sonar.plugins.objectivec.cpd.ObjectiveCCpdMapping;
 import com.google.common.collect.ImmutableList;
 
 @Properties({
-	@Property(key = ObjectiveCCoverageSensor.REPORT_PATH_KEY, defaultValue = ObjectiveCCoverageSensor.DEFAULT_REPORT_PATH, name = "Path to unit test coverage report(s)", description = "Relative to projects' root. Ant patterns are accepted", global = false, project = true), })
+	@Property(key = ObjectiveCCoverageSensor.REPORT_PATTERN_KEY, defaultValue = ObjectiveCCoverageSensor.DEFAULT_REPORT_PATTERN, name = "Path to unit test coverage report(s)", description = "Relative to projects' root. Ant patterns are accepted", global = false, project = true), })
 public class ObjectiveCPlugin extends SonarPlugin {
 
     public List<Class<? extends Extension>> getExtensions() {

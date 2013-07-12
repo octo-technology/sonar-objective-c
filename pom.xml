@@ -48,6 +48,11 @@
       <name>Mete Balci</name>
       <url>https://github.com/metebalci</url>
     </developer>
+    <developer>
+      <id>dbregeon</id>
+      <name>Denis Bregeon</name>
+      <organization>Incept5 LLC</organization>
+    </developer>
   </developers>
 
   <scm>

@@ -20,82 +20,42 @@
 package org.sonar.plugins.objectivec;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.apache.commons.lang.StringUtils;
-import org.codehaus.staxmate.in.SMHierarchicCursor;
-import org.codehaus.staxmate.in.SMInputCursor;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.measures.CoverageMeasuresBuilder;
 import org.sonar.api.utils.StaxParser;
 
-public final class CoberturaParser {
-	public void parseReport(final File xmlFile,
-			final Map<String, CoverageMeasuresBuilder> coverageData)
-			throws XMLStreamException {
-
-		final StaxParser parser = new StaxParser(
-				new StaxParser.XmlStreamHandler() {
-					/**
-					 * {@inheritDoc}
-					 */
-					public void stream(final SMHierarchicCursor rootCursor)
-							throws XMLStreamException {
-						rootCursor.advance();
-						collectPackageMeasures(
-								rootCursor.descendantElementCursor("package"),
-								coverageData);
-					}
-				});
-		parser.parse(xmlFile);
+final class CoberturaParser {
+	public Map<String, CoverageMeasuresBuilder> parseReport(final File xmlFile) {
+		Map<String, CoverageMeasuresBuilder> result = null;
+		try {
+			final InputStream reportStream = new FileInputStream(xmlFile);
+			result = parseReport(reportStream);
+			reportStream.close();
+		} catch (final IOException e) {
+			LoggerFactory.getLogger(getClass()).error("Error processing file named {}", xmlFile, e);
+			result = new HashMap<String, CoverageMeasuresBuilder>();
+		}
+		return result;
 	}
 
-	private void collectPackageMeasures(final SMInputCursor pack,
-			final Map<String, CoverageMeasuresBuilder> coverageData)
-			throws XMLStreamException {
-		while (pack.getNext() != null) {
-			collectFileMeasures(pack.descendantElementCursor("class"),
-					coverageData);
-		}
-	}
+	public Map<String, CoverageMeasuresBuilder> parseReport(final InputStream xmlFile) {
 
-	private void collectFileMeasures(final SMInputCursor clazz,
-			final Map<String, CoverageMeasuresBuilder> coverageData)
-			throws XMLStreamException {
-		while (clazz.getNext() != null) {
-			final String fileName = clazz.getAttrValue("filename");
-			CoverageMeasuresBuilder builder = coverageData.get(fileName);
-			if (builder == null) {
-				builder = CoverageMeasuresBuilder.create();
-				coverageData.put(fileName, builder);
-			}
-			collectFileData(clazz, builder);
+		final Map<String, CoverageMeasuresBuilder> measuresForReport = new HashMap<String, CoverageMeasuresBuilder>();
+		try {
+			final StaxParser parser = new StaxParser(new CoberturaXMLStreamHandler(measuresForReport));
+			parser.parse(xmlFile);
+		} catch (final XMLStreamException e) {
+			LoggerFactory.getLogger(getClass()).error("Error while parsing XML stream.", e);
 		}
-	}
-
-	private void collectFileData(final SMInputCursor clazz,
-			final CoverageMeasuresBuilder builder) throws XMLStreamException {
-		final SMInputCursor line = clazz.childElementCursor("lines").advance()
-				.childElementCursor("line");
-		while (line.getNext() != null) {
-			final int lineId = Integer.parseInt(line.getAttrValue("number"));
-			long noHits = Long.parseLong(line.getAttrValue("hits"));
-			if (noHits > Integer.MAX_VALUE) {
-				noHits = Integer.MAX_VALUE;
-			}
-			builder.setHits(lineId, (int) noHits);
-
-			final String isBranch = line.getAttrValue("branch");
-			final String text = line.getAttrValue("condition-coverage");
-			if (StringUtils.equals(isBranch, "true")
-					&& StringUtils.isNotBlank(text)) {
-				final String[] conditions = StringUtils.split(
-						StringUtils.substringBetween(text, "(", ")"), "/");
-				builder.setConditions(lineId, Integer.parseInt(conditions[1]),
-						Integer.parseInt(conditions[0]));
-			}
-		}
+		return measuresForReport;
 	}
 
 	@Override

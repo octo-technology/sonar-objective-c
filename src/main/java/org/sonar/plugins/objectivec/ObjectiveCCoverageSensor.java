@@ -20,31 +20,24 @@
 package org.sonar.plugins.objectivec;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import javax.xml.stream.XMLStreamException;
-
-import org.apache.tools.ant.DirectoryScanner;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.config.Settings;
 import org.sonar.api.measures.CoverageMeasuresBuilder;
-import org.sonar.api.measures.Measure;
 import org.sonar.api.resources.Project;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
 
 public final class ObjectiveCCoverageSensor implements Sensor {
-	public static final String REPORT_PATH_KEY = ObjectiveCPlugin.PROPERTY_PREFIX
-			+ ".coverage.reportPath";
-	public static final String DEFAULT_REPORT_PATH = "coverage-reports/coverage-*.xml";
-	private static final int UNIT_TEST_COVERAGE = 0;
+	public static final String REPORT_PATTERN_KEY = ObjectiveCPlugin.PROPERTY_PREFIX
+			+ ".coverage.reportPattern";
+	public static final String DEFAULT_REPORT_PATTERN = "coverage-reports/coverage-*.xml";
 
-	private final Settings conf;
+	private final ReportFilesFinder reportFilesFinder;
 	private final CoberturaParser parser = new CoberturaParser();
 
 	public ObjectiveCCoverageSensor() {
@@ -57,7 +50,7 @@ public final class ObjectiveCCoverageSensor implements Sensor {
 
 	public ObjectiveCCoverageSensor(final RuleFinder rules,
 			final Settings config) {
-		conf = config;
+		reportFilesFinder = new ReportFilesFinder(config, REPORT_PATTERN_KEY, DEFAULT_REPORT_PATTERN);
 	}
 
 	public boolean shouldExecuteOnProject(final Project project) {
@@ -65,83 +58,23 @@ public final class ObjectiveCCoverageSensor implements Sensor {
 	}
 
 	public void analyse(final Project project, final SensorContext context) {
-		final List<File> reports = getReports(conf, project.getFileSystem()
-				.getBasedir().getPath(), REPORT_PATH_KEY, DEFAULT_REPORT_PATH);
+		final CoverageMeasuresPersistor measuresPersistor = new CoverageMeasuresPersistor(project, context);
+		final String projectBaseDir = project.getFileSystem().getBasedir().getPath();
 
-		final Map<String, CoverageMeasuresBuilder> coverageMeasures = parseReports(reports);
-		saveMeasures(project, context, coverageMeasures, UNIT_TEST_COVERAGE);
+		measuresPersistor.saveMeasures(parseReportsIn(projectBaseDir));
 	}
 
-	private Map<String, CoverageMeasuresBuilder> parseReports(
-			final List<File> reports) {
+	private Map<String, CoverageMeasuresBuilder> parseReportsIn(
+			final String baseDir) {
 		final Map<String, CoverageMeasuresBuilder> measuresTotal = new HashMap<String, CoverageMeasuresBuilder>();
-		final Map<String, CoverageMeasuresBuilder> measuresForReport = new HashMap<String, CoverageMeasuresBuilder>();
 
-		for (final File report : reports) {
-			LoggerFactory.getLogger(getClass()).info("parsing {}", report);
-			try {
-				measuresForReport.clear();
-				parser.parseReport(report, measuresForReport);
-
-				if (!measuresForReport.isEmpty()) {
-					measuresTotal.putAll(measuresForReport);
-					break;
-				}
-			} catch (final XMLStreamException e) {
-				e.printStackTrace();
-			}
+		for (final File report : reportFilesFinder.reportsIn(baseDir)) {
+			LoggerFactory.getLogger(getClass()).info("Processing coverage report {}", report);
+			measuresTotal.putAll(parser.parseReport(report));
 		}
 
 		return measuresTotal;
 	}
 
-	private void saveMeasures(final Project project,
-			final SensorContext context,
-			final Map<String, CoverageMeasuresBuilder> coverageMeasures,
-			final int coveragetype) {
-		for (final Map.Entry<String, CoverageMeasuresBuilder> entry : coverageMeasures
-				.entrySet()) {
-			final String filePath = entry.getKey();
-			LoggerFactory.getLogger(getClass()).info("Saving measures for {}", filePath);
-			final org.sonar.api.resources.File objcfile = org.sonar.api.resources.File
-					.fromIOFile(new File(filePath), project);
-			if (fileExist(context, objcfile)) {
-				LoggerFactory.getLogger(getClass()).info("File found {}", objcfile);
-				for (final Measure measure : entry.getValue().createMeasures()) {
-					LoggerFactory.getLogger(getClass()).info("Measure {}", measure);
-					context.saveMeasure(objcfile, measure);
-				}
-			}
-		}
-	}
-
-	private boolean fileExist(final SensorContext context,
-			final org.sonar.api.resources.File file) {
-		return context.getResource(file) != null;
-	}
-
-	private List<File> getReports(final Settings conf,
-			final String baseDirPath, final String reportPathPropertyKey,
-			final String defaultReportPath) {
-		String reportPath = conf.getString(reportPathPropertyKey);
-		if (reportPath == null) {
-			reportPath = defaultReportPath;
-		}
-
-		final DirectoryScanner scanner = new DirectoryScanner();
-		final String[] includes = new String[1];
-		includes[0] = reportPath;
-		scanner.setIncludes(includes);
-		scanner.setBasedir(new File(baseDirPath));
-		scanner.scan();
-		final String[] relPaths = scanner.getIncludedFiles();
-
-		final List<File> reports = new ArrayList<File>();
-		for (final String relPath : relPaths) {
-			reports.add(new File(baseDirPath, relPath));
-		}
-
-		return reports;
-	}
 
 }
