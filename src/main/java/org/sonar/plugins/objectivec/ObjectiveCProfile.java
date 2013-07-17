@@ -36,7 +36,9 @@ public class ObjectiveCProfile extends ProfileDefinition {
 
     @Override
     public RulesProfile createProfile(ValidationMessages validation) {
-        return annotationProfileParser.parse(CheckList.REPOSITORY_KEY, CheckList.SONAR_WAY_PROFILE, ObjectiveC.KEY, CheckList.getChecks(), validation);
+        return annotationProfileParser.parse(CheckList.REPOSITORY_KEY,
+                CheckList.SONAR_WAY_PROFILE, ObjectiveC.KEY,
+                CheckList.getChecks(), validation);
     }
 
 }

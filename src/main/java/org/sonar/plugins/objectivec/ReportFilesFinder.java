@@ -27,42 +27,44 @@ import org.apache.tools.ant.DirectoryScanner;
 import org.sonar.api.config.Settings;
 
 final class ReportFilesFinder {
-	private final Settings conf;
-	private final String settingsKey;
-	private final String settingsDefault;
+    private final Settings conf;
+    private final String settingsKey;
+    private final String settingsDefault;
 
-	public ReportFilesFinder(final Settings settings, final String key, final String defaultValue) {
-		conf = settings;
-		settingsKey = key;
-		settingsDefault = defaultValue;
-	}
+    public ReportFilesFinder(final Settings settings, final String key,
+            final String defaultValue) {
+        conf = settings;
+        settingsKey = key;
+        settingsDefault = defaultValue;
+    }
 
-	public List<File> reportsIn(final String baseDirPath) {
-		final String[] relPaths = filesMathingPattern(baseDirPath, reportPattern());
+    public List<File> reportsIn(final String baseDirPath) {
+        final String[] relPaths = filesMathingPattern(baseDirPath,
+                reportPattern());
 
-		final List<File> reports = new ArrayList<File>();
-		for (final String relPath : relPaths) {
-			reports.add(new File(baseDirPath, relPath));
-		}
+        final List<File> reports = new ArrayList<File>();
+        for (final String relPath : relPaths) {
+            reports.add(new File(baseDirPath, relPath));
+        }
 
-		return reports;
-	}
+        return reports;
+    }
 
-	private String[] filesMathingPattern(final String baseDirPath,
-			final String reportPath) {
-		final DirectoryScanner scanner = new DirectoryScanner();
-		scanner.setIncludes(new String[] {reportPath});
-		scanner.setBasedir(new File(baseDirPath));
-		scanner.scan();
-		return scanner.getIncludedFiles();
-	}
+    private String[] filesMathingPattern(final String baseDirPath,
+            final String reportPath) {
+        final DirectoryScanner scanner = new DirectoryScanner();
+        scanner.setIncludes(new String[] { reportPath });
+        scanner.setBasedir(new File(baseDirPath));
+        scanner.scan();
+        return scanner.getIncludedFiles();
+    }
 
-	private String reportPattern() {
-		String reportPath = conf.getString(settingsKey);
-		if (reportPath == null) {
-			reportPath = settingsDefault;
-		}
-		return reportPath;
-	}
+    private String reportPattern() {
+        String reportPath = conf.getString(settingsKey);
+        if (reportPath == null) {
+            reportPath = settingsDefault;
+        }
+        return reportPath;
+    }
 
 }

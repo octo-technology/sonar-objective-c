@@ -29,66 +29,72 @@ import org.codehaus.staxmate.in.SMInputCursor;
 import org.sonar.api.measures.CoverageMeasuresBuilder;
 import org.sonar.api.utils.StaxParser;
 
-class CoberturaXMLStreamHandler implements
-		StaxParser.XmlStreamHandler {
-	private final Map<String, CoverageMeasuresBuilder> measuresForReport;
+class CoberturaXMLStreamHandler implements StaxParser.XmlStreamHandler {
+    private final Map<String, CoverageMeasuresBuilder> measuresForReport;
 
-	CoberturaXMLStreamHandler(
-			final Map<String, CoverageMeasuresBuilder> data) {
-		measuresForReport = data;
-	}
+    public CoberturaXMLStreamHandler(
+            final Map<String, CoverageMeasuresBuilder> data) {
+        measuresForReport = data;
+    }
 
-	public void stream(final SMHierarchicCursor rootCursor)
-			throws XMLStreamException {
-		rootCursor.advance();
-		collectPackageMeasures(
-				rootCursor.descendantElementCursor("package"));
-	}
+    public void stream(final SMHierarchicCursor rootCursor)
+            throws XMLStreamException {
+        rootCursor.advance();
+        collectPackageMeasures(rootCursor.descendantElementCursor("package"));
+    }
 
-	private void collectPackageMeasures(final SMInputCursor pack)
-			throws XMLStreamException {
-		while (pack.getNext() != null) {
-			collectFileMeasures(pack.descendantElementCursor("class"));
-		}
-	}
+    private void collectPackageMeasures(final SMInputCursor pack)
+            throws XMLStreamException {
+        while (pack.getNext() != null) {
+            collectFileMeasures(pack.descendantElementCursor("class"));
+        }
+    }
 
-	private void collectFileMeasures(final SMInputCursor clazz)
-			throws XMLStreamException {
-		while (clazz.getNext() != null) {
-			collectFileData(clazz);
-		}
-	}
+    private void collectFileMeasures(final SMInputCursor clazz)
+            throws XMLStreamException {
+        while (clazz.getNext() != null) {
+            collectFileData(clazz);
+        }
+    }
 
-	private void collectFileData(final SMInputCursor clazz) throws XMLStreamException {
-		final CoverageMeasuresBuilder builder = builderFor(clazz);
-		final SMInputCursor line = clazz.childElementCursor("lines").advance().childElementCursor("line");
+    private void collectFileData(final SMInputCursor clazz)
+            throws XMLStreamException {
+        final CoverageMeasuresBuilder builder = builderFor(clazz);
+        final SMInputCursor line = clazz.childElementCursor("lines").advance()
+                .childElementCursor("line");
 
-		while (null != line.getNext()) {
-			recordCoverageFor(line, builder);
-		}
-	}
+        while (null != line.getNext()) {
+            recordCoverageFor(line, builder);
+        }
+    }
 
-	private void recordCoverageFor(final SMInputCursor line, final CoverageMeasuresBuilder builder) throws XMLStreamException {
-		final int lineId = Integer.parseInt(line.getAttrValue("number"));
-		final int noHits = (int) Math.min(Long.parseLong(line.getAttrValue("hits")), Integer.MAX_VALUE);
-		final String isBranch = line.getAttrValue("branch");
-		final String conditionText = line.getAttrValue("condition-coverage");
+    private void recordCoverageFor(final SMInputCursor line,
+            final CoverageMeasuresBuilder builder) throws XMLStreamException {
+        final int lineId = Integer.parseInt(line.getAttrValue("number"));
+        final int noHits = (int) Math.min(
+                Long.parseLong(line.getAttrValue("hits")), Integer.MAX_VALUE);
+        final String isBranch = line.getAttrValue("branch");
+        final String conditionText = line.getAttrValue("condition-coverage");
 
-		builder.setHits(lineId, noHits);
+        builder.setHits(lineId, noHits);
 
-		if (StringUtils.equals(isBranch, "true") && StringUtils.isNotBlank(conditionText)) {
-			final String[] conditions = StringUtils.split(StringUtils.substringBetween(conditionText, "(", ")"), "/");
-			builder.setConditions(lineId, Integer.parseInt(conditions[1]), Integer.parseInt(conditions[0]));
-		}
-	}
+        if (StringUtils.equals(isBranch, "true")
+                && StringUtils.isNotBlank(conditionText)) {
+            final String[] conditions = StringUtils.split(
+                    StringUtils.substringBetween(conditionText, "(", ")"), "/");
+            builder.setConditions(lineId, Integer.parseInt(conditions[1]),
+                    Integer.parseInt(conditions[0]));
+        }
+    }
 
-	private CoverageMeasuresBuilder builderFor(final SMInputCursor clazz) throws XMLStreamException {
-		final String fileName = clazz.getAttrValue("filename");
-		CoverageMeasuresBuilder builder = measuresForReport.get(fileName);
-		if (builder == null) {
-			builder = CoverageMeasuresBuilder.create();
-			measuresForReport.put(fileName, builder);
-		}
-		return builder;
-	}
+    private CoverageMeasuresBuilder builderFor(final SMInputCursor clazz)
+            throws XMLStreamException {
+        final String fileName = clazz.getAttrValue("filename");
+        CoverageMeasuresBuilder builder = measuresForReport.get(fileName);
+        if (builder == null) {
+            builder = CoverageMeasuresBuilder.create();
+            measuresForReport.put(fileName, builder);
+        }
+        return builder;
+    }
 }

@@ -33,33 +33,37 @@ import org.sonar.api.measures.CoverageMeasuresBuilder;
 import org.sonar.api.utils.StaxParser;
 
 final class CoberturaParser {
-	public Map<String, CoverageMeasuresBuilder> parseReport(final File xmlFile) {
-		Map<String, CoverageMeasuresBuilder> result = null;
-		try {
-			final InputStream reportStream = new FileInputStream(xmlFile);
-			result = parseReport(reportStream);
-			reportStream.close();
-		} catch (final IOException e) {
-			LoggerFactory.getLogger(getClass()).error("Error processing file named {}", xmlFile, e);
-			result = new HashMap<String, CoverageMeasuresBuilder>();
-		}
-		return result;
-	}
+    public Map<String, CoverageMeasuresBuilder> parseReport(final File xmlFile) {
+        Map<String, CoverageMeasuresBuilder> result = null;
+        try {
+            final InputStream reportStream = new FileInputStream(xmlFile);
+            result = parseReport(reportStream);
+            reportStream.close();
+        } catch (final IOException e) {
+            LoggerFactory.getLogger(getClass()).error(
+                    "Error processing file named {}", xmlFile, e);
+            result = new HashMap<String, CoverageMeasuresBuilder>();
+        }
+        return result;
+    }
 
-	public Map<String, CoverageMeasuresBuilder> parseReport(final InputStream xmlFile) {
+    public Map<String, CoverageMeasuresBuilder> parseReport(
+            final InputStream xmlFile) {
 
-		final Map<String, CoverageMeasuresBuilder> measuresForReport = new HashMap<String, CoverageMeasuresBuilder>();
-		try {
-			final StaxParser parser = new StaxParser(new CoberturaXMLStreamHandler(measuresForReport));
-			parser.parse(xmlFile);
-		} catch (final XMLStreamException e) {
-			LoggerFactory.getLogger(getClass()).error("Error while parsing XML stream.", e);
-		}
-		return measuresForReport;
-	}
+        final Map<String, CoverageMeasuresBuilder> measuresForReport = new HashMap<String, CoverageMeasuresBuilder>();
+        try {
+            final StaxParser parser = new StaxParser(
+                    new CoberturaXMLStreamHandler(measuresForReport));
+            parser.parse(xmlFile);
+        } catch (final XMLStreamException e) {
+            LoggerFactory.getLogger(getClass()).error(
+                    "Error while parsing XML stream.", e);
+        }
+        return measuresForReport;
+    }
 
-	@Override
-	public String toString() {
-		return getClass().getSimpleName();
-	}
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
 }

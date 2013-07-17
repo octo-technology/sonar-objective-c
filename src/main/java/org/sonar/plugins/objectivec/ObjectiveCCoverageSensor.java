@@ -29,52 +29,49 @@ import org.sonar.api.batch.SensorContext;
 import org.sonar.api.config.Settings;
 import org.sonar.api.measures.CoverageMeasuresBuilder;
 import org.sonar.api.resources.Project;
-import org.sonar.api.rules.RuleFinder;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
 
 public final class ObjectiveCCoverageSensor implements Sensor {
-	public static final String REPORT_PATTERN_KEY = ObjectiveCPlugin.PROPERTY_PREFIX
-			+ ".coverage.reportPattern";
-	public static final String DEFAULT_REPORT_PATTERN = "coverage-reports/coverage-*.xml";
+    public static final String REPORT_PATTERN_KEY = ObjectiveCPlugin.PROPERTY_PREFIX
+            + ".coverage.reportPattern";
+    public static final String DEFAULT_REPORT_PATTERN = "coverage-reports/coverage-*.xml";
 
-	private final ReportFilesFinder reportFilesFinder;
-	private final CoberturaParser parser = new CoberturaParser();
+    private final ReportFilesFinder reportFilesFinder;
+    private final CoberturaParser parser = new CoberturaParser();
 
-	public ObjectiveCCoverageSensor() {
-		this(null);
-	}
+    public ObjectiveCCoverageSensor() {
+        this(null);
+    }
 
-	public ObjectiveCCoverageSensor(final Settings config) {
-		this(null, config);
-	}
+    public ObjectiveCCoverageSensor(final Settings config) {
+        reportFilesFinder = new ReportFilesFinder(config, REPORT_PATTERN_KEY,
+                DEFAULT_REPORT_PATTERN);
+    }
 
-	public ObjectiveCCoverageSensor(final RuleFinder rules,
-			final Settings config) {
-		reportFilesFinder = new ReportFilesFinder(config, REPORT_PATTERN_KEY, DEFAULT_REPORT_PATTERN);
-	}
+    public boolean shouldExecuteOnProject(final Project project) {
+        return ObjectiveC.KEY.equals(project.getLanguageKey());
+    }
 
-	public boolean shouldExecuteOnProject(final Project project) {
-		return ObjectiveC.KEY.equals(project.getLanguageKey());
-	}
+    public void analyse(final Project project, final SensorContext context) {
+        final CoverageMeasuresPersistor measuresPersistor = new CoverageMeasuresPersistor(
+                project, context);
+        final String projectBaseDir = project.getFileSystem().getBasedir()
+                .getPath();
 
-	public void analyse(final Project project, final SensorContext context) {
-		final CoverageMeasuresPersistor measuresPersistor = new CoverageMeasuresPersistor(project, context);
-		final String projectBaseDir = project.getFileSystem().getBasedir().getPath();
+        measuresPersistor.saveMeasures(parseReportsIn(projectBaseDir));
+    }
 
-		measuresPersistor.saveMeasures(parseReportsIn(projectBaseDir));
-	}
+    private Map<String, CoverageMeasuresBuilder> parseReportsIn(
+            final String baseDir) {
+        final Map<String, CoverageMeasuresBuilder> measuresTotal = new HashMap<String, CoverageMeasuresBuilder>();
 
-	private Map<String, CoverageMeasuresBuilder> parseReportsIn(
-			final String baseDir) {
-		final Map<String, CoverageMeasuresBuilder> measuresTotal = new HashMap<String, CoverageMeasuresBuilder>();
+        for (final File report : reportFilesFinder.reportsIn(baseDir)) {
+            LoggerFactory.getLogger(getClass()).info(
+                    "Processing coverage report {}", report);
+            measuresTotal.putAll(parser.parseReport(report));
+        }
 
-		for (final File report : reportFilesFinder.reportsIn(baseDir)) {
-			LoggerFactory.getLogger(getClass()).info("Processing coverage report {}", report);
-			measuresTotal.putAll(parser.parseReport(report));
-		}
-
-		return measuresTotal;
-	}
-
+        return measuresTotal;
+    }
 
 }

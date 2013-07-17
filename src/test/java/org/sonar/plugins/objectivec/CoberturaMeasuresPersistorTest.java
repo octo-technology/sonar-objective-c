@@ -41,7 +41,7 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.resources.Resource;
 
-public final class MeasuresPersistorTest {
+public final class CoberturaMeasuresPersistorTest {
 
 	@Test
 	public void shouldNotPersistMeasuresForUnknownFiles() {
@@ -61,17 +61,20 @@ public final class MeasuresPersistorTest {
 	@Test
 	public void shouldPersistMeasuresForKnownFiles() {
 		final Project project = new Project("Test");
+		final org.sonar.api.resources.File dummyFile = new org.sonar.api.resources.File("dummy/test");
 		final SensorContext context = mock(SensorContext.class);
 		final ProjectFileSystem fileSystem = mock(ProjectFileSystem.class);
 		final List<File> sourceDirs = new ArrayList<File>();
 		final Map<String, CoverageMeasuresBuilder> measures = new HashMap<String, CoverageMeasuresBuilder>();
 		final CoverageMeasuresBuilder measureBuilder = CoverageMeasuresBuilder.create();
 
-
 		sourceDirs.add(new File("/dummy"));
 		measures.put("/dummy/test", measureBuilder);
+		measureBuilder.setHits(99, 99);
+		measureBuilder.setConditions(99, 99, 1);
 
 		when(fileSystem.getSourceDirs()).thenReturn(sourceDirs);
+		when(context.getResource(any(Resource.class))).thenReturn(dummyFile);
 
 		project.setFileSystem(fileSystem);
 
@@ -79,7 +82,7 @@ public final class MeasuresPersistorTest {
 		testedPersistor.saveMeasures(measures);
 
 		for (final Measure measure : measureBuilder.createMeasures()) {
-			verify(context, times(1)).saveMeasure(eq(new org.sonar.api.resources.File("dummy")), eq(measure));
+			verify(context, times(1)).saveMeasure(eq(new org.sonar.api.resources.File("test")), eq(measure));
 		}
 	}
 
