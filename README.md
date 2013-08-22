@@ -1,19 +1,29 @@
 Sonar Plugin for Objective C
 ============================
-This repository hosts the Objective-C plugin for Sonar. The plugin is under active development and has been bootstrapped with the help of the Sonar team. If you wish to contribute, check the [Contributing wiki page](https://github.com/octo-technology/sonar-objective-c/wiki/Contributing).
+This repository hosts the Objective-C plugin for Sonar. The plugin is in an early development stage and has been bootstrapped with the help of the Sonar team. If you wish to contribute, check the [Contributing wiki page](https://github.com/octo-technology/sonar-objective-c/wiki/Contributing).
 
 ###Features
-List of [Sonar metrics](https://github.com/octo-technology/sonar-objective-c/wiki/Features) implemented or pending.
+
+- [ ] Complexity
+- [ ] Design
+- [x] Documentation
+- [x] Duplications
+- [ ] Issues
+- [x] Size
+- [ ] Tests
+- 
+For more details, see the list of [Sonar metrics](https://github.com/octo-technology/sonar-objective-c/wiki/Features) implemented or pending.
 
 ###Getting Started
 Have a look at the [sample project](https://github.com/octo-technology/sample-sonar-objective-c), it explains how to setup and analyze an Objective-C project.
 
 ###Download
-[Latest snapshot](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/lastSuccessfulBuild/artifact/target/)  
 
-Maven repositories:  
-snapshot: [http://repository-rfelden.forge.cloudbees.com/snapshot/](http://repository-rfelden.forge.cloudbees.com/snapshot/)  
-release: [http://repository-rfelden.forge.cloudbees.com/release/](http://repository-rfelden.forge.cloudbees.com/release/)
+The latest release is the 0.0.1, and it's available [here](http://repository-rfelden.forge.cloudbees.com/release/org/codehaus/sonar-plugin/objectivec/sonar-objective-c-plugin/0.0.1/sonar-objective-c-plugin-0.0.1.jar)
+
+You can also download the latest build of the plugin from Cloudbees [Latest snapshot](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/lastSuccessfulBuild/artifact/target/)  
+
+In the worst case, the Maven repositories is available here: http://repository-rfelden.forge.cloudbees.com/snapshot/
 
 ###Build Status
 [![Build Status](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/badge/icon)](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/)
