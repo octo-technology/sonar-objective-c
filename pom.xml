@@ -48,6 +48,11 @@
       <name>Mete Balci</name>
       <url>https://github.com/metebalci</url>
     </developer>
+    <developer>
+      <id>dbregeon</id>
+      <name>Denis Bregeon</name>
+      <organization>Incept5 LLC</organization>
+    </developer>
   </developers>
 
   <scm>
@@ -112,6 +117,11 @@
         <groupId>org.codehaus.sonar.sslr-squid-bridge</groupId>
         <artifactId>sslr-squid-bridge</artifactId>
         <version>2.2</version>
+      </dependency>
+      <dependency>
+        <groupId>ant</groupId>
+        <artifactId>ant</artifactId>
+        <version>1.6</version>
       </dependency>
 
       <dependency>
