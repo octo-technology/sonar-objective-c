@@ -1,6 +1,6 @@
 Sonar Plugin for Objective C
 ============================
-This repository hosts the Objective-C plugin for Sonar. The plugin is in an early development stage and has been bootstrapped with the help of the Sonar team. If you wish to contribute, check the [Contributing wiki page](https://github.com/octo-technology/sonar-objective-c/wiki/Contributing).
+This repository hosts the Objective-C plugin for [Sonar](http://www.sonarqube.org/). The plugin is in an early development stage and has been bootstrapped with the help of the Sonar team. If you wish to contribute, check the [Contributing wiki page](https://github.com/octo-technology/sonar-objective-c/wiki/Contributing).
 
 ###Features
 
@@ -24,6 +24,10 @@ The latest release is the 0.0.1, and it's available [here](http://repository-rfe
 You can also download the latest build of the plugin from [Cloudbees](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/lastSuccessfulBuild/artifact/target/).
 
 In the worst case, the Maven repository is available here: http://repository-rfelden.forge.cloudbees.com/
+
+###Installation
+- Install the plugin through the Update Center (of SonarQube) or download it into the SONARQUBE_HOME/extensions/plugins directory
+- Restart the SonarQube server.
 
 ###Build Status
 [![Build Status](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/badge/icon)](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/)
