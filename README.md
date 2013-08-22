@@ -29,6 +29,8 @@ In the worst case, the Maven repository is available here: http://repository-rfe
 - Install the plugin through the Update Center (of SonarQube) or download it into the SONARQUBE_HOME/extensions/plugins directory
 - Restart the SonarQube server.
 
+If you need more help, go to the [installation guide](http://github.com/octo-technology/sonar-objective-c/wiki/Plugin-Install) in the Wiki.
+
 ###Build Status
 [![Build Status](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/badge/icon)](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/)
 
