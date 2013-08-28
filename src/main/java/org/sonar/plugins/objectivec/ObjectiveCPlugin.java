@@ -21,8 +21,10 @@ package org.sonar.plugins.objectivec;
 
 import java.util.List;
 
-import org.sonar.api.SonarPlugin;
 import org.sonar.api.Extension;
+import org.sonar.api.Properties;
+import org.sonar.api.Property;
+import org.sonar.api.SonarPlugin;
 import org.sonar.plugins.objectivec.colorizer.ObjectiveCColorizerFormat;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
 import org.sonar.plugins.objectivec.core.ObjectiveCSourceImporter;
@@ -30,31 +32,34 @@ import org.sonar.plugins.objectivec.cpd.ObjectiveCCpdMapping;
 
 import com.google.common.collect.ImmutableList;
 
+@Properties({
+        @Property(key = ObjectiveCCoverageSensor.REPORT_PATTERN_KEY, defaultValue = ObjectiveCCoverageSensor.DEFAULT_REPORT_PATTERN, name = "Path to unit test coverage report(s)", description = "Relative to projects' root. Ant patterns are accepted", global = false, project = true),
+        @Property(key = OCLintSensor.REPORT_PATH_KEY, defaultValue = OCLintSensor.DEFAULT_REPORT_PATH, name = "Path to oclint pmd formatted report", description = "Relative to projects' root.", global = false, project = true), })
 public class ObjectiveCPlugin extends SonarPlugin {
 
     public List<Class<? extends Extension>> getExtensions() {
-        return ImmutableList.of(
-                ObjectiveC.class,
+        return ImmutableList.of(ObjectiveC.class,
                 ObjectiveCSourceImporter.class,
-                ObjectiveCColorizerFormat.class,
-                ObjectiveCCpdMapping.class,
+                ObjectiveCColorizerFormat.class, ObjectiveCCpdMapping.class,
 
-                ObjectiveCSquidSensor.class,
-                ObjectiveCProfile.class
-//                ObjectiveCRuleRepository.class,
-//                ObjectiveCProfile.class,
-//
-//                OCTestDriverSurefireSensor.class,
-//                OCTestDriverCoverageSensor.class,
-//
-//                OCTestMavenInitializer.class,
-//                OCTestMavenPluginHandler.class,
-//                OCTestCoverageSensor.class,
-//                OCTestSurefireSensor.class
+                ObjectiveCSquidSensor.class, ObjectiveCProfile.class,
+                ObjectiveCCoverageSensor.class, OCLintRuleRepository.class,
+                OCLintSensor.class, OCLintProfile.class,
+                OCLintProfileImporter.class
+        // ObjectiveCRuleRepository.class,
+        // ObjectiveCProfile.class,
+        //
+        // OCTestDriverSurefireSensor.class,
+        // OCTestDriverCoverageSensor.class,
+        //
+        // OCTestMavenInitializer.class,
+        // OCTestMavenPluginHandler.class,
+        // OCTestCoverageSensor.class,
+        // OCTestSurefireSensor.class
                 );
     }
 
-    //Global Objective C constants
+    // Global Objective C constants
     public static final String FALSE = "false";
 
     public static final String FILE_SUFFIXES_KEY = "sonar.objectivec.file.suffixes";
@@ -62,7 +67,8 @@ public class ObjectiveCPlugin extends SonarPlugin {
 
     public static final String PROPERTY_PREFIX = "sonar.objectivec";
 
-    public static final String TEST_FRAMEWORK_KEY = PROPERTY_PREFIX + ".testframework";
+    public static final String TEST_FRAMEWORK_KEY = PROPERTY_PREFIX
+            + ".testframework";
     public static final String TEST_FRAMEWORK_DEFAULT = "ghunit";
 
 }

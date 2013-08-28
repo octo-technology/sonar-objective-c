@@ -1,0 +1,527 @@
+Available issues:
+
+OCLint
+======
+
+avoid branching statement as last in loop
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+bitwise operator in conditional
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+broken null check
+----------
+
+Summary:
+
+Priority: 1
+Severity: 1
+Category: OCLint
+
+broken nil check
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+broken oddness check
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+collapsible if statements
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+constant conditional operator
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+constant if expression
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+high cyclomatic complexity
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+dead code
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+default label not last in switch statement
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+double negative
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+empty catch statement
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+empty do/while statement
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+empty else block
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+empty finally statement
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+empty for statement
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+empty if statement
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+empty switch statement
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+empty try statement
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+empty while statement
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+for loop should be while loop
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+goto statement
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+inverted logic
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+jumbled incrementer
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+long class
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+long line
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+long method
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+long variable name
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+misplaced null check
+----------
+
+Summary:
+
+Priority: 1
+Severity: 1
+Category: OCLint
+
+misplaced nil check
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+missing break in switch statement
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+multiple unary operator
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+high ncss method
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+deep nested block
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+non case label in switch statement
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+high npath complexity
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+replace with boxed expression
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+replace with container literal
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+replace with number literal
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+replace with object subscripting
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+parameter reassignment
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+redundant conditional operator
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+redundant if statement
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+redundant local variable
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+redundant nil check
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+return from finally block
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+short variable name
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+switch statements should have default
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+throw exception from finally block
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+too few branches in switch statement
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+too many fields
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+too many methods
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+too many parameters
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+unnecessary else statement
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+unused local variable
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+unused method parameter
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+useless parentheses
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
