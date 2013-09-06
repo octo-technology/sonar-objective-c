@@ -33,7 +33,6 @@ import org.sonar.plugins.objectivec.cpd.ObjectiveCCpdMapping;
 import com.google.common.collect.ImmutableList;
 
 @Properties({
-        @Property(key = ObjectiveCCoverageSensor.REPORT_PATTERN_KEY, defaultValue = ObjectiveCCoverageSensor.DEFAULT_REPORT_PATTERN, name = "Path to unit test coverage report(s)", description = "Relative to projects' root. Ant patterns are accepted", global = false, project = true),
         @Property(key = OCLintSensor.REPORT_PATH_KEY, defaultValue = OCLintSensor.DEFAULT_REPORT_PATH, name = "Path to oclint pmd formatted report", description = "Relative to projects' root.", global = false, project = true), })
 public class ObjectiveCPlugin extends SonarPlugin {
 
@@ -43,7 +42,7 @@ public class ObjectiveCPlugin extends SonarPlugin {
                 ObjectiveCColorizerFormat.class, ObjectiveCCpdMapping.class,
 
                 ObjectiveCSquidSensor.class, ObjectiveCProfile.class,
-                ObjectiveCCoverageSensor.class, OCLintRuleRepository.class,
+                OCLintRuleRepository.class,
                 OCLintSensor.class, OCLintProfile.class,
                 OCLintProfileImporter.class
         // ObjectiveCRuleRepository.class,

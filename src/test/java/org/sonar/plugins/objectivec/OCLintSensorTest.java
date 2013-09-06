@@ -32,7 +32,7 @@ public final class OCLintSensorTest {
 	@Test
 	public void shouldExecuteOnProjectShouldBeTrueWhenProjectIsObjc() {
 		final Project project = new Project("Test");
-		final ObjectiveCCoverageSensor testedSensor = new ObjectiveCCoverageSensor();
+		final OCLintSensor testedSensor = new OCLintSensor();
 		final PropertiesConfiguration config = new PropertiesConfiguration();
 		config.addProperty("sonar.language", ObjectiveC.KEY);
 		project.setConfiguration(config);
@@ -43,7 +43,7 @@ public final class OCLintSensorTest {
 	@Test
 	public void shouldExecuteOnProjectShouldBeFalseWhenProjectIsSomethingElse() {
 		final Project project = new Project("Test");
-		final ObjectiveCCoverageSensor testedSensor = new ObjectiveCCoverageSensor();
+		final OCLintSensor testedSensor = new OCLintSensor();
 		final PropertiesConfiguration config = new PropertiesConfiguration();
 		config.addProperty("sonar.language", "Test");
 		project.setConfiguration(config);
