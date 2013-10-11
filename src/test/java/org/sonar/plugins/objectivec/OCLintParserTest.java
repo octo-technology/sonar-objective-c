@@ -1,4 +1,4 @@
-w/*
+/*
  * Sonar Objective-C Plugin
  * Copyright (C) 2012 OCTO Technology
  * dev@sonar.codehaus.org
