@@ -10,7 +10,7 @@
   
   <groupId>org.codehaus.sonar-plugin.objectivec</groupId>
   <artifactId>sonar-objective-c-plugin</artifactId>
-  <version>0.5.0-SNAPSHOT</version>
+  <version>0.1.0-SNAPSHOT</version>
   
   <packaging>sonar-plugin</packaging>
   
@@ -33,14 +33,18 @@
 
   <developers>
     <developer>
-      <id>fhelg</id>
-      <name>François Helg</name>
+      <id>cyrilpicat</id>
+      <name>Cyril Picat</name>
       <organization>OCTO Technology</organization>
-      <url>https://github.com/fhelg</url>
     </developer>
     <developer>
-      <id>cpicat</id>
-      <name>Cyril Picat</name>
+      <id>dbregeon</id>
+      <name>Denis Bregeon</name>
+      <organization>Incept5 LLC</organization>
+    </developer>
+    <developer>
+      <id>rfelden</id>
+      <name>Romain Felden</name>
       <organization>OCTO Technology</organization>
     </developer>
     <developer>
@@ -49,9 +53,10 @@
       <url>https://github.com/metebalci</url>
     </developer>
     <developer>
-      <id>dbregeon</id>
-      <name>Denis Bregeon</name>
-      <organization>Incept5 LLC</organization>
+      <id>fhelg</id>
+      <name>François Helg</name>
+      <organization>OCTO Technology</organization>
+      <url>https://github.com/fhelg</url>
     </developer>
   </developers>
 
@@ -67,7 +72,7 @@
   </ciManagement>
  
   <properties>
-    <license.owner>François Helg, Cyril Picat and OCTO Technology</license.owner>
+    <license.owner>OCTO Technology</license.owner>
     <license.title>Sonar Objective-C Plugin</license.title>
 
     <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
