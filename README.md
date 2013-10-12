@@ -55,6 +55,10 @@ In the worst case, the Maven repository is available here: http://repository-rfe
 * **François Helg**
 * **Mete Balci**
 
+###History
+- v0.2 (2013/10): added OCLint checks as Sonar violations
+- v0.0.1 (2012/09): v0 with basic metrics such as nb lines of code, nb lines of comment, nb of files, duplications
+
 ###License
 
 Sonar Plugin for Objective C is released under the GNU LGPL 3 license:  
