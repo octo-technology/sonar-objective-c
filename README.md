@@ -1,7 +1,7 @@
 Sonar Plugin for Objective C
 ============================
 
-This repository hosts the Objective-C plugin for [SonarQube](http://www.sonarqube.org/). The plugin is in active development and has been bootstrapped with the help of the Sonar team. If you wish to contribute, check the [Contributing wiki page](https://github.com/octo-technology/sonar-objective-c/wiki/Contributing).
+This repository hosts the Objective-C plugin for [SonarQube](http://www.sonarqube.org/). The plugin is in active development and has been bootstrapped with the help of the Sonar team. If you wish to contribute, check the [Contributing](https://github.com/octo-technology/sonar-objective-c/wiki/Contributing) wiki page.
 
 ###Features
 
@@ -31,11 +31,11 @@ In the worst case, the Maven repository is available here: http://repository-rfe
 - a Mac with Xcode
 - [SonarQube](http://docs.codehaus.org/display/SONAR/Setup+and+Upgrade) and [SonarQube Runner](http://docs.codehaus.org/display/SONAR/Installing+and+Configuring+SonarQube+Runner) installed
 - [HomeBrew](http://brew.sh) installed
-- [xctool](https://github.com/facebook/xctool) installed, for example by using: ```brew install xctool```
+- [xctool](https://github.com/facebook/xctool) (```brew install xctool```)
 - [OCLint](http://docs.oclint.org/en/dev/intro/installation.html) installed. In my case the 0.7 version is failing on my project, so I recommend installing the 0.8.dev version (at least it works with oclint-0.8.dev.2888e0f). 
 
 ###Installation (once for all your Objective-C projects)
-- Install the plugin through the Update Center (of SonarQube) or download it into the $SONARQUBE_HOME/extensions/plugins directory
+- Install [the plugin](http://repository-rfelden.forge.cloudbees.com/release/org/codehaus/sonar-plugin/objectivec/sonar-objective-c-plugin/0.0.1/sonar-objective-c-plugin-0.0.1.jar) through the Update Center (of SonarQube) or download it into the $SONARQUBE_HOME/extensions/plugins directory
 - Restart the SonarQube server.
 
 ###Configuration (once per project)
@@ -44,8 +44,6 @@ In the worst case, the Maven repository is available here: http://repository-rfe
 - Copy *run-sonar.sh* in your Xcode project root folder
 - Edit the *.sh* file to match your Xcode project
 
-### 
-If you need more help, go to the [installation guide](http://github.com/octo-technology/sonar-objective-c/wiki/Plugin-Install) in the Wiki.
 
 ###Build Status
 [![Build Status](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/badge/icon)](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/)
