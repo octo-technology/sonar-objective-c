@@ -39,9 +39,9 @@ In the worst case, the Maven repository is available here: http://repository-rfe
 - Restart the SonarQube server.
 
 ###Configuration (once per project)
-- Copy [sonar-project.properties](https://github.com/octo-technology/sonar-objective-c/blob/master/sample/sonar-project.properties) in your Xcode project root folder (along your .xcodeproj file)
+- Copy [sonar-project.properties](https://rawgithub.com/octo-technology/sonar-objective-c/master/sample/sonar-project.properties) in your Xcode project root folder (along your .xcodeproj file)
 - Edit the *sonar-project.properties* file to match your Sonar installation
-- Copy [run-sonar.sh](https://github.com/octo-technology/sonar-objective-c/blob/master/script/run-sonar.sh) in your Xcode project root folder
+- Copy [run-sonar.sh](https://rawgithub.com/octo-technology/sonar-objective-c/master/script/run-sonar.sh) in your Xcode project root folder
 - Edit the *run-sonar.sh* file to match your Xcode project
 
 
