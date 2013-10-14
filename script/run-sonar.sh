@@ -12,26 +12,35 @@ projectFile='myApplication.xcodeproj'
 # The name of your application scheme in Xcode
 scheme='myApplication'
 
+# The name of your test scheme in Xcode
+testScheme='myApplicationTests'
+
 ## END OF PARAMETERS
 
-
 ## SCRIPT
-echo 'Creating compiler commands and flags for use by OCLint...'
-set -x #echo on
-xctool -project $projectFile -scheme $scheme clean
-xctool -project $projectFile -scheme $scheme -reporter json-compilation-database:compile_commands.json build
-set +x #echo off
 
-if [ ! -d "oclint" ]; then
-  mkdir oclint
+if [ ! -d "sonar-reports" ]; then
+  mkdir sonar-reports
 fi
 
-# Run OCLint with the right set of compiler options
+# Unit tests 
+echo 'Running tests using xctool...'
+set -x #echo on
+xctool -project $projectFile -scheme $testScheme -sdk iphonesimulator -reporter junit test > sonar-reports/TEST-report.xml
+set +x #echo off
+
+# OCLint
 echo 'Running OCLint...'
-set -x
-oclint-json-compilation-database -- -report-type pmd -o oclint/oclint.xml
+set -x #echo on
+# Creating compiler commands and flags for use by OCLint
+xctool -project $projectFile -scheme $scheme clean
+xctool -project $projectFile -scheme $scheme -reporter json-compilation-database:compile_commands.json build
+
+# Run OCLint with the right set of compiler options
+oclint-json-compilation-database -- -report-type pmd -o sonar-reports/oclint.xml
 set +x
 
+# SonarQube
 echo 'Running SonarQube using SonarQube Runner...'
 set -x
 sonar-runner
