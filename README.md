@@ -15,9 +15,6 @@ This repository hosts the Objective-C plugin for [SonarQube](http://www.sonarqub
 
 For more details, see the list of [Sonar metrics](https://github.com/octo-technology/sonar-objective-c/wiki/Features) implemented or pending.
 
-###Getting Started
-Have a look at the [sample project](https://github.com/octo-technology/sample-sonar-objective-c), it explains how to setup and analyze an Objective-C project.
-
 ###Download
 
 The latest release is the 0.2.0, and it's available [here](http://repository-rfelden.forge.cloudbees.com/release/org/codehaus/sonar-plugin/objectivec/sonar-objective-c-plugin/0.2.0/sonar-objective-c-plugin-0.2.0.jar).
@@ -44,14 +41,17 @@ In the worst case, the Maven repository is available here: http://repository-rfe
 - Copy [run-sonar.sh](https://rawgithub.com/octo-technology/sonar-objective-c/master/script/run-sonar.sh) in your Xcode project root folder
 - Edit the *run-sonar.sh* file to match your Xcode project
 
+###Analysis
+- Run the script ```run-sonar.sh``` in your Xcode project root folder
+- Enjoy or file an issue!
 
 ###Build Status
 [![Build Status](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/badge/icon)](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/)
 
 ###Credits
 * **Cyril Picat**
-* **Romain Felden**
 * **Denis Bregeon**
+* **Romain Felden**
 * **François Helg**
 * **Mete Balci**
 
