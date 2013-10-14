@@ -70,7 +70,7 @@ public class SurefireSensor implements Sensor {
 
   @Override
   public String toString() {
-    return "ObjectiveC SurefireSensor";
+    return "Objective-C SurefireSensor";
   }
 
 }
