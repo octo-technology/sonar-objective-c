@@ -31,6 +31,10 @@ import org.sonar.plugins.objectivec.core.ObjectiveCSourceImporter;
 import org.sonar.plugins.objectivec.cpd.ObjectiveCCpdMapping;
 
 import com.google.common.collect.ImmutableList;
+import org.sonar.plugins.objectivec.violations.OCLintProfile;
+import org.sonar.plugins.objectivec.violations.OCLintProfileImporter;
+import org.sonar.plugins.objectivec.violations.OCLintRuleRepository;
+import org.sonar.plugins.objectivec.violations.OCLintSensor;
 
 @Properties({
         @Property(key = OCLintSensor.REPORT_PATH_KEY, defaultValue = OCLintSensor.DEFAULT_REPORT_PATH, name = "Path to oclint pmd formatted report", description = "Relative to projects' root.", global = false, project = true), })
