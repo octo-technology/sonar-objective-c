@@ -31,6 +31,7 @@ import org.sonar.plugins.objectivec.core.ObjectiveCSourceImporter;
 import org.sonar.plugins.objectivec.cpd.ObjectiveCCpdMapping;
 
 import com.google.common.collect.ImmutableList;
+import org.sonar.plugins.objectivec.tests.SurefireSensor;
 import org.sonar.plugins.objectivec.violations.OCLintProfile;
 import org.sonar.plugins.objectivec.violations.OCLintProfileImporter;
 import org.sonar.plugins.objectivec.violations.OCLintRuleRepository;
@@ -46,6 +47,7 @@ public class ObjectiveCPlugin extends SonarPlugin {
                 ObjectiveCColorizerFormat.class, ObjectiveCCpdMapping.class,
 
                 ObjectiveCSquidSensor.class, ObjectiveCProfile.class,
+                SurefireSensor.class,
                 OCLintRuleRepository.class,
                 OCLintSensor.class, OCLintProfile.class,
                 OCLintProfileImporter.class

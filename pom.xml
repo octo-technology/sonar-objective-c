@@ -10,7 +10,7 @@
   
   <groupId>org.codehaus.sonar-plugin.objectivec</groupId>
   <artifactId>sonar-objective-c-plugin</artifactId>
-  <version>0.2.0</version>
+  <version>0.3.0-SNAPSHOT</version>
   
   <packaging>sonar-plugin</packaging>
   
@@ -154,6 +154,12 @@
         <artifactId>logback-classic</artifactId>
         <version>0.9.15</version>
       </dependency>
+      <dependency>
+        <groupId>org.codehaus.sonar.plugins</groupId>
+        <artifactId>sonar-surefire-plugin</artifactId>
+        <version>2.7</version>
+      </dependency>
+
   </dependencies>
 
 </project>

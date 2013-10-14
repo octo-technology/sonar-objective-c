@@ -1,0 +1,17 @@
+#!/bin/sh
+# Build and install snapshot plugin in Sonar
+
+# Build first and check status
+mvn clean install
+if [ "$?" != 0 ]; then
+	echo "Build failed!" 1>&2
+	exit $?
+fi
+
+# Deploy new verion of plugin in Sonar dir
+cp target/sonar-objective-c-plugin-0.3.0-SNAPSHOT.jar $SONARQUBE_HOME/extensions/plugins
+
+# Stop/start Sonar
+$SONARQUBE_HOME/bin/macosx-universal-64/sonar.sh stop
+$SONARQUBE_HOME/bin/macosx-universal-64/sonar.sh start
+
