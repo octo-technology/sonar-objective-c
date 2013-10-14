@@ -17,7 +17,7 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.objectivec;
+package org.sonar.plugins.objectivec.violations;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -39,7 +39,7 @@ import org.sonar.api.resources.Resource;
 import org.sonar.api.rules.Violation;
 
 public class OCLintParserTest {
-	private final String VALID_REPORT = "<pmd version=\"oclint-0.8dev\"><file name=\"/dummy/TEST_FILE\"><violation beginline=\"19\" endline=\"19\" begincolumn=\"13\" endcolumn=\"20\" rule=\"UselessOperationOnImmutable\" ruleset=\"Basic Rules\" package=\"org.sprunck.bee\" class=\"Bee\" method=\"toString\" externalInfoUrl=\"http://pmd.sourceforge.net/rules/basic.html#UselessOperationOnImmutable\" priority=\"3\">An operation on an Immutable object (String, BigDecimal or BigInteger) won't change the object itself</violation></file></pmd>";
+	private final String VALID_REPORT = "<pmd version=\"violations-0.8dev\"><file name=\"/dummy/TEST_FILE\"><violation beginline=\"19\" endline=\"19\" begincolumn=\"13\" endcolumn=\"20\" rule=\"UselessOperationOnImmutable\" ruleset=\"Basic Rules\" package=\"org.sprunck.bee\" class=\"Bee\" method=\"toString\" externalInfoUrl=\"http://pmd.sourceforge.net/rules/basic.html#UselessOperationOnImmutable\" priority=\"3\">An operation on an Immutable object (String, BigDecimal or BigInteger) won't change the object itself</violation></file></pmd>";
 
 	@Test
 	public void parseReportShouldReturnAnEmptyCollectionWhenTheReportIsInvalid() {

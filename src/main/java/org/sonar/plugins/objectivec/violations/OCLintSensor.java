@@ -17,7 +17,7 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.objectivec;
+package org.sonar.plugins.objectivec.violations;
 
 import java.io.File;
 import java.util.Collection;
@@ -28,12 +28,13 @@ import org.sonar.api.batch.SensorContext;
 import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;
 import org.sonar.api.rules.Violation;
+import org.sonar.plugins.objectivec.ObjectiveCPlugin;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
 
 public final class OCLintSensor implements Sensor {
     public static final String REPORT_PATH_KEY = ObjectiveCPlugin.PROPERTY_PREFIX
             + ".oclint.report";
-    public static final String DEFAULT_REPORT_PATH = "oclint/oclint.xml";
+    public static final String DEFAULT_REPORT_PATH = "sonar-reports/oclint.xml";
     private final Settings conf;
 
     public OCLintSensor() {
