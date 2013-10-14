@@ -20,7 +20,7 @@ Have a look at the [sample project](https://github.com/octo-technology/sample-so
 
 ###Download
 
-The latest release is the 0.0.1, and it's available [here](http://repository-rfelden.forge.cloudbees.com/release/org/codehaus/sonar-plugin/objectivec/sonar-objective-c-plugin/0.0.1/sonar-objective-c-plugin-0.0.1.jar).
+The latest release is the 0.2.0, and it's available [here](http://repository-rfelden.forge.cloudbees.com/release/org/codehaus/sonar-plugin/objectivec/sonar-objective-c-plugin/0.2.0/sonar-objective-c-plugin-0.2.0.jar).
 
 You can also download the latest build of the plugin from [Cloudbees](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/lastSuccessfulBuild/artifact/target/).
 
@@ -35,7 +35,7 @@ In the worst case, the Maven repository is available here: http://repository-rfe
 - [OCLint](http://docs.oclint.org/en/dev/intro/installation.html) installed. In my case the 0.7 version is failing on my project, so I recommend installing the 0.8.dev version (at least it works with oclint-0.8.dev.2888e0f). 
 
 ###Installation (once for all your Objective-C projects)
-- Install [the plugin](http://repository-rfelden.forge.cloudbees.com/release/org/codehaus/sonar-plugin/objectivec/sonar-objective-c-plugin/0.0.1/sonar-objective-c-plugin-0.0.1.jar) through the Update Center (of SonarQube) or download it into the $SONARQUBE_HOME/extensions/plugins directory
+- Install [the plugin](http://repository-rfelden.forge.cloudbees.com/release/org/codehaus/sonar-plugin/objectivec/sonar-objective-c-plugin/0.2.0/sonar-objective-c-plugin-0.2.0.jar) through the Update Center (of SonarQube) or download it into the $SONARQUBE_HOME/extensions/plugins directory
 - Restart the SonarQube server.
 
 ###Configuration (once per project)
