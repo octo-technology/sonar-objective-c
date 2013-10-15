@@ -1,7 +1,9 @@
 Sonar Plugin for Objective C
 ============================
 
-This repository hosts the Objective-C plugin for [SonarQube](http://www.sonarqube.org/). The plugin is in active development and has been bootstrapped with the help of the Sonar team. If you wish to contribute, check the [Contributing](https://github.com/octo-technology/sonar-objective-c/wiki/Contributing) wiki page.
+This repository hosts the Objective-C plugin for [SonarQube](http://www.sonarqube.org/). This plugin enables to analyze and track the quality of iOS (iPhone, iPad) and MacOS developments.
+
+The plugin is in active development and has been bootstrapped with the help of the Sonar team. If you wish to contribute, check the [Contributing](https://github.com/octo-technology/sonar-objective-c/wiki/Contributing) wiki page.
 
 ###Features
 
@@ -11,7 +13,7 @@ This repository hosts the Objective-C plugin for [SonarQube](http://www.sonarqub
 - [x] Duplications
 - [x] Issues
 - [x] Size
-- [ ] Tests
+- [x] Tests
 
 For more details, see the list of [Sonar metrics](https://github.com/octo-technology/sonar-objective-c/wiki/Features) implemented or pending.
 
