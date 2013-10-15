@@ -17,7 +17,7 @@ For more details, see the list of [Sonar metrics](https://github.com/octo-techno
 
 ###Download
 
-The latest release is the 0.2.0, and it's available [here](http://repository-rfelden.forge.cloudbees.com/release/org/codehaus/sonar-plugin/objectivec/sonar-objective-c-plugin/0.2.0/sonar-objective-c-plugin-0.2.0.jar).
+The latest release is the 0.3.0, and it's available [here](http://repository-rfelden.forge.cloudbees.com/release/org/codehaus/sonar-plugin/objectivec/sonar-objective-c-plugin/0.3.0/sonar-objective-c-plugin-0.3.0.jar).
 
 You can also download the latest build of the plugin from [Cloudbees](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/lastSuccessfulBuild/artifact/target/).
 
@@ -25,21 +25,22 @@ In the worst case, the Maven repository is available here: http://repository-rfe
 
 ###Pre-requisites
 
-- a Mac with Xcode
+- a Mac with Xcode...
 - [SonarQube](http://docs.codehaus.org/display/SONAR/Setup+and+Upgrade) and [SonarQube Runner](http://docs.codehaus.org/display/SONAR/Installing+and+Configuring+SonarQube+Runner) installed
-- [HomeBrew](http://brew.sh) installed
-- [xctool](https://github.com/facebook/xctool) (```brew install xctool```)
+- [xctool](https://github.com/facebook/xctool) ([HomeBrew](http://brew.sh) installed and ```brew install xctool```)
 - [OCLint](http://docs.oclint.org/en/dev/intro/installation.html) installed. In my case the 0.7 version is failing on my project, so I recommend installing the 0.8.dev version (at least it works with oclint-0.8.dev.2888e0f). 
+- [gcovr](http://gcovr.com) installed
 
 ###Installation (once for all your Objective-C projects)
-- Install [the plugin](http://repository-rfelden.forge.cloudbees.com/release/org/codehaus/sonar-plugin/objectivec/sonar-objective-c-plugin/0.2.0/sonar-objective-c-plugin-0.2.0.jar) through the Update Center (of SonarQube) or download it into the $SONARQUBE_HOME/extensions/plugins directory
+- Install [the plugin](http://repository-rfelden.forge.cloudbees.com/release/org/codehaus/sonar-plugin/objectivec/sonar-objective-c-plugin/0.3.0/sonar-objective-c-plugin-0.3.0.jar) through the Update Center (of SonarQube) or download it into the $SONARQUBE_HOME/extensions/plugins directory
 - Restart the SonarQube server.
 
 ###Configuration (once per project)
 - Copy [sonar-project.properties](https://rawgithub.com/octo-technology/sonar-objective-c/master/sample/sonar-project.properties) in your Xcode project root folder (along your .xcodeproj file)
-- Edit the *sonar-project.properties* file to match your Sonar installation
-- Copy [run-sonar.sh](https://rawgithub.com/octo-technology/sonar-objective-c/master/script/run-sonar.sh) in your Xcode project root folder
-- Edit the *run-sonar.sh* file to match your Xcode project
+- Edit the *sonar-project.properties* file to match your Xcode iOS/MacOS project
+- Copy [run-sonar.sh](https://rawgithub.com/octo-technology/sonar-objective-c/master/script/run-sonar.sh) in your Xcode project root folder and make it executable
+
+**The good news is that you don't have to modify your Xcode project to enable Sonar!**. Ok, there might be one needed modification if you don't have a specific scheme for your test target, but that's all.
 
 ###Analysis
 - Run the script ```run-sonar.sh``` in your Xcode project root folder
@@ -56,6 +57,7 @@ In the worst case, the Maven repository is available here: http://repository-rfe
 * **Mete Balci**
 
 ###History
+- v0.3 (2013/10): added support for OCUnit tests and test coverage
 - v0.2 (2013/10): added OCLint checks as Sonar violations
 - v0.0.1 (2012/09): v0 with basic metrics such as nb lines of code, nb lines of comment, nb of files, duplications
 
