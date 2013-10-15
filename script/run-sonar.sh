@@ -111,56 +111,67 @@ if [[ $returnValue != 0 ]] ; then
 fi
 
 # Unit tests and coverage
-echo -n 'Running tests using xctool'
-if [ "$vflag" = "on" ]; then
-	echo
-	set -x #echo on
-	xctool -project $projectFile -scheme $testScheme -sdk iphonesimulator -reporter junit GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES test > sonar-reports/TEST-report.xml
-	returnValue=$?
-	set +x #echo off
-else 
-	xctool -project $projectFile -scheme $testScheme -sdk iphonesimulator -reporter junit GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES test > sonar-reports/TEST-report.xml
-	returnValue=$?
-	echo
-fi
-if [[ $returnValue != 0 ]] ; then
-	stopProgress
-    exit $returnValue
-fi
-
-echo -n 'Computing coverage report'
-# Extract the path to the .gcno/.gcda coverage files
-coverageFilesPath=$(grep 'command' compile_commands.json | sed 's#^.*-o \\/#\/#;s#",##' | awk 'NR<2' | xargs dirname)
-if [ "$vflag" = "on" ]; then
-	echo
-	echo "Path for .gcno/.gcda coverage files is: $coverageFilesPath"
-fi
-
-# Build the --exclude flags
-excludedCommandLineFlags=""
-echo $excludedPathsFromCoverage | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh
-while read word; do
-	excludedCommandLineFlags+=" --exclude $word"
-done < tmpFileRunSonarSh
-rm -rf tmpFileRunSonarSh
-if [ "$vflag" = "on" ]; then
-	echo "Command line exclusion flags for gcovr is: $excludedCommandLineFlags"
-fi
-
-if [ "$vflag" = "on" ]; then
-	set -x #echo on
-	gcovr -r . $coverageFilesPath $excludedCommandLineFlags --xml > sonar-reports/coverage.xml
-	returnValue=$?
-	set +x #echo off
+if [ "$testScheme" = "" ]; then
+	echo 'Skipping tests as no test scheme has been provided!'
+	
+	# Put default xml files with no tests and no coverage...
+	echo '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><testsuites name="AllTestUnits"></testsuites>' > sonar-reports/TEST-report.xml
+	echo "<?xml version='1.0' ?><!DOCTYPE coverage SYSTEM 'http://cobertura.sourceforge.net/xml/coverage-03.dtd'><coverage><sources></sources><packages></packages></coverage>" > sonar-reports/coverage.xml
 else
-	gcovr -r . $coverageFilesPath $excludedCommandLineFlags --xml > sonar-reports/coverage.xml
-	returnValue=$?
-	echo
+
+	echo -n 'Running tests using xctool'
+	if [ "$vflag" = "on" ]; then
+		echo
+		set -x #echo on
+		xctool -project $projectFile -scheme $testScheme -sdk iphonesimulator -reporter junit GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES test > sonar-reports/TEST-report.xml
+		returnValue=$?
+		set +x #echo off
+	else 
+		xctool -project $projectFile -scheme $testScheme -sdk iphonesimulator -reporter junit GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES test > sonar-reports/TEST-report.xml
+		returnValue=$?
+		echo
+	fi
+	if [[ $returnValue != 0 ]] ; then
+		stopProgress
+		exit $returnValue
+	fi
+
+	echo -n 'Computing coverage report'
+	# Extract the path to the .gcno/.gcda coverage files
+	coverageFilesPath=$(grep 'command' compile_commands.json | sed 's#^.*-o \\/#\/#;s#",##' | awk 'NR<2' | xargs dirname)
+	if [ "$vflag" = "on" ]; then
+		echo
+		echo "Path for .gcno/.gcda coverage files is: $coverageFilesPath"
+	fi
+
+	# Build the --exclude flags
+	excludedCommandLineFlags=""
+	echo $excludedPathsFromCoverage | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh
+	while read word; do
+		excludedCommandLineFlags+=" --exclude $word"
+	done < tmpFileRunSonarSh
+	rm -rf tmpFileRunSonarSh
+	if [ "$vflag" = "on" ]; then
+		echo "Command line exclusion flags for gcovr is: $excludedCommandLineFlags"
+	fi
+
+	if [ "$vflag" = "on" ]; then
+		set -x #echo on
+		gcovr -r . $coverageFilesPath $excludedCommandLineFlags --xml > sonar-reports/coverage.xml
+		returnValue=$?
+		set +x #echo off
+	else
+		gcovr -r . $coverageFilesPath $excludedCommandLineFlags --xml > sonar-reports/coverage.xml
+		returnValue=$?
+		echo
+	fi
+	if [[ $returnValue != 0 ]] ; then
+		stopProgress
+		exit $returnValue
+	fi
+	
 fi
-if [[ $returnValue != 0 ]] ; then
-	stopProgress
-    exit $returnValue
-fi
+
 
 if [ "$oclint" = "on" ]; then
 
