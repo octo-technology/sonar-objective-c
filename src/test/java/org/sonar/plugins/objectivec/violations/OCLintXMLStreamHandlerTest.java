@@ -17,7 +17,7 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.objectivec;
+package org.sonar.plugins.objectivec.violations;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -42,11 +42,11 @@ import org.sonar.api.rules.Violation;
 import org.sonar.api.utils.StaxParser;
 
 public class OCLintXMLStreamHandlerTest {
-	private static final String EMPTY_REPORT = "<pmd version=\"oclint-0.8dev\"></pmd>";
+	private static final String EMPTY_REPORT = "<pmd version=\"violations-0.8dev\"></pmd>";
 	private static final String DESCRIPTION = "TEST DESCRIPTION";
 	private static final Integer VIOLATION_LINE = Integer.valueOf(99);
 	private static final String RULE_KEY = "TEST RULE";
-	private static final String VALID_REPORT = "<pmd version=\"oclint-0.8dev\"><file name=\"dummy/test\"><violation beginline=\"" + VIOLATION_LINE + "\" endline=\"19\" begincolumn=\"13\" endcolumn=\"20\" rule=\"" + RULE_KEY + "\" ruleset=\"Basic Rules\" package=\"org.sprunck.bee\" class=\"Bee\" method=\"toString\" externalInfoUrl=\"http://pmd.sourceforge.net/rules/basic.html#UselessOperationOnImmutable\" priority=\"3\">" + DESCRIPTION +  "</violation></file></pmd>";
+	private static final String VALID_REPORT = "<pmd version=\"violations-0.8dev\"><file name=\"dummy/test\"><violation beginline=\"" + VIOLATION_LINE + "\" endline=\"19\" begincolumn=\"13\" endcolumn=\"20\" rule=\"" + RULE_KEY + "\" ruleset=\"Basic Rules\" package=\"org.sprunck.bee\" class=\"Bee\" method=\"toString\" externalInfoUrl=\"http://pmd.sourceforge.net/rules/basic.html#UselessOperationOnImmutable\" priority=\"3\">" + DESCRIPTION +  "</violation></file></pmd>";
 	private ProjectBuilder projectBuilder;
 
 	@Test

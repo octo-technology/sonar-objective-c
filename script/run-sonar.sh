@@ -1,38 +1,219 @@
-#!/bin/sh
+#!/bin/bash
 ## INSTALLATION: script to copy in your Xcode project in the same directory as the .xcodeproj file
-## WARNING: edit the parameters section first
 ## USAGE: ./run-sonar.sh
+## DEBUG: ./run-sonar.sh -v
+## WARNING: edit your project parameters in sonar-project.properties rather than modifying this script
 #
 
-## PARAMETERS
+trap "echo 'Script interrupted by Ctrl+C'; stopProgress; exit -1" SIGHUP SIGINT SIGTERM
+
+function startProgress(){
+	while true
+	do
+    	echo -n "."
+	    sleep 5
+	done
+}
+
+function stopProgress(){
+	if [ "$vflag" = "" ]; then
+		kill $PROGRESS_PID &>/dev/null
+	fi
+}
+
+## COMMAND LINE OPTIONS
+vflag=""
+oclint="on"
+while [ $# -gt 0 ]
+do
+    case "$1" in
+    -v)	vflag=on;;
+	-nooclint) oclint="";;	    
+	--)	shift; break;;
+	-*)
+                echo >&2 \
+		"usage: $0 [-v]"
+		exit 1;;
+	*)	break;;		# terminate while loop
+    esac
+    shift
+done
+
+## READ PARAMETERS from sonar-project.properties
 
 # Your .xcodeproj filename
-projectFile='myApplication.xcodeproj'
+projectFile=`sed '/^\#/d' sonar-project.properties | grep 'sonar.objectivec.projectFile' | tail -n 1 | cut -d "=" -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'`
+returnValue=$?
 
 # The name of your application scheme in Xcode
-scheme='myApplication'
+appScheme=`sed '/^\#/d' sonar-project.properties | grep 'sonar.objectivec.appScheme' | tail -n 1 | cut -d "=" -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'`
+returnValue=$?
 
-## END OF PARAMETERS
+# The name of your test scheme in Xcode
+testScheme=`sed '/^\#/d' sonar-project.properties | grep 'sonar.objectivec.testScheme' | tail -n 1 | cut -d "=" -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'`
+returnValue=$?
 
+# The file patterns to exclude from coverage report
+excludedPathsFromCoverage=`sed '/^\#/d' sonar-project.properties | grep 'sonar.objectivec.excludedPathsFromCoverage' | tail -n 1 | cut -d "=" -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'`
+returnValue=$?
 
-## SCRIPT
-echo 'Creating compiler commands and flags for use by OCLint...'
-set -x #echo on
-xctool -project $projectFile -scheme $scheme clean
-xctool -project $projectFile -scheme $scheme -reporter json-compilation-database:compile_commands.json build
-set +x #echo off
-
-if [ ! -d "oclint" ]; then
-  mkdir oclint
+if [ "$vflag" = "on" ]; then
+ 	echo "Xcode project file is: $projectFile"
+ 	echo "Xcode application scheme is: $appScheme"
+ 	echo "Xcode test scheme is: $testScheme"
+ 	echo "Excluded paths from coverage are: $excludedPathsFromCoverage" 	
 fi
 
-# Run OCLint with the right set of compiler options
-echo 'Running OCLint...'
-set -x
-oclint-json-compilation-database -- -report-type pmd -o oclint/oclint.xml
-set +x
+if [[ $returnValue != 0 ]] ; then
+    exit $returnValue
+fi
 
-echo 'Running SonarQube using SonarQube Runner...'
-set -x
-sonar-runner
-set +x
+## SCRIPT
+
+# Start progress indicator in the background
+if [ "$vflag" = "" ]; then
+	startProgress &
+	# Save PID
+	PROGRESS_PID=$!
+fi
+
+# Create sonar-reports/ for reports output
+if [ ! -d "sonar-reports" ]; then
+	if [ "$vflag" = "on" ]; then
+		echo 'Creating directory sonar-reports/'
+	fi
+	mkdir sonar-reports
+	if [[ $? != 0 ]] ; then
+		stopProgress
+    	exit $?
+	fi
+fi
+
+# Extracting project information needed later
+echo -n 'Extracting Xcode project information'
+if [ "$vflag" = "on" ]; then
+	echo
+	set -x #echo on
+	# Creating compiler commands and flags for use by OCLint
+	xctool -project $projectFile -scheme $appScheme -sdk iphonesimulator clean
+	xctool -project $projectFile -scheme $appScheme -sdk iphonesimulator -reporter json-compilation-database:compile_commands.json build
+	returnValue=$?
+	set +x #echo off
+else 
+	xctool -project $projectFile -scheme $appScheme -sdk iphonesimulator clean > /dev/null
+	xctool -project $projectFile -scheme $appScheme -sdk iphonesimulator -reporter json-compilation-database:compile_commands.json build > /dev/null
+	returnValue=$?
+	echo
+fi
+if [[ $returnValue != 0 ]] ; then
+	stopProgress
+    exit $returnValue
+fi
+
+# Unit tests and coverage
+if [ "$testScheme" = "" ]; then
+	echo 'Skipping tests as no test scheme has been provided!'
+	
+	# Put default xml files with no tests and no coverage...
+	echo '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><testsuites name="AllTestUnits"></testsuites>' > sonar-reports/TEST-report.xml
+	echo "<?xml version='1.0' ?><!DOCTYPE coverage SYSTEM 'http://cobertura.sourceforge.net/xml/coverage-03.dtd'><coverage><sources></sources><packages></packages></coverage>" > sonar-reports/coverage.xml
+else
+
+	echo -n 'Running tests using xctool'
+	if [ "$vflag" = "on" ]; then
+		echo
+		set -x #echo on
+		xctool -project $projectFile -scheme $testScheme -sdk iphonesimulator -reporter junit GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES test > sonar-reports/TEST-report.xml
+		returnValue=$?
+		set +x #echo off
+	else 
+		xctool -project $projectFile -scheme $testScheme -sdk iphonesimulator -reporter junit GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES test > sonar-reports/TEST-report.xml
+		returnValue=$?
+		echo
+	fi
+	if [[ $returnValue != 0 ]] ; then
+		stopProgress
+		exit $returnValue
+	fi
+
+	echo -n 'Computing coverage report'
+	# Extract the path to the .gcno/.gcda coverage files
+	coverageFilesPath=$(grep 'command' compile_commands.json | sed 's#^.*-o \\/#\/#;s#",##' | awk 'NR<2' | xargs dirname)
+	if [ "$vflag" = "on" ]; then
+		echo
+		echo "Path for .gcno/.gcda coverage files is: $coverageFilesPath"
+	fi
+
+	# Build the --exclude flags
+	excludedCommandLineFlags=""
+	echo $excludedPathsFromCoverage | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh
+	while read word; do
+		excludedCommandLineFlags+=" --exclude $word"
+	done < tmpFileRunSonarSh
+	rm -rf tmpFileRunSonarSh
+	if [ "$vflag" = "on" ]; then
+		echo "Command line exclusion flags for gcovr is: $excludedCommandLineFlags"
+	fi
+
+	if [ "$vflag" = "on" ]; then
+		set -x #echo on
+		gcovr -r . $coverageFilesPath $excludedCommandLineFlags --xml > sonar-reports/coverage.xml
+		returnValue=$?
+		set +x #echo off
+	else
+		gcovr -r . $coverageFilesPath $excludedCommandLineFlags --xml > sonar-reports/coverage.xml
+		returnValue=$?
+		echo
+	fi
+	if [[ $returnValue != 0 ]] ; then
+		stopProgress
+		exit $returnValue
+	fi
+	
+fi
+
+
+if [ "$oclint" = "on" ]; then
+
+	# OCLint
+	echo -n 'Running OCLint...'
+	# Run OCLint with the right set of compiler options
+	if [ "$vflag" = "on" ]; then
+		echo
+		set -x #echo on
+		oclint-json-compilation-database -- -report-type pmd -o sonar-reports/oclint.xml
+		returnValue=$?
+		set +x #echo off
+	else
+		oclint-json-compilation-database -- -report-type pmd -o sonar-reports/oclint.xml
+		returnValue=$?
+		echo
+	fi
+	# Exit code 5 for max of violations exceeded
+	if [[ ( $returnValue != 0 ) && ( $returnValue != 5 ) ]] ; then
+		stopProgress
+	    exit $returnValue
+	fi
+else
+	echo 'Skipping OCLint (test purposes only!)'
+fi
+
+# SonarQube
+echo -n 'Running SonarQube using SonarQube Runner'
+if [ "$vflag" = "on" ]; then
+	echo
+	set -x #echo on
+	sonar-runner
+	returnValue=$?
+	set +x #echo off
+else
+	sonar-runner > /dev/null
+	echo
+fi
+
+# Kill progress indicator
+stopProgress
+
+if [[ $returnValue != 0 ]] ; then
+    exit $returnValue
+fi

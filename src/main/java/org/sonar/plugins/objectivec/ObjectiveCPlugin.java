@@ -25,15 +25,23 @@ import org.sonar.api.Extension;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.api.SonarPlugin;
+import org.sonar.plugins.objectivec.coverage.CoberturaSensor;
 import org.sonar.plugins.objectivec.colorizer.ObjectiveCColorizerFormat;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
 import org.sonar.plugins.objectivec.core.ObjectiveCSourceImporter;
 import org.sonar.plugins.objectivec.cpd.ObjectiveCCpdMapping;
 
 import com.google.common.collect.ImmutableList;
+import org.sonar.plugins.objectivec.tests.SurefireSensor;
+import org.sonar.plugins.objectivec.violations.OCLintProfile;
+import org.sonar.plugins.objectivec.violations.OCLintProfileImporter;
+import org.sonar.plugins.objectivec.violations.OCLintRuleRepository;
+import org.sonar.plugins.objectivec.violations.OCLintSensor;
 
 @Properties({
-        @Property(key = OCLintSensor.REPORT_PATH_KEY, defaultValue = OCLintSensor.DEFAULT_REPORT_PATH, name = "Path to oclint pmd formatted report", description = "Relative to projects' root.", global = false, project = true), })
+        @Property(key = CoberturaSensor.REPORT_PATTERN_KEY, defaultValue = CoberturaSensor.DEFAULT_REPORT_PATTERN, name = "Path to unit test coverage report(s)", description = "Relative to projects' root. Ant patterns are accepted", global = false, project = true),
+        @Property(key = OCLintSensor.REPORT_PATH_KEY, defaultValue = OCLintSensor.DEFAULT_REPORT_PATH, name = "Path to oclint pmd formatted report", description = "Relative to projects' root.", global = false, project = true)
+})
 public class ObjectiveCPlugin extends SonarPlugin {
 
     public List<Class<? extends Extension>> getExtensions() {
@@ -42,6 +50,8 @@ public class ObjectiveCPlugin extends SonarPlugin {
                 ObjectiveCColorizerFormat.class, ObjectiveCCpdMapping.class,
 
                 ObjectiveCSquidSensor.class, ObjectiveCProfile.class,
+                SurefireSensor.class,
+                CoberturaSensor.class,
                 OCLintRuleRepository.class,
                 OCLintSensor.class, OCLintProfile.class,
                 OCLintProfileImporter.class

@@ -17,64 +17,73 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.objectivec;
+package org.sonar.plugins.objectivec.coverage;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.apache.tools.ant.filters.StringInputStream;
 import org.junit.Test;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.measures.CoverageMeasuresBuilder;
+import org.sonar.api.measures.Measure;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.resources.Resource;
-import org.sonar.api.rules.Violation;
 
-public class OCLintParserTest {
-	private final String VALID_REPORT = "<pmd version=\"oclint-0.8dev\"><file name=\"/dummy/TEST_FILE\"><violation beginline=\"19\" endline=\"19\" begincolumn=\"13\" endcolumn=\"20\" rule=\"UselessOperationOnImmutable\" ruleset=\"Basic Rules\" package=\"org.sprunck.bee\" class=\"Bee\" method=\"toString\" externalInfoUrl=\"http://pmd.sourceforge.net/rules/basic.html#UselessOperationOnImmutable\" priority=\"3\">An operation on an Immutable object (String, BigDecimal or BigInteger) won't change the object itself</violation></file></pmd>";
+public final class CoberturaMeasuresPersistorTest {
 
 	@Test
-	public void parseReportShouldReturnAnEmptyCollectionWhenTheReportIsInvalid() {
-		final OCLintParser testedParser = new OCLintParser(null, null);
-		final Collection<Violation> violations = testedParser.parseReport(new StringInputStream(""));
+	public void shouldNotPersistMeasuresForUnknownFiles() {
+		final Project project = new Project("Test");
+		final SensorContext context = mock(SensorContext.class);
+		final Map<String, CoverageMeasuresBuilder> measures = new HashMap<String, CoverageMeasuresBuilder>();
+		measures.put("DummyResource", CoverageMeasuresBuilder.create());
 
-		assertTrue(violations.isEmpty());
+		project.setFileSystem(mock(ProjectFileSystem.class));
+
+		final CoverageMeasuresPersistor testedPersistor = new CoverageMeasuresPersistor(project, context);
+		testedPersistor.saveMeasures(measures);
+
+		verify(context, never()).saveMeasure(any(Resource.class), any(Measure.class));
 	}
 
 	@Test
-	public void parseReportShouldReturnAnEmptyMapWhenTheFileIsInvalid() {
-		final OCLintParser testedParser = new OCLintParser(null, null);
-		final Collection<Violation> violations = testedParser.parseReport(new File(""));
-
-		assertTrue(violations.isEmpty());
-	}
-
-	@Test
-	public void parseReportShouldReturnACollectionOfViolationsWhenTheReportIsNotEmpty() {
+	public void shouldPersistMeasuresForKnownFiles() {
 		final Project project = new Project("Test");
 		final org.sonar.api.resources.File dummyFile = new org.sonar.api.resources.File("dummy/test");
 		final SensorContext context = mock(SensorContext.class);
 		final ProjectFileSystem fileSystem = mock(ProjectFileSystem.class);
 		final List<File> sourceDirs = new ArrayList<File>();
-
-		final OCLintParser testedParser = new OCLintParser(project, context);
+		final Map<String, CoverageMeasuresBuilder> measures = new HashMap<String, CoverageMeasuresBuilder>();
+		final CoverageMeasuresBuilder measureBuilder = CoverageMeasuresBuilder.create();
 
 		sourceDirs.add(new File("/dummy"));
+		measures.put("/dummy/test", measureBuilder);
+		measureBuilder.setHits(99, 99);
+		measureBuilder.setConditions(99, 99, 1);
+
 		when(fileSystem.getSourceDirs()).thenReturn(sourceDirs);
 		when(context.getResource(any(Resource.class))).thenReturn(dummyFile);
+
 		project.setFileSystem(fileSystem);
 
-		final Collection<Violation> violations = testedParser.parseReport(new StringInputStream(VALID_REPORT));
-		assertFalse(violations.isEmpty());
-	}
+		final CoverageMeasuresPersistor testedPersistor = new CoverageMeasuresPersistor(project, context);
+		testedPersistor.saveMeasures(measures);
 
+		for (final Measure measure : measureBuilder.createMeasures()) {
+			verify(context, times(1)).saveMeasure(eq(new org.sonar.api.resources.File("test")), eq(measure));
+		}
+	}
 
 }
