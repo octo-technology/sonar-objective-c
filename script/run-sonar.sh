@@ -1,11 +1,25 @@
-#!/bin/sh
+#!/bin/bash
 ## INSTALLATION: script to copy in your Xcode project in the same directory as the .xcodeproj file
 ## USAGE: ./run-sonar.sh
 ## DEBUG: ./run-sonar.sh -v
 ## WARNING: edit your project parameters in sonar-project.properties rather than modifying this script
 #
 
-trap "echo 'Script interrupted by Ctrl+C'; exit -1" SIGHUP SIGINT SIGTERM
+trap "echo 'Script interrupted by Ctrl+C'; stopProgress; exit -1" SIGHUP SIGINT SIGTERM
+
+function startProgress(){
+	while true
+	do
+    	echo -n "."
+	    sleep 5
+	done
+}
+
+function stopProgress(){
+	if [ "$vflag" = "" ]; then
+		kill $PROGRESS_PID &>/dev/null
+	fi
+}
 
 ## COMMAND LINE OPTIONS
 vflag=""
@@ -56,6 +70,13 @@ fi
 
 ## SCRIPT
 
+# Start progress indicator in the background
+if [ "$vflag" = "" ]; then
+	startProgress &
+	# Save PID
+	PROGRESS_PID=$!
+fi
+
 # Create sonar-reports/ for reports output
 if [ ! -d "sonar-reports" ]; then
 	if [ "$vflag" = "on" ]; then
@@ -63,13 +84,15 @@ if [ ! -d "sonar-reports" ]; then
 	fi
 	mkdir sonar-reports
 	if [[ $? != 0 ]] ; then
+		stopProgress
     	exit $?
 	fi
 fi
 
 # Extracting project information needed later
-echo 'Extracting Xcode project information...'
+echo -n 'Extracting Xcode project information'
 if [ "$vflag" = "on" ]; then
+	echo
 	set -x #echo on
 	# Creating compiler commands and flags for use by OCLint
 	xctool -project $projectFile -scheme $appScheme -sdk iphonesimulator clean
@@ -80,15 +103,17 @@ else
 	xctool -project $projectFile -scheme $appScheme -sdk iphonesimulator clean > /dev/null
 	xctool -project $projectFile -scheme $appScheme -sdk iphonesimulator -reporter json-compilation-database:compile_commands.json build > /dev/null
 	returnValue=$?
+	echo
 fi
 if [[ $returnValue != 0 ]] ; then
+	stopProgress
     exit $returnValue
 fi
 
-
 # Unit tests and coverage
-echo 'Running tests using xctool...'
+echo -n 'Running tests using xctool'
 if [ "$vflag" = "on" ]; then
+	echo
 	set -x #echo on
 	xctool -project $projectFile -scheme $testScheme -sdk iphonesimulator -reporter junit GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES test > sonar-reports/TEST-report.xml
 	returnValue=$?
@@ -96,15 +121,18 @@ if [ "$vflag" = "on" ]; then
 else 
 	xctool -project $projectFile -scheme $testScheme -sdk iphonesimulator -reporter junit GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES test > sonar-reports/TEST-report.xml
 	returnValue=$?
+	echo
 fi
 if [[ $returnValue != 0 ]] ; then
+	stopProgress
     exit $returnValue
 fi
 
-echo 'Computing coverage report...'
+echo -n 'Computing coverage report'
 # Extract the path to the .gcno/.gcda coverage files
 coverageFilesPath=$(grep 'command' compile_commands.json | sed 's#^.*-o \\/#\/#;s#",##' | awk 'NR<2' | xargs dirname)
 if [ "$vflag" = "on" ]; then
+	echo
 	echo "Path for .gcno/.gcda coverage files is: $coverageFilesPath"
 fi
 
@@ -127,17 +155,20 @@ if [ "$vflag" = "on" ]; then
 else
 	gcovr -r . $coverageFilesPath $excludedCommandLineFlags --xml > sonar-reports/coverage.xml
 	returnValue=$?
+	echo
 fi
 if [[ $returnValue != 0 ]] ; then
+	stopProgress
     exit $returnValue
 fi
 
 if [ "$oclint" = "on" ]; then
 
 	# OCLint
-	echo 'Running OCLint...'
+	echo -n 'Running OCLint...'
 	# Run OCLint with the right set of compiler options
 	if [ "$vflag" = "on" ]; then
+		echo
 		set -x #echo on
 		oclint-json-compilation-database -- -report-type pmd -o sonar-reports/oclint.xml
 		returnValue=$?
@@ -145,9 +176,11 @@ if [ "$oclint" = "on" ]; then
 	else
 		oclint-json-compilation-database -- -report-type pmd -o sonar-reports/oclint.xml
 		returnValue=$?
+		echo
 	fi
 	# Exit code 5 for max of violations exceeded
 	if [[ ( $returnValue != 0 ) && ( $returnValue != 5 ) ]] ; then
+		stopProgress
 	    exit $returnValue
 	fi
 else
@@ -155,15 +188,20 @@ else
 fi
 
 # SonarQube
-echo 'Running SonarQube using SonarQube Runner...'
+echo -n 'Running SonarQube using SonarQube Runner'
 if [ "$vflag" = "on" ]; then
+	echo
 	set -x #echo on
 	sonar-runner
 	returnValue=$?
 	set +x #echo off
 else
 	sonar-runner > /dev/null
+	echo
 fi
+
+# Kill progress indicator
+stopProgress
 
 if [[ $returnValue != 0 ]] ; then
     exit $returnValue
