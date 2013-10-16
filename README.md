@@ -24,13 +24,13 @@ For more details, see the list of [Sonar metrics](https://github.com/octo-techno
 
 ###Download
 
-The latest release is the 0.3.0, and it's available [here](http://repository-rfelden.forge.cloudbees.com/release/org/codehaus/sonar-plugin/objectivec/sonar-objective-c-plugin/0.3.0/sonar-objective-c-plugin-0.3.0.jar).
+The latest release is the 0.3.0, and it's available [here](http://bit.ly/19R2J5X).
 
 You can also download the latest build of the plugin from [Cloudbees](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/lastSuccessfulBuild/artifact/target/).
 
 In the worst case, the Maven repository is available here: http://repository-rfelden.forge.cloudbees.com/
 
-###Pre-requisites
+###Prerequisites
 
 - a Mac with Xcode...
 - [SonarQube](http://docs.codehaus.org/display/SONAR/Setup+and+Upgrade) and [SonarQube Runner](http://docs.codehaus.org/display/SONAR/Installing+and+Configuring+SonarQube+Runner) installed
@@ -39,7 +39,7 @@ In the worst case, the Maven repository is available here: http://repository-rfe
 - [gcovr](http://gcovr.com) installed
 
 ###Installation (once for all your Objective-C projects)
-- Install [the plugin](http://repository-rfelden.forge.cloudbees.com/release/org/codehaus/sonar-plugin/objectivec/sonar-objective-c-plugin/0.3.0/sonar-objective-c-plugin-0.3.0.jar) through the Update Center (of SonarQube) or download it into the $SONARQUBE_HOME/extensions/plugins directory
+- Install [the plugin](http://bit.ly/19R2J5X) through the Update Center (of SonarQube) or download it into the $SONARQUBE_HOME/extensions/plugins directory
 - Restart the SonarQube server.
 
 ###Configuration (once per project)
