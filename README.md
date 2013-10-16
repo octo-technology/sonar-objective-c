@@ -5,6 +5,11 @@ This repository hosts the Objective-C plugin for [SonarQube](http://www.sonarqub
 
 The plugin is in active development and has been bootstrapped with the help of the Sonar team. If you wish to contribute, check the [Contributing](https://github.com/octo-technology/sonar-objective-c/wiki/Contributing) wiki page.
 
+Find below an example of an iOS SonarQube dashboard:
+<p align="center">
+  <img src="sample/screen%20shot%20SonarQube%20dashboard.png" alt="Example iOS SonarQube dashboard" width="80%"/>
+</p>
+
 ###Features
 
 - [ ] Complexity
