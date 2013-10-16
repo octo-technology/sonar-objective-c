@@ -5,9 +5,9 @@
 ## WARNING: edit your project parameters in sonar-project.properties rather than modifying this script
 #
 
-trap "echo 'Script interrupted by Ctrl+C'; stopProgress; exit -1" SIGHUP SIGINT SIGTERM
+trap "echo 'Script interrupted by Ctrl+C'; stopProgress; exit 1" SIGHUP SIGINT SIGTERM
 
-function startProgress(){
+function startProgress() {
 	while true
 	do
     	echo -n "."
@@ -15,9 +15,17 @@ function startProgress(){
 	done
 }
 
-function stopProgress(){
+function stopProgress() {
 	if [ "$vflag" = "" ]; then
 		kill $PROGRESS_PID &>/dev/null
+	fi
+}
+
+function testIsInstalled() {
+
+	hash $1 2>/dev/null
+	if [ $? -eq 1 ]; then
+		echo >&2 "ERROR - $1 is not installed or not in your PATH"; exit 1;
 	fi
 }
 
@@ -31,17 +39,31 @@ do
 	-nooclint) oclint="";;	    
 	--)	shift; break;;
 	-*)
-                echo >&2 \
-		"usage: $0 [-v]"
+        echo >&2 "Usage: $0 [-v]"
 		exit 1;;
 	*)	break;;		# terminate while loop
     esac
     shift
 done
 
+# Usage OK
+echo "Running run-sonar.sh..."
+
+## CHECK PREREQUISITES
+
+# xctool, gcovr and oclint installed
+testIsInstalled xctool
+testIsInstalled gcovr
+testIsInstalled oclint
+
+# sonar-project.properties in current directory
+if [ ! -f sonar-project.properties ]; then
+	echo >&2 "ERROR - No sonar-project.properties in current directory"; exit 1;
+fi
+
 ## READ PARAMETERS from sonar-project.properties
 
-# Your .xcodeproj filename
+# Your .xcworkspace/.xcodeproj filename
 projectFile=`sed '/^\#/d' sonar-project.properties | grep 'sonar.objectivec.projectFile' | tail -n 1 | cut -d "=" -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'`
 returnValue=$?
 
