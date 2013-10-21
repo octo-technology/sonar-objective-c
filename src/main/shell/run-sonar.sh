@@ -138,6 +138,25 @@ testScheme=`sed '/^\#/d' sonar-project.properties | grep 'sonar.objectivec.testS
 # The file patterns to exclude from coverage report
 excludedPathsFromCoverage=`sed '/^\#/d' sonar-project.properties | grep 'sonar.objectivec.excludedPathsFromCoverage' | tail -n 1 | cut -d "=" -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'`
 
+# Check for mandatory parameters
+if [ -z "$projectFile" -o "$projectFile" = " " ]; then
+
+	if [ ! -z "$workspaceFile" -a "$workspaceFile" != " " ]; then
+		echo >&2 "ERROR - sonar.objectivec.project parameter is missing in sonar-project.properties. You must specify which projects (comma-separated list) are application code within the workspace $workspaceFile."
+	else
+		echo >&2 "ERROR - sonar.objectivec.project parameter is missing in sonar-project.properties (name of your .xcodeproj)"
+	fi
+	exit 1
+fi
+if [ -z "$srcDirs" -o "$srcDirs" = " " ]; then
+	echo >&2 "ERROR - sonar.sources parameter is missing in sonar-project.properties. You must specify which directories contain your .h/.m source files (comma-separated list)."
+	exit 1
+fi
+if [ -z "$appScheme" -o "$appScheme" = " " ]; then
+	echo >&2 "ERROR - sonar.objectivec.appScheme parameter is missing in sonar-project.properties. You must specify which scheme is used to build your application."
+	exit 1
+fi
+
 if [ "$vflag" = "on" ]; then
  	echo "Xcode workspace file is: $workspaceFile"
  	echo "Xcode project file is: $projectFile"
@@ -200,11 +219,13 @@ else
 
 		# Build the --exclude flags
 		excludedCommandLineFlags=""
-		echo $excludedPathsFromCoverage | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh2
-		while read word; do
-			excludedCommandLineFlags+=" --exclude $word"
-		done < tmpFileRunSonarSh2
-		rm -rf tmpFileRunSonarSh2
+		if [ ! -z "$excludedPathsFromCoverage" -a "$excludedPathsFromCoverage" != " " ]; then
+			echo $excludedPathsFromCoverage | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh2
+			while read word; do
+				excludedCommandLineFlags+=" --exclude $word"
+			done < tmpFileRunSonarSh2
+			rm -rf tmpFileRunSonarSh2
+		fi
 		if [ "$vflag" = "on" ]; then
 			echo "Command line exclusion flags for gcovr is:$excludedCommandLineFlags"
 		fi
