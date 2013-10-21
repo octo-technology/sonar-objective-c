@@ -1,17 +1,9 @@
 # 0. Setup default compile_commands.json
-tee compile_commands.json | cat
+tee compile_commands.json | cat > /dev/null
 <<<
 [
   {
-    "command" : "blablabla -o \/Users\/user\/Library\/Developer\/Xcode\/DerivedData\/myApplication-hevorauelspmmeblhdabohacuurg\/Build\/Intermediates\/MyApplication.build\/Debug-iphonesimulator\/MyApplication.build\/Objects-normal\/i386\/myFile.o",
-    "directory" : "titi",
-    "file" : "myFile.m"
-  }
-]
->>>
-[
-  {
-    "command" : "blablabla -o \/Users\/user\/Library\/Developer\/Xcode\/DerivedData\/myApplication-hevorauelspmmeblhdabohacuurg\/Build\/Intermediates\/MyApplication.build\/Debug-iphonesimulator\/MyApplication.build\/Objects-normal\/i386\/myFile.o",
+    "command" : "blablabla -o \/Users\/user\/Library\/Developer\/Xcode\/DerivedData\/myApplication-hevorauelspmmeblhdabohacuurg\/Build\/Intermediates\/Application.build\/Debug-iphonesimulator\/Application.build\/Objects-normal\/i386\/myFile.o",
     "directory" : "titi",
     "file" : "myFile.m"
   }
@@ -40,10 +32,217 @@ Extracting Xcode project information
 Running tests using xctool
 + xctool -project Application.xcodeproj -sdk iphonesimulator -arch i386 ONLY_ACTIVE_ARCH=NO -scheme ApplicationTests -reporter junit GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES test > sonar-reports/TEST-report.xml
 Computing coverage report
-Path for .gcno/.gcda coverage files is: /Users/user/Library/Developer/Xcode/DerivedData/myApplication-hevorauelspmmeblhdabohacuurg/Build/Intermediates/MyApplication.build/Debug-iphonesimulator/MyApplication.build/Objects-normal/i386
-Command line exclusion flags for gcovr is:  --exclude .*Tests.* --exclude .*3rdParty.*
+Path for .gcno/.gcda coverage files is: /Users/user/Library/Developer/Xcode/DerivedData/myApplication-hevorauelspmmeblhdabohacuurg/Build/Intermediates/Application.build/Debug-iphonesimulator/Application.build/Objects-normal/i386
+Command line exclusion flags for gcovr is: --exclude .*Tests.* --exclude .*3rdParty.*
 
-+ gcovr -r . /Users/user/Library/Developer/Xcode/DerivedData/myApplication-hevorauelspmmeblhdabohacuurg/Build/Intermediates/MyApplication.build/Debug-iphonesimulator/MyApplication.build/Objects-normal/i386 --exclude .*Tests.* --exclude .*3rdParty.* --xml > sonar-reports/coverage.xml
++ gcovr -r . /Users/user/Library/Developer/Xcode/DerivedData/myApplication-hevorauelspmmeblhdabohacuurg/Build/Intermediates/Application.build/Debug-iphonesimulator/Application.build/Objects-normal/i386 --exclude .*Tests.* --exclude .*3rdParty.* --xml > sonar-reports/coverage-Application.xml
+Running OCLint...
+Path included in oclint analysis is: --include .*/shell/src.*
++ oclint-json-compilation-database --include .*/shell/src.* -- -report-type pmd -o sonar-reports/oclint.xml > /dev/stdout
+Running SonarQube using SonarQube Runner
++ sonar-runner > /dev/null
+>>>= 0
+
+# 2. Testing various spaces in filenames, schemes etc.
+tee sonar-project.properties | cat > /dev/null; $RUNSONAR_HOME/run-sonar.sh -v -n
+<<<
+sonar.sources=src
+sonar.objectivec.project=my Application.xcodeproj 
+sonar.objectivec.appScheme=my Application
+sonar.objectivec.testScheme=Application tests
+sonar.objectivec.excludedPathsFromCoverage=.*Tests.*,.*3rd Party.*
+>>>
+Running run-sonar.sh...
+Xcode workspace file is: 
+Xcode project file is: my Application.xcodeproj
+Xcode application scheme is: my Application
+Xcode test scheme is: Application tests
+Excluded paths from coverage are: .*Tests.*,.*3rd Party.*
+Extracting Xcode project information
++ xctool -project my Application.xcodeproj -sdk iphonesimulator -arch i386 ONLY_ACTIVE_ARCH=NO -scheme my Application clean > /dev/null
+
++ xctool -project my Application.xcodeproj -sdk iphonesimulator -arch i386 ONLY_ACTIVE_ARCH=NO -scheme my Application -reporter json-compilation-database:compile_commands.json build > /dev/stdout
+Running tests using xctool
++ xctool -project my Application.xcodeproj -sdk iphonesimulator -arch i386 ONLY_ACTIVE_ARCH=NO -scheme Application tests -reporter junit GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES test > sonar-reports/TEST-report.xml
+Computing coverage report
+Path for .gcno/.gcda coverage files is: 
+Command line exclusion flags for gcovr is: --exclude .*Tests.* --exclude .*3rd Party.*
+
++ gcovr -r . --exclude .*Tests.* --exclude .*3rd Party.* --xml > sonar-reports/coverage-my Application.xml
+Running OCLint...
+Path included in oclint analysis is: --include .*/shell/src.*
++ oclint-json-compilation-database --include .*/shell/src.* -- -report-type pmd -o sonar-reports/oclint.xml > /dev/stdout
+Running SonarQube using SonarQube Runner
++ sonar-runner > /dev/null
+>>>= 0
+
+# 3. Testing usage of a Xcode workspace
+tee sonar-project.properties | cat > /dev/null; $RUNSONAR_HOME/run-sonar.sh -v -n
+<<<
+sonar.sources=src
+sonar.objectivec.workspace=Application.xcworkspace
+sonar.objectivec.project=Application.xcodeproj 
+sonar.objectivec.appScheme=Application
+sonar.objectivec.testScheme=ApplicationTests
+sonar.objectivec.excludedPathsFromCoverage=.*Tests.*,.*3rdParty.*
+>>>
+Running run-sonar.sh...
+Xcode workspace file is: Application.xcworkspace
+Xcode project file is: Application.xcodeproj
+Xcode application scheme is: Application
+Xcode test scheme is: ApplicationTests
+Excluded paths from coverage are: .*Tests.*,.*3rdParty.*
+Extracting Xcode project information
++ xctool -workspace Application.xcworkspace -sdk iphonesimulator -arch i386 ONLY_ACTIVE_ARCH=NO -scheme Application clean > /dev/null
+
++ xctool -workspace Application.xcworkspace -sdk iphonesimulator -arch i386 ONLY_ACTIVE_ARCH=NO -scheme Application -reporter json-compilation-database:compile_commands.json build > /dev/stdout
+Running tests using xctool
++ xctool -workspace Application.xcworkspace -sdk iphonesimulator -arch i386 ONLY_ACTIVE_ARCH=NO -scheme ApplicationTests -reporter junit GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES test > sonar-reports/TEST-report.xml
+Computing coverage report
+Path for .gcno/.gcda coverage files is: /Users/user/Library/Developer/Xcode/DerivedData/myApplication-hevorauelspmmeblhdabohacuurg/Build/Intermediates/Application.build/Debug-iphonesimulator/Application.build/Objects-normal/i386
+Command line exclusion flags for gcovr is: --exclude .*Tests.* --exclude .*3rdParty.*
+
++ gcovr -r . /Users/user/Library/Developer/Xcode/DerivedData/myApplication-hevorauelspmmeblhdabohacuurg/Build/Intermediates/Application.build/Debug-iphonesimulator/Application.build/Objects-normal/i386 --exclude .*Tests.* --exclude .*3rdParty.* --xml > sonar-reports/coverage-Application.xml
+Running OCLint...
+Path included in oclint analysis is: --include .*/shell/src.*
++ oclint-json-compilation-database --include .*/shell/src.* -- -report-type pmd -o sonar-reports/oclint.xml > /dev/stdout
+Running SonarQube using SonarQube Runner
++ sonar-runner > /dev/null
+>>>= 0
+
+# 4. Testing usage of multiple source directories
+tee sonar-project.properties | cat > /dev/null; $RUNSONAR_HOME/run-sonar.sh -v -n
+<<<
+sonar.sources=src1,src2
+sonar.objectivec.project=Application.xcodeproj 
+sonar.objectivec.appScheme=Application
+sonar.objectivec.testScheme=ApplicationTests
+sonar.objectivec.excludedPathsFromCoverage=.*Tests.*,.*3rdParty.*
+>>>
+Running run-sonar.sh...
+Xcode workspace file is: 
+Xcode project file is: Application.xcodeproj
+Xcode application scheme is: Application
+Xcode test scheme is: ApplicationTests
+Excluded paths from coverage are: .*Tests.*,.*3rdParty.*
+Extracting Xcode project information
++ xctool -project Application.xcodeproj -sdk iphonesimulator -arch i386 ONLY_ACTIVE_ARCH=NO -scheme Application clean > /dev/null
+
++ xctool -project Application.xcodeproj -sdk iphonesimulator -arch i386 ONLY_ACTIVE_ARCH=NO -scheme Application -reporter json-compilation-database:compile_commands.json build > /dev/stdout
+Running tests using xctool
++ xctool -project Application.xcodeproj -sdk iphonesimulator -arch i386 ONLY_ACTIVE_ARCH=NO -scheme ApplicationTests -reporter junit GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES test > sonar-reports/TEST-report.xml
+Computing coverage report
+Path for .gcno/.gcda coverage files is: /Users/user/Library/Developer/Xcode/DerivedData/myApplication-hevorauelspmmeblhdabohacuurg/Build/Intermediates/Application.build/Debug-iphonesimulator/Application.build/Objects-normal/i386
+Command line exclusion flags for gcovr is: --exclude .*Tests.* --exclude .*3rdParty.*
+
++ gcovr -r . /Users/user/Library/Developer/Xcode/DerivedData/myApplication-hevorauelspmmeblhdabohacuurg/Build/Intermediates/Application.build/Debug-iphonesimulator/Application.build/Objects-normal/i386 --exclude .*Tests.* --exclude .*3rdParty.* --xml > sonar-reports/coverage-Application.xml
+Running OCLint...
+Path included in oclint analysis is: --include .*/shell/src1.* --include .*/shell/src2.*
++ oclint-json-compilation-database --include .*/shell/src1.* --include .*/shell/src2.* -- -report-type pmd -o sonar-reports/oclint.xml > /dev/stdout
+Running SonarQube using SonarQube Runner
++ sonar-runner > /dev/null
+>>>= 0
+
+# 5. Setup specific compile_commands.json
+tee compile_commands.json | cat > /dev/null
+<<<
+[
+  {
+    "command" : "blablabla -o \/Users\/user\/Library\/Developer\/Xcode\/DerivedData\/myApplication-hevorauelspmmeblhdabohacuurg\/Build\/Intermediates\/MyDependency.build\/Debug-iphonesimulator\/MyDependency.build\/Objects-normal\/i386\/myFile.o",
+    "directory" : "titi",
+    "file" : "myFile.m"
+  }
+  {
+    "command" : "blablabla -o \/Users\/user\/Library\/Developer\/Xcode\/DerivedData\/myApplication-hevorauelspmmeblhdabohacuurg\/Build\/Intermediates\/Application.build\/Debug-iphonesimulator\/Application.build\/Objects-normal\/i386\/myFile.o",
+    "directory" : "titi",
+    "file" : "myFile.m"
+  }
+]
+>>>= 0
+
+# 6. Testing filtering of external projects in workspace
+tee sonar-project.properties | cat > /dev/null; $RUNSONAR_HOME/run-sonar.sh -v -n
+<<<
+sonar.sources=src
+sonar.objectivec.workspace=Application.xcworkspace 
+sonar.objectivec.project=Application.xcodeproj 
+sonar.objectivec.appScheme=Application
+sonar.objectivec.testScheme=ApplicationTests
+sonar.objectivec.excludedPathsFromCoverage=.*Tests.*,.*3rdParty.*
+>>>
+Running run-sonar.sh...
+Xcode workspace file is: Application.xcworkspace
+Xcode project file is: Application.xcodeproj
+Xcode application scheme is: Application
+Xcode test scheme is: ApplicationTests
+Excluded paths from coverage are: .*Tests.*,.*3rdParty.*
+Extracting Xcode project information
++ xctool -workspace Application.xcworkspace -sdk iphonesimulator -arch i386 ONLY_ACTIVE_ARCH=NO -scheme Application clean > /dev/null
+
++ xctool -workspace Application.xcworkspace -sdk iphonesimulator -arch i386 ONLY_ACTIVE_ARCH=NO -scheme Application -reporter json-compilation-database:compile_commands.json build > /dev/stdout
+Running tests using xctool
++ xctool -workspace Application.xcworkspace -sdk iphonesimulator -arch i386 ONLY_ACTIVE_ARCH=NO -scheme ApplicationTests -reporter junit GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES test > sonar-reports/TEST-report.xml
+Computing coverage report
+Path for .gcno/.gcda coverage files is: /Users/user/Library/Developer/Xcode/DerivedData/myApplication-hevorauelspmmeblhdabohacuurg/Build/Intermediates/Application.build/Debug-iphonesimulator/Application.build/Objects-normal/i386
+Command line exclusion flags for gcovr is: --exclude .*Tests.* --exclude .*3rdParty.*
+
++ gcovr -r . /Users/user/Library/Developer/Xcode/DerivedData/myApplication-hevorauelspmmeblhdabohacuurg/Build/Intermediates/Application.build/Debug-iphonesimulator/Application.build/Objects-normal/i386 --exclude .*Tests.* --exclude .*3rdParty.* --xml > sonar-reports/coverage-Application.xml
+Running OCLint...
+Path included in oclint analysis is: --include .*/shell/src.*
++ oclint-json-compilation-database --include .*/shell/src.* -- -report-type pmd -o sonar-reports/oclint.xml > /dev/stdout
+Running SonarQube using SonarQube Runner
++ sonar-runner > /dev/null
+>>>= 0
+
+# 7. Setup specific compile_commands.json with 2 projects in workspace
+tee compile_commands.json | cat > /dev/null
+<<<
+[
+  {
+    "command" : "blablabla -o \/Users\/user\/Library\/Developer\/Xcode\/DerivedData\/myApplication-hevorauelspmmeblhdabohacuurg\/Build\/Intermediates\/Application1.build\/Debug-iphonesimulator\/Application1.build\/Objects-normal\/i386\/myFile.o",
+    "directory" : "titi",
+    "file" : "myFile.m"
+  }
+  {
+    "command" : "blablabla -o \/Users\/user\/Library\/Developer\/Xcode\/DerivedData\/myApplication-hevorauelspmmeblhdabohacuurg\/Build\/Intermediates\/Application2.build\/Debug-iphonesimulator\/Application2.build\/Objects-normal\/i386\/myFile.o",
+    "directory" : "titi",
+    "file" : "myFile.m"
+  }
+]
+>>>= 0
+
+# 8. Testing filtering of external projects in workspace
+tee sonar-project.properties | cat > /dev/null; $RUNSONAR_HOME/run-sonar.sh -v -n
+<<<
+sonar.sources=src
+sonar.objectivec.workspace=Application.xcworkspace 
+sonar.objectivec.project=Application1.xcodeproj,Application2.xcodeproj 
+sonar.objectivec.appScheme=Application
+sonar.objectivec.testScheme=ApplicationTests
+sonar.objectivec.excludedPathsFromCoverage=.*Tests.*,.*3rdParty.*
+>>>
+Running run-sonar.sh...
+Xcode workspace file is: Application.xcworkspace
+Xcode project file is: Application1.xcodeproj,Application2.xcodeproj
+Xcode application scheme is: Application
+Xcode test scheme is: ApplicationTests
+Excluded paths from coverage are: .*Tests.*,.*3rdParty.*
+Extracting Xcode project information
++ xctool -workspace Application.xcworkspace -sdk iphonesimulator -arch i386 ONLY_ACTIVE_ARCH=NO -scheme Application clean > /dev/null
+
++ xctool -workspace Application.xcworkspace -sdk iphonesimulator -arch i386 ONLY_ACTIVE_ARCH=NO -scheme Application -reporter json-compilation-database:compile_commands.json build > /dev/stdout
+Running tests using xctool
++ xctool -workspace Application.xcworkspace -sdk iphonesimulator -arch i386 ONLY_ACTIVE_ARCH=NO -scheme ApplicationTests -reporter junit GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES test > sonar-reports/TEST-report.xml
+Computing coverage report
+Path for .gcno/.gcda coverage files is: /Users/user/Library/Developer/Xcode/DerivedData/myApplication-hevorauelspmmeblhdabohacuurg/Build/Intermediates/Application1.build/Debug-iphonesimulator/Application1.build/Objects-normal/i386
+Command line exclusion flags for gcovr is: --exclude .*Tests.* --exclude .*3rdParty.*
+
++ gcovr -r . /Users/user/Library/Developer/Xcode/DerivedData/myApplication-hevorauelspmmeblhdabohacuurg/Build/Intermediates/Application1.build/Debug-iphonesimulator/Application1.build/Objects-normal/i386 --exclude .*Tests.* --exclude .*3rdParty.* --xml > sonar-reports/coverage-Application1.xml
+
+Path for .gcno/.gcda coverage files is: /Users/user/Library/Developer/Xcode/DerivedData/myApplication-hevorauelspmmeblhdabohacuurg/Build/Intermediates/Application2.build/Debug-iphonesimulator/Application2.build/Objects-normal/i386
+Command line exclusion flags for gcovr is: --exclude .*Tests.* --exclude .*3rdParty.*
+
++ gcovr -r . /Users/user/Library/Developer/Xcode/DerivedData/myApplication-hevorauelspmmeblhdabohacuurg/Build/Intermediates/Application2.build/Debug-iphonesimulator/Application2.build/Objects-normal/i386 --exclude .*Tests.* --exclude .*3rdParty.* --xml > sonar-reports/coverage-Application2.xml
 Running OCLint...
 Path included in oclint analysis is: --include .*/shell/src.*
 + oclint-json-compilation-database --include .*/shell/src.* -- -report-type pmd -o sonar-reports/oclint.xml > /dev/stdout

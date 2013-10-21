@@ -185,26 +185,35 @@ else
 	runCommand sonar-reports/TEST-report.xml $xctoolCmdPrefix -scheme "$testScheme" -reporter junit GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES test
 
 	echo -n 'Computing coverage report'
-	# Extract the path to the .gcno/.gcda coverage files
-	coverageFilesPath=$(grep 'command' compile_commands.json | sed 's#^.*-o \\/#\/#;s#",##' | grep "${projectFile%%.*}.build" | awk 'NR<2' | xargs dirname)
-	if [ "$vflag" = "on" ]; then
-		echo
-		echo "Path for .gcno/.gcda coverage files is: $coverageFilesPath"
-	fi
 
-	# Build the --exclude flags
-	excludedCommandLineFlags=""
-	echo $excludedPathsFromCoverage | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh
-	while read word; do
-		excludedCommandLineFlags+=" --exclude $word"
+	# We do it for every xcodeproject (in case of workspaces)
+
+	# Extract the path to the .gcno/.gcda coverage files
+	echo $projectFile | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh
+	while read projectName; do
+	
+		coverageFilesPath=$(grep 'command' compile_commands.json | sed 's#^.*-o \\/#\/#;s#",##' | grep "${projectName%%.*}.build" | awk 'NR<2' | xargs dirname)
+		if [ "$vflag" = "on" ]; then
+			echo
+			echo "Path for .gcno/.gcda coverage files is: $coverageFilesPath"
+		fi
+
+		# Build the --exclude flags
+		excludedCommandLineFlags=""
+		echo $excludedPathsFromCoverage | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh2
+		while read word; do
+			excludedCommandLineFlags+=" --exclude $word"
+		done < tmpFileRunSonarSh2
+		rm -rf tmpFileRunSonarSh2
+		if [ "$vflag" = "on" ]; then
+			echo "Command line exclusion flags for gcovr is:$excludedCommandLineFlags"
+		fi
+	
+		# Run gcovr with the right options
+		runCommand "sonar-reports/coverage-${projectName%%.*}.xml" gcovr -r . $coverageFilesPath $excludedCommandLineFlags --xml 
+
 	done < tmpFileRunSonarSh
 	rm -rf tmpFileRunSonarSh
-	if [ "$vflag" = "on" ]; then
-		echo "Command line exclusion flags for gcovr is: $excludedCommandLineFlags"
-	fi
-	
-	# Run gcovr with the right options
-	runCommand sonar-reports/coverage.xml gcovr -r . $coverageFilesPath $excludedCommandLineFlags --xml 
 	
 fi	
 
@@ -218,12 +227,12 @@ if [ "$oclint" = "on" ]; then
 	includedCommandLineFlags=""
 	echo "$srcDirs" | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh
 	while read word; do
-		includedCommandLineFlags+="--include .*/${currentDirectory}/${word}.*"
+		includedCommandLineFlags+=" --include .*/${currentDirectory}/${word}.*"
 	done < tmpFileRunSonarSh
 	rm -rf tmpFileRunSonarSh
 	if [ "$vflag" = "on" ]; then
 		echo
-		echo -n "Path included in oclint analysis is: $includedCommandLineFlags"
+		echo -n "Path included in oclint analysis is:$includedCommandLineFlags"
 	fi
 	
 	# Run OCLint with the right set of compiler options
