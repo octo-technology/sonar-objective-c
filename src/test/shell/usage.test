@@ -4,12 +4,12 @@ $RUNSONAR_HOME/run-sonar.sh -titi
 >>>= !0
 
 # 2. Correct usage
-$RUNSONAR_HOME/run-sonar.sh
+rm -rf sonar-project.properties; $RUNSONAR_HOME/run-sonar.sh
 >>> /Running run-sonar.sh\.\.\./
 >>>= !0
 
 # 3. Correct usage and verbose
-$RUNSONAR_HOME/run-sonar.sh -v
+rm -rf sonar-project.properties; $RUNSONAR_HOME/run-sonar.sh -v
 >>> /Running run-sonar.sh\.\.\./
 >>>= !0
 
