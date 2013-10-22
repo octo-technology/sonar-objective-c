@@ -16,7 +16,7 @@ function startProgress() {
 }
 
 function stopProgress() {
-	if [ "$vflag" = "" ]; then
+	if [ "$vflag" = "" -a "$nflag" = "" ]; then
 		kill $PROGRESS_PID &>/dev/null
 	fi
 }
@@ -50,16 +50,25 @@ function runCommand() {
 
 	command=$1
 	shift
+
+	redirectSuffix=''
+	if [ "$redirect" == "/dev/stdout" ]; then
+		if [ "$vflag" != "on" ]; then
+			redirectSuffix=" > /dev/null"
+		fi
+	elif [ "$redirect" != "no" ]; then
+		redirectSuffix=" > "$redirect
+	fi
 	
 	if [ "$nflag" = "on" ]; then
 		# don't execute command, just echo it
 		echo
-		echo "+" $command "$@" ">" $redirect
+		echo "+" $command "$@" $redirectSuffix
 	elif [ "$vflag" = "on" ]; then
 		echo
 
 		set -x #echo on
-		$command "$@" > $redirect
+		$command "$@" $redirectSuffix
 		returnValue=$?	
 		set +x #echo off			
 		
@@ -70,7 +79,7 @@ function runCommand() {
 		fi
 	else
 	
-		$command "$@" > $redirect
+		$command "$@" $redirectSuffix
 
 		if [[ $? != 0 ]] ; then
 			stopProgress
@@ -168,7 +177,7 @@ fi
 ## SCRIPT
 
 # Start progress indicator in the background
-if [ "$vflag" = "" ]; then
+if [ "$vflag" = "" -a "$nflag" = "" ]; then
 	startProgress &
 	# Save PID
 	PROGRESS_PID=$!
@@ -188,7 +197,7 @@ fi
 
 # Extracting project information needed later
 echo -n 'Extracting Xcode project information'
-runCommand /dev/null $xctoolCmdPrefix -scheme "$appScheme" clean
+runCommand /dev/stdout $xctoolCmdPrefix -scheme "$appScheme" clean
 runCommand /dev/stdout $xctoolCmdPrefix -scheme "$appScheme" -reporter json-compilation-database:compile_commands.json build
 
 # Unit tests and coverage
@@ -257,14 +266,14 @@ if [ "$oclint" = "on" ]; then
 	fi
 	
 	# Run OCLint with the right set of compiler options
-	runCommand /dev/stdout oclint-json-compilation-database $includedCommandLineFlags -- -report-type pmd -o sonar-reports/oclint.xml
+	runCommand no oclint-json-compilation-database $includedCommandLineFlags -- -report-type pmd -o sonar-reports/oclint.xml
 else
 	echo 'Skipping OCLint (test purposes only!)'
 fi
 
 # SonarQube
 echo -n 'Running SonarQube using SonarQube Runner'
-runCommand /dev/null sonar-runner
+runCommand /dev/stdout sonar-runner
 	
 # Kill progress indicator
 stopProgress
