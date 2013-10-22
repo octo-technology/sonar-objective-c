@@ -36,7 +36,7 @@ function readParameter() {
 	parameter=$1
 	shift
 
-	eval $variable="\"`sed '/^\#/d' sonar-project.properties | grep $parameter | tail -n 1 | cut -d '=' -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'`\""
+	eval $variable="\"$(sed '/^\#/d' sonar-project.properties | grep $parameter | tail -n 1 | cut -d '=' -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')\""
 }
 
 # Run a set of commands with logging and error handling
@@ -50,38 +50,58 @@ function runCommand() {
 
 	command=$1
 	shift
-
-	redirectSuffix=''
-	if [ "$redirect" == "/dev/stdout" ]; then
-		if [ "$vflag" != "on" ]; then
-			redirectSuffix=" > /dev/null"
-		fi
-	elif [ "$redirect" != "no" ]; then
-		redirectSuffix=" > "$redirect
-	fi
 	
 	if [ "$nflag" = "on" ]; then
 		# don't execute command, just echo it
 		echo
-		echo "+" $command "$@" $redirectSuffix
+		if [ "$redirect" = "/dev/stdout" ]; then	
+			if [ "$vflag" = "on" ]; then
+				echo "+" $command "$@"
+			else
+				echo "+" $command "$@" "> /dev/null"
+			fi
+		elif [ "$redirect" != "no" ]; then
+			echo "+" $command "$@" "> $redirect"
+		else
+			echo "+" $command "$@"
+		fi
+		
 	elif [ "$vflag" = "on" ]; then
 		echo
 
-		set -x #echo on
-		$command "$@" $redirectSuffix
-		returnValue=$?	
-		set +x #echo off			
+		if [ "$redirect" = "/dev/stdout" ]; then	
+			set -x #echo on
+			$command "$@"
+			returnValue=$?	
+			set +x #echo off			
+		elif [ "$redirect" != "no" ]; then
+			set -x #echo on
+			$command "$@" > $redirect
+			returnValue=$?	
+			set +x #echo off			
+		else
+			set -x #echo on
+			$command "$@"
+			returnValue=$?	
+			set +x #echo off			
+		fi
 		
-		if [[ $returnValue != 0 ]] ; then
+		if [[ $returnValue != 0 && $returnValue != 5 ]] ; then
 			stopProgress
 			echo "ERROR - Command '$command $@' failed with error code: $returnValue"
 			exit $returnValue
 		fi
 	else
 	
-		$command "$@" $redirectSuffix
+		if [ "$redirect" = "/dev/stdout" ]; then	
+			$command "$@" > /dev/null
+		elif [ "$redirect" != "no" ]; then
+			$command "$@" > $redirect
+		else
+			$command "$@"
+		fi
 
-		if [[ $? != 0 ]] ; then
+		if [[ $? != 0 && $? != 5 ]] ; then
 			stopProgress
 			echo "ERROR - Command '$command $@' failed with error code: $returnValue"
 			exit $?
