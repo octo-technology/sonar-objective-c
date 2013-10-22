@@ -132,9 +132,9 @@ fi
 workspaceFile=''; readParameter workspaceFile 'sonar.objectivec.workspace'
 projectFile=''; readParameter projectFile 'sonar.objectivec.project'
 if [[ "$workspaceFile" != "" ]] ; then
-	xctoolCmdPrefix="xctool -workspace $workspaceFile -sdk iphonesimulator -arch i386 ONLY_ACTIVE_ARCH=NO"
+	xctoolCmdPrefix="xctool -workspace $workspaceFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
 else
-	xctoolCmdPrefix="xctool -project $projectFile -sdk iphonesimulator -arch i386 ONLY_ACTIVE_ARCH=NO"
+	xctoolCmdPrefix="xctool -project $projectFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
 fi	
 
 # Source directories for .h/.m files
