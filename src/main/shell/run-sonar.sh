@@ -29,12 +29,14 @@ function testIsInstalled() {
 	fi
 }
 
-function runCommand2() {
-	command=$1
+function readParameter() {
+	
+	variable=$1
 	shift
-	set -x
-	$command "$@"
-	set +x
+	parameter=$1
+	shift
+
+	eval $variable="\"`sed '/^\#/d' sonar-project.properties | grep $parameter | tail -n 1 | cut -d '=' -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'`\""
 }
 
 # Run a set of commands with logging and error handling
@@ -118,25 +120,23 @@ fi
 ## READ PARAMETERS from sonar-project.properties
 
 # Your .xcworkspace/.xcodeproj filename
-workspaceFile=`sed '/^\#/d' sonar-project.properties | grep 'sonar.objectivec.workspace' | tail -n 1 | cut -d "=" -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'`
-projectFile=`sed '/^\#/d' sonar-project.properties | grep 'sonar.objectivec.project' | tail -n 1 | cut -d "=" -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'`
-
+workspaceFile=''; readParameter workspaceFile 'sonar.objectivec.workspace'
+projectFile=''; readParameter projectFile 'sonar.objectivec.project'
 if [[ "$workspaceFile" != "" ]] ; then
 	xctoolCmdPrefix="xctool -workspace $workspaceFile -sdk iphonesimulator -arch i386 ONLY_ACTIVE_ARCH=NO"
 else
 	xctoolCmdPrefix="xctool -project $projectFile -sdk iphonesimulator -arch i386 ONLY_ACTIVE_ARCH=NO"
 fi	
 
-srcDirs=`sed '/^\#/d' sonar-project.properties | grep 'sonar.sources' | tail -n 1 | cut -d "=" -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'`
-
+# Source directories for .h/.m files
+srcDirs=''; readParameter srcDirs 'sonar.sources'
 # The name of your application scheme in Xcode
-appScheme=`sed '/^\#/d' sonar-project.properties | grep 'sonar.objectivec.appScheme' | tail -n 1 | cut -d "=" -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'`
+appScheme=''; readParameter appScheme 'sonar.objectivec.appScheme'
 
 # The name of your test scheme in Xcode
-testScheme=`sed '/^\#/d' sonar-project.properties | grep 'sonar.objectivec.testScheme' | tail -n 1 | cut -d "=" -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'`
-
+testScheme=''; readParameter testScheme 'sonar.objectivec.testScheme'
 # The file patterns to exclude from coverage report
-excludedPathsFromCoverage=`sed '/^\#/d' sonar-project.properties | grep 'sonar.objectivec.excludedPathsFromCoverage' | tail -n 1 | cut -d "=" -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'`
+excludedPathsFromCoverage=''; readParameter excludedPathsFromCoverage 'sonar.objectivec.excludedPathsFromCoverage'
 
 # Check for mandatory parameters
 if [ -z "$projectFile" -o "$projectFile" = " " ]; then
