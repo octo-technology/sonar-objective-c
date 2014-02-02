@@ -49,8 +49,9 @@ final class CoverageMeasuresPersistor {
             final CoverageMeasuresBuilder measureBuilder, final String filePath) {
         LoggerFactory.getLogger(getClass()).debug("Saving measures for {}",
                 filePath);
+        String absFilePath = new File(filePath).getAbsolutePath();
         final org.sonar.api.resources.File objcfile = org.sonar.api.resources.File
-                .fromIOFile(new File(filePath), project);
+                .fromIOFile(new File(absFilePath), project);
         if (fileExists(context, objcfile)) {
             LoggerFactory.getLogger(getClass()).debug(
                     "File {} was found in the project.", filePath);
@@ -69,6 +70,9 @@ final class CoverageMeasuresPersistor {
 
     private boolean fileExists(final SensorContext context,
             final org.sonar.api.resources.File file) {
+        //It's not immediately clear why, but the file is never indexed in the context automatically.
+        //There's some debate about whether this behavior is changing in version 4.2, see SONAR-5006
+        context.index(file);
         return context.getResource(file) != null;
     }
 }
