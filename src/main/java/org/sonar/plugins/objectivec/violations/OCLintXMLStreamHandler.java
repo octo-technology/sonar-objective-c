@@ -104,6 +104,9 @@ final class OCLintXMLStreamHandler implements XmlStreamHandler {
     }
 
     private boolean fileExists(final org.sonar.api.resources.File file) {
+        //It's not immediately clear why, but the file is never indexed in the context automatically.
+        //There's some debate about whether this behavior is changing in version 4.2, see SONAR-5006
+        context.index(file);
         return context.getResource(file) != null;
     }
 
