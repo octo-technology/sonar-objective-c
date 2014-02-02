@@ -49,8 +49,22 @@ public class SurefireSensor implements Sensor {
   }
 
   public void analyse(Project project, SensorContext context) {
-    File dir = SurefireUtils.getReportsDirectory(project);
-    collect(project, context, dir);
+    /* Formerly we used SurefireUtils.getReportsDirectory(project). It seems that is this one:
+    http://grepcode.com/file/repo1.maven.org/maven2/org.codehaus.sonar.plugins/sonar-surefire-plugin/3.3.2/org/sonar/plugins/surefire/api/SurefireUtils.java?av=f#34
+    However it turns out that the Java plugin contains its own version of SurefireUtils
+    that is very different (and does not contain a matching method).
+    That seems to be this one: http://svn.codehaus.org/sonar-plugins/tags/sonar-groovy-plugin-0.5/src/main/java/org/sonar/plugins/groovy/surefire/SurefireSensor.java
+    
+    The result is as follows:
+
+    1.  At runtime getReportsDirectory(project) fails if you have the Java plugin installed
+    2.  At build time the new getReportsDirectory(project,settings) because I guess something in the build chain doesn't know about the Java plugin version
+
+    So the implementation here reaches into the project properties and pulls the path out by itself.*/
+
+    String path = (String) project.getProperty("sonar.junit.reportsPath");
+    File pathFile = new File(path);
+    collect(project, context, new File(path));
   }
 
   protected void collect(Project project, SensorContext context, File reportsDir) {
