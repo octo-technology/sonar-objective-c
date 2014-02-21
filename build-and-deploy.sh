@@ -16,7 +16,7 @@ if [ "$?" != 0 ]; then
 fi
 
 # Deploy new verion of plugin in Sonar dir
-cp target/sonar-objective-c-plugin-0.3.1.jar $SONARQUBE_HOME/extensions/plugins
+cp target/sonar-objective-c-plugin-0.3.2-SNAPSHOT.jar $SONARQUBE_HOME/extensions/plugins
 
 # Stop/start Sonar
 $SONARQUBE_HOME/bin/macosx-universal-64/sonar.sh stop

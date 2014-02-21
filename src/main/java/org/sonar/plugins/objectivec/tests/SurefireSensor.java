@@ -26,18 +26,29 @@ import org.sonar.api.batch.CoverageExtension;
 import org.sonar.api.batch.DependsUpon;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Qualifiers;
 import org.sonar.api.resources.Resource;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
 import org.sonar.plugins.surefire.api.AbstractSurefireParser;
-import org.sonar.plugins.surefire.api.SurefireUtils;
 
 import java.io.File;
 
 public class SurefireSensor implements Sensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(SurefireSensor.class);
+  public static final String REPORT_PATH_KEY = "sonar.junit.reportsPath";
+  public static final String DEFAULT_REPORT_PATH = "sonar-reports/";
+  private final Settings conf;
+
+  public SurefireSensor() {
+    this(null);
+  }
+
+  public SurefireSensor(final Settings config) {
+    conf = config;
+  }
 
   @DependsUpon
   public Class<?> dependsUponCoverageSensors() {
@@ -49,8 +60,24 @@ public class SurefireSensor implements Sensor {
   }
 
   public void analyse(Project project, SensorContext context) {
-    File dir = SurefireUtils.getReportsDirectory(project);
-    collect(project, context, dir);
+
+    /*
+        GitHub Issue #50
+        Formerly we used SurefireUtils.getReportsDirectory(project). It seems that is this one:
+        http://grepcode.com/file/repo1.maven.org/maven2/org.codehaus.sonar.plugins/sonar-surefire-plugin/3.3.2/org/sonar/plugins/surefire/api/SurefireUtils.java?av=f#34
+        However it turns out that the Java plugin contains its own version of SurefireUtils
+        that is very different (and does not contain a matching method).
+        That seems to be this one: http://svn.codehaus.org/sonar-plugins/tags/sonar-groovy-plugin-0.5/src/main/java/org/sonar/plugins/groovy/surefire/SurefireSensor.java
+
+        The result is as follows:
+
+        1.  At runtime getReportsDirectory(project) fails if you have the Java plugin installed
+        2.  At build time the new getReportsDirectory(project,settings) because I guess something in the build chain doesn't know about the Java plugin version
+
+        So the implementation here reaches into the project properties and pulls the path out by itself.
+     */
+
+    collect(project, context, new File(reportPath()));
   }
 
   protected void collect(Project project, SensorContext context, File reportsDir) {
@@ -71,6 +98,14 @@ public class SurefireSensor implements Sensor {
   @Override
   public String toString() {
     return "Objective-C SurefireSensor";
+  }
+
+  private String reportPath() {
+     String reportPath = conf.getString(REPORT_PATH_KEY);
+     if (reportPath == null) {
+         reportPath = DEFAULT_REPORT_PATH;
+      }
+     return reportPath;
   }
 
 }
