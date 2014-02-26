@@ -240,7 +240,7 @@ else
 	echo $projectFile | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh
 	while read projectName; do
 	
-		coverageFilesPath=$(grep 'command' compile_commands.json | sed 's#^.*-o \\/#\/#;s#",##' | grep "${projectName%%.*}.build" | awk 'NR<2' | xargs dirname)
+		coverageFilesPath=$(grep 'command' compile_commands.json | sed 's#^.*-o \\/#\/#;s#",##' | grep "${projectName%%.*}.build" | awk 'NR<2' | sed 's/\\\//\//g' | sed 's/\\\\//g' | xargs -0 dirname)
 		if [ "$vflag" = "on" ]; then
 			echo
 			echo "Path for .gcno/.gcda coverage files is: $coverageFilesPath"
@@ -260,7 +260,7 @@ else
 		fi
 	
 		# Run gcovr with the right options
-		runCommand "sonar-reports/coverage-${projectName%%.*}.xml" gcovr -r . $coverageFilesPath $excludedCommandLineFlags --xml 
+		runCommand "sonar-reports/coverage-${projectName%%.*}.xml" gcovr -r . "$coverageFilesPath" $excludedCommandLineFlags --xml 
 
 	done < tmpFileRunSonarSh
 	rm -rf tmpFileRunSonarSh
