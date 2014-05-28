@@ -89,6 +89,10 @@
 		</rule>
 		<rule>
 			<repositoryKey>OCLint</repositoryKey>
+			<key>feature envy</key>
+		</rule>
+		<rule>
+			<repositoryKey>OCLint</repositoryKey>
 			<key>for loop should be while loop</key>
 		</rule>
 		<rule>
@@ -98,6 +102,10 @@
 		<rule>
 			<repositoryKey>OCLint</repositoryKey>
 			<key>inverted logic</key>
+		</rule>
+		<rule>
+			<repositoryKey>OCLint</repositoryKey>
+			<key>ivar assignment outside accessors or init</key>
 		</rule>
 		<rule>
 			<repositoryKey>OCLint</repositoryKey>
@@ -134,6 +142,10 @@
 		<rule>
 			<repositoryKey>OCLint</repositoryKey>
 			<key>multiple unary operator</key>
+		</rule>
+		<rule>
+			<repositoryKey>OCLint</repositoryKey>
+			<key>must override hash with isEqual</key>
 		</rule>
 		<rule>
 			<repositoryKey>OCLint</repositoryKey>
@@ -197,6 +209,10 @@
 		</rule>
 		<rule>
 			<repositoryKey>OCLint</repositoryKey>
+			<key>switch statements don't need default when fully covered</key>
+		</rule>
+		<rule>
+			<repositoryKey>OCLint</repositoryKey>
 			<key>switch statements should have default</key>
 		</rule>
 		<rule>
@@ -230,6 +246,10 @@
 		<rule>
 			<repositoryKey>OCLint</repositoryKey>
 			<key>unused method parameter</key>
+		</rule>
+		<rule>
+			<repositoryKey>OCLint</repositoryKey>
+			<key>use early exits and continue</key>
 		</rule>
 		<rule>
 			<repositoryKey>OCLint</repositoryKey>

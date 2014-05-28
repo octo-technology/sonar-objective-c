@@ -192,6 +192,15 @@ Priority: 2
 Severity: 2
 Category: OCLint
 
+feature envy
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
 for loop should be while loop
 ----------
 
@@ -217,6 +226,15 @@ Summary:
 
 Priority: 3
 Severity: 3
+Category: OCLint
+
+ivar assignment outside accessors or init
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
 Category: OCLint
 
 jumbled incrementer
@@ -298,6 +316,15 @@ Summary:
 
 Priority: 2
 Severity: 2
+Category: OCLint
+
+must override hash with isEqual
+----------
+
+Summary:
+
+Priority: 1
+Severity: 1
 Category: OCLint
 
 high ncss method
@@ -435,6 +462,15 @@ Priority: 3
 Severity: 3
 Category: OCLint
 
+switch statements don't need default when fully covered
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
 switch statements should have default
 ----------
 
@@ -508,6 +544,15 @@ Severity: 3
 Category: OCLint
 
 unused method parameter
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
+use early exits and continue
 ----------
 
 Summary:
