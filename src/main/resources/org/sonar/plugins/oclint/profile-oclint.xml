@@ -235,5 +235,9 @@
 			<repositoryKey>OCLint</repositoryKey>
 			<key>useless parentheses</key>
 		</rule>
+		<rule>
+			<repositoryKey>OCLint</repositoryKey>
+			<key>ivar assignment outside accessors or init</key>
+		</rule>
 	</rules>
 </profile>
