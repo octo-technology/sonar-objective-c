@@ -3,6 +3,15 @@ Available issues:
 OCLint
 ======
 
+ivar assignment outside accessors or init
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
 avoid branching statement as last in loop
 ----------
 
