@@ -239,5 +239,9 @@
 			<repositoryKey>OCLint</repositoryKey>
 			<key>ivar assignment outside accessors or init</key>
 		</rule>
+		<rule>
+			<repositoryKey>OCLint</repositoryKey>
+			<key>use early exits and continue</key>
+		</rule>
 	</rules>
 </profile>
