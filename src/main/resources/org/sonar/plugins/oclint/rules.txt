@@ -3,6 +3,15 @@ Available issues:
 OCLint
 ======
 
+use early exits and continue
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
 ivar assignment outside accessors or init
 ----------
 
