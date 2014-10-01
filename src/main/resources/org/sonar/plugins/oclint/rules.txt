@@ -12,15 +12,6 @@ Priority: 2
 Severity: 2
 Category: OCLint
 
-ivar assignment outside accessors or init
-----------
-
-Summary:
-
-Priority: 2
-Severity: 2
-Category: OCLint
-
 avoid branching statement as last in loop
 ----------
 
@@ -238,15 +229,6 @@ Severity: 3
 Category: OCLint
 
 inverted logic
-----------
-
-Summary:
-
-Priority: 3
-Severity: 3
-Category: OCLint
-
-ivar assignment outside accessors or init
 ----------
 
 Summary:

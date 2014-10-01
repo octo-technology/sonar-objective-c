@@ -257,10 +257,6 @@
 		</rule>
 		<rule>
 			<repositoryKey>OCLint</repositoryKey>
-			<key>ivar assignment outside accessors or init</key>
-		</rule>
-		<rule>
-			<repositoryKey>OCLint</repositoryKey>
 			<key>must override hash with isEqual</key>
 		</rule>
 		<rule>
