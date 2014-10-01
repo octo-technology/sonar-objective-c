@@ -588,3 +588,40 @@ Priority: 3
 Severity: 3
 Category: OCLint
 
+ivar assignment outside accessors or init
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+must override hash with isEqual
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+switch statements don't need default when fully covered
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+use early exits and continue
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+

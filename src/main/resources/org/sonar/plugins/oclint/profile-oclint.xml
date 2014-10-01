@@ -261,6 +261,14 @@
 		</rule>
 		<rule>
 			<repositoryKey>OCLint</repositoryKey>
+			<key>must override hash with isEqual</key>
+		</rule>
+		<rule>
+			<repositoryKey>OCLint</repositoryKey>
+			<key>switch statements don't need default when fully covered</key>
+		</rule>
+		<rule>
+			<repositoryKey>OCLint</repositoryKey>
 			<key>use early exits and continue</key>
 		</rule>
 	</rules>
