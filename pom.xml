@@ -77,7 +77,7 @@
 
     <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
 
-    <sonar.version>3.3</sonar.version>
+    <sonar.version>3.7.4</sonar.version>
     <sslr.version>1.16</sslr.version>
     
     <!-- Configuration for sonar-packaging-maven-plugin -->
