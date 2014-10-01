@@ -3,6 +3,24 @@ Available issues:
 OCLint
 ======
 
+use early exits and continue
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
+ivar assignment outside accessors or init
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
 avoid branching statement as last in loop
 ----------
 
