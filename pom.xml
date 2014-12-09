@@ -10,7 +10,7 @@
   
   <groupId>org.codehaus.sonar-plugin.objectivec</groupId>
   <artifactId>sonar-objective-c-plugin</artifactId>
-  <version>0.3.3-endava</version>
+  <version>4.5.1-endava.0</version>
   
   <packaging>sonar-plugin</packaging>
   
@@ -77,8 +77,8 @@
 
     <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
 
-    <sonar.version>3.7.4</sonar.version>
-    <sslr.version>1.16</sslr.version>
+    <sonar.version>4.5.1</sonar.version>
+    <sslr.version>1.20</sslr.version>
     
     <!-- Configuration for sonar-packaging-maven-plugin -->
     <sonar.pluginClass>org.sonar.plugins.objectivec.ObjectiveCPlugin</sonar.pluginClass>
@@ -97,7 +97,12 @@
         <artifactId>sonar-testing-harness</artifactId>
         <version>${sonar.version}</version>
       </dependency>
-
+      <dependency>
+        <groupId>org.codehaus.sonar</groupId>
+        <artifactId>sonar-deprecated</artifactId>
+        <version>${sonar.version}</version>
+      </dependency>
+	  
       <dependency>
         <groupId>org.codehaus.sonar.sslr</groupId>
         <artifactId>sslr-core</artifactId>
@@ -119,9 +124,9 @@
         <version>${sslr.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.codehaus.sonar.sslr-squid-bridge</groupId>
+		<groupId>org.codehaus.sonar.sslr-squid-bridge</groupId>
         <artifactId>sslr-squid-bridge</artifactId>
-        <version>2.2</version>
+        <version>2.4</version>
       </dependency>
       <dependency>
         <groupId>ant</groupId>
@@ -152,7 +157,7 @@
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
-        <version>0.9.15</version>
+        <version>0.9.30</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.sonar.plugins</groupId>

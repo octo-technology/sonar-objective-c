@@ -27,7 +27,7 @@ import java.io.File;
 
 import org.junit.Test;
 import org.sonar.objectivec.api.ObjectiveCMetric;
-import org.sonar.squid.api.SourceFile;
+import org.sonar.squidbridge.api.SourceFile;
 
 public class ObjectiveCAstScannerTest {
 
