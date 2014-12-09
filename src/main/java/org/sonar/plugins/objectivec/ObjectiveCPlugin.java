@@ -32,11 +32,12 @@ import org.sonar.plugins.objectivec.core.ObjectiveCSourceImporter;
 import org.sonar.plugins.objectivec.cpd.ObjectiveCCpdMapping;
 
 import com.google.common.collect.ImmutableList;
-import org.sonar.plugins.objectivec.tests.SurefireSensor;
+
 import org.sonar.plugins.objectivec.violations.OCLintProfile;
 import org.sonar.plugins.objectivec.violations.OCLintProfileImporter;
 import org.sonar.plugins.objectivec.violations.OCLintRuleRepository;
 import org.sonar.plugins.objectivec.violations.OCLintSensor;
+import org.sonar.plugins.surefire.SurefireSensor;
 
 @Properties({
         @Property(key = CoberturaSensor.REPORT_PATTERN_KEY, defaultValue = CoberturaSensor.DEFAULT_REPORT_PATTERN, name = "Path to unit test coverage report(s)", description = "Relative to projects' root. Ant patterns are accepted", global = false, project = true),

@@ -85,7 +85,9 @@ public class SurefireSensor implements Sensor {
     SUREFIRE_PARSER.collect(project, context, reportsDir);
   }
 
-  private static final AbstractSurefireParser SUREFIRE_PARSER = new AbstractSurefireParser() {
+  private static final AbstractSurefireParser SUREFIRE_PARSER = null;
+  
+  /*new AbstractSurefireParser() {
     @Override
     protected Resource<?> getUnitTestResource(String classKey) {
       String filename = classKey.replace('.', '/') + ".m";
@@ -93,7 +95,7 @@ public class SurefireSensor implements Sensor {
       sonarFile.setQualifier(Qualifiers.UNIT_TEST_FILE);
       return sonarFile;
     }
-  };
+  };*/
 
   @Override
   public String toString() {
