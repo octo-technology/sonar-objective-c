@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoverageMeasuresBuilder;
@@ -44,6 +45,7 @@ import org.sonar.api.resources.Resource;
 public final class CoberturaMeasuresPersistorTest {
 
 	@Test
+	//@Ignore
 	public void shouldNotPersistMeasuresForUnknownFiles() {
 		final Project project = new Project("Test");
 		final SensorContext context = mock(SensorContext.class);
@@ -59,6 +61,7 @@ public final class CoberturaMeasuresPersistorTest {
 	}
 
 	@Test
+	//@Ignore
 	public void shouldPersistMeasuresForKnownFiles() {
 		final Project project = new Project("Test");
 		final org.sonar.api.resources.File dummyFile = new org.sonar.api.resources.File("dummy/test");

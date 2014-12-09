@@ -3,6 +3,15 @@ Available issues:
 OCLint
 ======
 
+use early exits and continue
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
 avoid branching statement as last in loop
 ----------
 
@@ -192,6 +201,15 @@ Priority: 2
 Severity: 2
 Category: OCLint
 
+feature envy
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
 for loop should be while loop
 ----------
 
@@ -215,8 +233,8 @@ inverted logic
 
 Summary:
 
-Priority: 3
-Severity: 3
+Priority: 2
+Severity: 2
 Category: OCLint
 
 jumbled incrementer
@@ -298,6 +316,15 @@ Summary:
 
 Priority: 2
 Severity: 2
+Category: OCLint
+
+must override hash with isEqual
+----------
+
+Summary:
+
+Priority: 1
+Severity: 1
 Category: OCLint
 
 high ncss method
@@ -435,6 +462,15 @@ Priority: 3
 Severity: 3
 Category: OCLint
 
+switch statements don't need default when fully covered
+----------
+
+Summary:
+
+Priority: 3
+Severity: 3
+Category: OCLint
+
 switch statements should have default
 ----------
 
@@ -524,4 +560,14 @@ Summary:
 Priority: 3
 Severity: 3
 Category: OCLint
+
+ivar assignment outside accessors or init
+----------
+
+Summary:
+
+Priority: 2
+Severity: 2
+Category: OCLint
+
 
