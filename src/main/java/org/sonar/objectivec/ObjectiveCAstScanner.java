@@ -20,24 +20,25 @@
 package org.sonar.objectivec;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.Collection;
-
 import org.sonar.objectivec.api.ObjectiveCGrammar;
 import org.sonar.objectivec.api.ObjectiveCMetric;
 import org.sonar.objectivec.parser.ObjectiveCParser;
-import org.sonar.squid.api.SourceCode;
-import org.sonar.squid.api.SourceFile;
-import org.sonar.squid.api.SourceProject;
-import org.sonar.squid.indexer.QueryByType;
+import org.sonar.squidbridge.AstScanner;
+import org.sonar.squidbridge.CommentAnalyser;
+import org.sonar.squidbridge.SquidAstVisitor;
+import org.sonar.squidbridge.SquidAstVisitorContextImpl;
+import org.sonar.squidbridge.api.SourceCode;
+import org.sonar.squidbridge.api.SourceFile;
+import org.sonar.squidbridge.api.SourceProject;
+import org.sonar.squidbridge.indexer.QueryByType;
+import org.sonar.squidbridge.metrics.CommentsVisitor;
+import org.sonar.squidbridge.metrics.LinesOfCodeVisitor;
+import org.sonar.squidbridge.metrics.LinesVisitor;
 
-import com.sonar.sslr.api.CommentAnalyser;
 import com.sonar.sslr.impl.Parser;
-import com.sonar.sslr.squid.AstScanner;
-import com.sonar.sslr.squid.SquidAstVisitor;
-import com.sonar.sslr.squid.SquidAstVisitorContextImpl;
-import com.sonar.sslr.squid.metrics.CommentsVisitor;
-import com.sonar.sslr.squid.metrics.LinesOfCodeVisitor;
-import com.sonar.sslr.squid.metrics.LinesVisitor;
+
 
 public class ObjectiveCAstScanner {
 
@@ -51,7 +52,8 @@ public class ObjectiveCAstScanner {
         if (!file.isFile()) {
             throw new IllegalArgumentException("File '" + file + "' not found.");
         }
-        AstScanner<ObjectiveCGrammar> scanner = create(new ObjectiveCConfiguration(), visitors);
+        
+        AstScanner<ObjectiveCGrammar> scanner = create(new ObjectiveCConfiguration(Charset.forName("UTF-8")), visitors);
         scanner.scanFile(file);
         Collection<SourceCode> sources = scanner.getIndex().search(new QueryByType(SourceFile.class));
         if (sources.size() != 1) {
@@ -95,7 +97,8 @@ public class ObjectiveCAstScanner {
         builder.withSquidAstVisitor(new LinesVisitor<ObjectiveCGrammar>(ObjectiveCMetric.LINES));
         builder.withSquidAstVisitor(new LinesOfCodeVisitor<ObjectiveCGrammar>(ObjectiveCMetric.LINES_OF_CODE));
         builder.withSquidAstVisitor(CommentsVisitor.<ObjectiveCGrammar> builder().withCommentMetric(ObjectiveCMetric.COMMENT_LINES)
-                .withBlankCommentMetric(ObjectiveCMetric.COMMENT_BLANK_LINES)
+        		//todo: method not found
+                //.withBlankCommentMetric(ObjectiveCMetric.COMMENT_BLANK_LINES)
                 .withNoSonar(true)
                 .withIgnoreHeaderComment(conf.getIgnoreHeaderComments())
                 .build());

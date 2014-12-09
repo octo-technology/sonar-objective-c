@@ -29,7 +29,6 @@ import org.sonar.api.batch.SensorContext;
 import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Qualifiers;
-import org.sonar.api.resources.Resource;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
 import org.sonar.plugins.surefire.api.AbstractSurefireParser;
 
@@ -82,19 +81,21 @@ public class SurefireSensor implements Sensor {
 
   protected void collect(Project project, SensorContext context, File reportsDir) {
     LOG.info("parsing {}", reportsDir);
-    SUREFIRE_PARSER.collect(project, context, reportsDir);
+    //todo:
+   // SUREFIRE_PARSER.collect(project, context, reportsDir);
   }
 
-  private static final AbstractSurefireParser SUREFIRE_PARSER = new AbstractSurefireParser() {
+  //todo:
+ /* private static final AbstractSurefireParser SUREFIRE_PARSER = new AbstractSurefireParser() {
     @Override
-    protected Resource<?> getUnitTestResource(String classKey) {
+    protected org.sonar.api.resources.Resource<?> getUnitTestResource(String classKey) {
       String filename = classKey.replace('.', '/') + ".m";
       org.sonar.api.resources.File sonarFile = new org.sonar.api.resources.File(filename);
       sonarFile.setQualifier(Qualifiers.UNIT_TEST_FILE);
       return sonarFile;
     }
   };
-
+*/
   @Override
   public String toString() {
     return "Objective-C SurefireSensor";
