@@ -3,7 +3,7 @@ SonarQube Plugin for Objective C
 
 This repository hosts the Objective-C plugin for [SonarQube](http://www.sonarqube.org/). This plugin enables to analyze and track the quality of iOS (iPhone, iPad) and MacOS developments.
 
-This plugin is not supported by SonarSource. SonarSource offers a commercial SonarSource Objective-C plugin as well. Both plugins do not offer the same functionalities/support.
+This plugin is not supported by SonarSource. SonarSource offers a [commercial SonarSource Objective-C plugin](http://www.sonarsource.com/products/plugins/languages/objective-c/) as well. Both plugins do not offer the same functionalities/support.
 
 ###Disclaimer
 This plugin is not compatible today with SonarQube 4.X+ (only 3.5). If you're using SonarQube 4.X+, your only option is to use the commercial plugin.
