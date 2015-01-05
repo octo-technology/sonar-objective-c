@@ -52,7 +52,7 @@ public final class CoberturaSensor implements Sensor {
     }
 
     public boolean shouldExecuteOnProject(final Project project) {
-        return ObjectiveC.KEY.equals(project.getLanguageKey());
+        return ObjectiveC.KEY.equals(ObjectiveC.KEY);
     }
 
     public void analyse(final Project project, final SensorContext context) {

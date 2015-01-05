@@ -48,24 +48,16 @@ public class ObjectiveCPlugin extends SonarPlugin {
     public List<Class<? extends Extension>> getExtensions() {
         return ImmutableList.of(ObjectiveC.class,
                 ObjectiveCSourceImporter.class,
-                ObjectiveCColorizerFormat.class, ObjectiveCCpdMapping.class,
+                ObjectiveCColorizerFormat.class,
+                ObjectiveCCpdMapping.class,
 
-                ObjectiveCSquidSensor.class, ObjectiveCProfile.class,
+                ObjectiveCSquidSensor.class,
+                ObjectiveCProfile.class,
                 SurefireSensor.class,
                 CoberturaSensor.class,
                 OCLintRuleRepository.class,
                 OCLintSensor.class, OCLintProfile.class,
                 OCLintProfileImporter.class
-        // ObjectiveCRuleRepository.class,
-        // ObjectiveCProfile.class,
-        //
-        // OCTestDriverSurefireSensor.class,
-        // OCTestDriverCoverageSensor.class,
-        //
-        // OCTestMavenInitializer.class,
-        // OCTestMavenPluginHandler.class,
-        // OCTestCoverageSensor.class,
-        // OCTestSurefireSensor.class
                 );
     }
 

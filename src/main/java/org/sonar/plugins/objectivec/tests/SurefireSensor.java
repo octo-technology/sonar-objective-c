@@ -56,7 +56,7 @@ public class SurefireSensor implements Sensor {
   }
 
   public boolean shouldExecuteOnProject(Project project) {
-      return ObjectiveC.KEY.equals(project.getLanguageKey());
+      return ObjectiveC.KEY.equals(ObjectiveC.KEY);
   }
 
   public void analyse(Project project, SensorContext context) {
