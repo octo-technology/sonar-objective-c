@@ -51,6 +51,7 @@ final class CoverageMeasuresPersistor {
                 filePath);
         final org.sonar.api.resources.File objcfile = org.sonar.api.resources.File
                 .fromIOFile(new File(filePath), project);
+
         if (fileExists(context, objcfile)) {
             LoggerFactory.getLogger(getClass()).debug(
                     "File {} was found in the project.", filePath);
