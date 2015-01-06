@@ -101,7 +101,8 @@ function runCommand() {
 			$command "$@"
 		fi
 
-		if [[ $? != 0 && $? != 5 ]] ; then
+        returnValue=$?
+		if [[ $returnValue != 0 && $returnValue != 5 ]] ; then
 			stopProgress
 			echo "ERROR - Command '$command $@' failed with error code: $returnValue"
 			exit $?
@@ -286,7 +287,8 @@ if [ "$oclint" = "on" ]; then
 	fi
 	
 	# Run OCLint with the right set of compiler options
-	runCommand no oclint-json-compilation-database $includedCommandLineFlags -- -report-type pmd -o sonar-reports/oclint.xml
+    maxPriority=10000
+	runCommand no oclint-json-compilation-database $includedCommandLineFlags -- -max-priority-1 $maxPriority -max-priority-2 $maxPriority -max-priority-3 $maxPriority -report-type pmd -o sonar-reports/oclint.xml
 else
 	echo 'Skipping OCLint (test purposes only!)'
 fi
