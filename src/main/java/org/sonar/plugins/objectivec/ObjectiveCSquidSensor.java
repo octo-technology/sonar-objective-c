@@ -105,7 +105,6 @@ public class ObjectiveCSquidSensor implements Sensor {
         context.saveMeasure(sonarFile, CoreMetrics.FUNCTIONS, squidFile.getDouble(ObjectiveCMetric.FUNCTIONS));
         context.saveMeasure(sonarFile, CoreMetrics.STATEMENTS, squidFile.getDouble(ObjectiveCMetric.STATEMENTS));
         context.saveMeasure(sonarFile, CoreMetrics.COMPLEXITY, squidFile.getDouble(ObjectiveCMetric.COMPLEXITY));
-        context.saveMeasure(sonarFile, CoreMetrics.COMMENT_BLANK_LINES, squidFile.getDouble(ObjectiveCMetric.COMMENT_BLANK_LINES));
         context.saveMeasure(sonarFile, CoreMetrics.COMMENT_LINES, squidFile.getDouble(ObjectiveCMetric.COMMENT_LINES));
     }
 

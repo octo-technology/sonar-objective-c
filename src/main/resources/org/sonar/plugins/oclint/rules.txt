@@ -6,568 +6,504 @@ OCLint
 use early exits and continue
 ----------
 
-Summary:
+Summary: 
 
-Priority: 2
 Severity: 2
 Category: OCLint
 
 avoid branching statement as last in loop
 ----------
 
-Summary:
+Summary: Having branching statement as the last statement inside a loop is very confusing, and could largely be forgetting of something and turning into a bug.
 
-Priority: 2
 Severity: 2
 Category: OCLint
 
 bitwise operator in conditional
 ----------
 
-Summary:
+Summary: Checks for bitwise operations in conditionals. Although being written on purpose in some rare cases, bitwise operations are considered to be too “smart”. Smart code is not easy to understand.
 
-Priority: 2
-Severity: 2
+Severity: 3
 Category: OCLint
 
 broken null check
 ----------
 
-Summary:
+Summary: The broken nil check in Objective-C in some cases returns just the opposite result.
 
-Priority: 1
-Severity: 1
+Severity: 3
 Category: OCLint
 
 broken nil check
 ----------
 
-Summary:
+Summary: 
 
-Priority: 2
 Severity: 2
 Category: OCLint
 
 broken oddness check
 ----------
 
-Summary:
+Summary: Checking oddness by x%2==1 won’t work for negative numbers. Use x&1==1, or x%2!=0 instead.
 
-Priority: 2
-Severity: 2
+Severity: 3
 Category: OCLint
 
 collapsible if statements
 ----------
 
-Summary:
+Summary: This rule detects instances where the conditions of two consecutive if statements can combined into one in order to increase code cleanness and readability.
 
-Priority: 3
 Severity: 3
 Category: OCLint
 
 constant conditional operator
 ----------
 
-Summary:
+Summary: conditionaloperator whose conditionals are always true or always false are confusing.
 
-Priority: 2
-Severity: 2
+Severity: 3
 Category: OCLint
 
 constant if expression
 ----------
 
-Summary:
+Summary: if statements whose conditionals are always true or always false are confusing.
 
-Priority: 2
-Severity: 2
+Severity: 3
 Category: OCLint
 
 high cyclomatic complexity
 ----------
 
-Summary:
+Summary: 
 
-Priority: 2
 Severity: 2
 Category: OCLint
 
 dead code
 ----------
 
-Summary:
+Summary: Code after return, break, continue, and throw statements are unreachable and will never be executed.
 
-Priority: 2
-Severity: 2
+Severity: 3
 Category: OCLint
 
 default label not last in switch statement
 ----------
 
-Summary:
+Summary: It is very confusing when default label is not the last label in a switch statement.
 
-Priority: 3
-Severity: 3
+Severity: 2
 Category: OCLint
 
 double negative
 ----------
 
-Summary:
+Summary: There is no point in using a double negative, it is always positive.
 
-Priority: 2
-Severity: 2
+Severity: 3
 Category: OCLint
 
 empty catch statement
 ----------
 
-Summary:
+Summary: This rule detects instances where an exception is caught, but nothing is done about it.
 
-Priority: 2
-Severity: 2
+Severity: 3
 Category: OCLint
 
 empty do/while statement
 ----------
 
-Summary:
+Summary: This rule detects instances where a do-while statement does nothing.
 
-Priority: 2
-Severity: 2
+Severity: 3
 Category: OCLint
 
 empty else block
 ----------
 
-Summary:
+Summary: 
 
-Priority: 2
 Severity: 2
 Category: OCLint
 
 empty finally statement
 ----------
 
-Summary:
+Summary: This rule detects instances where a finally statement does nothing.
 
-Priority: 2
-Severity: 2
+Severity: 3
 Category: OCLint
 
 empty for statement
 ----------
 
-Summary:
+Summary: This rule detects instances where a for statement does nothing.
 
-Priority: 2
-Severity: 2
+Severity: 3
 Category: OCLint
 
 empty if statement
 ----------
 
-Summary:
+Summary: This rule detects instances where a condition is checked, but nothing is done about it.
 
-Priority: 2
-Severity: 2
+Severity: 3
 Category: OCLint
 
 empty switch statement
 ----------
 
-Summary:
+Summary: This rule detects instances where a switch statement does nothing.
 
-Priority: 2
-Severity: 2
+Severity: 3
 Category: OCLint
 
 empty try statement
 ----------
 
-Summary:
+Summary: This rule detects instances where a try statement is empty.
 
-Priority: 2
-Severity: 2
+Severity: 3
 Category: OCLint
 
 empty while statement
 ----------
 
-Summary:
+Summary: 
 
-Priority: 2
-Severity: 2
+Severity: 3
 Category: OCLint
 
 feature envy
 ----------
 
-Summary:
+Summary: 
 
-Priority: 3
 Severity: 3
 Category: OCLint
 
 for loop should be while loop
 ----------
 
-Summary:
+Summary: Under certain circumstances, some for loops can be simplified to while loops to make code more concise.
 
-Priority: 3
 Severity: 3
 Category: OCLint
 
 goto statement
 ----------
 
-Summary:
+Summary: 
 
-Priority: 3
 Severity: 3
 Category: OCLint
 
 inverted logic
 ----------
 
-Summary:
+Summary: An inverted logic is hard to understand.
 
-Priority: 2
 Severity: 2
 Category: OCLint
 
 jumbled incrementer
 ----------
 
-Summary:
+Summary: 
 
-Priority: 2
 Severity: 2
 Category: OCLint
 
 long class
 ----------
 
-Summary:
+Summary: Long class generally indicates that this class tries to so many things. Each class should do one thing and one thing well.
 
-Priority: 3
 Severity: 3
 Category: OCLint
 
 long line
 ----------
 
-Summary:
+Summary: When number of characters for one line of code is very long, it largely harm the readability. Break long line of code into multiple lines.
 
-Priority: 3
-Severity: 3
+Severity: 2
 Category: OCLint
 
 long method
 ----------
 
-Summary:
+Summary: Long method generally indicates that this method tries to so many things. Each method should do one thing and one thing well.
 
-Priority: 3
 Severity: 3
 Category: OCLint
 
 long variable name
 ----------
 
-Summary:
+Summary: Variables with long names harm readability.
 
-Priority: 3
-Severity: 3
+Severity: 2
 Category: OCLint
 
 misplaced null check
 ----------
 
-Summary:
+Summary: The nil check is misplaced. In Objective-C, sending a message to a nil pointer simply does nothing. But code readers may be confused about the misplaced nil check.
 
-Priority: 1
-Severity: 1
+Severity: 3
 Category: OCLint
 
 misplaced nil check
 ----------
 
-Summary:
+Summary: 
 
-Priority: 3
 Severity: 3
 Category: OCLint
 
 missing break in switch statement
 ----------
 
-Summary:
+Summary: 
 
-Priority: 2
 Severity: 2
 Category: OCLint
 
 multiple unary operator
 ----------
 
-Summary:
+Summary: Multiple unary operator can always be confusing and should be simplified.
 
-Priority: 2
-Severity: 2
+Severity: 3
 Category: OCLint
 
 must override hash with isEqual
 ----------
 
-Summary:
+Summary: 
 
-Priority: 1
 Severity: 1
 Category: OCLint
 
 high ncss method
 ----------
 
-Summary:
+Summary: This rule counts number of lines for a method by counting Non Commenting Source Statements (NCSS). NCSS only takes actual statements into consideration, in other words, ignores empty statements, empty blocks, closing brackets or semicolons after closing brackets. Meanwhile, statement that is break into multiple lines contribute only one count.
 
-Priority: 2
-Severity: 2
+Severity: 3
 Category: OCLint
 
 deep nested block
 ----------
 
-Summary:
+Summary: This rule indicates blocks nested more deeply than the upper limit.
 
-Priority: 3
 Severity: 3
 Category: OCLint
 
 non case label in switch statement
 ----------
 
-Summary:
+Summary: It is very confusing when default label is not the last label in a switch statement.
 
-Priority: 3
-Severity: 3
+Severity: 2
 Category: OCLint
 
 high npath complexity
 ----------
 
-Summary:
+Summary: 
 
-Priority: 2
 Severity: 2
 Category: OCLint
 
 replace with boxed expression
 ----------
 
-Summary:
+Summary: This rule locates the places that can be migrated to the new Objective-C literals with boxed expressions.
 
-Priority: 3
-Severity: 3
+Severity: 1
 Category: OCLint
 
 replace with container literal
 ----------
 
-Summary:
+Summary: This rule locates the places that can be migrated to the new Objective-C literals with container literals.
 
-Priority: 3
-Severity: 3
+Severity: 1
 Category: OCLint
 
 replace with number literal
 ----------
 
-Summary:
+Summary: This rule locates the places that can be migrated to the new Objective-C literals with number literals.
 
-Priority: 3
-Severity: 3
+Severity: 1
 Category: OCLint
 
 replace with object subscripting
 ----------
 
-Summary:
+Summary: 
 
-Priority: 3
-Severity: 3
+Severity: 1
 Category: OCLint
 
 parameter reassignment
 ----------
 
-Summary:
+Summary: Reassigning values to parameters is very problematic in most cases.
 
-Priority: 3
-Severity: 3
+Severity: 2
 Category: OCLint
 
 redundant conditional operator
 ----------
 
-Summary:
+Summary: This rule detects three types of redundant conditional operators:
 
-Priority: 3
-Severity: 3
+Severity: 1
 Category: OCLint
 
 redundant if statement
 ----------
 
-Summary:
+Summary: This rule detects unnecessary if statements.
 
-Priority: 3
-Severity: 3
+Severity: 1
 Category: OCLint
 
 redundant local variable
 ----------
 
-Summary:
+Summary: This rule detects cases where a variable declaration immediately followed by a return of that variable.
 
-Priority: 3
-Severity: 3
+Severity: 1
 Category: OCLint
 
 redundant nil check
 ----------
 
-Summary:
+Summary: 
 
-Priority: 3
 Severity: 3
 Category: OCLint
 
 return from finally block
 ----------
 
-Summary:
+Summary: Returning from a finally block is not recommended.
 
-Priority: 2
-Severity: 2
+Severity: 3
 Category: OCLint
 
 short variable name
 ----------
 
-Summary:
+Summary: 
 
-Priority: 3
-Severity: 3
+Severity: 2
 Category: OCLint
 
 switch statements don't need default when fully covered
 ----------
 
-Summary:
+Summary: 
 
-Priority: 3
 Severity: 3
 Category: OCLint
 
 switch statements should have default
 ----------
 
-Summary:
+Summary: Switch statements should a default statement.
 
-Priority: 3
-Severity: 3
+Severity: 2
 Category: OCLint
 
 throw exception from finally block
 ----------
 
-Summary:
+Summary: 
 
-Priority: 2
-Severity: 2
+Severity: 3
 Category: OCLint
 
 too few branches in switch statement
 ----------
 
-Summary:
+Summary: 
 
-Priority: 3
-Severity: 3
+Severity: 2
 Category: OCLint
 
 too many fields
 ----------
 
-Summary:
+Summary: A class with too many fields indicates it does too many things and is lack of proper abstraction. It can be resigned to have fewer fields.
 
-Priority: 3
 Severity: 3
 Category: OCLint
 
 too many methods
 ----------
 
-Summary:
+Summary: A class with too many methods indicates it does too many things and hard to read and understand. It usually contains complicated code, and should be refactored.
 
-Priority: 3
 Severity: 3
 Category: OCLint
 
 too many parameters
 ----------
 
-Summary:
+Summary: 
 
-Priority: 3
 Severity: 3
 Category: OCLint
 
 unnecessary else statement
 ----------
 
-Summary:
+Summary: When an if statement block ends with a return statement, or all branches in the if statement block end with return statements, then the else statement is unnecessary. The code in the else statement can be run without being in the block.
 
-Priority: 3
-Severity: 3
+Severity: 1
 Category: OCLint
 
 unused local variable
 ----------
 
-Summary:
+Summary: This rule detects local variables that are declared, but not used.
 
-Priority: 3
-Severity: 3
+Severity: 0
 Category: OCLint
 
 unused method parameter
 ----------
 
-Summary:
+Summary: 
 
-Priority: 3
-Severity: 3
+Severity: 0
 Category: OCLint
 
 useless parentheses
 ----------
 
-Summary:
+Summary: 
 
-Priority: 3
-Severity: 3
+Severity: 1
 Category: OCLint
 
 ivar assignment outside accessors or init
 ----------
 
-Summary:
+Summary: 
 
-Priority: 2
 Severity: 2
 Category: OCLint
-
 

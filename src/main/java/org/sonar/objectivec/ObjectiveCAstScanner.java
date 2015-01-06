@@ -95,7 +95,6 @@ public class ObjectiveCAstScanner {
       	builder.withSquidAstVisitor(new LinesVisitor<ObjectiveCGrammar>(ObjectiveCMetric.LINES));
       	builder.withSquidAstVisitor(new LinesOfCodeVisitor<ObjectiveCGrammar>(ObjectiveCMetric.LINES_OF_CODE));
       	builder.withSquidAstVisitor(CommentsVisitor.<ObjectiveCGrammar> builder().withCommentMetric(ObjectiveCMetric.COMMENT_LINES)
-      			//todo:there is no method .withBlankCommentMetric(ObjectiveCMetric.COMMENT_BLANK_LINES)
       			.withNoSonar(true)
       			.withIgnoreHeaderComment(conf.getIgnoreHeaderComments())
       			.build());

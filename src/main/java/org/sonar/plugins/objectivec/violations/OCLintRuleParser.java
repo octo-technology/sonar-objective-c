@@ -38,7 +38,7 @@ import org.sonar.api.rules.RulePriority;
  */
 final class OCLintRuleParser implements ServerComponent {
 
-    private static final int OCLINT_MINIMUM_PRIORITY = 3;
+    private static final int OCLINT_MINIMUM_PRIORITY = 4;
     private static final Logger LOGGER = LoggerFactory
             .getLogger(OCLintRuleParser.class);
 
@@ -80,8 +80,7 @@ final class OCLintRuleParser implements ServerComponent {
                 inDescription = false;
                 final String severity = line.substring("Severity: ".length());
                 // Rules are priority 1, 2 or 3 in OCLint files.
-                rule.setSeverity(RulePriority.values()[OCLINT_MINIMUM_PRIORITY
-                        - Integer.valueOf(severity)]);
+                rule.setSeverity(RulePriority.values()[Integer.valueOf(severity)]);
             } else {
                 if (inDescription) {
                     line = ruleDescriptionLink(line);

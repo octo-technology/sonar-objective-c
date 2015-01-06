@@ -33,11 +33,11 @@ import org.sonar.plugins.objectivec.cpd.ObjectiveCCpdMapping;
 
 import com.google.common.collect.ImmutableList;
 
+import org.sonar.plugins.objectivec.tests.SurefireSensor;
 import org.sonar.plugins.objectivec.violations.OCLintProfile;
 import org.sonar.plugins.objectivec.violations.OCLintProfileImporter;
 import org.sonar.plugins.objectivec.violations.OCLintRuleRepository;
 import org.sonar.plugins.objectivec.violations.OCLintSensor;
-import org.sonar.plugins.surefire.SurefireSensor;
 
 @Properties({
         @Property(key = CoberturaSensor.REPORT_PATTERN_KEY, defaultValue = CoberturaSensor.DEFAULT_REPORT_PATTERN, name = "Path to unit test coverage report(s)", description = "Relative to projects' root. Ant patterns are accepted", global = false, project = true),
@@ -48,24 +48,16 @@ public class ObjectiveCPlugin extends SonarPlugin {
     public List<Class<? extends Extension>> getExtensions() {
         return ImmutableList.of(ObjectiveC.class,
                 ObjectiveCSourceImporter.class,
-                ObjectiveCColorizerFormat.class, ObjectiveCCpdMapping.class,
+                ObjectiveCColorizerFormat.class,
+                ObjectiveCCpdMapping.class,
 
-                ObjectiveCSquidSensor.class, ObjectiveCProfile.class,
+                ObjectiveCSquidSensor.class,
+                ObjectiveCProfile.class,
                 SurefireSensor.class,
                 CoberturaSensor.class,
                 OCLintRuleRepository.class,
                 OCLintSensor.class, OCLintProfile.class,
                 OCLintProfileImporter.class
-        // ObjectiveCRuleRepository.class,
-        // ObjectiveCProfile.class,
-        //
-        // OCTestDriverSurefireSensor.class,
-        // OCTestDriverCoverageSensor.class,
-        //
-        // OCTestMavenInitializer.class,
-        // OCTestMavenPluginHandler.class,
-        // OCTestCoverageSensor.class,
-        // OCTestSurefireSensor.class
                 );
     }
 

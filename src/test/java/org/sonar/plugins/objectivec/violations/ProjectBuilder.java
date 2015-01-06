@@ -37,6 +37,7 @@ final class ProjectBuilder {
 	public ProjectBuilder() {
 		project.setFileSystem(fileSystem);
 		when(fileSystem.getSourceDirs()).thenReturn(sourceDirs);
+        when(fileSystem.getBasedir()).thenReturn(new File("."));
 	}
 
 	public Project project() {

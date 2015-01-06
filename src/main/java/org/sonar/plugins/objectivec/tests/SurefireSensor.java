@@ -28,38 +28,35 @@ import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;
-import org.sonar.api.resources.Qualifiers;
-import org.sonar.api.resources.Resource;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
-import org.sonar.plugins.surefire.api.AbstractSurefireParser;
 
 import java.io.File;
 
 public class SurefireSensor implements Sensor {
 
-  private static final Logger LOG = LoggerFactory.getLogger(SurefireSensor.class);
-  public static final String REPORT_PATH_KEY = "sonar.junit.reportsPath";
-  public static final String DEFAULT_REPORT_PATH = "sonar-reports/";
-  private final Settings conf;
+    private static final Logger LOG = LoggerFactory.getLogger(SurefireSensor.class);
+    public static final String REPORT_PATH_KEY = "sonar.junit.reportsPath";
+    public static final String DEFAULT_REPORT_PATH = "sonar-reports/";
+    private final Settings conf;
 
-  public SurefireSensor() {
-    this(null);
-  }
+    public SurefireSensor() {
+        this(null);
+    }
 
-  public SurefireSensor(final Settings config) {
-    conf = config;
-  }
+    public SurefireSensor(final Settings config) {
+        conf = config;
+    }
 
-  @DependsUpon
-  public Class<?> dependsUponCoverageSensors() {
-    return CoverageExtension.class;
-  }
+    @DependsUpon
+    public Class<?> dependsUponCoverageSensors() {
+        return CoverageExtension.class;
+    }
 
-  public boolean shouldExecuteOnProject(Project project) {
-      return ObjectiveC.KEY.equals(project.getLanguageKey());
-  }
+    public boolean shouldExecuteOnProject(Project project) {
+        return ObjectiveC.KEY.equals(project.getLanguageKey());
+    }
 
-  public void analyse(Project project, SensorContext context) {
+    public void analyse(Project project, SensorContext context) {
 
     /*
         GitHub Issue #50
@@ -77,37 +74,27 @@ public class SurefireSensor implements Sensor {
         So the implementation here reaches into the project properties and pulls the path out by itself.
      */
 
-    collect(project, context, new File(reportPath()));
-  }
-
-  protected void collect(Project project, SensorContext context, File reportsDir) {
-    LOG.info("parsing {}", reportsDir);
-    SUREFIRE_PARSER.collect(project, context, reportsDir);
-  }
-
-  private static final AbstractSurefireParser SUREFIRE_PARSER = null;
-  
-  /*new AbstractSurefireParser() {
-    @Override
-    protected Resource<?> getUnitTestResource(String classKey) {
-      String filename = classKey.replace('.', '/') + ".m";
-      org.sonar.api.resources.File sonarFile = new org.sonar.api.resources.File(filename);
-      sonarFile.setQualifier(Qualifiers.UNIT_TEST_FILE);
-      return sonarFile;
+        collect(project, context, new File(reportPath()));
     }
-  };*/
 
-  @Override
-  public String toString() {
-    return "Objective-C SurefireSensor";
-  }
+    protected void collect(Project project, SensorContext context, File reportsDir) {
+        LOG.info("parsing {}", reportsDir);
+        SUREFIRE_PARSER.collect(project, context, reportsDir);
+    }
 
-  private String reportPath() {
-     String reportPath = conf.getString(REPORT_PATH_KEY);
-     if (reportPath == null) {
-         reportPath = DEFAULT_REPORT_PATH;
-      }
-     return reportPath;
-  }
+    private static final SurefireParser SUREFIRE_PARSER = new SurefireParser();
+
+    @Override
+    public String toString() {
+        return "Objective-C SurefireSensor";
+    }
+
+    private String reportPath() {
+        String reportPath = conf.getString(REPORT_PATH_KEY);
+        if (reportPath == null) {
+            reportPath = DEFAULT_REPORT_PATH;
+        }
+        return reportPath;
+    }
 
 }
