@@ -72,6 +72,11 @@
             <organization>OCTO Technology</organization>
             <url>https://github.com/fhelg</url>
         </developer>
+        <developer>
+            <id>zippy1978</id>
+            <name>Gilles Grousset</name>
+            <url>https://github.com/zippy1978</url>
+        </developer>
     </developers>
 
     <scm>
