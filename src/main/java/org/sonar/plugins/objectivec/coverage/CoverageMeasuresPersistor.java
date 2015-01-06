@@ -20,13 +20,18 @@
 package org.sonar.plugins.objectivec.coverage;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoverageMeasuresBuilder;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.resources.Project;
+import org.sonar.api.scan.filesystem.PathResolver;
+import org.sonar.api.utils.PathUtils;
 
 final class CoverageMeasuresPersistor {
     private final Project project;
@@ -37,20 +42,17 @@ final class CoverageMeasuresPersistor {
         context = c;
     }
 
-    public void saveMeasures(
-            final Map<String, CoverageMeasuresBuilder> coverageMeasures) {
-        for (final Map.Entry<String, CoverageMeasuresBuilder> entry : coverageMeasures
-                .entrySet()) {
+    public void saveMeasures(final Map<String, CoverageMeasuresBuilder> coverageMeasures) {
+
+        for (final Map.Entry<String, CoverageMeasuresBuilder> entry : coverageMeasures.entrySet()) {
             saveMeasuresForFile(entry.getValue(), entry.getKey());
         }
     }
 
-    private void saveMeasuresForFile(
-            final CoverageMeasuresBuilder measureBuilder, final String filePath) {
-        LoggerFactory.getLogger(getClass()).debug("Saving measures for {}",
-                filePath);
-        final org.sonar.api.resources.File objcfile = org.sonar.api.resources.File
-                .fromIOFile(new File(filePath), project);
+    private void saveMeasuresForFile(final CoverageMeasuresBuilder measureBuilder, final String filePath) {
+
+        LoggerFactory.getLogger(getClass()).debug("Saving measures for {}", filePath);
+        final org.sonar.api.resources.File objcfile = org.sonar.api.resources.File.fromIOFile(new File(project.getFileSystem().getBasedir(), filePath), project);
 
         if (fileExists(context, objcfile)) {
             LoggerFactory.getLogger(getClass()).debug(

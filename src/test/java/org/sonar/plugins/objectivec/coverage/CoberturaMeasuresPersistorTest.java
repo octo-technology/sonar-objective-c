@@ -88,7 +88,7 @@ public final class CoberturaMeasuresPersistorTest {
 		testedPersistor.saveMeasures(measures);
 
 		for (final Measure measure : measureBuilder.createMeasures()) {
-			verify(context, times(1)).saveMeasure(eq(org.sonar.api.resources.File.fromIOFile(new File("test"), project)), eq(measure));
+			verify(context, times(1)).saveMeasure(eq(org.sonar.api.resources.File.fromIOFile(new File(project.getFileSystem().getBasedir(), "dummy/test"), project)), eq(measure));
 		}
 	}
 

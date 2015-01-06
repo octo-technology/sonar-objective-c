@@ -232,7 +232,7 @@ long line
 
 Summary: When number of characters for one line of code is very long, it largely harm the readability. Break long line of code into multiple lines.
 
-Severity: 3
+Severity: 2
 Category: OCLint
 
 long method
