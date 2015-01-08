@@ -32,7 +32,7 @@ broken null check
 
 Summary: The broken nil check in Objective-C in some cases returns just the opposite result.
 
-Severity: 3
+Severity: 4
 Category: OCLint
 
 broken nil check
@@ -40,7 +40,7 @@ broken nil check
 
 Summary: 
 
-Severity: 2
+Severity: 4
 Category: OCLint
 
 broken oddness check
@@ -264,7 +264,7 @@ misplaced nil check
 
 Summary: 
 
-Severity: 3
+Severity: 4
 Category: OCLint
 
 missing break in switch statement
