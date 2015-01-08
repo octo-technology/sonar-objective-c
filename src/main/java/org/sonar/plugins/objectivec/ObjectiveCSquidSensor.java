@@ -39,15 +39,16 @@ import org.sonar.objectivec.api.ObjectiveCGrammar;
 import org.sonar.objectivec.api.ObjectiveCMetric;
 import org.sonar.objectivec.checks.CheckList;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
-import org.sonar.squid.api.CheckMessage;
-import org.sonar.squid.api.SourceCode;
-import org.sonar.squid.api.SourceFile;
-import org.sonar.squid.api.SourceFunction;
-import org.sonar.squid.indexer.QueryByParent;
-import org.sonar.squid.indexer.QueryByType;
+import org.sonar.squidbridge.AstScanner;
+import org.sonar.squidbridge.api.CheckMessage;
+import org.sonar.squidbridge.api.SourceCode;
+import org.sonar.squidbridge.api.SourceFile;
+import org.sonar.squidbridge.api.SourceFunction;
+import org.sonar.squidbridge.checks.SquidCheck;
+import org.sonar.squidbridge.indexer.QueryByParent;
+import org.sonar.squidbridge.indexer.QueryByType;
+import org.sonar.squidbridge.measures.Metric;
 
-import com.sonar.sslr.squid.AstScanner;
-import com.sonar.sslr.squid.checks.SquidCheck;
 
 public class ObjectiveCSquidSensor implements Sensor {
 
@@ -104,7 +105,6 @@ public class ObjectiveCSquidSensor implements Sensor {
         context.saveMeasure(sonarFile, CoreMetrics.FUNCTIONS, squidFile.getDouble(ObjectiveCMetric.FUNCTIONS));
         context.saveMeasure(sonarFile, CoreMetrics.STATEMENTS, squidFile.getDouble(ObjectiveCMetric.STATEMENTS));
         context.saveMeasure(sonarFile, CoreMetrics.COMPLEXITY, squidFile.getDouble(ObjectiveCMetric.COMPLEXITY));
-        context.saveMeasure(sonarFile, CoreMetrics.COMMENT_BLANK_LINES, squidFile.getDouble(ObjectiveCMetric.COMMENT_BLANK_LINES));
         context.saveMeasure(sonarFile, CoreMetrics.COMMENT_LINES, squidFile.getDouble(ObjectiveCMetric.COMMENT_LINES));
     }
 

@@ -19,10 +19,14 @@
  */
 package org.sonar.plugins.objectivec.core;
 
+import java.util.List;
+
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 import org.sonar.api.resources.AbstractLanguage;
 import org.sonar.plugins.objectivec.ObjectiveCPlugin;
+
+import com.google.common.collect.Lists;
 
 public class ObjectiveC extends AbstractLanguage {
 
@@ -36,11 +40,20 @@ public class ObjectiveC extends AbstractLanguage {
     }
 
     public String[] getFileSuffixes() {
-        String[] suffixes = configuration.getStringArray(ObjectiveCPlugin.FILE_SUFFIXES_KEY);
+        String[] suffixes = filterEmptyStrings(configuration.getStringArray(ObjectiveCPlugin.FILE_SUFFIXES_KEY));
         if (suffixes == null || suffixes.length == 0) {
             suffixes = StringUtils.split(ObjectiveCPlugin.FILE_SUFFIXES_DEFVALUE, ",");
         }
         return suffixes;
     }
 
+    private String[] filterEmptyStrings(String[] stringArray) {
+        List<String> nonEmptyStrings = Lists.newArrayList();
+        for (String string : stringArray) {
+          if (StringUtils.isNotBlank(string.trim())) {
+            nonEmptyStrings.add(string.trim());
+          }
+        }
+        return nonEmptyStrings.toArray(new String[nonEmptyStrings.size()]);
+      }
 }

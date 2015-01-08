@@ -46,11 +46,16 @@ public final class CoberturaMeasuresPersistorTest {
 	@Test
 	public void shouldNotPersistMeasuresForUnknownFiles() {
 		final Project project = new Project("Test");
+
 		final SensorContext context = mock(SensorContext.class);
+        final ProjectFileSystem fileSystem = mock(ProjectFileSystem.class);
 		final Map<String, CoverageMeasuresBuilder> measures = new HashMap<String, CoverageMeasuresBuilder>();
 		measures.put("DummyResource", CoverageMeasuresBuilder.create());
 
-		project.setFileSystem(mock(ProjectFileSystem.class));
+
+        when(fileSystem.getBasedir()).thenReturn(new File("."));
+
+		project.setFileSystem(fileSystem);
 
 		final CoverageMeasuresPersistor testedPersistor = new CoverageMeasuresPersistor(project, context);
 		testedPersistor.saveMeasures(measures);
@@ -64,7 +69,7 @@ public final class CoberturaMeasuresPersistorTest {
 		final org.sonar.api.resources.File dummyFile = new org.sonar.api.resources.File("dummy/test");
 		final SensorContext context = mock(SensorContext.class);
 		final ProjectFileSystem fileSystem = mock(ProjectFileSystem.class);
-		final List<File> sourceDirs = new ArrayList<File>();
+        final List<File> sourceDirs = new ArrayList<File>();
 		final Map<String, CoverageMeasuresBuilder> measures = new HashMap<String, CoverageMeasuresBuilder>();
 		final CoverageMeasuresBuilder measureBuilder = CoverageMeasuresBuilder.create();
 
@@ -75,6 +80,7 @@ public final class CoberturaMeasuresPersistorTest {
 
 		when(fileSystem.getSourceDirs()).thenReturn(sourceDirs);
 		when(context.getResource(any(Resource.class))).thenReturn(dummyFile);
+        when(fileSystem.getBasedir()).thenReturn(new File("."));
 
 		project.setFileSystem(fileSystem);
 
@@ -82,7 +88,7 @@ public final class CoberturaMeasuresPersistorTest {
 		testedPersistor.saveMeasures(measures);
 
 		for (final Measure measure : measureBuilder.createMeasures()) {
-			verify(context, times(1)).saveMeasure(eq(new org.sonar.api.resources.File("test")), eq(measure));
+			verify(context, times(1)).saveMeasure(eq(org.sonar.api.resources.File.fromIOFile(new File(project.getFileSystem().getBasedir(), "dummy/test"), project)), eq(measure));
 		}
 	}
 
