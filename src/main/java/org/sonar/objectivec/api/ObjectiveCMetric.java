@@ -19,15 +19,14 @@
  */
 package org.sonar.objectivec.api;
 
-import org.sonar.squid.measures.CalculatedMetricFormula;
-import org.sonar.squid.measures.MetricDef;
+import org.sonar.squidbridge.measures.CalculatedMetricFormula;
+import org.sonar.squidbridge.measures.MetricDef;
 
 public enum ObjectiveCMetric implements MetricDef {
     FILES,
     LINES,
     LINES_OF_CODE,
     COMMENT_LINES,
-    COMMENT_BLANK_LINES,
     STATEMENTS,
     COMPLEXITY,
     FUNCTIONS;

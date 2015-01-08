@@ -5,10 +5,7 @@ This repository hosts the Objective-C plugin for [SonarQube](http://www.sonarqub
 
 This plugin is not supported by SonarSource. SonarSource offers a [commercial SonarSource Objective-C plugin](http://www.sonarsource.com/products/plugins/languages/objective-c/) as well. Both plugins do not offer the same functionalities/support.
 
-###Disclaimer
-This plugin is not compatible today with SonarQube 4.X+ (only 3.5). If you're using SonarQube 4.X+, your only option is to use the commercial plugin.
-
-The development of this plugin is frozen at this time. All contributions are welcomed, at least to support SonarQube 4. If you wish to contribute, check the [Contributing](https://github.com/octo-technology/sonar-objective-c/wiki/Contributing) wiki page.
+The development of this plugin has always been done thanks to the community. If you wish to contribute, check the [Contributing](https://github.com/octo-technology/sonar-objective-c/wiki/Contributing) wiki page.
 
 Find below an example of an iOS SonarQube dashboard:
 <p align="center">
@@ -27,20 +24,17 @@ Find below an example of an iOS SonarQube dashboard:
 
 For more details, see the list of [SonarQube metrics](https://github.com/octo-technology/sonar-objective-c/wiki/Features) implemented or pending.
 
-###Download
+###Compatibility
 
-The latest release is the 0.3.1, and it's available [here](http://bit.ly/1fSwd5I).
-
-You can also download the latest build of the plugin from [Cloudbees](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/lastSuccessfulBuild/artifact/target/).
-
-In the worst case, the Maven repository is available here: http://repository-rfelden.forge.cloudbees.com/
+- Use 0.3.x releases for SonarQube 3.x
+- Use 0.4.x releases for SonarQube 4.x
 
 ###Prerequisites
 
 - a Mac with Xcode...
-- [SonarQube](http://docs.codehaus.org/display/SONAR/Setup+and+Upgrade) and [SonarQube Runner](http://docs.codehaus.org/display/SONAR/Installing+and+Configuring+SonarQube+Runner) installed (<4.0, see disclaimer)
+- [SonarQube](http://docs.codehaus.org/display/SONAR/Setup+and+Upgrade) and [SonarQube Runner](http://docs.codehaus.org/display/SONAR/Installing+and+Configuring+SonarQube+Runner) installed ([HomeBrew](http://brew.sh) installed and ```brew install sonar-runner```)
 - [xctool](https://github.com/facebook/xctool) ([HomeBrew](http://brew.sh) installed and ```brew install xctool```)
-- [OCLint](http://docs.oclint.org/en/dev/intro/installation.html) installed. In my case the 0.7 version is failing on my project, so I recommend installing the 0.8.dev version (at least it works with oclint-0.8.dev.2888e0f). 
+- [OCLint](http://docs.oclint.org/en/dev/intro/installation.html) installed. Version 0.8.1 recommended  ([HomeBrew](http://brew.sh) installed and ```brew install https://gist.githubusercontent.com/TonyAnhTran/e1522b93853c5a456b74/raw/157549c7a77261e906fb88bc5606afd8bd727a73/oclint.rb```). 
 - [gcovr](http://gcovr.com) installed
 
 ###Installation (once for all your Objective-C projects)
@@ -58,17 +52,16 @@ In the worst case, the Maven repository is available here: http://repository-rfe
 - Run the script ```run-sonar.sh``` in your Xcode project root folder
 - Enjoy or file an issue!
 
-###Build Status
-[![Build Status](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/badge/icon)](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/)
-
 ###Credits
 * **Cyril Picat**
 * **Denis Bregeon**
 * **Romain Felden**
 * **François Helg**
 * **Mete Balci**
+* **Gilles Grousset**
 
 ###History
+- v0.4 (2014/01): support for SonarQube 4.x
 - v0.3.1 (2013/10): fix release
 - v0.3 (2013/10): added support for OCUnit tests and test coverage
 - v0.2 (2013/10): added OCLint checks as SonarQube violations

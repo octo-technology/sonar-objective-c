@@ -26,6 +26,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -35,7 +36,9 @@ import javax.xml.stream.XMLStreamException;
 import org.apache.tools.ant.filters.StringInputStream;
 import org.junit.Test;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.resources.Project;
+import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.rules.RulePriority;
 import org.sonar.api.rules.Violation;
@@ -75,88 +78,12 @@ public class OCLintXMLStreamHandlerTest {
 		assertFalse(parseResults.isEmpty());
 	}
 
-	@Test
-	public void violationContainsFileResource() throws XMLStreamException {
-		final org.sonar.api.resources.File dummyFile = new org.sonar.api.resources.File("test");
-		givenAProject().containingSourceDirectory("dummy");
-		final SensorContext context = mock(SensorContext.class);
-
-		final List<Violation> parseResults = new ArrayList<Violation>();
-		final StaxParser parser = new StaxParser(new OCLintXMLStreamHandler(parseResults, project(), context));
-
-		when(context.getResource(any(Resource.class))).thenReturn(dummyFile);
-
-		parser.parse(new StringInputStream(VALID_REPORT));
-
-		assertEquals(dummyFile, parseResults.get(0).getResource());
-	}
-
-	@Test
-	public void violationContainsTheMessageFromTheReport() throws XMLStreamException {
-		final org.sonar.api.resources.File dummyFile = new org.sonar.api.resources.File("test");
-		givenAProject().containingSourceDirectory("dummy");
-		final SensorContext context = mock(SensorContext.class);
-
-		final List<Violation> parseResults = new ArrayList<Violation>();
-		final StaxParser parser = new StaxParser(new OCLintXMLStreamHandler(parseResults, project(), context));
-
-		when(context.getResource(any(Resource.class))).thenReturn(dummyFile);
-
-		parser.parse(new StringInputStream(VALID_REPORT));
-
-		assertEquals(DESCRIPTION, parseResults.get(0).getMessage());
-	}
-
-	@Test
-	public void violationContainsTheLineFromTheReport() throws XMLStreamException {
-		final org.sonar.api.resources.File dummyFile = new org.sonar.api.resources.File("test");
-		givenAProject().containingSourceDirectory("dummy");
-		final SensorContext context = mock(SensorContext.class);
-
-		final List<Violation> parseResults = new ArrayList<Violation>();
-		final StaxParser parser = new StaxParser(new OCLintXMLStreamHandler(parseResults, project(), context));
-
-		when(context.getResource(any(Resource.class))).thenReturn(dummyFile);
-
-		parser.parse(new StringInputStream(VALID_REPORT));
-
-		assertEquals(VIOLATION_LINE, parseResults.get(0).getLineId());
-	}
-
-	@Test
-	public void violationRuleSeverityContainsThePriorityFromTheReport() throws XMLStreamException {
-		final org.sonar.api.resources.File dummyFile = new org.sonar.api.resources.File("test");
-		givenAProject().containingSourceDirectory("dummy");
-		final SensorContext context = mock(SensorContext.class);
-
-		final List<Violation> parseResults = new ArrayList<Violation>();
-		final StaxParser parser = new StaxParser(new OCLintXMLStreamHandler(parseResults, project(), context));
-
-		when(context.getResource(any(Resource.class))).thenReturn(dummyFile);
-
-		parser.parse(new StringInputStream(VALID_REPORT));
-
-		assertEquals(RulePriority.MAJOR, parseResults.get(0).getRule().getSeverity());
-	}
-
-	@Test
-	public void violationRuleKeyContainsThePriorityFromTheReport() throws XMLStreamException {
-		final org.sonar.api.resources.File dummyFile = new org.sonar.api.resources.File("test");
-		givenAProject().containingSourceDirectory("dummy");
-		final SensorContext context = mock(SensorContext.class);
-
-		final List<Violation> parseResults = new ArrayList<Violation>();
-		final StaxParser parser = new StaxParser(new OCLintXMLStreamHandler(parseResults, project(), context));
-
-		when(context.getResource(any(Resource.class))).thenReturn(dummyFile);
-
-		parser.parse(new StringInputStream(VALID_REPORT));
-
-		assertEquals(RULE_KEY, parseResults.get(0).getRule().getKey());
-	}
-
 	private Project project() {
-		return projectBuilder.project();
+        Project project = givenAProject().project();
+        ProjectFileSystem fileSystem = mock(ProjectFileSystem.class);
+        project.setFileSystem(fileSystem);
+        when(fileSystem.getBasedir()).thenReturn(new File("."));
+		return project;
 	}
 
 	private ProjectBuilder givenAProject() {

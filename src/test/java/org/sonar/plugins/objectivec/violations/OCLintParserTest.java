@@ -69,6 +69,7 @@ public class OCLintParserTest {
 
 		sourceDirs.add(new File("/dummy"));
 		when(fileSystem.getSourceDirs()).thenReturn(sourceDirs);
+        when(fileSystem.getBasedir()).thenReturn(new File("."));
 		when(context.getResource(any(Resource.class))).thenReturn(dummyFile);
 		project.setFileSystem(fileSystem);
 

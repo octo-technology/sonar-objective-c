@@ -27,7 +27,7 @@ import java.io.File;
 
 import org.junit.Test;
 import org.sonar.objectivec.api.ObjectiveCMetric;
-import org.sonar.squid.api.SourceFile;
+import org.sonar.squidbridge.api.SourceFile;
 
 public class ObjectiveCAstScannerTest {
 
@@ -46,7 +46,6 @@ public class ObjectiveCAstScannerTest {
     @Test
     public void comments() {
         SourceFile file = ObjectiveCAstScanner.scanSingleFile(new File("src/test/resources/objcSample.h"));
-        assertThat(file.getInt(ObjectiveCMetric.COMMENT_BLANK_LINES), is(3));
         assertThat(file.getInt(ObjectiveCMetric.COMMENT_LINES), is(4));
         assertThat(file.getNoSonarTagLines(), hasItem(10));
         assertThat(file.getNoSonarTagLines().size(), is(1));
