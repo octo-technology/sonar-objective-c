@@ -31,7 +31,7 @@ For more details, see the list of [SonarQube metrics](https://github.com/octo-te
 
 ###Download
 
-The latest release is the 0.4.0, and it's available [here](). 
+The latest version is the 0.4.x is not yet released and is available as a snapshot [here](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/lastSuccessfulBuild/artifact/target/). 
 The latest SonarQube 3.x release is the 0.3.1, and it's available [here](http://bit.ly/1fSwd5I).
   
 You can also download the latest build of the plugin from [Cloudbees](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/lastSuccessfulBuild/artifact/target/).
@@ -70,7 +70,7 @@ In the worst case, the Maven repository with all snapshots and releases is avail
 * **Mete Balci**
 
 ###History
-- v0.4.0 (2015/01): support for SonarQube 4.x
+- v0.4.0 (SOON): support for SonarQube 4.x
 - v0.3.1 (2013/10): fix release
 - v0.3 (2013/10): added support for OCUnit tests and test coverage
 - v0.2 (2013/10): added OCLint checks as SonarQube violations
