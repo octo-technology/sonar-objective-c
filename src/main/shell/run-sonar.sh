@@ -278,7 +278,7 @@ if [ "$oclint" = "on" ]; then
 	includedCommandLineFlags=""
 	echo "$srcDirs" | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh
 	while read word; do
-		includedCommandLineFlags+=" --include '.*/${currentDirectory}/${word}.*'"
+		includedCommandLineFlags+=" --include '.*/${currentDirectory}/${word}'"
 	done < tmpFileRunSonarSh
 	rm -rf tmpFileRunSonarSh
 	if [ "$vflag" = "on" ]; then
