@@ -29,11 +29,20 @@ For more details, see the list of [SonarQube metrics](https://github.com/octo-te
 - Use 0.3.x releases for SonarQube 3.x
 - Use 0.4.x releases for SonarQube 4.x
 
+###Download
+
+The latest release is the 0.4.0, and it's available [here](). 
+The latest SonarQube 3.x release is the 0.3.1, and it's available [here](http://bit.ly/1fSwd5I).
+  
+You can also download the latest build of the plugin from [Cloudbees](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/lastSuccessfulBuild/artifact/target/).
+ 
+In the worst case, the Maven repository with all snapshots and releases is available here: http://repository-rfelden.forge.cloudbees.com/
+
 ###Prerequisites
 
 - a Mac with Xcode...
 - [SonarQube](http://docs.codehaus.org/display/SONAR/Setup+and+Upgrade) and [SonarQube Runner](http://docs.codehaus.org/display/SONAR/Installing+and+Configuring+SonarQube+Runner) installed ([HomeBrew](http://brew.sh) installed and ```brew install sonar-runner```)
-- [xctool](https://github.com/facebook/xctool) ([HomeBrew](http://brew.sh) installed and ```brew install xctool```)
+- [xctool](https://github.com/facebook/xctool) ([HomeBrew](http://brew.sh) installed and ```brew install xctool```). If you are using Xcode 6, make sure to update xctool (```brew upgrade xctool```) to a version > 0.2.2.
 - [OCLint](http://docs.oclint.org/en/dev/intro/installation.html) installed. Version 0.8.1 recommended  ([HomeBrew](http://brew.sh) installed and ```brew install https://gist.githubusercontent.com/TonyAnhTran/e1522b93853c5a456b74/raw/157549c7a77261e906fb88bc5606afd8bd727a73/oclint.rb```). 
 - [gcovr](http://gcovr.com) installed
 
@@ -55,13 +64,13 @@ For more details, see the list of [SonarQube metrics](https://github.com/octo-te
 ###Credits
 * **Cyril Picat**
 * **Denis Bregeon**
-* **Romain Felden**
-* **François Helg**
-* **Mete Balci**
 * **Gilles Grousset**
+* **François Helg**
+* **Romain Felden**
+* **Mete Balci**
 
 ###History
-- v0.4 (2014/01): support for SonarQube 4.x
+- v0.4.0 (2015/01): support for SonarQube 4.x
 - v0.3.1 (2013/10): fix release
 - v0.3 (2013/10): added support for OCUnit tests and test coverage
 - v0.2 (2013/10): added OCLint checks as SonarQube violations
