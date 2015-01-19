@@ -25,29 +25,30 @@ import java.util.Collection;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;
 import org.sonar.api.rules.Violation;
 import org.sonar.plugins.objectivec.ObjectiveCPlugin;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
-import org.sonar.plugins.objectivec.violations.OCLintParser;
 
 public final class OCLintSensor implements Sensor {
     public static final String REPORT_PATH_KEY = ObjectiveCPlugin.PROPERTY_PREFIX
             + ".oclint.report";
     public static final String DEFAULT_REPORT_PATH = "sonar-reports/oclint.xml";
+
     private final Settings conf;
+    private final FileSystem fileSystem;
 
-    public OCLintSensor() {
-        this(null);
-    }
-
-    public OCLintSensor(final Settings config) {
-        conf = config;
+    public OCLintSensor(final FileSystem moduleFileSystem, final Settings config) {
+        this.conf = config;
+        this.fileSystem = moduleFileSystem;
     }
 
     public boolean shouldExecuteOnProject(final Project project) {
-        return ObjectiveC.KEY.equals(project.getLanguageKey());
+
+        return project.isRoot() && fileSystem.languages().contains(ObjectiveC.KEY);
+
     }
 
     public void analyse(final Project project, final SensorContext context) {
