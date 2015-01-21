@@ -153,9 +153,9 @@ fi
 workspaceFile=''; readParameter workspaceFile 'sonar.objectivec.workspace'
 projectFile=''; readParameter projectFile 'sonar.objectivec.project'
 if [[ "$workspaceFile" != "" ]] ; then
-	xctoolCmdPrefix="xctool -workspace $workspaceFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
+	xctoolCmdPrefix="xctool -workspace $workspaceFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO OBJROOT=./build"
 else
-	xctoolCmdPrefix="xctool -project $projectFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
+	xctoolCmdPrefix="xctool -project $projectFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO OBJROOT=./build"
 fi	
 
 # Source directories for .h/.m files
@@ -240,8 +240,10 @@ else
 	# Extract the path to the .gcno/.gcda coverage files
 	echo $projectFile | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh
 	while read projectName; do
-	
-		coverageFilesPath=$(grep 'command' compile_commands.json | sed 's#^.*-o \\/#\/#;s#",##' | grep "${projectName%%.*}.build" | awk 'NR<2' | sed 's/\\\//\//g' | sed 's/\\\\//g' | xargs -0 dirname)
+
+        projectName=$(basename $projectFile .xcodeproj)
+	    coverageFilesPath="build/$projectName.build/Debug-iphonesimulator/$appScheme.build/Objects-normal/i386"
+		#coverageFilesPath=$(grep 'command' compile_commands.json | sed 's#^.*-o \\/#\/#;s#",##' | grep "${projectName%%.*}.build" | awk 'NR<2' | sed 's/\\\//\//g' | sed 's/\\\\//g' | xargs -0 dirname)
 		if [ "$vflag" = "on" ]; then
 			echo
 			echo "Path for .gcno/.gcda coverage files is: $coverageFilesPath"
@@ -261,7 +263,7 @@ else
 		fi
 	
 		# Run gcovr with the right options
-		runCommand "sonar-reports/coverage-${projectName%%.*}.xml" gcovr -r . "$coverageFilesPath" $excludedCommandLineFlags --xml 
+		runCommand "sonar-reports/coverage-${projectName%%.*}.xml" gcovr -r . --object-directory "$coverageFilesPath" $excludedCommandLineFlags --xml
 
 	done < tmpFileRunSonarSh
 	rm -rf tmpFileRunSonarSh
