@@ -231,7 +231,10 @@ if [ "$testScheme" = "" ]; then
 else
 
 	echo -n 'Running tests using xctool'	
-	runCommand sonar-reports/TEST-report.xml $xctoolCmdPrefix -scheme "$testScheme" -reporter junit GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES test
+    # Not using runCommand function because xctool may return 1, even if everything is fine (maybe a xctool bug ?)
+	#runCommand /dev/null $xctoolCmdPrefix -scheme "$testScheme" GCC_PRECOMPILE_PREFIX_HEADER=NO GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES -reporter junit:sonar-reports/TEST-report.xml -reporter plain clean test
+     $xctoolCmdPrefix -scheme "$testScheme" GCC_PRECOMPILE_PREFIX_HEADER=NO GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES -reporter junit:sonar-reports/TEST-report.xml -reporter plain clean test
+
 
 	echo -n 'Computing coverage report'
 
@@ -243,7 +246,6 @@ else
 
         projectName=$(basename $projectFile .xcodeproj)
 	    coverageFilesPath="build/$projectName.build/Debug-iphonesimulator/$appScheme.build/Objects-normal/i386"
-		#coverageFilesPath=$(grep 'command' compile_commands.json | sed 's#^.*-o \\/#\/#;s#",##' | grep "${projectName%%.*}.build" | awk 'NR<2' | sed 's/\\\//\//g' | sed 's/\\\\//g' | xargs -0 dirname)
 		if [ "$vflag" = "on" ]; then
 			echo
 			echo "Path for .gcno/.gcda coverage files is: $coverageFilesPath"
