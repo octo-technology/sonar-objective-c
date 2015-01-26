@@ -54,7 +54,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -72,7 +72,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -90,7 +90,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -108,7 +108,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -126,7 +126,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -144,7 +144,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -162,7 +162,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -180,7 +180,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -198,7 +198,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -216,7 +216,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -234,7 +234,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>15</val>
+                    <val>30</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -252,7 +252,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>5</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -324,7 +324,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>15</val>
+                    <val>30</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -378,7 +378,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -396,7 +396,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -414,7 +414,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -432,7 +432,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -450,7 +450,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -468,7 +468,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -490,7 +490,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -508,7 +508,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>5</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -544,7 +544,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -562,7 +562,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -580,7 +580,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -598,7 +598,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>5</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -616,7 +616,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>5</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -634,7 +634,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>5</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -652,7 +652,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>5</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -670,7 +670,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -688,7 +688,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -706,7 +706,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -724,7 +724,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -742,7 +742,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -760,7 +760,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -796,7 +796,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -878,7 +878,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -896,7 +896,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>5</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -914,7 +914,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -932,7 +932,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -950,7 +950,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -976,7 +976,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>5</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -994,7 +994,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>15</val>
+                    <val>30</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -1012,7 +1012,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>5</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -1034,7 +1034,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -1052,7 +1052,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>5</val>
+                    <val>30</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -1070,7 +1070,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -1088,7 +1088,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -1106,7 +1106,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>5</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -1124,7 +1124,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>5</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -1142,7 +1142,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>5</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -1160,7 +1160,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>5</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -1178,7 +1178,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>5</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -1196,7 +1196,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>15</val>
+                    <val>30</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -1214,7 +1214,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>15</val>
+                    <val>30</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -1232,7 +1232,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
@@ -1250,7 +1250,7 @@
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
+                    <val>10</val>
                     <txt>mn</txt>
                 </prop>
                 <prop>
