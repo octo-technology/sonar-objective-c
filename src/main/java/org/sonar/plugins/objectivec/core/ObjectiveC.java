@@ -21,8 +21,8 @@ package org.sonar.plugins.objectivec.core;
 
 import java.util.List;
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
+import org.sonar.api.config.Settings;
 import org.sonar.api.resources.AbstractLanguage;
 import org.sonar.plugins.objectivec.ObjectiveCPlugin;
 
@@ -32,15 +32,16 @@ public class ObjectiveC extends AbstractLanguage {
 
     public static final String KEY = "objc";
 
-    private Configuration configuration;
+    private Settings settings;
 
-    public ObjectiveC(Configuration configuration) {
+    public ObjectiveC(Settings settings) {
+
         super(KEY, "Objective-C");
-        this.configuration = configuration;
+        this.settings = settings;
     }
 
     public String[] getFileSuffixes() {
-        String[] suffixes = filterEmptyStrings(configuration.getStringArray(ObjectiveCPlugin.FILE_SUFFIXES_KEY));
+        String[] suffixes = filterEmptyStrings(settings.getStringArray(ObjectiveCPlugin.FILE_SUFFIXES_KEY));
         if (suffixes == null || suffixes.length == 0) {
             suffixes = StringUtils.split(ObjectiveCPlugin.FILE_SUFFIXES_DEFVALUE, ",");
         }

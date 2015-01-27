@@ -26,6 +26,7 @@ import java.util.Map;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.config.Settings;
 import org.sonar.api.measures.CoverageMeasuresBuilder;
 import org.sonar.api.resources.Project;
@@ -42,17 +43,20 @@ public final class CoberturaSensor implements Sensor {
     private final ReportFilesFinder reportFilesFinder;
     private final CoberturaParser parser = new CoberturaParser();
 
-    public CoberturaSensor() {
-        this(null);
-    }
+    private final Settings conf;
+    private final FileSystem fileSystem;
 
-    public CoberturaSensor(final Settings config) {
-        reportFilesFinder = new ReportFilesFinder(config, REPORT_PATTERN_KEY,
-                DEFAULT_REPORT_PATTERN);
+    public CoberturaSensor(final FileSystem fileSystem, final Settings config) {
+
+        this.conf = config;
+        this.fileSystem = fileSystem;
+
+        reportFilesFinder = new ReportFilesFinder(config, REPORT_PATTERN_KEY, DEFAULT_REPORT_PATTERN);
     }
 
     public boolean shouldExecuteOnProject(final Project project) {
-        return ObjectiveC.KEY.equals(project.getLanguageKey());
+
+        return project.isRoot() && fileSystem.languages().contains(ObjectiveC.KEY);
     }
 
     public void analyse(final Project project, final SensorContext context) {

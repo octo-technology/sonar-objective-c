@@ -48,18 +48,24 @@ In the worst case, the Maven repository with all snapshots and releases is avail
 
 ###Installation (once for all your Objective-C projects)
 - Install [the plugin](http://bit.ly/1fSwd5I) through the Update Center (of SonarQube) or download it into the $SONARQUBE_HOME/extensions/plugins directory
+- Copy [run-sonar.sh](https://rawgithub.com/octo-technology/sonar-objective-c/master/src/main/shell/run-sonar.sh) somewhere in your PATH
 - Restart the SonarQube server.
 
 ###Configuration (once per project)
 - Copy [sonar-project.properties](https://rawgithub.com/octo-technology/sonar-objective-c/master/sample/sonar-project.properties) in your Xcode project root folder (along your .xcodeproj file)
 - Edit the *sonar-project.properties* file to match your Xcode iOS/MacOS project
-- Copy [run-sonar.sh](https://rawgithub.com/octo-technology/sonar-objective-c/master/src/main/shell/run-sonar.sh) in your Xcode project root folder and make it executable
 
 **The good news is that you don't have to modify your Xcode project to enable SonarQube!**. Ok, there might be one needed modification if you don't have a specific scheme for your test target, but that's all.
 
 ###Analysis
 - Run the script ```run-sonar.sh``` in your Xcode project root folder
 - Enjoy or file an issue!
+
+###Update (once per plugin update)
+- Install the [latest plugin](http://bit.ly/1fSwd5I) version
+- Copy [run-sonar.sh](https://rawgithub.com/octo-technology/sonar-objective-c/master/src/main/shell/run-sonar.sh) somewhere in your PATH
+
+If you still have *run-sonar.sh* file in each of your project (not recommended), you will need to update all those files.
 
 ###Credits
 * **Cyril Picat**

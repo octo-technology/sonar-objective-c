@@ -20,6 +20,7 @@
 
 package org.sonar.plugins.objectivec.tests;
 
+import com.sun.swing.internal.plaf.metal.resources.metal_sv;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.sonar.api.batch.SensorContext;
@@ -142,13 +143,23 @@ public class SurefireParser {
 
     private void saveClassMeasure(SensorContext context, TestSuiteReport fileReport, Metric metric, double value) {
         if ( !Double.isNaN(value)) {
-            context.saveMeasure(getUnitTestResource(fileReport.getClassKey()), metric, value);
+
+            String basename = fileReport.getClassKey().replace('.', '/');
+
+            // .m file
+            context.saveMeasure(getUnitTestResource(basename + ".m"), metric, value);
+
+            // Try .m file with + in name
+            try {
+                context.saveMeasure(getUnitTestResource(basename.replace('_', '+') + ".m"), metric, value);
+            } catch (Exception e) {
+                // Nothing : File was probably already registered successfully
+            }
         }
     }
 
-    public Resource getUnitTestResource(String classKey) {
+    public Resource getUnitTestResource(String filename) {
 
-        String filename = classKey.replace('.', '/') + ".m";
         org.sonar.api.resources.File sonarFile = new org.sonar.api.resources.File(filename);
         sonarFile.setQualifier(Qualifiers.UNIT_TEST_FILE);
         return sonarFile;
