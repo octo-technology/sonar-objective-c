@@ -26,8 +26,8 @@ For more details, see the list of [SonarQube metrics](https://github.com/octo-te
 
 ###Compatibility
 
-- Use 0.3.x releases for SonarQube 3.x
-- Use 0.4.x releases for SonarQube 4.x
+- Use 0.3.x releases for SonarQube < 4.3
+- Use 0.4.x releases for SonarQube >= 4.3
 
 ###Download
 
@@ -69,14 +69,14 @@ If you still have *run-sonar.sh* file in each of your project (not recommended),
 
 ###Credits
 * **Cyril Picat**
-* **Denis Bregeon**
 * **Gilles Grousset**
+* **Denis Bregeon**
 * **François Helg**
 * **Romain Felden**
 * **Mete Balci**
 
 ###History
-- v0.4.0 (SOON): support for SonarQube 4.x
+- v0.4.0 (SOON): support for SonarQube >= 4.3 (4.x & 5.x)
 - v0.3.1 (2013/10): fix release
 - v0.3 (2013/10): added support for OCUnit tests and test coverage
 - v0.2 (2013/10): added OCLint checks as SonarQube violations
