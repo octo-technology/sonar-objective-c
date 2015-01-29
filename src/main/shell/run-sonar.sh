@@ -153,9 +153,9 @@ fi
 workspaceFile=''; readParameter workspaceFile 'sonar.objectivec.workspace'
 projectFile=''; readParameter projectFile 'sonar.objectivec.project'
 if [[ "$workspaceFile" != "" ]] ; then
-	xctoolCmdPrefix="xctool -workspace $workspaceFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO OBJROOT=./build"
+	xctoolCmdPrefix="xctool -workspace $workspaceFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
 else
-	xctoolCmdPrefix="xctool -project $projectFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO OBJROOT=./build"
+	xctoolCmdPrefix="xctool -project $projectFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
 fi	
 
 # Source directories for .h/.m files
@@ -231,10 +231,7 @@ if [ "$testScheme" = "" ]; then
 else
 
 	echo -n 'Running tests using xctool'	
-    # Not using runCommand function because xctool may return 1, even if everything is fine (maybe a xctool bug ?)
-	#runCommand /dev/null $xctoolCmdPrefix -scheme "$testScheme" GCC_PRECOMPILE_PREFIX_HEADER=NO GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES -reporter junit:sonar-reports/TEST-report.xml -reporter plain clean test
-     $xctoolCmdPrefix -scheme "$testScheme" GCC_PRECOMPILE_PREFIX_HEADER=NO GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES -reporter junit:sonar-reports/TEST-report.xml -reporter plain clean test
-
+	runCommand sonar-reports/TEST-report.xml $xctoolCmdPrefix -scheme "$testScheme" -reporter junit GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES test
 
 	echo -n 'Computing coverage report'
 
@@ -243,9 +240,8 @@ else
 	# Extract the path to the .gcno/.gcda coverage files
 	echo $projectFile | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh
 	while read projectName; do
-
-        projectName=$(basename $projectFile .xcodeproj)
-	    coverageFilesPath="build/$projectName.build/Debug-iphonesimulator/$appScheme.build/Objects-normal/i386"
+	
+		coverageFilesPath=$(grep 'command' compile_commands.json | sed 's#^.*-o \\/#\/#;s#",##' | grep "${projectName%%.*}.build" | awk 'NR<2' | sed 's/\\\//\//g' | sed 's/\\\\//g' | xargs -0 dirname)
 		if [ "$vflag" = "on" ]; then
 			echo
 			echo "Path for .gcno/.gcda coverage files is: $coverageFilesPath"
@@ -265,7 +261,7 @@ else
 		fi
 	
 		# Run gcovr with the right options
-		runCommand "sonar-reports/coverage-${projectName%%.*}.xml" gcovr -r . --object-directory "$coverageFilesPath" $excludedCommandLineFlags --xml
+		runCommand "sonar-reports/coverage-${projectName%%.*}.xml" gcovr -r . "$coverageFilesPath" $excludedCommandLineFlags --xml 
 
 	done < tmpFileRunSonarSh
 	rm -rf tmpFileRunSonarSh
