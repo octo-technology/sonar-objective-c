@@ -24,7 +24,7 @@
 
     <groupId>org.codehaus.sonar-plugin.objectivec</groupId>
     <artifactId>sonar-objective-c-plugin</artifactId>
-    <version>0.4.0-SNAPSHOT</version>
+    <version>0.4.0</version>
 
     <packaging>sonar-plugin</packaging>
 
@@ -52,15 +52,15 @@
             <organization>OCTO Technology</organization>
         </developer>
         <developer>
-            <id>dbregeon</id>
-            <name>Denis Bregeon</name>
-            <organization>Incept5 LLC</organization>
-        </developer>
-        <developer>
             <id>zippy1978</id>
             <name>Gilles Grousset</name>
             <url>https://github.com/zippy1978</url>
-        </developer>        
+        </developer>
+	<developer>
+            <id>dbregeon</id>
+            <name>Denis Bregeon</name>
+            <organization>Incept5 LLC</organization>
+        </developer>    
         <developer>
             <id>fhelg</id>
             <name>François Helg</name>
