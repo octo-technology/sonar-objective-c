@@ -27,11 +27,11 @@ For more details, see the list of [SonarQube metrics](https://github.com/octo-te
 ###Compatibility
 
 - Use 0.3.x releases for SonarQube < 4.3
-- Use 0.4.x releases for SonarQube >= 4.3
+- Use 0.4.x releases for SonarQube >= 4.3 (4.x and 5.x)
 
 ###Download
 
-The latest version is the 0.4.x is not yet released and is available as a snapshot [here](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/lastSuccessfulBuild/artifact/target/). 
+The latest version is the 0.4.0 and it's available [here](http://bit.ly/18A7OkE).
 The latest SonarQube 3.x release is the 0.3.1, and it's available [here](http://bit.ly/1fSwd5I).
   
 You can also download the latest build of the plugin from [Cloudbees](https://rfelden.ci.cloudbees.com/job/sonar-objective-c/lastSuccessfulBuild/artifact/target/).
@@ -47,7 +47,7 @@ In the worst case, the Maven repository with all snapshots and releases is avail
 - [gcovr](http://gcovr.com) installed
 
 ###Installation (once for all your Objective-C projects)
-- Install [the plugin](http://bit.ly/1fSwd5I) through the Update Center (of SonarQube) or download it into the $SONARQUBE_HOME/extensions/plugins directory
+- Install [the plugin](http://bit.ly/18A7OkE) through the Update Center (of SonarQube) or download it into the $SONARQUBE_HOME/extensions/plugins directory
 - Copy [run-sonar.sh](https://rawgithub.com/octo-technology/sonar-objective-c/master/src/main/shell/run-sonar.sh) somewhere in your PATH
 - Restart the SonarQube server.
 
@@ -62,7 +62,7 @@ In the worst case, the Maven repository with all snapshots and releases is avail
 - Enjoy or file an issue!
 
 ###Update (once per plugin update)
-- Install the [latest plugin](http://bit.ly/1fSwd5I) version
+- Install the [latest plugin](http://bit.ly/18A7OkE) version
 - Copy [run-sonar.sh](https://rawgithub.com/octo-technology/sonar-objective-c/master/src/main/shell/run-sonar.sh) somewhere in your PATH
 
 If you still have *run-sonar.sh* file in each of your project (not recommended), you will need to update all those files.
@@ -76,7 +76,7 @@ If you still have *run-sonar.sh* file in each of your project (not recommended),
 * **Mete Balci**
 
 ###History
-- v0.4.0 (SOON): support for SonarQube >= 4.3 (4.x & 5.x)
+- v0.4.0 (2015/01): support for SonarQube >= 4.3 (4.x & 5.x)
 - v0.3.1 (2013/10): fix release
 - v0.3 (2013/10): added support for OCUnit tests and test coverage
 - v0.2 (2013/10): added OCLint checks as SonarQube violations
