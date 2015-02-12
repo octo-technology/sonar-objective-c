@@ -17,41 +17,42 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.objectivec.violations;
+package org.sonar.plugins.objectivec.violations.fauxpas;
 
-import java.io.InputStreamReader;
-import java.io.Reader;
-
+import com.google.common.io.Closeables;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.profiles.ProfileDefinition;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.utils.ValidationMessages;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
+import org.sonar.plugins.objectivec.violations.oclint.OCLintRuleRepository;
 
-import com.google.common.io.Closeables;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
-public final class OCLintProfile extends ProfileDefinition {
+/**
+ * Created by gillesgrousset on 12/02/15.
+ */
+public class FauxPasProfile extends ProfileDefinition {
 
-    private static final String DEFAULT_PROFILE = "/org/sonar/plugins/oclint/profile-oclint.xml";
-    private final OCLintProfileImporter profileImporter;
+    private static final String DEFAULT_PROFILE = "/org/sonar/plugins/fauxpas/profile-fauxpas.xml";
+    private final FauxPasProfileImporter profileImporter;
 
-    public OCLintProfile(final OCLintProfileImporter importer) {
+    public FauxPasProfile(final FauxPasProfileImporter importer) {
         profileImporter = importer;
     }
 
     @Override
-    public RulesProfile createProfile(final ValidationMessages messages) {
-        LoggerFactory.getLogger(getClass()).info("Creating OCLint Profile");
+    public RulesProfile createProfile(ValidationMessages messages) {
+        LoggerFactory.getLogger(getClass()).info("Creating FauxPas Profile");
         Reader config = null;
 
         try {
             config = new InputStreamReader(getClass().getResourceAsStream(
                     DEFAULT_PROFILE));
-            final RulesProfile profile = profileImporter.importProfile(config,
-                    messages);
-            profile.setName(OCLintRuleRepository.REPOSITORY_KEY);
+            final RulesProfile profile = profileImporter.importProfile(config, messages);
+            profile.setName(FauxPasRuleRepository.REPOSITORY_KEY);
             profile.setLanguage(ObjectiveC.KEY);
-            profile.setDefaultProfile(true);
 
             return profile;
         } finally {

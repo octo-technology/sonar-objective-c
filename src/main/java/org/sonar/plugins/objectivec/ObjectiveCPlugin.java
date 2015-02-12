@@ -34,14 +34,18 @@ import org.sonar.plugins.objectivec.cpd.ObjectiveCCpdMapping;
 import com.google.common.collect.ImmutableList;
 
 import org.sonar.plugins.objectivec.tests.SurefireSensor;
-import org.sonar.plugins.objectivec.violations.OCLintProfile;
-import org.sonar.plugins.objectivec.violations.OCLintProfileImporter;
-import org.sonar.plugins.objectivec.violations.OCLintRuleRepository;
-import org.sonar.plugins.objectivec.violations.OCLintSensor;
+import org.sonar.plugins.objectivec.violations.fauxpas.FauxPasProfile;
+import org.sonar.plugins.objectivec.violations.fauxpas.FauxPasProfileImporter;
+import org.sonar.plugins.objectivec.violations.fauxpas.FauxPasRuleRepository;
+import org.sonar.plugins.objectivec.violations.fauxpas.FauxPasSensor;
+import org.sonar.plugins.objectivec.violations.oclint.OCLintProfile;
+import org.sonar.plugins.objectivec.violations.oclint.OCLintProfileImporter;
+import org.sonar.plugins.objectivec.violations.oclint.OCLintRuleRepository;
+import org.sonar.plugins.objectivec.violations.oclint.OCLintSensor;
 
 @Properties({
         @Property(key = CoberturaSensor.REPORT_PATTERN_KEY, defaultValue = CoberturaSensor.DEFAULT_REPORT_PATTERN, name = "Path to unit test coverage report(s)", description = "Relative to projects' root. Ant patterns are accepted", global = false, project = true),
-        @Property(key = OCLintSensor.REPORT_PATH_KEY, defaultValue = OCLintSensor.DEFAULT_REPORT_PATH, name = "Path to oclint pmd formatted report", description = "Relative to projects' root.", global = false, project = true)
+        @Property(key = OCLintSensor.REPORT_PATH_KEY, defaultValue = OCLintSensor.DEFAULT_REPORT_PATH, name = "Path to fauxpas pmd formatted report", description = "Relative to projects' root.", global = false, project = true)
 })
 public class ObjectiveCPlugin extends SonarPlugin {
 
@@ -55,9 +59,16 @@ public class ObjectiveCPlugin extends SonarPlugin {
                 ObjectiveCProfile.class,
                 SurefireSensor.class,
                 CoberturaSensor.class,
+
                 OCLintRuleRepository.class,
-                OCLintSensor.class, OCLintProfile.class,
-                OCLintProfileImporter.class
+                OCLintSensor.class,
+                OCLintProfile.class,
+                OCLintProfileImporter.class,
+
+                FauxPasSensor.class,
+                FauxPasRuleRepository.class,
+                FauxPasProfile.class,
+                FauxPasProfileImporter.class
                 );
     }
 
@@ -69,8 +80,7 @@ public class ObjectiveCPlugin extends SonarPlugin {
 
     public static final String PROPERTY_PREFIX = "sonar.objectivec";
 
-    public static final String TEST_FRAMEWORK_KEY = PROPERTY_PREFIX
-            + ".testframework";
+    public static final String TEST_FRAMEWORK_KEY = PROPERTY_PREFIX + ".testframework";
     public static final String TEST_FRAMEWORK_DEFAULT = "ghunit";
 
 }

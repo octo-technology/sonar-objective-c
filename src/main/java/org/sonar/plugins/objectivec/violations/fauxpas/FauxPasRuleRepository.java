@@ -17,32 +17,35 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.objectivec.violations;
+package org.sonar.plugins.objectivec.violations.fauxpas;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.List;
-
+import com.google.common.io.Closeables;
 import org.apache.commons.lang.CharEncoding;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleRepository;
 import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
 
-import com.google.common.io.Closeables;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.List;
 
-public final class OCLintRuleRepository extends RuleRepository {
-    public static final String REPOSITORY_KEY = "OCLint";
+/**
+ * Created by gillesgrousset on 12/02/15.
+ */
+public class FauxPasRuleRepository extends RuleRepository {
+
+    public static final String REPOSITORY_KEY = "FauxPas";
     public static final String REPOSITORY_NAME = REPOSITORY_KEY;
 
-    private static final String RULES_FILE = "/org/sonar/plugins/oclint/rules.txt";
+    private static final String RULES_FILE = "/org/sonar/plugins/fauxpas/rules.json";
 
-    private final OCLintRuleParser ocLintRuleParser = new OCLintRuleParser();
+    private final FauxPasRuleParser ruleParser = new FauxPasRuleParser();
 
-    public OCLintRuleRepository() {
-        super(OCLintRuleRepository.REPOSITORY_KEY, ObjectiveC.KEY);
-        setName(OCLintRuleRepository.REPOSITORY_NAME);
+    public FauxPasRuleRepository() {
+        super(FauxPasRuleRepository.REPOSITORY_KEY, ObjectiveC.KEY);
+        setName(FauxPasRuleRepository.REPOSITORY_NAME);
     }
 
     @Override
@@ -51,9 +54,9 @@ public final class OCLintRuleRepository extends RuleRepository {
         try {
             reader = new BufferedReader(new InputStreamReader(getClass()
                     .getResourceAsStream(RULES_FILE), CharEncoding.UTF_8));
-            return ocLintRuleParser.parse(reader);
+            return ruleParser.parse(reader);
         } catch (final IOException e) {
-            throw new SonarException("Fail to load the default OCLint rules.",
+            throw new SonarException("Fail to load the default FauxPas rules.",
                     e);
         } finally {
             Closeables.closeQuietly(reader);
