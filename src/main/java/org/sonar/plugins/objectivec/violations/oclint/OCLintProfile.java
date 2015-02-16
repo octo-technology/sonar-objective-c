@@ -22,6 +22,7 @@ package org.sonar.plugins.objectivec.violations.oclint;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.profiles.ProfileDefinition;
 import org.sonar.api.profiles.RulesProfile;
@@ -32,7 +33,9 @@ import com.google.common.io.Closeables;
 
 public final class OCLintProfile extends ProfileDefinition {
 
-    private static final String DEFAULT_PROFILE = "/org/sonar/plugins/oclint/profile-oclint.xml";
+    public static final String PROFILE_PATH = "/org/sonar/plugins/oclint/profile-oclint.xml";
+    private static final Logger LOGGER = LoggerFactory.getLogger(OCLintProfile.class);
+
     private final OCLintProfileImporter profileImporter;
 
     public OCLintProfile(final OCLintProfileImporter importer) {
@@ -41,17 +44,16 @@ public final class OCLintProfile extends ProfileDefinition {
 
     @Override
     public RulesProfile createProfile(final ValidationMessages messages) {
-        LoggerFactory.getLogger(getClass()).info("Creating OCLint Profile");
+        LOGGER.info("Creating OCLint Profile");
         Reader config = null;
 
         try {
             config = new InputStreamReader(getClass().getResourceAsStream(
-                    DEFAULT_PROFILE));
+                    PROFILE_PATH));
             final RulesProfile profile = profileImporter.importProfile(config,
                     messages);
             profile.setName(OCLintRuleRepository.REPOSITORY_KEY);
             profile.setLanguage(ObjectiveC.KEY);
-            profile.setDefaultProfile(true);
 
             return profile;
         } finally {

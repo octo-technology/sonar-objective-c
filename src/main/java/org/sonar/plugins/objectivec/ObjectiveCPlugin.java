@@ -34,6 +34,7 @@ import org.sonar.plugins.objectivec.cpd.ObjectiveCCpdMapping;
 import com.google.common.collect.ImmutableList;
 
 import org.sonar.plugins.objectivec.tests.SurefireSensor;
+import org.sonar.plugins.objectivec.violations.ObjectiveCProfile;
 import org.sonar.plugins.objectivec.violations.fauxpas.FauxPasProfile;
 import org.sonar.plugins.objectivec.violations.fauxpas.FauxPasProfileImporter;
 import org.sonar.plugins.objectivec.violations.fauxpas.FauxPasRuleRepository;
@@ -45,7 +46,8 @@ import org.sonar.plugins.objectivec.violations.oclint.OCLintSensor;
 
 @Properties({
         @Property(key = CoberturaSensor.REPORT_PATTERN_KEY, defaultValue = CoberturaSensor.DEFAULT_REPORT_PATTERN, name = "Path to unit test coverage report(s)", description = "Relative to projects' root. Ant patterns are accepted", global = false, project = true),
-        @Property(key = OCLintSensor.REPORT_PATH_KEY, defaultValue = OCLintSensor.DEFAULT_REPORT_PATH, name = "Path to fauxpas pmd formatted report", description = "Relative to projects' root.", global = false, project = true)
+        @Property(key = OCLintSensor.REPORT_PATH_KEY, defaultValue = OCLintSensor.DEFAULT_REPORT_PATH, name = "Path to oclint pmd formatted report", description = "Relative to projects' root.", global = false, project = true),
+        @Property(key = FauxPasSensor.REPORT_PATH_KEY, defaultValue = FauxPasSensor.DEFAULT_REPORT_PATH, name = "Path to fauxpas json formatted report", description = "Relative to projects' root.", global = false, project = true)
 })
 public class ObjectiveCPlugin extends SonarPlugin {
 

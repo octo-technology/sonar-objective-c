@@ -20,12 +20,12 @@
 package org.sonar.plugins.objectivec.violations.fauxpas;
 
 import com.google.common.io.Closeables;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.profiles.ProfileDefinition;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.utils.ValidationMessages;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
-import org.sonar.plugins.objectivec.violations.oclint.OCLintRuleRepository;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -35,7 +35,9 @@ import java.io.Reader;
  */
 public class FauxPasProfile extends ProfileDefinition {
 
-    private static final String DEFAULT_PROFILE = "/org/sonar/plugins/fauxpas/profile-fauxpas.xml";
+    public static final String PROFILE_PATH = "/org/sonar/plugins/fauxpas/profile-fauxpas.xml";
+    private static final Logger LOGGER = LoggerFactory.getLogger(FauxPasProfile.class);
+
     private final FauxPasProfileImporter profileImporter;
 
     public FauxPasProfile(final FauxPasProfileImporter importer) {
@@ -44,12 +46,12 @@ public class FauxPasProfile extends ProfileDefinition {
 
     @Override
     public RulesProfile createProfile(ValidationMessages messages) {
-        LoggerFactory.getLogger(getClass()).info("Creating FauxPas Profile");
+        LOGGER.info("Creating FauxPas Profile");
         Reader config = null;
 
         try {
             config = new InputStreamReader(getClass().getResourceAsStream(
-                    DEFAULT_PROFILE));
+                    PROFILE_PATH));
             final RulesProfile profile = profileImporter.importProfile(config, messages);
             profile.setName(FauxPasRuleRepository.REPOSITORY_KEY);
             profile.setLanguage(ObjectiveC.KEY);
