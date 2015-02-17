@@ -22,10 +22,12 @@ def parseRules(url, catMapping) {
         def rules = cat."**".findAll {it.@class.toString().contains('rule')}
         rules.each {r ->
 
+            def k = r."**".find {it.@class.toString().contains("short-name")}.text()
+
             def rule = [
                     category: cat.H2.text(),
-                    key: r."**".find {it.@class.toString().contains("short-name")}.text(),
-                    name: r.H3.text().trim().replaceAll('\\n', ' '),
+                    key: k,
+                    name: (r.H3.text().trim().replaceAll('\\n', ' ') - k).trim(),
                     description: r."**".find {it.@class.toString().contains("description")}.text().trim().replaceAll('\\n', ' '),
                     severity: catMapping[cat.H2.text()]
             ]
