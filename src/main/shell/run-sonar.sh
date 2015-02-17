@@ -297,6 +297,17 @@ else
 	echo 'Skipping OCLint (test purposes only!)'
 fi
 
+hash fauxpas 2>/dev/null
+if [ $? -eq 0 ]; then
+
+    #FauxPas
+    echo -n 'Running FauxPas...'
+    fauxpas -t $appScheme -o json check $projectFile > sonar-reports/fauxpas.json
+
+else
+    echo 'Skipping FauxPas (not installed)'
+fi
+
 # SonarQube
 echo -n 'Running SonarQube using SonarQube Runner'
 runCommand /dev/stdout sonar-runner

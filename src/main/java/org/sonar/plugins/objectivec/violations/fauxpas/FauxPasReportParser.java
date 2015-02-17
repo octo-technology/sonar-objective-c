@@ -106,9 +106,12 @@ public class FauxPasReportParser {
             JSONObject start = (JSONObject)extent.get("start");
 
             int lineNumber = Integer.parseInt(start.get("line").toString());
-            if (lineNumber > 0) {
-                violation.setLineId(Integer.parseInt(start.get("line").toString()));
+
+            // Avoid line 0
+            if (lineNumber == 0) {
+                lineNumber++;
             }
+            violation.setLineId(Integer.parseInt(start.get("line").toString()));
 
             violations.add(violation);
 
