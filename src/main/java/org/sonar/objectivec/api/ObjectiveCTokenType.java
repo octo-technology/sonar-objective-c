@@ -24,16 +24,7 @@ import com.sonar.sslr.api.TokenType;
 
 public enum ObjectiveCTokenType implements TokenType {
 
-<<<<<<< HEAD
     NUMERIC_LITERAL;
-=======
-  STRING_LITERAL,
-  NUMERIC_LITERAL;
-  
-  public String getName() {
-    return name();
-  }
->>>>>>> FETCH_HEAD
 
     public String getName() {
         return name();
