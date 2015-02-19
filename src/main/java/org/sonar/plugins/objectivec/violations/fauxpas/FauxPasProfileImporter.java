@@ -1,7 +1,6 @@
 /*
  * Sonar Objective-C Plugin
- * Copyright (C) 2012 OCTO Technology
- * dev@sonar.codehaus.org
+ * Copyright (C) 2012-2015 OCTO Technology, Backelite
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,9 +28,6 @@ import org.sonar.plugins.objectivec.core.ObjectiveC;
 
 import java.io.Reader;
 
-/**
- * Created by gillesgrousset on 12/02/15.
- */
 public class FauxPasProfileImporter extends ProfileImporter {
 
     private static final String UNABLE_TO_LOAD_DEFAULT_PROFILE = "Unable to load default FauxPas profile";
