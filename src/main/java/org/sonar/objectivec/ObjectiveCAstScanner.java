@@ -38,6 +38,16 @@ import org.sonar.squidbridge.metrics.LinesOfCodeVisitor;
 import org.sonar.squidbridge.metrics.LinesVisitor;
 
 import com.sonar.sslr.impl.Parser;
+<<<<<<< HEAD
+=======
+import com.sonar.sslr.squid.AstScanner;
+import com.sonar.sslr.squid.SquidAstVisitor;
+import com.sonar.sslr.squid.SquidAstVisitorContextImpl;
+import com.sonar.sslr.squid.metrics.CommentsVisitor;
+import com.sonar.sslr.squid.metrics.LinesOfCodeVisitor;
+import com.sonar.sslr.squid.metrics.LinesVisitor;
+import com.sonar.sslr.squid.metrics.CounterVisitor;
+>>>>>>> FETCH_HEAD
 
 public class ObjectiveCAstScanner {
 
@@ -91,6 +101,7 @@ public class ObjectiveCAstScanner {
         /* Files */
       builder.setFilesMetric(ObjectiveCMetric.FILES);
 
+<<<<<<< HEAD
         /* Metrics */
       	builder.withSquidAstVisitor(new LinesVisitor<ObjectiveCGrammar>(ObjectiveCMetric.LINES));
       	builder.withSquidAstVisitor(new LinesOfCodeVisitor<ObjectiveCGrammar>(ObjectiveCMetric.LINES_OF_CODE));
@@ -98,6 +109,20 @@ public class ObjectiveCAstScanner {
       			.withNoSonar(true)
       			.withIgnoreHeaderComment(conf.getIgnoreHeaderComments())
       			.build());
+=======
+    /* Metrics */
+    builder.withSquidAstVisitor(new LinesVisitor<ObjectiveCGrammar>(ObjectiveCMetric.LINES));
+    builder.withSquidAstVisitor(new LinesOfCodeVisitor<ObjectiveCGrammar>(ObjectiveCMetric.LINES_OF_CODE));
+    builder.withSquidAstVisitor(CommentsVisitor.<ObjectiveCGrammar> builder().withCommentMetric(ObjectiveCMetric.COMMENT_LINES)
+        .withBlankCommentMetric(ObjectiveCMetric.COMMENT_BLANK_LINES)
+        .withNoSonar(true)
+        .withIgnoreHeaderComment(conf.getIgnoreHeaderComments())
+        .build());
+    builder.withSquidAstVisitor(CounterVisitor.<ObjectiveCGrammar> builder()
+        .setMetricDef(ObjectiveCMetric.STATEMENTS)
+        .subscribeTo(parser.getGrammar().statement)
+        .build());
+>>>>>>> FETCH_HEAD
 
         return builder.build();
     }

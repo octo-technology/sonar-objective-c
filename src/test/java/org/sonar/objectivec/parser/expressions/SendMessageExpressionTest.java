@@ -1,6 +1,6 @@
-/*
+ /*
  * Sonar Objective-C Plugin
- * Copyright (C) 2012 OCTO Technology
+ * Copyright (C) 2012 François Helg, Cyril Picat and OCTO Technology
  * dev@sonar.codehaus.org
  *
  * This program is free software; you can redistribute it and/or
@@ -17,34 +17,30 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.objectivec.api;
+package org.sonar.javascript.parser.grammar.expressions;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.TokenType;
+import com.sonar.sslr.impl.Parser;
+import org.junit.Before;
+import org.junit.Test;
+import org.sonar.objectivec.api.ObjectiveCGrammar;
+import org.sonar.objectivec.parser.ObjectiveCParser;
 
-public enum ObjectiveCTokenType implements TokenType {
+import static com.sonar.sslr.test.parser.ParserMatchers.parse;
+import static org.junit.Assert.assertThat;
 
-<<<<<<< HEAD
-    NUMERIC_LITERAL;
-=======
-  STRING_LITERAL,
-  NUMERIC_LITERAL;
-  
-  public String getName() {
-    return name();
+public class SendMessageExpressionTest {
+
+  Parser<ObjectiveCGrammar> p = ObjectiveCParser.create();
+  ObjectiveCGrammar g = p.getGrammar();
+
+  @Before
+  public void init() {
+    p.setRootRule(g.sendMessageExpression);
   }
->>>>>>> FETCH_HEAD
 
-    public String getName() {
-        return name();
-    }
-
-    public String getValue() {
-        return name();
-    }
-
-    public boolean hasToBeSkippedFromAst(AstNode node) {
-        return false;
-    }
+  @Test
+  public void ok() {
+    assertThat(p, parse("[receiver message]"));
+  }
 
 }

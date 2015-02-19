@@ -20,17 +20,36 @@
 package org.sonar.objectivec.parser;
 
 import static com.sonar.sslr.api.GenericTokenType.EOF;
-import static com.sonar.sslr.api.GenericTokenType.LITERAL;
+import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 import static com.sonar.sslr.impl.matcher.GrammarFunctions.Standard.o2n;
+import static com.sonar.sslr.impl.matcher.GrammarFunctions.Standard.or;
+import static com.sonar.sslr.impl.matcher.GrammarFunctions.Standard.and;
 
 import org.sonar.objectivec.api.ObjectiveCGrammar;
+
+import static org.sonar.objectivec.api.ObjectiveCPunctuator.LBRACKET;
+import static org.sonar.objectivec.api.ObjectiveCPunctuator.RBRACKET;
+
+import static org.sonar.objectivec.api.ObjectiveCTokenType.STRING_LITERAL;
+import static org.sonar.objectivec.api.ObjectiveCTokenType.NUMERIC_LITERAL;
 
 public class ObjectiveCGrammarImpl extends ObjectiveCGrammar {
 
     public ObjectiveCGrammarImpl() {
 
+<<<<<<< HEAD
          program.is(o2n(LITERAL), EOF);
 
     }
+=======
+        messageReceiver.is(IDENTIFIER);
+        messageSent.is(IDENTIFIER);
+
+        sendMessageExpression.is(and(LBRACKET, messageReceiver, messageSent, RBRACKET));
+
+        statement.is(or(sendMessageExpression));
+
+        program.is(statement);
+>>>>>>> FETCH_HEAD
 
 }
