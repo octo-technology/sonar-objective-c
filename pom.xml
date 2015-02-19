@@ -30,7 +30,7 @@
 
     <name>Objective-C Sonar Plugin</name>
     <description>Enables analysis of Objective-C projects into Sonar.</description>
-    <url>https://github.com/octo-technology/sonar-objective-c</url>
+    <url>https://github.com/Backelite/sonar-objective-c</url>
 
 
     <inceptionYear>2012</inceptionYear>
@@ -59,7 +59,7 @@
         <developer>
             <id>zippy1978</id>
             <name>Gilles Grousset</name>
-            <url>https://github.com/zippy1978</url>
+            <organization>Backelite</organization>
         </developer>        
         <developer>
             <id>fhelg</id>
@@ -79,9 +79,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:git@github.com:octo-technology/sonar-objective-c.git</connection>
-        <developerConnection>scm:git:git@github.com:octo-technology/sonar-objective-c.git</developerConnection>
-        <url>https://github.com/octo-technology/sonar-objective-c</url>
+        <connection>scm:git:git@github.com:Backelite/sonar-objective-c.git</connection>
+        <developerConnection>scm:git:git@github.com:Backelite/sonar-objective-c.git</developerConnection>
+        <url>https://github.com/Backelite/sonar-objective-c</url>
     </scm>
 
     <ciManagement>
@@ -90,7 +90,7 @@
     </ciManagement>
 
     <properties>
-        <license.owner>OCTO Technology</license.owner>
+        <license.owner>OCTO Technology, Backelite</license.owner>
         <license.title>Sonar Objective-C Plugin</license.title>
 
         <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>

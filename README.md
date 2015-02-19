@@ -2,6 +2,11 @@
   <img src="http://www.backelite.com/bkimages/extension/backelite/design/backelite/templates/img/header_logo.png/3840/2160/PNG" width="100"/>
 </p>
 
+| Branch   |      Status                                                                                                                                |
+|----------|:------------------------------------------------------------------------------------------------------------------------------------------:|
+| master | [![Build Status](https://travis-ci.org/Backelite/sonar-objective-c.svg?branch=master)](https://travis-ci.org/Backelite/sonar-objective-c)  |
+| develop| [![Build Status](https://travis-ci.org/Backelite/sonar-objective-c.svg?branch=develop)](https://travis-ci.org/Backelite/sonar-objective-c) |
+
 SonarQube Plugin for Objective-C
 ================================
 
