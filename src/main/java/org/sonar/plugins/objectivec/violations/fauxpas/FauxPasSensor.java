@@ -1,7 +1,6 @@
 /*
  * Sonar Objective-C Plugin
- * Copyright (C) 2012 OCTO Technology
- * dev@sonar.codehaus.org
+* Copyright (C) 2012-2015 OCTO Technology, Backelite
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -33,9 +32,6 @@ import org.sonar.plugins.objectivec.core.ObjectiveC;
 import java.io.File;
 import java.util.Collection;
 
-/**
- * Created by gillesgrousset on 12/02/15.
- */
 public class FauxPasSensor implements Sensor {
 
     public static final String REPORT_PATH_KEY = ObjectiveCPlugin.PROPERTY_PREFIX

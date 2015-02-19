@@ -1,7 +1,6 @@
 /*
  * Sonar Objective-C Plugin
- * Copyright (C) 2012 OCTO Technology
- * dev@sonar.codehaus.org
+ * Copyright (C) 2012-2015 OCTO Technology, Backelite
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,9 +30,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
-/**
- * Created by gillesgrousset on 12/02/15.
- */
 public class FauxPasRuleRepository extends RuleRepository {
 
     public static final String REPOSITORY_KEY = "FauxPas";
