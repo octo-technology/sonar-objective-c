@@ -1,6 +1,7 @@
 /*
  * Sonar Objective-C Plugin
- * Copyright (C) 2012-2015 OCTO Technology, Backelite
+ * Copyright (C) 2012 OCTO Technology
+ * dev@sonar.codehaus.org
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
