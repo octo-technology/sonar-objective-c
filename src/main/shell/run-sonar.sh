@@ -221,7 +221,7 @@ fi
 # Extracting project information needed later
 echo -n 'Extracting Xcode project information'
 runCommand /dev/stdout $xctoolCmdPrefix -scheme "$appScheme" clean
-runCommand /dev/stdout $xctoolCmdPrefix -scheme "$appScheme" -reporter json-compilation-database:compile_commands.json build
+runCommand /dev/stdout $xctoolCmdPrefix -scheme "$appScheme" -reporter plain -reporter json-compilation-database:compile_commands.json build
 
 # Unit tests and coverage
 if [ "$testScheme" = "" ]; then
