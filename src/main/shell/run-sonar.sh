@@ -117,12 +117,14 @@ function runCommand() {
 vflag=""
 nflag=""
 oclint="on"
+fauxpas="on"
 while [ $# -gt 0 ]
 do
     case "$1" in
     -v)	vflag=on;;
     -n) nflag=on;;
-	-nooclint) oclint="";;	    
+	-nooclint) oclint="";;
+    -nofauxpas) fauxpas="";;
 	--)	shift; break;;
 	-*)
         echo >&2 "Usage: $0 [-v]"
@@ -288,9 +290,25 @@ if [ "$oclint" = "on" ]; then
 	
 	# Run OCLint with the right set of compiler options
     maxPriority=10000
-	runCommand no oclint-json-compilation-database $includedCommandLineFlags -- -max-priority-1 $maxPriority -max-priority-2 $maxPriority -max-priority-3 $maxPriority -report-type pmd -o sonar-reports/oclint.xml
+    longLineThreshold=250
+	runCommand no oclint-json-compilation-database $includedCommandLineFlags -- -rc LONG_LINE=$longLineThreshold -max-priority-1 $maxPriority -max-priority-2 $maxPriority -max-priority-3 $maxPriority -report-type pmd -o sonar-reports/oclint.xml
 else
 	echo 'Skipping OCLint (test purposes only!)'
+fi
+
+if [ "$fauxpas" = "on" ]; then
+    hash fauxpas 2>/dev/null
+    if [ $? -eq 0 ]; then
+
+        #FauxPas
+        echo -n 'Running FauxPas...'
+        fauxpas -t $appScheme -o json check $projectFile > sonar-reports/fauxpas.json
+
+    else
+        echo 'Skipping FauxPas (not installed)'
+    fi
+else
+    echo 'Skipping FauxPas'
 fi
 
 # SonarQube

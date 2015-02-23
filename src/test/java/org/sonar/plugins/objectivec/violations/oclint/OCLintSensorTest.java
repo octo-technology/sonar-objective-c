@@ -17,7 +17,7 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.objectivec.violations;
+package org.sonar.plugins.objectivec.violations.oclint;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -30,6 +30,7 @@ import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
+import org.sonar.plugins.objectivec.violations.oclint.OCLintSensor;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
