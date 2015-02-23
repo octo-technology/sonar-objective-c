@@ -17,10 +17,9 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.objectivec.violations;
+package org.sonar.plugins.objectivec.violations.fauxpas;
 
-import java.io.Reader;
-
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.profiles.ProfileImporter;
 import org.sonar.api.profiles.RulesProfile;
@@ -28,26 +27,29 @@ import org.sonar.api.profiles.XMLProfileParser;
 import org.sonar.api.utils.ValidationMessages;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
 
-public final class OCLintProfileImporter extends ProfileImporter {
-    private static final String UNABLE_TO_LOAD_DEFAULT_PROFILE = "Unable to load default OCLint profile";
+import java.io.Reader;
+
+public class FauxPasProfileImporter extends ProfileImporter {
+
+    private static final String UNABLE_TO_LOAD_DEFAULT_PROFILE = "Unable to load default FauxPas profile";
+    private static final Logger LOGGER = LoggerFactory.getLogger(FauxPasProfileImporter.class);
+
     private final XMLProfileParser profileParser;
 
-    public OCLintProfileImporter(final XMLProfileParser xmlProfileParser) {
-        super(OCLintRuleRepository.REPOSITORY_KEY,
-                OCLintRuleRepository.REPOSITORY_KEY);
+    public FauxPasProfileImporter(final XMLProfileParser xmlProfileParser) {
+        super(FauxPasRuleRepository.REPOSITORY_KEY, FauxPasRuleRepository.REPOSITORY_KEY);
         setSupportedLanguages(ObjectiveC.KEY);
         profileParser = xmlProfileParser;
     }
 
     @Override
-    public RulesProfile importProfile(final Reader reader,
-            final ValidationMessages messages) {
+    public RulesProfile importProfile(Reader reader, ValidationMessages messages) {
+
         final RulesProfile profile = profileParser.parse(reader, messages);
 
         if (null == profile) {
             messages.addErrorText(UNABLE_TO_LOAD_DEFAULT_PROFILE);
-            LoggerFactory.getLogger(OCLintProfileImporter.class).error(
-                    UNABLE_TO_LOAD_DEFAULT_PROFILE);
+            LOGGER.error(UNABLE_TO_LOAD_DEFAULT_PROFILE);
         }
 
         return profile;
