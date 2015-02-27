@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.ServerComponent;
@@ -69,7 +70,8 @@ final class OCLintRuleParser implements ServerComponent {
 
                 rule = Rule.create();
                 rules.add(rule);
-                rule.setName(previousLine);
+                rule.setName(StringUtils.capitalize(previousLine));
+                System.out.println(">>> " + rule.getName());
                 rule.setKey(previousLine);
             } else if (line.matches("Summary:.*")) {
                 inDescription = true;
