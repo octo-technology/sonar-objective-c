@@ -41,7 +41,17 @@ The plugin runs fine even if Faux Pas is not installed (Faux Pas analysis will b
 
 ###Download
 
-Binary packages will be available soon...
+Binary packages are available in the release section.
+
+
+###Release history
+
+####0.4.0.1 (based on 0.4.0)
+- Faux Pas support
+- Moved OCLint long line threshold to 250
+- Add the `plain` reporter at build step to get more information in case of build failure
+- Capitalized OCLint rule names
+
 
 ###Prerequisites
 
