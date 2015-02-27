@@ -31,6 +31,8 @@ A SonarQube 5.0 dashboard of the iOS open source project [GreatReader](https://g
 
 Releases available from this repository are compliant with SonarQube 4.3.x and above.
 
+In order not to break compatibility with the original plugin, plugin releases are numbered with 4 digits.
+
 ###Faux Pas support
 
 [Faux Pas](http://fauxpasapp.com/) is a wonderful tool to analyse iOS or Mac applications source code, however it is not free. A 30 trial version is available [here](http://fauxpasapp.com/try/).
