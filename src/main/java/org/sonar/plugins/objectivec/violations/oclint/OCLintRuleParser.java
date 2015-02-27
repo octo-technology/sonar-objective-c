@@ -71,7 +71,6 @@ final class OCLintRuleParser implements ServerComponent {
                 rule = Rule.create();
                 rules.add(rule);
                 rule.setName(StringUtils.capitalize(previousLine));
-                System.out.println(">>> " + rule.getName());
                 rule.setKey(previousLine);
             } else if (line.matches("Summary:.*")) {
                 inDescription = true;
