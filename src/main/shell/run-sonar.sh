@@ -306,7 +306,8 @@ if [ "$fauxpas" = "on" ]; then
 
         #FauxPas
         echo -n 'Running FauxPas...'
-        fauxpas -t $appScheme -o json check $projectFile > sonar-reports/fauxpas.json
+        fauxpas -t $appScheme -o json check $projectFile --workspace $workspaceFile --scheme $appScheme > sonar-reports/fauxpas.json
+
 
     else
         echo 'Skipping FauxPas (not installed)'
