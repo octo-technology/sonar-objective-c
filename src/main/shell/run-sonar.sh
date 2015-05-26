@@ -287,7 +287,8 @@ if [ "$oclint" = "on" ]; then
 	fi
 	
 	# Run OCLint with the right set of compiler options
-    maxPriority=10000
+	maxPriority=10000
+	readParameter oclintArgs 'sonar.objectivec.oclint.args'
 	runCommand no oclint-json-compilation-database $includedCommandLineFlags -- -max-priority-1 $maxPriority -max-priority-2 $maxPriority -max-priority-3 $maxPriority -report-type pmd -o sonar-reports/oclint.xml
 else
 	echo 'Skipping OCLint (test purposes only!)'
