@@ -22,6 +22,7 @@ package org.sonar.plugins.objectivec.complexity;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
+import org.sonar.api.measures.Metric;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -106,13 +107,16 @@ public class LizardReportParser {
                 Element itemElement = (Element) item;
                 String fileName = itemElement.getAttribute(NAME);
                 NodeList values = itemElement.getElementsByTagName(VALUE);
-                int fileComplexity = Integer.parseInt(values.item(CYCLOMATIC_COMPLEXITY_INDEX).getTextContent());
+                int complexity = Integer.parseInt(values.item(CYCLOMATIC_COMPLEXITY_INDEX).getTextContent());
+                double fileComplexity = Double.parseDouble(values.item(CYCLOMATIC_COMPLEXITY_INDEX).getTextContent());
                 int numberOfFunctions =  Integer.parseInt(values.item(FUNCTIONS_INDEX).getTextContent());
 
                 List<Measure> list = new ArrayList<Measure>();
-                //list.add(new Measure(CoreMetrics.COMPLEXITY).setIntValue(fileComplexity));
-                list.add(new Measure(CoreMetrics.FILE_COMPLEXITY).setIntValue(fileComplexity));
-                //list.add(new Measure(CoreMetrics.FUNCTIONS).setIntValue(numberOfFunctions));//TODO throws exception while saving
+                Metric complexityMetric = CoreMetrics.COMPLEXITY;
+                complexityMetric.setDomain("complexity");
+                list.add(new Measure(CoreMetrics.COMPLEXITY).setIntValue(complexity));
+                list.add(new Measure(CoreMetrics.FUNCTIONS).setIntValue(numberOfFunctions));//TODO throws exception while saving
+                list.add(new Measure(CoreMetrics.FILE_COMPLEXITY, fileComplexity));
 
                 reportMeasures.put(fileName, list);
             }
@@ -135,9 +139,11 @@ public class LizardReportParser {
     private void addComplexityPerFunctionMeasure(Map<String, List<Measure>> reportMeasures, List<ObjCFunction> functions){
         for (Map.Entry<String, List<Measure>> entry : reportMeasures.entrySet()) {
             int count = 0;
+            int complexityInFunctions = 0;
             for (ObjCFunction func : functions) {
                 if (func.getName().contains(entry.getKey())) {
                     count++;
+                    complexityInFunctions += func.getCyclomaticComplexity();
                 }
             }
 
@@ -154,6 +160,7 @@ public class LizardReportParser {
                 complexMean = (double)complex/(double)count;
             }
 
+            entry.getValue().add(new Measure(CoreMetrics.COMPLEXITY_IN_FUNCTIONS).setIntValue(complexityInFunctions));
             entry.getValue().add(new Measure(CoreMetrics.FUNCTION_COMPLEXITY, complexMean));
         }
     }
