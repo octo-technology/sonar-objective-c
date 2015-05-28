@@ -117,6 +117,7 @@ function runCommand() {
 vflag=""
 nflag=""
 oclint="on"
+lizard="on"
 while [ $# -gt 0 ]
 do
     case "$1" in
@@ -291,6 +292,17 @@ if [ "$oclint" = "on" ]; then
 	runCommand no oclint-json-compilation-database $includedCommandLineFlags -- -max-priority-1 $maxPriority -max-priority-2 $maxPriority -max-priority-3 $maxPriority -report-type pmd -o sonar-reports/oclint.xml
 else
 	echo 'Skipping OCLint (test purposes only!)'
+fi
+
+if [ "$lizard" = "on" ]; then
+
+	# Lizard
+	echo -n 'Running Lizard...'
+
+	# Run Lizard with xml output option and write the output in sonar-reports/lizard-report.xml
+	runCommand lizard --xml "$srcDirs" > sonar-reports/lizard-report.xml
+else
+	echo 'Skipping Lizard (test purposes only!)'
 fi
 
 # SonarQube
