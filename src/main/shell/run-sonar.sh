@@ -300,7 +300,7 @@ if [ "$lizard" = "on" ]; then
 	echo -n 'Running Lizard...'
 
 	# Run Lizard with xml output option and write the output in sonar-reports/lizard-report.xml
-	runCommand lizard --xml "$srcDirs" > sonar-reports/lizard-report.xml
+	lizard --xml "$srcDirs" > sonar-reports/lizard-report.xml
 else
 	echo 'Skipping Lizard (test purposes only!)'
 fi

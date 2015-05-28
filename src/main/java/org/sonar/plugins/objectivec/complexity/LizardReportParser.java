@@ -115,7 +115,7 @@ public class LizardReportParser {
                 Metric complexityMetric = CoreMetrics.COMPLEXITY;
                 complexityMetric.setDomain("complexity");
                 list.add(new Measure(CoreMetrics.COMPLEXITY).setIntValue(complexity));
-                list.add(new Measure(CoreMetrics.FUNCTIONS).setIntValue(numberOfFunctions));//TODO throws exception while saving
+                list.add(new Measure(CoreMetrics.FUNCTIONS).setIntValue(numberOfFunctions));
                 list.add(new Measure(CoreMetrics.FILE_COMPLEXITY, fileComplexity));
 
                 reportMeasures.put(fileName, list);
@@ -126,7 +126,6 @@ public class LizardReportParser {
     private void collectFunctions(NodeList itemList, List<ObjCFunction> functions) {
         for (int i = 0; i < itemList.getLength(); i++) {
             Node item = itemList.item(i);
-
             if (item.getNodeType() == Node.ELEMENT_NODE) {
                 Element itemElement = (Element) item;
                 String name = itemElement.getAttribute(NAME);

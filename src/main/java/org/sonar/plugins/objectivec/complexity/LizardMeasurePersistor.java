@@ -20,12 +20,14 @@
 package org.sonar.plugins.objectivec.complexity;
 
 import org.slf4j.LoggerFactory;
+import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.resources.Project;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -35,18 +37,25 @@ import java.util.Map;
 @SuppressWarnings("deprecation")
 public class LizardMeasurePersistor {
 
-    private final Project project;
-    private final SensorContext context;
-    private final FileSystem fileSystem;
+    private Project project;
+    private SensorContext sensorContext;
+    private DecoratorContext decoratorContext;
+    private FileSystem fileSystem;
+
+    public LizardMeasurePersistor(final Project p, final DecoratorContext c) {
+        this.project = p;
+        this.decoratorContext = c;
+        this.fileSystem = fileSystem;
+    }
 
     public LizardMeasurePersistor(final Project p, final SensorContext c, final FileSystem fileSystem) {
         this.project = p;
-        this.context = c;
+        this.sensorContext = c;
         this.fileSystem = fileSystem;
     }
 
     public void saveMeasures(final Map<String, List<Measure>> measures) {
-
+/*
         for (InputFile file : fileSystem.inputFiles(fileSystem.predicates().all())) {
             //LoggerFactory.getLogger(getClass()).info("Inputfile {} \n {}", file.absolutePath(), file.relativePath());
             for (Map.Entry<String, List<Measure>> entry : measures.entrySet()){
@@ -56,7 +65,7 @@ public class LizardMeasurePersistor {
                     //LoggerFactory.getLogger(getClass()).info("Save Measures for inputfile");
                     for (Measure measure : entry.getValue()){
                         try {
-                            context.saveMeasure(file, measure);
+                            sensorContext.saveMeasure(file, measure);
                         } catch (Exception e) {
                             LoggerFactory.getLogger(getClass()).error(" Exception -> {} -> {} \n {}", entry.getKey(), measure.getMetric().getName(), e.getMessage());
                         }
@@ -66,20 +75,20 @@ public class LizardMeasurePersistor {
             }
         }
 
-        /*
+        */
         for (Map.Entry<String, List<Measure>> entry : measures.entrySet()) {
             final org.sonar.api.resources.File objcfile = org.sonar.api.resources.File.fromIOFile(new File(project.getFileSystem().getBasedir(), entry.getKey()), project);
-            if (fileExists(context, objcfile)) {
+            if (fileExists(sensorContext, objcfile)) {
                 for (Measure measure : entry.getValue()) {
                     try {
-                        context.saveMeasure(objcfile, measure);
+                        sensorContext.saveMeasure(objcfile, measure);
                     } catch (Exception e) {
                         LoggerFactory.getLogger(getClass()).error(" Exception -> {} -> {}", entry.getKey(), measure.getMetric().getName());
                     }
                 }
             }
         }
-        */
+
     }
 
     private boolean fileExists(final SensorContext context,
