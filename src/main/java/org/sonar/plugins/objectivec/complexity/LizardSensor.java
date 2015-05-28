@@ -72,7 +72,7 @@ public class LizardSensor implements Sensor {
         }
         */
 
-        new LizardMeasurePersistor(project, sensorContext, fileSystem).saveMeasuresForSensor(measures);
+        new LizardMeasurePersistor(project, sensorContext, fileSystem).saveMeasures(measures);
     }
 
     //key = file name,
