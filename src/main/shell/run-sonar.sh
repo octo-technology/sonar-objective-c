@@ -30,7 +30,7 @@ function testIsInstalled() {
 }
 
 function readParameter() {
-	
+
 	variable=$1
 	shift
 	parameter=$1
@@ -42,7 +42,7 @@ function readParameter() {
 # Run a set of commands with logging and error handling
 function runCommand() {
 
-	# 1st arg: redirect stdout 
+	# 1st arg: redirect stdout
 	# 2nd arg: command to run
 	# 3rd..nth arg: args
 	redirect=$1
@@ -50,11 +50,11 @@ function runCommand() {
 
 	command=$1
 	shift
-	
+
 	if [ "$nflag" = "on" ]; then
 		# don't execute command, just echo it
 		echo
-		if [ "$redirect" = "/dev/stdout" ]; then	
+		if [ "$redirect" = "/dev/stdout" ]; then
 			if [ "$vflag" = "on" ]; then
 				echo "+" $command "$@"
 			else
@@ -65,35 +65,35 @@ function runCommand() {
 		else
 			echo "+" $command "$@"
 		fi
-		
+
 	elif [ "$vflag" = "on" ]; then
 		echo
 
-		if [ "$redirect" = "/dev/stdout" ]; then	
+		if [ "$redirect" = "/dev/stdout" ]; then
 			set -x #echo on
 			$command "$@"
-			returnValue=$?	
-			set +x #echo off			
+			returnValue=$?
+			set +x #echo off
 		elif [ "$redirect" != "no" ]; then
 			set -x #echo on
 			$command "$@" > $redirect
-			returnValue=$?	
-			set +x #echo off			
+			returnValue=$?
+			set +x #echo off
 		else
 			set -x #echo on
 			$command "$@"
-			returnValue=$?	
-			set +x #echo off			
+			returnValue=$?
+			set +x #echo off
 		fi
-		
+
 		if [[ $returnValue != 0 && $returnValue != 5 ]] ; then
 			stopProgress
 			echo "ERROR - Command '$command $@' failed with error code: $returnValue"
 			exit $returnValue
 		fi
 	else
-	
-		if [ "$redirect" = "/dev/stdout" ]; then	
+
+		if [ "$redirect" = "/dev/stdout" ]; then
 			$command "$@" > /dev/null
 		elif [ "$redirect" != "no" ]; then
 			$command "$@" > $redirect
@@ -108,9 +108,9 @@ function runCommand() {
 			exit $?
 		fi
 
-	
-		echo	
-	fi	
+
+		echo
+	fi
 }
 
 ## COMMAND LINE OPTIONS
@@ -122,7 +122,7 @@ do
     case "$1" in
     -v)	vflag=on;;
     -n) nflag=on;;
-	-nooclint) oclint="";;	    
+	-nooclint) oclint="";;
 	--)	shift; break;;
 	-*)
         echo >&2 "Usage: $0 [-v]"
@@ -156,7 +156,7 @@ if [[ "$workspaceFile" != "" ]] ; then
 	xctoolCmdPrefix="xctool -workspace $workspaceFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
 else
 	xctoolCmdPrefix="xctool -project $projectFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
-fi	
+fi
 
 # Source directories for .h/.m files
 srcDirs=''; readParameter srcDirs 'sonar.sources'
@@ -192,7 +192,7 @@ if [ "$vflag" = "on" ]; then
  	echo "Xcode project file is: $projectFile"
  	echo "Xcode application scheme is: $appScheme"
  	echo "Xcode test scheme is: $testScheme"
- 	echo "Excluded paths from coverage are: $excludedPathsFromCoverage" 	
+ 	echo "Excluded paths from coverage are: $excludedPathsFromCoverage"
 fi
 
 ## SCRIPT
@@ -224,13 +224,13 @@ runCommand /dev/stdout $xctoolCmdPrefix -scheme "$appScheme" -reporter json-comp
 # Unit tests and coverage
 if [ "$testScheme" = "" ]; then
 	echo 'Skipping tests as no test scheme has been provided!'
-	
+
 	# Put default xml files with no tests and no coverage...
 	echo "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><testsuites name='AllTestUnits'></testsuites>" > sonar-reports/TEST-report.xml
 	echo "<?xml version='1.0' ?><!DOCTYPE coverage SYSTEM 'http://cobertura.sourceforge.net/xml/coverage-03.dtd'><coverage><sources></sources><packages></packages></coverage>" > sonar-reports/coverage.xml
 else
 
-	echo -n 'Running tests using xctool'	
+	echo -n 'Running tests using xctool'
 	runCommand sonar-reports/TEST-report.xml $xctoolCmdPrefix -scheme "$testScheme" -reporter junit GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES test
 
 	echo -n 'Computing coverage report'
@@ -240,7 +240,7 @@ else
 	# Extract the path to the .gcno/.gcda coverage files
 	echo $projectFile | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh
 	while read projectName; do
-	
+
 		coverageFilesPath=$(grep 'command' compile_commands.json | sed 's#^.*-o \\/#\/#;s#",##' | grep "${projectName%%.*}.build" | awk 'NR<2' | sed 's/\\\//\//g' | sed 's/\\\\//g' | xargs -0 dirname)
 		if [ "$vflag" = "on" ]; then
 			echo
@@ -259,20 +259,20 @@ else
 		if [ "$vflag" = "on" ]; then
 			echo "Command line exclusion flags for gcovr is:$excludedCommandLineFlags"
 		fi
-	
+
 		# Run gcovr with the right options
-		runCommand "sonar-reports/coverage-${projectName%%.*}.xml" gcovr -r . "$coverageFilesPath" $excludedCommandLineFlags --xml 
+		runCommand "sonar-reports/coverage-${projectName%%.*}.xml" gcovr -r . "$coverageFilesPath" $excludedCommandLineFlags --xml
 
 	done < tmpFileRunSonarSh
 	rm -rf tmpFileRunSonarSh
-	
-fi	
+
+fi
 
 if [ "$oclint" = "on" ]; then
 
 	# OCLint
 	echo -n 'Running OCLint...'
-	
+
 	# Build the --include flags
 	currentDirectory=${PWD##*/}
 	includedCommandLineFlags=""
@@ -285,11 +285,11 @@ if [ "$oclint" = "on" ]; then
 		echo
 		echo -n "Path included in oclint analysis is:$includedCommandLineFlags"
 	fi
-	
+
 	# Run OCLint with the right set of compiler options
 	maxPriority=10000
 	readParameter oclintArgs 'sonar.objectivec.oclint.args'
-	runCommand no oclint-json-compilation-database $includedCommandLineFlags -- -max-priority-1 $maxPriority -max-priority-2 $maxPriority -max-priority-3 $maxPriority -report-type pmd -o sonar-reports/oclint.xml
+	runCommand no oclint-json-compilation-database $includedCommandLineFlags -- -max-priority-1 $maxPriority -max-priority-2 $maxPriority -max-priority-3 $maxPriority -report-type pmd -o sonar-reports/oclint.xml $oclintArgs
 else
 	echo 'Skipping OCLint (test purposes only!)'
 fi
@@ -297,7 +297,7 @@ fi
 # SonarQube
 echo -n 'Running SonarQube using SonarQube Runner'
 runCommand /dev/stdout sonar-runner
-	
+
 # Kill progress indicator
 stopProgress
 
