@@ -102,6 +102,11 @@ public class ObjectiveCSquidSensor implements Sensor {
         context.saveMeasure(sonarFile, CoreMetrics.FILES, squidFile.getDouble(ObjectiveCMetric.FILES));
         context.saveMeasure(sonarFile, CoreMetrics.LINES, squidFile.getDouble(ObjectiveCMetric.LINES));
         context.saveMeasure(sonarFile, CoreMetrics.NCLOC, squidFile.getDouble(ObjectiveCMetric.LINES_OF_CODE));
+        /**
+         * Saving the same measure more than one for a file throws an exception and that is why
+         * CoreMetrics.FUNCTIONS and CoreMetrics.COMPLEXITY are not allowed to be saved here, In order for the
+         * LizardSensor to be able to to its job and save the values for those metrics.
+         */
         //context.saveMeasure(sonarFile, CoreMetrics.FUNCTIONS, squidFile.getDouble(ObjectiveCMetric.FUNCTIONS));
         context.saveMeasure(sonarFile, CoreMetrics.STATEMENTS, squidFile.getDouble(ObjectiveCMetric.STATEMENTS));
         //context.saveMeasure(sonarFile, CoreMetrics.COMPLEXITY, squidFile.getDouble(ObjectiveCMetric.COMPLEXITY));

@@ -35,7 +35,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by agilherr on 28/05/15.
+ * @author Andres Gil Herrera
+ * @since 28/05/15
  */
 @SuppressWarnings("deprecation")
 public class LizardSensor implements Sensor {
@@ -61,21 +62,10 @@ public class LizardSensor implements Sensor {
     public void analyse(Project project, SensorContext sensorContext) {
         final String projectBaseDir = project.getFileSystem().getBasedir().getPath();
         Map<String, List<Measure>> measures = parseReportsIn(projectBaseDir, new LizardReportParser());
-
-        /*
-        for (Map.Entry<String, List<Measure>> entry: measures.entrySet()) {
-            String[] filePath = entry.getKey().split("/");
-            LoggerFactory.getLogger(getClass()).info("{}", filePath[filePath.length - 1]);
-            for (Measure measure : entry.getValue()) {
-                LoggerFactory.getLogger(getClass()).info("  {} = {}", measure.getMetric().getName(), measure.getValue());
-            }
-        }
-        */
-
-        new LizardMeasurePersistor(project, sensorContext, fileSystem).saveMeasures(measures);
+        new LizardMeasurePersistor(project, sensorContext).saveMeasures(measures);
     }
 
-    //key = file name,
+    //key = file name
     private Map<String, List<Measure>> parseReportsIn(final String baseDir, LizardReportParser parser) {
         final StringBuilder reportFileName = new StringBuilder(baseDir);
         reportFileName.append("/").append(reportPath());

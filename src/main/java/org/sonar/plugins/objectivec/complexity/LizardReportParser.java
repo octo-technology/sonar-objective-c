@@ -40,7 +40,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by agilherr on 28/05/15.
+ * @author Andres Gil Herrera
+ * @since 28/05/15
  */
 public class LizardReportParser {
 
@@ -112,8 +113,6 @@ public class LizardReportParser {
                 int numberOfFunctions =  Integer.parseInt(values.item(FUNCTIONS_INDEX).getTextContent());
 
                 List<Measure> list = new ArrayList<Measure>();
-                Metric complexityMetric = CoreMetrics.COMPLEXITY;
-                complexityMetric.setDomain("complexity");
                 list.add(new Measure(CoreMetrics.COMPLEXITY).setIntValue(complexity));
                 list.add(new Measure(CoreMetrics.FUNCTIONS).setIntValue(numberOfFunctions));
                 list.add(new Measure(CoreMetrics.FILE_COMPLEXITY, fileComplexity));

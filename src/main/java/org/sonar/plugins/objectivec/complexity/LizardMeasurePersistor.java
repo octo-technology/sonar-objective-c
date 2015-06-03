@@ -32,50 +32,20 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by agilherr on 28/05/15.
+ * @author Andres Gil Herrera
+ * @since 28/05/15.
  */
-@SuppressWarnings("deprecation")
 public class LizardMeasurePersistor {
 
     private Project project;
     private SensorContext sensorContext;
-    private DecoratorContext decoratorContext;
-    private FileSystem fileSystem;
 
-    public LizardMeasurePersistor(final Project p, final DecoratorContext c) {
-        this.project = p;
-        this.decoratorContext = c;
-        this.fileSystem = fileSystem;
-    }
-
-    public LizardMeasurePersistor(final Project p, final SensorContext c, final FileSystem fileSystem) {
+    public LizardMeasurePersistor(final Project p, final SensorContext c) {
         this.project = p;
         this.sensorContext = c;
-        this.fileSystem = fileSystem;
     }
 
     public void saveMeasures(final Map<String, List<Measure>> measures) {
-/*
-        for (InputFile file : fileSystem.inputFiles(fileSystem.predicates().all())) {
-            //LoggerFactory.getLogger(getClass()).info("Inputfile {} \n {}", file.absolutePath(), file.relativePath());
-            for (Map.Entry<String, List<Measure>> entry : measures.entrySet()){
-                String path = entry.getKey();
-                String name = file.relativePath();
-                if (path.equalsIgnoreCase(name)){
-                    //LoggerFactory.getLogger(getClass()).info("Save Measures for inputfile");
-                    for (Measure measure : entry.getValue()){
-                        try {
-                            sensorContext.saveMeasure(file, measure);
-                        } catch (Exception e) {
-                            LoggerFactory.getLogger(getClass()).error(" Exception -> {} -> {} \n {}", entry.getKey(), measure.getMetric().getName(), e.getMessage());
-                        }
-                    }
-                    break;
-                }
-            }
-        }
-
-        */
         for (Map.Entry<String, List<Measure>> entry : measures.entrySet()) {
             final org.sonar.api.resources.File objcfile = org.sonar.api.resources.File.fromIOFile(new File(project.getFileSystem().getBasedir(), entry.getKey()), project);
             if (fileExists(sensorContext, objcfile)) {
