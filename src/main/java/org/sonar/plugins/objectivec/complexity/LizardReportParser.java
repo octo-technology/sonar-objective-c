@@ -145,21 +145,20 @@ public class LizardReportParser {
                 }
             }
 
-            int complex = 0;
-            for (Measure m : entry.getValue()){
-                if (m.getMetric().getKey().equalsIgnoreCase(CoreMetrics.FILE_COMPLEXITY.getKey())){
-                    complex = m.getIntValue();
-                    break;
-                }
-            }
-
-            double complexMean = 0;
             if (count != 0) {
-                complexMean = (double)complex/(double)count;
-            }
+                entry.getValue().add(new Measure(CoreMetrics.COMPLEXITY_IN_FUNCTIONS).setIntValue(complexityInFunctions));
 
-            entry.getValue().add(new Measure(CoreMetrics.COMPLEXITY_IN_FUNCTIONS).setIntValue(complexityInFunctions));
-            entry.getValue().add(new Measure(CoreMetrics.FUNCTION_COMPLEXITY, complexMean));
+                double complex = 0;
+                for (Measure m : entry.getValue()){
+                    if (m.getMetric().getKey().equalsIgnoreCase(CoreMetrics.FILE_COMPLEXITY.getKey())){
+                        complex = m.getValue();
+                        break;
+                    }
+                }
+
+                double complexMean = complex/(double)count;
+                entry.getValue().add(new Measure(CoreMetrics.FUNCTION_COMPLEXITY, complexMean));
+            }
         }
     }
 

@@ -20,7 +20,6 @@
 
 package org.sonar.plugins.objectivec.complexity;
 
-import org.apache.log4j.spi.LoggerFactory;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,9 +34,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Andres Gil Herrera
@@ -54,7 +51,7 @@ public class LizardReportParserTest {
     @Before
     public void setup() throws IOException {
         correctFile = createCorrectFile();
-        incorrectFile = folder.newFile("incorrectFile.xml");
+        incorrectFile = createIncorrectFile();
     }
 
     public File createCorrectFile() throws IOException {
@@ -93,6 +90,42 @@ public class LizardReportParserTest {
         return xmlFile;
     }
 
+    public File createIncorrectFile() throws IOException {
+        File xmlFile = folder.newFile("incorrectFile.xml");
+        BufferedWriter out = new BufferedWriter(new FileWriter(xmlFile));
+        //header
+        out.write("<?xml version=\"1.0\" ?>");
+        out.write("<?xml-stylesheet type=\"text/xsl\" href=\"https://raw.github.com/terryyin/lizard/master/lizard.xsl\"?>");
+        //root object and measure
+        out.write("<cppncss><measure type=\"Function\"><labels><label>Nr.</label><label>NCSS</label><label>CCN</label></labels>");
+        //items for function
+        out.write("<item name=\"viewDidLoad(...) at VW_R_App/Controller/Accelerate/VWRAccelerationViewController.m:105\">");
+        out.write("<value>2</value><value>15</value><value>1</value></item>");
+        out.write("<item name=\"viewWillAppear:(...) at VW_R_App/Controller/Accelerate/VWRAccelerationViewController.m:130\">");
+        out.write("<value>3</value><value>20</value><value>5</value></item>");
+        //average and close funciton measure
+        out.write("<average lable=\"NCSS\" value=\"17\"/><average lable=\"CCN\" value=\"3\"/><average lable=\"NCSS\" value=\"17\"/>");
+        out.write("<average lable=\"CCN\" value=\"3\"/><average lable=\"NCSS\" value=\"17\"/><average lable=\"CCN\" value=\"3\"/>");
+        out.write("<average lable=\"NCSS\" value=\"17\"/><average lable=\"CCN\" value=\"3\"/></measure>");
+        //open file measure and add the labels
+        out.write("<measure type=\"File\"><labels><label>Nr.</label><label>NCSS</label><label>CCN</label><label>Functions</label></labels>");
+        //items for file 3th value tag has no closing tag
+        out.write("<item name=\"VW_R_App/Controller/Accelerate/VWRAccelerationViewController.h\">");
+        out.write("<value>1</value><value>2</value><value>0<value>0</value></item>");
+        out.write("<item name=\"VW_R_App/Controller/Accelerate/VWRAccelerationViewController.m\">");
+        out.write("<value>2</value><value>868</value><value>6</value><value>2</value></item>");
+        //add averages
+        out.write("<average lable=\"NCSS\" value=\"435\"/><average lable=\"CCN\" value=\"70\"/><average lable=\"Functions\" value=\"21\"/>");
+        //add sum
+        out.write("<sum lable=\"NCSS\" value=\"870\"/><sum lable=\"CCN\" value=\"141\"/><sum lable=\"Functions\" value=\"42\"/>");
+        //close measures and root object no close tag for measure
+        out.write("</cppncss>");
+
+        out.close();
+
+        return xmlFile;
+    }
+
     @Test
     public void parseReportShouldReturnMapWhenXMLFileIsCorrect() {
         LizardReportParser parser = new LizardReportParser();
@@ -105,55 +138,53 @@ public class LizardReportParserTest {
 
         assertTrue("Key is not there", report.containsKey("VW_R_App/Controller/Accelerate/VWRAccelerationViewController.h"));
         List<Measure> list1 = report.get("VW_R_App/Controller/Accelerate/VWRAccelerationViewController.h");
-        assertEquals(0, list1.size());
+        assertEquals(3, list1.size());
 
-        /*for (Measure measure : list1) {
-
+        for (Measure measure : list1) {
             String s = measure.getMetric().getKey();
 
             if (s.equals(CoreMetrics.FUNCTIONS_KEY)) {
-                assertEquals("Header Functions has a wrong value", Integer.valueOf(0), measure.getIntValue());
+                assertEquals("Header Functions has a wrong value", 0, measure.getIntValue().intValue());
             } else if (s.equals(CoreMetrics.COMPLEXITY_KEY)) {
-                assertEquals("Header Complexity has a wrong value", Integer.valueOf(0), measure.getIntValue());
+                assertEquals("Header Complexity has a wrong value", 0, measure.getIntValue().intValue());
             } else if (s.equals(CoreMetrics.FILE_COMPLEXITY_KEY)) {
-                assertEquals("Header File Complexity has a wrong value", Double.valueOf(0.0d), measure.getValue());
+                assertEquals("Header File Complexity has a wrong value", 0.0d, measure.getValue().doubleValue(), 0.0d);
             } else if (s.equals(CoreMetrics.COMPLEXITY_IN_FUNCTIONS_KEY)) {
-                assertEquals("Header Complexity in Functions has a wrong value", Integer.valueOf(0), measure.getIntValue());
-            } else if (s.equals(CoreMetrics.FUNCTION_COMPLEXITY)) {
-                assertEquals("Header Functions Complexity has a wrong value", Double.valueOf(0.0d), measure.getValue());
+                assertEquals("Header Complexity in Functions has a wrong value", 0, measure.getIntValue().intValue());
+            } else if (s.equals(CoreMetrics.FUNCTION_COMPLEXITY_KEY)) {
+                assertEquals("Header Functions Complexity has a wrong value", 0.0d, measure.getValue().doubleValue(), 0.0d);
             }
-
-        }*/
+        }
 
         assertTrue("Key is not there", report.containsKey("VW_R_App/Controller/Accelerate/VWRAccelerationViewController.m"));
 
-
-        List<Measure> list2 = report.get("VW_R_App/Controller/Accelerate/VWRAccelerationViewController.h");
-
-        /*for (Measure measure : list2) {
-
-            org.slf4j.LoggerFactory.getLogger(getClass()).info("{}", measure);
-
+        List<Measure> list2 = report.get("VW_R_App/Controller/Accelerate/VWRAccelerationViewController.m");
+        assertEquals(5, list2.size());
+        for (Measure measure : list2) {
             String s = measure.getMetric().getKey();
 
             if (s.equals(CoreMetrics.FUNCTIONS_KEY)) {
-                assertEquals("MFile Functions has a wrong value", Integer.valueOf(2), measure.getIntValue());
+                assertEquals("MFile Functions has a wrong value", 2, measure.getIntValue().intValue());
             } else if (s.equals(CoreMetrics.COMPLEXITY_KEY)) {
-                assertEquals("MFile Complexity has a wrong value", Integer.valueOf(6), measure.getIntValue());
+                assertEquals("MFile Complexity has a wrong value", 6, measure.getIntValue().intValue());
             } else if (s.equals(CoreMetrics.FILE_COMPLEXITY_KEY)) {
-                assertEquals("MFile File Complexity has a wrong value", Double.valueOf(6.0d), measure.getValue());
+                assertEquals("MFile File Complexity has a wrong value", 6.0d, measure.getValue().doubleValue(), 0.0d);
             } else if (s.equals(CoreMetrics.COMPLEXITY_IN_FUNCTIONS_KEY)) {
-                assertEquals("MFile Complexity in Functions has a wrong value", Integer.valueOf(6), measure.getIntValue());
-            } else if (s.equals(CoreMetrics.FUNCTION_COMPLEXITY)) {
-                assertEquals("MFile Functions Complexity has a wrong value", 3.0d, measure.getValue(), 0.0d);
+                assertEquals("MFile Complexity in Functions has a wrong value", 6, measure.getIntValue().intValue());
+            } else if (s.equals(CoreMetrics.FUNCTION_COMPLEXITY_KEY)) {
+                assertEquals("MFile Functions Complexity has a wrong value", 3.0d, measure.getValue().doubleValue(), 0.0d);
             }
-
-        }*/
-
+        }
     }
 
     @Test
-    public void parseReportShouldReturnEmptyMapWhenXMLFileIsIncorrect() {
+    public void parseReportShouldReturnNullWhenXMLFileIsIncorrect() {
+        LizardReportParser parser = new LizardReportParser();
+
+        assertNotNull("correct file is null", incorrectFile);
+
+        Map<String, List<Measure>> report = parser.parseReport(incorrectFile);
+        assertNull("report is not null", report);
 
     }
 
