@@ -63,9 +63,9 @@ public class LizardReportParserTest {
         //root object and measure
         out.write("<cppncss><measure type=\"Function\"><labels><label>Nr.</label><label>NCSS</label><label>CCN</label></labels>");
         //items for function
-        out.write("<item name=\"viewDidLoad(...) at VW_R_App/Controller/Accelerate/VWRAccelerationViewController.m:105\">");
+        out.write("<item name=\"viewDidLoad(...) at App/Controller/Accelerate/AccelerationViewController.m:105\">");
         out.write("<value>2</value><value>15</value><value>1</value></item>");
-        out.write("<item name=\"viewWillAppear:(...) at VW_R_App/Controller/Accelerate/VWRAccelerationViewController.m:130\">");
+        out.write("<item name=\"viewWillAppear:(...) at App/Controller/Accelerate/AccelerationViewController.m:130\">");
         out.write("<value>3</value><value>20</value><value>5</value></item>");
         //average and close funciton measure
         out.write("<average lable=\"NCSS\" value=\"17\"/><average lable=\"CCN\" value=\"3\"/><average lable=\"NCSS\" value=\"17\"/>");
@@ -74,9 +74,9 @@ public class LizardReportParserTest {
         //open file measure and add the labels
         out.write("<measure type=\"File\"><labels><label>Nr.</label><label>NCSS</label><label>CCN</label><label>Functions</label></labels>");
         //items for file
-        out.write("<item name=\"VW_R_App/Controller/Accelerate/VWRAccelerationViewController.h\">");
+        out.write("<item name=\"App/Controller/Accelerate/AccelerationViewController.h\">");
         out.write("<value>1</value><value>2</value><value>0</value><value>0</value></item>");
-        out.write("<item name=\"VW_R_App/Controller/Accelerate/VWRAccelerationViewController.m\">");
+        out.write("<item name=\"App/Controller/Accelerate/AccelerationViewController.m\">");
         out.write("<value>2</value><value>868</value><value>6</value><value>2</value></item>");
         //add averages
         out.write("<average lable=\"NCSS\" value=\"435\"/><average lable=\"CCN\" value=\"70\"/><average lable=\"Functions\" value=\"21\"/>");
@@ -99,9 +99,9 @@ public class LizardReportParserTest {
         //root object and measure
         out.write("<cppncss><measure type=\"Function\"><labels><label>Nr.</label><label>NCSS</label><label>CCN</label></labels>");
         //items for function
-        out.write("<item name=\"viewDidLoad(...) at VW_R_App/Controller/Accelerate/VWRAccelerationViewController.m:105\">");
+        out.write("<item name=\"viewDidLoad(...) at App/Controller/Accelerate/AccelerationViewController.m:105\">");
         out.write("<value>2</value><value>15</value><value>1</value></item>");
-        out.write("<item name=\"viewWillAppear:(...) at VW_R_App/Controller/Accelerate/VWRAccelerationViewController.m:130\">");
+        out.write("<item name=\"viewWillAppear:(...) at App/Controller/Accelerate/AccelerationViewController.m:130\">");
         out.write("<value>3</value><value>20</value><value>5</value></item>");
         //average and close funciton measure
         out.write("<average lable=\"NCSS\" value=\"17\"/><average lable=\"CCN\" value=\"3\"/><average lable=\"NCSS\" value=\"17\"/>");
@@ -110,9 +110,9 @@ public class LizardReportParserTest {
         //open file measure and add the labels
         out.write("<measure type=\"File\"><labels><label>Nr.</label><label>NCSS</label><label>CCN</label><label>Functions</label></labels>");
         //items for file 3th value tag has no closing tag
-        out.write("<item name=\"VW_R_App/Controller/Accelerate/VWRAccelerationViewController.h\">");
+        out.write("<item name=\"App/Controller/Accelerate/AccelerationViewController.h\">");
         out.write("<value>1</value><value>2</value><value>0<value>0</value></item>");
-        out.write("<item name=\"VW_R_App/Controller/Accelerate/VWRAccelerationViewController.m\">");
+        out.write("<item name=\"App/Controller/Accelerate/AccelerationViewController.m\">");
         out.write("<value>2</value><value>868</value><value>6</value><value>2</value></item>");
         //add averages
         out.write("<average lable=\"NCSS\" value=\"435\"/><average lable=\"CCN\" value=\"70\"/><average lable=\"Functions\" value=\"21\"/>");
@@ -136,8 +136,8 @@ public class LizardReportParserTest {
 
         assertNotNull("report is null", report);
 
-        assertTrue("Key is not there", report.containsKey("VW_R_App/Controller/Accelerate/VWRAccelerationViewController.h"));
-        List<Measure> list1 = report.get("VW_R_App/Controller/Accelerate/VWRAccelerationViewController.h");
+        assertTrue("Key is not there", report.containsKey("App/Controller/Accelerate/AccelerationViewController.h"));
+        List<Measure> list1 = report.get("App/Controller/Accelerate/AccelerationViewController.h");
         assertEquals(4, list1.size());
 
         for (Measure measure : list1) {
@@ -156,9 +156,9 @@ public class LizardReportParserTest {
             }
         }
 
-        assertTrue("Key is not there", report.containsKey("VW_R_App/Controller/Accelerate/VWRAccelerationViewController.m"));
+        assertTrue("Key is not there", report.containsKey("App/Controller/Accelerate/AccelerationViewController.m"));
 
-        List<Measure> list2 = report.get("VW_R_App/Controller/Accelerate/VWRAccelerationViewController.m");
+        List<Measure> list2 = report.get("App/Controller/Accelerate/AccelerationViewController.m");
         assertEquals(7, list2.size());
         for (Measure measure : list2) {
             String s = measure.getMetric().getKey();
