@@ -165,8 +165,7 @@ srcDirs=''; readParameter srcDirs 'sonar.sources'
 appScheme=''; readParameter appScheme 'sonar.objectivec.appScheme'
 
 # The name of your test scheme in Xcode
-testScheme=''; readParameter testScheme '
-c.testScheme'
+testScheme=''; readParameter testScheme 'sonar.objectivec.testScheme'
 # The file patterns to exclude from coverage report
 excludedPathsFromCoverage=''; readParameter excludedPathsFromCoverage 'sonar.objectivec.excludedPathsFromCoverage'
 
