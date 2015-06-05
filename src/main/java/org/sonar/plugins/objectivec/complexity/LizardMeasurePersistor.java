@@ -47,9 +47,6 @@ import java.util.Map;
  */
 public class LizardMeasurePersistor {
 
-    private final Number[] FUNCTIONS_DISTRIB_BOTTOM_LIMITS = {1, 2, 4, 6, 8, 10, 12, 20, 30};
-    private final Number[] FILES_DISTRIB_BOTTOM_LIMITS = {0, 5, 10, 20, 30, 60, 90};
-
     private Project project;
     private SensorContext sensorContext;
 
