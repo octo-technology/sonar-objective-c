@@ -24,10 +24,20 @@ import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
+import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
+import org.sonar.api.measures.PersistenceMode;
+import org.sonar.api.measures.RangeDistributionBuilder;
 import org.sonar.api.resources.Project;
+import org.sonar.objectivec.api.ObjectiveCMetric;
+import org.sonar.squidbridge.api.SourceCode;
+import org.sonar.squidbridge.api.SourceFile;
+import org.sonar.squidbridge.api.SourceFunction;
+import org.sonar.squidbridge.indexer.QueryByParent;
+import org.sonar.squidbridge.indexer.QueryByType;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +46,9 @@ import java.util.Map;
  * @since 28/05/15.
  */
 public class LizardMeasurePersistor {
+
+    private final Number[] FUNCTIONS_DISTRIB_BOTTOM_LIMITS = {1, 2, 4, 6, 8, 10, 12, 20, 30};
+    private final Number[] FILES_DISTRIB_BOTTOM_LIMITS = {0, 5, 10, 20, 30, 60, 90};
 
     private Project project;
     private SensorContext sensorContext;
@@ -56,9 +69,24 @@ public class LizardMeasurePersistor {
                         LoggerFactory.getLogger(getClass()).error(" Exception -> {} -> {}", entry.getKey(), measure.getMetric().getName());
                     }
                 }
+                saveFilesComplexityDistribution(objcfile);
             }
         }
+    }
 
+    /*private void saveFunctionsComplexityDistribution(org.sonar.api.resources.File sonarFile, SourceFile squidFile) {
+        Collection<SourceCode> squidFunctionsInFile = scanner.getIndex().search(new QueryByParent(squidFile), new QueryByType(SourceFunction.class));
+        RangeDistributionBuilder complexityDistribution = new RangeDistributionBuilder(CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION, FUNCTIONS_DISTRIB_BOTTOM_LIMITS);
+        for (SourceCode squidFunction : squidFunctionsInFile) {
+            complexityDistribution.add(squidFunction.getDouble(ObjectiveCMetric.COMPLEXITY));
+        }
+        context.saveMeasure(sonarFile, complexityDistribution.build().setPersistenceMode(PersistenceMode.MEMORY));
+    }*/
+
+    private void saveFilesComplexityDistribution(org.sonar.api.resources.File sonarFile) {
+        RangeDistributionBuilder complexityDistribution = new RangeDistributionBuilder(CoreMetrics.FILE_COMPLEXITY_DISTRIBUTION, FILES_DISTRIB_BOTTOM_LIMITS);
+        complexityDistribution.add(sensorContext.getMeasure(sonarFile, CoreMetrics.FILE_COMPLEXITY).getValue());
+        sensorContext.saveMeasure(sonarFile, complexityDistribution.build().setPersistenceMode(PersistenceMode.MEMORY));
     }
 
     private boolean fileExists(final SensorContext context,
