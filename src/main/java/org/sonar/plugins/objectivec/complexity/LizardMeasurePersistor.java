@@ -64,29 +64,14 @@ public class LizardMeasurePersistor {
             if (fileExists(sensorContext, objcfile)) {
                 for (Measure measure : entry.getValue()) {
                     try {
+                        LoggerFactory.getLogger(getClass()).debug("Save measure {} for file {}", measure.getMetric().getName(), objcfile.getName());
                         sensorContext.saveMeasure(objcfile, measure);
                     } catch (Exception e) {
                         LoggerFactory.getLogger(getClass()).error(" Exception -> {} -> {}", entry.getKey(), measure.getMetric().getName());
                     }
                 }
-                saveFilesComplexityDistribution(objcfile);
             }
         }
-    }
-
-    /*private void saveFunctionsComplexityDistribution(org.sonar.api.resources.File sonarFile, SourceFile squidFile) {
-        Collection<SourceCode> squidFunctionsInFile = scanner.getIndex().search(new QueryByParent(squidFile), new QueryByType(SourceFunction.class));
-        RangeDistributionBuilder complexityDistribution = new RangeDistributionBuilder(CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION, FUNCTIONS_DISTRIB_BOTTOM_LIMITS);
-        for (SourceCode squidFunction : squidFunctionsInFile) {
-            complexityDistribution.add(squidFunction.getDouble(ObjectiveCMetric.COMPLEXITY));
-        }
-        context.saveMeasure(sonarFile, complexityDistribution.build().setPersistenceMode(PersistenceMode.MEMORY));
-    }*/
-
-    private void saveFilesComplexityDistribution(org.sonar.api.resources.File sonarFile) {
-        RangeDistributionBuilder complexityDistribution = new RangeDistributionBuilder(CoreMetrics.FILE_COMPLEXITY_DISTRIBUTION, FILES_DISTRIB_BOTTOM_LIMITS);
-        complexityDistribution.add(sensorContext.getMeasure(sonarFile, CoreMetrics.FILE_COMPLEXITY).getValue());
-        sensorContext.saveMeasure(sonarFile, complexityDistribution.build().setPersistenceMode(PersistenceMode.MEMORY));
     }
 
     private boolean fileExists(final SensorContext context,

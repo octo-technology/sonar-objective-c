@@ -20,9 +20,7 @@
 package org.sonar.plugins.objectivec.complexity;
 
 import org.slf4j.LoggerFactory;
-import org.sonar.api.measures.CoreMetrics;
-import org.sonar.api.measures.Measure;
-import org.sonar.api.measures.Metric;
+import org.sonar.api.measures.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -44,6 +42,9 @@ import java.util.Map;
  * @since 28/05/15
  */
 public class LizardReportParser {
+
+    private final Number[] FUNCTIONS_DISTRIB_BOTTOM_LIMITS = {1, 2, 4, 6, 8, 10, 12, 20, 30};
+    private final Number[] FILES_DISTRIB_BOTTOM_LIMITS = {0, 5, 10, 20, 30, 60, 90};
 
     private static final String MEASURE = "measure";
     private static final String MEASURE_TYPE = "type";
@@ -74,7 +75,7 @@ public class LizardReportParser {
         return result;
     }
 
-    public Map<String, List<Measure>> parseFile(Document document) {
+    private Map<String, List<Measure>> parseFile(Document document) {
         final Map<String, List<Measure>> reportMeasures = new HashMap<String, List<Measure>>();
         final List<ObjCFunction> functions = new ArrayList<ObjCFunction>();
 
@@ -87,7 +88,7 @@ public class LizardReportParser {
                 Element element = (Element) node;
                 if (element.getAttribute(MEASURE_TYPE).equalsIgnoreCase(FILE_MEASURE)) {
                     NodeList itemList = element.getElementsByTagName(MEASURE_ITEM);
-                    addComplexityPerFileMeasure(itemList, reportMeasures);
+                    addComplexityFileMeasures(itemList, reportMeasures);
                 } else if(element.getAttribute(MEASURE_TYPE).equalsIgnoreCase(FUNCTION_MEASURE)) {
                     NodeList itemList = element.getElementsByTagName(MEASURE_ITEM);
                     collectFunctions(itemList, functions);
@@ -95,12 +96,12 @@ public class LizardReportParser {
             }
         }
 
-        addComplexityPerFunctionMeasure(reportMeasures, functions);
+        addComplexityFunctionMeasures(reportMeasures, functions);
 
         return reportMeasures;
     }
 
-    private void addComplexityPerFileMeasure(NodeList itemList, Map<String, List<Measure>> reportMeasures){
+    private void addComplexityFileMeasures(NodeList itemList, Map<String, List<Measure>> reportMeasures){
         for (int i = 0; i < itemList.getLength(); i++) {
             Node item = itemList.item(i);
 
@@ -112,14 +113,20 @@ public class LizardReportParser {
                 double fileComplexity = Double.parseDouble(values.item(CYCLOMATIC_COMPLEXITY_INDEX).getTextContent());
                 int numberOfFunctions =  Integer.parseInt(values.item(FUNCTIONS_INDEX).getTextContent());
 
-                List<Measure> list = new ArrayList<Measure>();
-                list.add(new Measure(CoreMetrics.COMPLEXITY).setIntValue(complexity));
-                list.add(new Measure(CoreMetrics.FUNCTIONS).setIntValue(numberOfFunctions));
-                list.add(new Measure(CoreMetrics.FILE_COMPLEXITY, fileComplexity));
-
-                reportMeasures.put(fileName, list);
+                reportMeasures.put(fileName, buildMeasureList(complexity, fileComplexity, numberOfFunctions));
             }
         }
+    }
+
+    private List<Measure> buildMeasureList(int complexity, double fileComplexity, int numberOfFunctions){
+        List<Measure> list = new ArrayList<Measure>();
+        list.add(new Measure(CoreMetrics.COMPLEXITY).setIntValue(complexity));
+        list.add(new Measure(CoreMetrics.FUNCTIONS).setIntValue(numberOfFunctions));
+        list.add(new Measure(CoreMetrics.FILE_COMPLEXITY, fileComplexity));
+        RangeDistributionBuilder complexityDistribution = new RangeDistributionBuilder(CoreMetrics.FILE_COMPLEXITY_DISTRIBUTION, FILES_DISTRIB_BOTTOM_LIMITS);
+        complexityDistribution.add(fileComplexity);
+        list.add(complexityDistribution.build().setPersistenceMode(PersistenceMode.MEMORY));
+        return list;
     }
 
     private void collectFunctions(NodeList itemList, List<ObjCFunction> functions) {
@@ -134,20 +141,22 @@ public class LizardReportParser {
         }
     }
 
-    private void addComplexityPerFunctionMeasure(Map<String, List<Measure>> reportMeasures, List<ObjCFunction> functions){
+    private void addComplexityFunctionMeasures(Map<String, List<Measure>> reportMeasures, List<ObjCFunction> functions){
         for (Map.Entry<String, List<Measure>> entry : reportMeasures.entrySet()) {
+
+            RangeDistributionBuilder complexityDistribution = new RangeDistributionBuilder(CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION, FUNCTIONS_DISTRIB_BOTTOM_LIMITS);
             int count = 0;
             int complexityInFunctions = 0;
+
             for (ObjCFunction func : functions) {
                 if (func.getName().contains(entry.getKey())) {
+                    complexityDistribution.add(func.getCyclomaticComplexity());
                     count++;
                     complexityInFunctions += func.getCyclomaticComplexity();
                 }
             }
 
             if (count != 0) {
-                entry.getValue().add(new Measure(CoreMetrics.COMPLEXITY_IN_FUNCTIONS).setIntValue(complexityInFunctions));
-
                 double complex = 0;
                 for (Measure m : entry.getValue()){
                     if (m.getMetric().getKey().equalsIgnoreCase(CoreMetrics.FILE_COMPLEXITY.getKey())){
@@ -157,9 +166,17 @@ public class LizardReportParser {
                 }
 
                 double complexMean = complex/(double)count;
-                entry.getValue().add(new Measure(CoreMetrics.FUNCTION_COMPLEXITY, complexMean));
+                entry.getValue().addAll(buildFuncionMeasuresList(complexMean, complexityInFunctions, complexityDistribution));
             }
         }
+    }
+
+    public List<Measure> buildFuncionMeasuresList(double complexMean, int complexityInFunctions, RangeDistributionBuilder builder){
+        List<Measure> list = new ArrayList<Measure>();
+        list.add(new Measure(CoreMetrics.FUNCTION_COMPLEXITY, complexMean));
+        list.add(new Measure(CoreMetrics.COMPLEXITY_IN_FUNCTIONS).setIntValue(complexityInFunctions));
+        list.add(builder.build().setPersistenceMode(PersistenceMode.MEMORY));
+        return list;
     }
 
     private class ObjCFunction {

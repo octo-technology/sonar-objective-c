@@ -138,7 +138,7 @@ public class LizardReportParserTest {
 
         assertTrue("Key is not there", report.containsKey("VW_R_App/Controller/Accelerate/VWRAccelerationViewController.h"));
         List<Measure> list1 = report.get("VW_R_App/Controller/Accelerate/VWRAccelerationViewController.h");
-        assertEquals(3, list1.size());
+        assertEquals(4, list1.size());
 
         for (Measure measure : list1) {
             String s = measure.getMetric().getKey();
@@ -159,7 +159,7 @@ public class LizardReportParserTest {
         assertTrue("Key is not there", report.containsKey("VW_R_App/Controller/Accelerate/VWRAccelerationViewController.m"));
 
         List<Measure> list2 = report.get("VW_R_App/Controller/Accelerate/VWRAccelerationViewController.m");
-        assertEquals(5, list2.size());
+        assertEquals(7, list2.size());
         for (Measure measure : list2) {
             String s = measure.getMetric().getKey();
 
