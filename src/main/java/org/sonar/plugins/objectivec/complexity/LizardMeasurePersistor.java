@@ -48,7 +48,7 @@ public class LizardMeasurePersistor {
             if (fileExists(sensorContext, objcfile)) {
                 for (Measure measure : entry.getValue()) {
                     try {
-                        LoggerFactory.getLogger(getClass()).debug("Save measure {} for file {}", measure.getMetric().getName(), objcfile.getName());
+                        LoggerFactory.getLogger(getClass()).debug("Save measure {} for file {}", measure.getMetric().getName(), objcfile);
                         sensorContext.saveMeasure(objcfile, measure);
                     } catch (Exception e) {
                         LoggerFactory.getLogger(getClass()).error(" Exception -> {} -> {}", entry.getKey(), measure.getMetric().getName());
