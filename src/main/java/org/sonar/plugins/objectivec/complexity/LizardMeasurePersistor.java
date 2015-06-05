@@ -20,24 +20,11 @@
 package org.sonar.plugins.objectivec.complexity;
 
 import org.slf4j.LoggerFactory;
-import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.SensorContext;
-import org.sonar.api.batch.fs.FileSystem;
-import org.sonar.api.batch.fs.InputFile;
-import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
-import org.sonar.api.measures.PersistenceMode;
-import org.sonar.api.measures.RangeDistributionBuilder;
 import org.sonar.api.resources.Project;
-import org.sonar.objectivec.api.ObjectiveCMetric;
-import org.sonar.squidbridge.api.SourceCode;
-import org.sonar.squidbridge.api.SourceFile;
-import org.sonar.squidbridge.api.SourceFunction;
-import org.sonar.squidbridge.indexer.QueryByParent;
-import org.sonar.squidbridge.indexer.QueryByType;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
