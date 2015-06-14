@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * This class is used to save the measures created by the lizardReportParser in the sonar database
+ *
  * @author Andres Gil Herrera
  * @since 28/05/15.
  */
@@ -42,6 +44,10 @@ public class LizardMeasurePersistor {
         this.sensorContext = c;
     }
 
+    /**
+     *
+     * @param measures Map containing as key the name of the file and as value a list containing the measures for that file
+     */
     public void saveMeasures(final Map<String, List<Measure>> measures) {
         for (Map.Entry<String, List<Measure>> entry : measures.entrySet()) {
             final org.sonar.api.resources.File objcfile = org.sonar.api.resources.File.fromIOFile(new File(project.getFileSystem().getBasedir(), entry.getKey()), project);
@@ -58,6 +64,12 @@ public class LizardMeasurePersistor {
         }
     }
 
+    /**
+     *
+     * @param context context of the sensor
+     * @param file file to prove for
+     * @return true if the resource is indexed and false if not
+     */
     private boolean fileExists(final SensorContext context,
                                final org.sonar.api.resources.File file) {
         return context.getResource(file) != null;

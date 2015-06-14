@@ -48,6 +48,9 @@ public class LizardSensorTest {
         settings = new Settings();
     }
 
+    /**
+     * this method tests that the sensor should be executed when a project is a root project and uses objective c
+     */
     @Test
     public void shouldExecuteOnProjectShouldBeTrueWhenProjectIsObjc() {
         final Project project = new Project("Test");
@@ -62,6 +65,9 @@ public class LizardSensorTest {
         assertTrue(testedSensor.shouldExecuteOnProject(project));
     }
 
+    /**
+     * this method tests that the sensor does not get executed when a project dont uses objective c
+     */
     @Test
     public void shouldExecuteOnProjectShouldBeFalseWhenProjectIsSomethingElse() {
         final Project project = new Project("Test");
