@@ -295,12 +295,16 @@ else
 fi
 
 if [ "$lizard" = "on" ]; then
+	if hash lizard 2>/dev/null; then
+	    # Lizard
+		echo -n 'Running Lizard...'
 
-	# Lizard
-	echo -n 'Running Lizard...'
+		# Run Lizard with xml output option and write the output in sonar-reports/lizard-report.xml
+		lizard --xml "$srcDirs" > sonar-reports/lizard-report.xml
+	else
+		echo 'Skipping Lizard (not installed!)'
+	fi
 
-	# Run Lizard with xml output option and write the output in sonar-reports/lizard-report.xml
-	lizard --xml "$srcDirs" > sonar-reports/lizard-report.xml
 else
 	echo 'Skipping Lizard (test purposes only!)'
 fi
