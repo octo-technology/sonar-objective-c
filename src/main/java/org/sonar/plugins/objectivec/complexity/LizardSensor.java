@@ -35,6 +35,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * This sensor searches for the report generated from the tool Lizard
+ * in order to save complexity metrics.
+ *
  * @author Andres Gil Herrera
  * @since 28/05/15
  */
@@ -53,11 +56,21 @@ public class LizardSensor implements Sensor {
         this.fileSystem = moduleFileSystem;
     }
 
+    /**
+     *
+     * @param project
+     * @return true if the project is root the root project and uses Objective-C
+     */
     @Override
     public boolean shouldExecuteOnProject(Project project) {
         return project.isRoot() && fileSystem.languages().contains(ObjectiveC.KEY);
     }
 
+    /**
+     *
+     * @param project
+     * @param sensorContext
+     */
     @Override
     public void analyse(Project project, SensorContext sensorContext) {
         final String projectBaseDir = project.getFileSystem().getBasedir().getPath();
@@ -65,7 +78,12 @@ public class LizardSensor implements Sensor {
         new LizardMeasurePersistor(project, sensorContext).saveMeasures(measures);
     }
 
-    //key = file name
+    /**
+     *
+     * @param baseDir base directory of the project to search the report
+     * @param parser LizardReportParser to parse the report
+     * @return Map containing as key the name of the file and as value a list containing the measures for that file
+     */
     private Map<String, List<Measure>> parseReportsIn(final String baseDir, LizardReportParser parser) {
         final StringBuilder reportFileName = new StringBuilder(baseDir);
         reportFileName.append("/").append(reportPath());
@@ -73,6 +91,10 @@ public class LizardSensor implements Sensor {
         return parser.parseReport(new File(reportFileName.toString()));
     }
 
+    /**
+     *
+     * @return the default report path or the one specified in the sonar-project.properties
+     */
     private String reportPath() {
         String reportPath = conf.getString(REPORT_PATH_KEY);
         if (reportPath == null) {
