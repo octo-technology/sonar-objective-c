@@ -96,7 +96,11 @@ public class FauxPasReportParser {
             rule.setRepositoryKey(FauxPasRuleRepository.REPOSITORY_KEY);
             rule.setKey((String)diagnosticJson.get("ruleShortName"));
 
-            violation.setMessage((String)diagnosticJson.get("info"));
+            String info = (String)diagnosticJson.get("info");
+            if (info == null) {
+                info = "Description not available";
+            }
+            violation.setMessage(info);
 
 
             JSONObject extent = (JSONObject)diagnosticJson.get("extent");
