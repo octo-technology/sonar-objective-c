@@ -31,6 +31,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,11 +74,13 @@ public class LizardReportParser {
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(xmlFile);
             result = parseFile(document);
+        } catch (final FileNotFoundException e){
+            LoggerFactory.getLogger(getClass()).error("Lizard Report not found {}", xmlFile, e);
         } catch (final IOException e) {
             LoggerFactory.getLogger(getClass()).error("Error processing file named {}", xmlFile, e);
-        } catch (ParserConfigurationException e) {
-            LoggerFactory.getLogger(getClass()).error("Error processing file named {}", xmlFile, e);
-        } catch (SAXException e) {
+        } catch (final ParserConfigurationException e) {
+            LoggerFactory.getLogger(getClass()).error("Error parsing file named {}", xmlFile, e);
+        } catch (final SAXException e) {
             LoggerFactory.getLogger(getClass()).error("Error processing file named {}", xmlFile, e);
         }
 

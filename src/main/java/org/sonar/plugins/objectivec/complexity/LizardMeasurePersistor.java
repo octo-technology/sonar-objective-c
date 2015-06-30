@@ -49,6 +49,11 @@ public class LizardMeasurePersistor {
      * @param measures Map containing as key the name of the file and as value a list containing the measures for that file
      */
     public void saveMeasures(final Map<String, List<Measure>> measures) {
+
+        if (measures == null) {
+            return;
+        }
+
         for (Map.Entry<String, List<Measure>> entry : measures.entrySet()) {
             final org.sonar.api.resources.File objcfile = org.sonar.api.resources.File.fromIOFile(new File(project.getFileSystem().getBasedir(), entry.getKey()), project);
             if (fileExists(sensorContext, objcfile)) {
