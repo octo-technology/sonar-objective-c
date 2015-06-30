@@ -14,7 +14,7 @@ Find below an example of an iOS SonarQube dashboard:
 
 ###Features
 
-- [ ] Complexity
+- [x] Complexity
 - [ ] Design
 - [x] Documentation
 - [x] Duplications
@@ -45,6 +45,7 @@ In the worst case, the Maven repository with all snapshots and releases is avail
 - [xctool](https://github.com/facebook/xctool) ([HomeBrew](http://brew.sh) installed and ```brew install xctool```). If you are using Xcode 6, make sure to update xctool (```brew upgrade xctool```) to a version > 0.2.2.
 - [OCLint](http://docs.oclint.org/en/dev/intro/installation.html) installed. Version 0.8.1 recommended  ([HomeBrew](http://brew.sh) installed and ```brew install https://gist.githubusercontent.com/TonyAnhTran/e1522b93853c5a456b74/raw/157549c7a77261e906fb88bc5606afd8bd727a73/oclint.rb```). 
 - [gcovr](http://gcovr.com) installed
+- [lizard](https://github.com/terryyin/lizard) installed
 
 ###Installation (once for all your Objective-C projects)
 - Install [the plugin](http://bit.ly/18A7OkE) through the Update Center (of SonarQube) or download it into the $SONARQUBE_HOME/extensions/plugins directory
@@ -76,6 +77,7 @@ If you still have *run-sonar.sh* file in each of your project (not recommended),
 * **Mete Balci**
 
 ###History
+- v0.4.1 (2015/05): added support for Lizard to implement complexity metrics.
 - v0.4.0 (2015/01): support for SonarQube >= 4.3 (4.x & 5.x)
 - v0.3.1 (2013/10): fix release
 - v0.3 (2013/10): added support for OCUnit tests and test coverage
