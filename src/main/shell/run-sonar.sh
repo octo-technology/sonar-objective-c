@@ -247,7 +247,7 @@ else
 	while read projectName; do
 
         projectName=$(basename $projectName .xcodeproj)
-	    coverageFilesPath="build/$projectName.build/Debug-iphonesimulator/$appScheme.build/Objects-normal/i386"
+        coverageFilesPath=$(grep 'command' compile_commands.json | sed 's#^.*-o \\/#\/#;s#",##' | grep "/${projectName%%.*}" | awk 'NR<2' | sed 's/\\\//\//g' | sed 's/\\\\//g' | xargs -0 dirname)
 		if [ "$vflag" = "on" ]; then
 			echo
 			echo "Path for .gcno/.gcda coverage files is: $coverageFilesPath"
@@ -295,6 +295,7 @@ if [ "$oclint" = "on" ]; then
 	# Run OCLint with the right set of compiler options
     maxPriority=10000
     longLineThreshold=250
+    echo "oclint-json-compilation-database $includedCommandLineFlags -- -rc LONG_LINE=$longLineThreshold -max-priority-1 $maxPriority -max-priority-2 $maxPriority -max-priority-3 $maxPriority -report-type pmd -o sonar-reports/oclint.xml"
 	runCommand no oclint-json-compilation-database $includedCommandLineFlags -- -rc LONG_LINE=$longLineThreshold -max-priority-1 $maxPriority -max-priority-2 $maxPriority -max-priority-3 $maxPriority -report-type pmd -o sonar-reports/oclint.xml
 else
 	echo 'Skipping OCLint (test purposes only!)'
@@ -309,7 +310,6 @@ if [ "$fauxpas" = "on" ]; then
 	    while read projectName; do
 
             echo -n 'Running FauxPas...'
-            echo 'fauxpas -t $appScheme -o json check $projectName --workspace $workspaceFile --scheme $appScheme > sonar-reports/$projectName-fauxpas.json'
             fauxpas -t $appScheme -o json check $projectName --workspace $workspaceFile --scheme $appScheme > sonar-reports/$(basename $projectName .xcodeproj)-fauxpas.json
 
         done < tmpFileRunSonarSh
