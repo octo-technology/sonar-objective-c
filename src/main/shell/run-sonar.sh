@@ -246,7 +246,7 @@ else
 	echo $projectFile | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh
 	while read projectName; do
 
-        projectName=$(basename $projectFile .xcodeproj)
+        projectName=$(basename $projectName .xcodeproj)
 	    coverageFilesPath="build/$projectName.build/Debug-iphonesimulator/$appScheme.build/Objects-normal/i386"
 		if [ "$vflag" = "on" ]; then
 			echo
@@ -305,9 +305,15 @@ if [ "$fauxpas" = "on" ]; then
     if [ $? -eq 0 ]; then
 
         #FauxPas
-        echo -n 'Running FauxPas...'
-        fauxpas -t $appScheme -o json check $projectFile --workspace $workspaceFile --scheme $appScheme > sonar-reports/fauxpas.json
+        echo $projectFile | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh
+	    while read projectName; do
 
+            echo -n 'Running FauxPas...'
+            echo 'fauxpas -t $appScheme -o json check $projectName --workspace $workspaceFile --scheme $appScheme > sonar-reports/$projectName-fauxpas.json'
+            fauxpas -t $appScheme -o json check $projectName --workspace $workspaceFile --scheme $appScheme > sonar-reports/$(basename $projectName .xcodeproj)-fauxpas.json
+
+        done < tmpFileRunSonarSh
+	    rm -rf tmpFileRunSonarSh
 
     else
         echo 'Skipping FauxPas (not installed)'

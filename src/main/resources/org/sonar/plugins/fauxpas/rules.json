@@ -512,6 +512,13 @@
     },
     {
         "category": "APIUsage",
+        "key": "SuspiciousDateTimeFormat",
+        "name": "Suspicious date-time format",
+        "description": "Warns about date-time formats that are likely to have unintentional behavior, e.g. \u201Cweek-year\u201D specifiers (uppercase Y) instead of normal calendar year specifiers (lowercase y).",
+        "severity": "CRITICAL"
+    },
+    {
+        "category": "APIUsage",
         "key": "BlockAPIRetainCycle",
         "name": "Retain cycle in block API usage",
         "description": "Warns if self is referenced in a block that is used in a context where it is known to cause a retain cycle.The Clang compiler\u2019s -Warc-retain-cycles warning implements generic retain cycle detection \u2014 this rule only considers specific known system framework APIs that the compiler warning does not warn about.",
@@ -554,16 +561,16 @@
     },
     {
         "category": "Style",
-        "key": "NullCoalescingOp",
-        "name": "Null coalescing operator usage",
-        "description": "Expressions of the form (obj ? obj : other) should be written as obj ?: other.",
+        "key": "StrongInsteadOfRetain",
+        "name": "Usage of retain in ARC code",
+        "description": "In files compiled with ARC, warns if the retain property attribute is used. The strong and retain attributes are functionally equivalent, but the former could be considered more idiomatic with ARC.",
         "severity": "MAJOR"
     },
     {
         "category": "Style",
-        "key": "StrongInsteadOfRetain",
-        "name": "Usage of retain in ARC code",
-        "description": "In files compiled with ARC, warns if the retain property attribute is used. The strong and retain attributes are functionally equivalent, but the former could be considered more idiomatic with ARC.",
+        "key": "NullCoalescingOp",
+        "name": "Null coalescing operator usage",
+        "description": "Expressions of the form (obj ? obj : other) should be written as obj ?: other.",
         "severity": "MAJOR"
     },
     {
@@ -641,6 +648,13 @@
         "key": "ReservedIdentifierNaming",
         "name": "Reserved identifier name",
         "description": "Warns when identifiers are named using conventions reserved by the C standard or POSIX.",
+        "severity": "MINOR"
+    },
+    {
+        "category": "Pedantic",
+        "key": "DefaultInExhaustiveSwitch",
+        "name": "Unnecessary default case in exhaustive switch statement",
+        "description": "If a switch statement explicitly handles all possible values, then the default case is unnecessary dead code, and might even be misleading to people reading the code.If the intended purpose of the default case is to safeguard against enum fields that are added in the future but accidentally left unhandled in the switch, the compiler warning -Wswitch-enum is recommended for that purpose instead.",
         "severity": "MINOR"
     },
     {
