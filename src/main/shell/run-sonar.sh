@@ -207,11 +207,12 @@ if [ "$vflag" = "" -a "$nflag" = "" ]; then
 fi
 
 # Create sonar-reports/ for reports output
-if [[ ! (-d "sonar-reports") && ("$nflag" != "on") ]]; then
+if [[ ! (-d "sonar-reports/build") && ("$nflag" != "on") ]]; then
 	if [ "$vflag" = "on" ]; then
 		echo 'Creating directory sonar-reports/'
 	fi
 	mkdir sonar-reports
+	mkdir sonar-reports/build
 	if [[ $? != 0 ]] ; then
 		stopProgress
     	exit $?
@@ -258,6 +259,9 @@ else
 			echo "Path for .gcno/.gcda coverage files is: $coverageFilesPath"
 		fi
 
+		# Create symlink to avoid gcovr bug with --object-directory
+        ln -s $coverageFilesPath sonar-reports/build/$projectName
+
 		# Build the --exclude flags
 		excludedCommandLineFlags=""
 		if [ ! -z "$excludedPathsFromCoverage" -a "$excludedPathsFromCoverage" != " " ]; then
@@ -272,7 +276,7 @@ else
 		fi
 	
 		# Run gcovr with the right options
-		runCommand "sonar-reports/coverage-${projectName%%.*}.xml" gcovr -r . --object-directory "$coverageFilesPath" $excludedCommandLineFlags --xml
+		runCommand "sonar-reports/coverage-${projectName%%.*}.xml" gcovr -r . $excludedCommandLineFlags --xml
 
 	done < tmpFileRunSonarSh
 	rm -rf tmpFileRunSonarSh
