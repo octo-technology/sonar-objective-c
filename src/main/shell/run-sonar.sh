@@ -262,24 +262,24 @@ else
 		# Create symlink to avoid gcovr bug with --object-directory
         ln -s $coverageFilesPath sonar-reports/build/$projectName
 
-		# Build the --exclude flags
-		excludedCommandLineFlags=""
-		if [ ! -z "$excludedPathsFromCoverage" -a "$excludedPathsFromCoverage" != " " ]; then
-			echo $excludedPathsFromCoverage | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh2
-			while read word; do
-				excludedCommandLineFlags+=" --exclude $word"
-			done < tmpFileRunSonarSh2
-			rm -rf tmpFileRunSonarSh2
-		fi
-		if [ "$vflag" = "on" ]; then
-			echo "Command line exclusion flags for gcovr is:$excludedCommandLineFlags"
-		fi
-	
-		# Run gcovr with the right options
-		runCommand "sonar-reports/coverage-${projectName%%.*}.xml" gcovr -r . $excludedCommandLineFlags --xml
-
 	done < tmpFileRunSonarSh
 	rm -rf tmpFileRunSonarSh
+
+	# Build the --exclude flags
+    excludedCommandLineFlags=""
+    if [ ! -z "$excludedPathsFromCoverage" -a "$excludedPathsFromCoverage" != " " ]; then
+        echo $excludedPathsFromCoverage | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh2
+        while read word; do
+            excludedCommandLineFlags+=" --exclude $word"
+        done < tmpFileRunSonarSh2
+        rm -rf tmpFileRunSonarSh2
+    fi
+    if [ "$vflag" = "on" ]; then
+        echo "Command line exclusion flags for gcovr is:$excludedCommandLineFlags"
+    fi
+
+    # Run gcovr with the right options
+    runCommand "sonar-reports/coverage.xml" gcovr -r . $excludedCommandLineFlags --xml
 	
 fi	
 
