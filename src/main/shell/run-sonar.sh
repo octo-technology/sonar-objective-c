@@ -252,7 +252,7 @@ else
 	while read projectName; do
 
         projectName=$(basename $projectName .xcodeproj)
-        coverageFilesPath=$(grep 'command' compile_commands.json | sed 's#^.*-o \\/#\/#;s#",##' | grep "/${projectName%%.*}" | awk 'NR<2' | sed 's/\\\//\//g' | sed 's/\\\\//g' | xargs -0 dirname)
+        coverageFilesPath=$(grep 'command' compile_commands.json | sed 's#^.*-o \\/#\/#;s#",##' | grep "${projectName%%.*}.build" | awk 'NR<2' | sed 's/\\\//\//g' | sed 's/\\\\//g' | xargs -0 dirname)
 		if [ "$vflag" = "on" ]; then
 			echo
 			echo "Path for .gcno/.gcda coverage files is: $coverageFilesPath"
