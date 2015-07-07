@@ -155,9 +155,9 @@ fi
 workspaceFile=''; readParameter workspaceFile 'sonar.objectivec.workspace'
 projectFile=''; readParameter projectFile 'sonar.objectivec.project'
 if [[ "$workspaceFile" != "" ]] ; then
-	xctoolCmdPrefix="xctool -workspace $workspaceFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO OBJROOT=./build"
+	xctoolCmdPrefix="xctool -workspace $workspaceFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
 else
-	xctoolCmdPrefix="xctool -project $projectFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO OBJROOT=./build"
+	xctoolCmdPrefix="xctool -project $projectFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
 fi	
 
 # Source directories for .h/.m files
@@ -216,6 +216,11 @@ if [[ ! (-d "sonar-reports") && ("$nflag" != "on") ]]; then
 		stopProgress
     	exit $?
 	fi
+else
+    if [ "$vflag" = "on" ]; then
+		echo 'Clearing sonar-reports/'
+	fi
+    rm -rf sonar-reports/*
 fi
 
 # Extracting project information needed later
@@ -278,25 +283,28 @@ if [ "$oclint" = "on" ]; then
 
 	# OCLint
 	echo -n 'Running OCLint...'
-	
+
+	# Options
+	maxPriority=10000
+    longLineThreshold=250
+
 	# Build the --include flags
 	currentDirectory=${PWD##*/}
-	includedCommandLineFlags=""
 	echo "$srcDirs" | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh
 	while read word; do
-		includedCommandLineFlags+=" --include .*/${currentDirectory}/${word}"
+
+		includedCommandLineFlags=" --include .*/${currentDirectory}/${word}"
+		if [ "$vflag" = "on" ]; then
+            echo
+            echo -n "Path included in oclint analysis is:$includedCommandLineFlags"
+        fi
+		# Run OCLint with the right set of compiler options
+	    runCommand no oclint-json-compilation-database -v $includedCommandLineFlags -- -rc LONG_LINE=$longLineThreshold -max-priority-1 $maxPriority -max-priority-2 $maxPriority -max-priority-3 $maxPriority -report-type pmd -o sonar-reports/$(echo $word | sed 's/\//_/g')-oclint.xml
+
 	done < tmpFileRunSonarSh
 	rm -rf tmpFileRunSonarSh
-	if [ "$vflag" = "on" ]; then
-		echo
-		echo -n "Path included in oclint analysis is:$includedCommandLineFlags"
-	fi
-	
-	# Run OCLint with the right set of compiler options
-    maxPriority=10000
-    longLineThreshold=250
-    echo "oclint-json-compilation-database $includedCommandLineFlags -- -rc LONG_LINE=$longLineThreshold -max-priority-1 $maxPriority -max-priority-2 $maxPriority -max-priority-3 $maxPriority -report-type pmd -o sonar-reports/oclint.xml"
-	runCommand no oclint-json-compilation-database $includedCommandLineFlags -- -rc LONG_LINE=$longLineThreshold -max-priority-1 $maxPriority -max-priority-2 $maxPriority -max-priority-3 $maxPriority -report-type pmd -o sonar-reports/oclint.xml
+
+
 else
 	echo 'Skipping OCLint (test purposes only!)'
 fi

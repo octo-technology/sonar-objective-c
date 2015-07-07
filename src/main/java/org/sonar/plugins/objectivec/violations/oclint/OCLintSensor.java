@@ -20,8 +20,10 @@
 package org.sonar.plugins.objectivec.violations.oclint;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.tools.ant.DirectoryScanner;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
@@ -35,7 +37,7 @@ import org.sonar.plugins.objectivec.core.ObjectiveC;
 public final class OCLintSensor implements Sensor {
     public static final String REPORT_PATH_KEY = ObjectiveCPlugin.PROPERTY_PREFIX
             + ".oclint.report";
-    public static final String DEFAULT_REPORT_PATH = "sonar-reports/oclint.xml";
+    public static final String DEFAULT_REPORT_PATH = "sonar-reports/*oclint.xml";
 
     private final Settings conf;
     private final FileSystem fileSystem;
@@ -68,12 +70,21 @@ public final class OCLintSensor implements Sensor {
 
     private Collection<Violation> parseReportIn(final String baseDir,
             final OCLintParser parser) {
-        final StringBuilder reportFileName = new StringBuilder(baseDir);
-        reportFileName.append("/").append(reportPath());
 
-        LoggerFactory.getLogger(getClass()).info("Processing OCLint report {}",
-                reportFileName);
-        return parser.parseReport(new File(reportFileName.toString()));
+        DirectoryScanner scanner = new DirectoryScanner();
+        scanner.setIncludes(new String[]{reportPath()});
+        scanner.setBasedir(baseDir);
+        scanner.setCaseSensitive(false);
+        scanner.scan();
+        String[] files = scanner.getIncludedFiles();
+
+        Collection<Violation> result = new ArrayList<Violation>();
+        for(String filename : files) {
+            LoggerFactory.getLogger(getClass()).info("Processing OCLint report {}", filename);
+            result.addAll(parser.parseReport(new File(filename)));
+        }
+
+        return result;
     }
 
     private String reportPath() {
