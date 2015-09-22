@@ -25,6 +25,10 @@
     </rule>
     <rule>
       <repositoryKey>FauxPas</repositoryKey>
+      <key>HardcodedSelfClass</key>
+    </rule>
+    <rule>
+      <repositoryKey>FauxPas</repositoryKey>
       <key>MacroBasedIncludeGuard</key>
     </rule>
     <rule>
@@ -297,6 +301,10 @@
     </rule>
     <rule>
       <repositoryKey>FauxPas</repositoryKey>
+      <key>FixedFormatDateFormatter</key>
+    </rule>
+    <rule>
+      <repositoryKey>FauxPas</repositoryKey>
       <key>SuspiciousDateTimeFormat</key>
     </rule>
     <rule>
@@ -325,11 +333,11 @@
     </rule>
     <rule>
       <repositoryKey>FauxPas</repositoryKey>
-      <key>StrongInsteadOfRetain</key>
+      <key>NullCoalescingOp</key>
     </rule>
     <rule>
       <repositoryKey>FauxPas</repositoryKey>
-      <key>NullCoalescingOp</key>
+      <key>StrongInsteadOfRetain</key>
     </rule>
     <rule>
       <repositoryKey>FauxPas</repositoryKey>
@@ -406,10 +414,6 @@
     <rule>
       <repositoryKey>FauxPas</repositoryKey>
       <key>OrderedPointerToZeroComparison</key>
-    </rule>
-    <rule>
-      <repositoryKey>FauxPas</repositoryKey>
-      <key>FixedFormatDateFormatter</key>
     </rule>
     <rule>
       <repositoryKey>FauxPas</repositoryKey>

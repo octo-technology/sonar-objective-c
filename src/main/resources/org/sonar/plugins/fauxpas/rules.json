@@ -36,6 +36,13 @@
     },
     {
         "category": "BestPractice",
+        "key": "HardcodedSelfClass",
+        "name": "Hardcoded self class reference",
+        "description": "Warns if an Objective-C class (or an instance of a class) sends a message to its own class object using a hardcoded reference to the class, e.g. [FOOThing alloc].It is recommended to use self instead (e.g. [self alloc] or [[self class] alloc]) so that the concrete class would receive the message, and subclassing behavior would not be impeded.",
+        "severity": "MAJOR"
+    },
+    {
+        "category": "BestPractice",
         "key": "MacroBasedIncludeGuard",
         "name": "Macro-based include guard",
         "description": "Simplify the header by replacing the macro definition check -based include guard with the \u2018once\u2019 pragma.",
@@ -360,7 +367,7 @@
         "category": "Config",
         "key": "XcconfigOverwrites",
         "name": "Xcode build configuration file overwrites previously set value",
-        "description": "Overwriting a previously set value in a build configuration file is often a sign of a mistake somewhere.",
+        "description": "Overwriting a previously set value in a build configuration file is often a sign of a mistake somewhere.It is recommended to set custom intermediary settings in \u201Cparent\u201D configuration files and then compose final values for actual build settings in leaf configuration files.",
         "severity": "MINOR"
     },
     {
@@ -512,6 +519,13 @@
     },
     {
         "category": "APIUsage",
+        "key": "FixedFormatDateFormatter",
+        "name": "Fixed-format NSDateFormatter not using invariant (POSIX) locale",
+        "description": "Warns when an NSDateFormatter is used with fixed-format dates without using the invariant en_US_POSIX locale. If any other locale is used, the date format string may be overwritten, depending on system date and time settings.When working with user-visible dates, date and time styles should be used instead of setting a date format.",
+        "severity": "CRITICAL"
+    },
+    {
+        "category": "APIUsage",
         "key": "SuspiciousDateTimeFormat",
         "name": "Suspicious date-time format",
         "description": "Warns about date-time formats that are likely to have unintentional behavior, e.g. \u201Cweek-year\u201D specifiers (uppercase Y) instead of normal calendar year specifiers (lowercase y).",
@@ -561,16 +575,16 @@
     },
     {
         "category": "Style",
-        "key": "StrongInsteadOfRetain",
-        "name": "Usage of retain in ARC code",
-        "description": "In files compiled with ARC, warns if the retain property attribute is used. The strong and retain attributes are functionally equivalent, but the former could be considered more idiomatic with ARC.",
+        "key": "NullCoalescingOp",
+        "name": "Null coalescing operator usage",
+        "description": "Expressions of the form (obj ? obj : other) should be written as obj ?: other.",
         "severity": "MAJOR"
     },
     {
         "category": "Style",
-        "key": "NullCoalescingOp",
-        "name": "Null coalescing operator usage",
-        "description": "Expressions of the form (obj ? obj : other) should be written as obj ?: other.",
+        "key": "StrongInsteadOfRetain",
+        "name": "Usage of retain in ARC code",
+        "description": "In files compiled with ARC, warns if the retain property attribute is used. The strong and retain attributes are functionally equivalent, but the former could be considered more idiomatic with ARC.",
         "severity": "MAJOR"
     },
     {
@@ -704,13 +718,6 @@
         "key": "OrderedPointerToZeroComparison",
         "name": "Ordered comparison of pointer and zero",
         "description": "Warns whenever a pointer value is compared to zero using an ordered comparison operator.The Clang compiler should warn about similar comparisons to values other than zero.",
-        "severity": "MINOR"
-    },
-    {
-        "category": "Miscellaneous",
-        "key": "FixedFormatDateFormatter",
-        "name": "Fixed-format NSDateFormatter not using invariant (POSIX) locale",
-        "description": "Warns when an NSDateFormatter is used with fixed-format dates without using the invariant en_US_POSIX locale. If any other locale is used, the date format string may be overwritten, depending on system date and time settings.When working with user-visible dates, date and time styles should be used instead of setting a date format.",
         "severity": "MINOR"
     },
     {
