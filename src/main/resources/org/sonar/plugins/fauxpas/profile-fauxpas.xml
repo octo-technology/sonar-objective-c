@@ -37,6 +37,10 @@
     </rule>
     <rule>
       <repositoryKey>FauxPas</repositoryKey>
+      <key>CompleteNotificationCenterDetachment</key>
+    </rule>
+    <rule>
+      <repositoryKey>FauxPas</repositoryKey>
       <key>OldVerboseObjCSyntax</key>
     </rule>
     <rule>
@@ -70,6 +74,10 @@
     <rule>
       <repositoryKey>FauxPas</repositoryKey>
       <key>InstanceMethodWritesToStaticVariable</key>
+    </rule>
+    <rule>
+      <repositoryKey>FauxPas</repositoryKey>
+      <key>AssociatedObjectOnValueType</key>
     </rule>
     <rule>
       <repositoryKey>FauxPas</repositoryKey>
@@ -333,11 +341,11 @@
     </rule>
     <rule>
       <repositoryKey>FauxPas</repositoryKey>
-      <key>NullCoalescingOp</key>
+      <key>StrongInsteadOfRetain</key>
     </rule>
     <rule>
       <repositoryKey>FauxPas</repositoryKey>
-      <key>StrongInsteadOfRetain</key>
+      <key>NullCoalescingOp</key>
     </rule>
     <rule>
       <repositoryKey>FauxPas</repositoryKey>

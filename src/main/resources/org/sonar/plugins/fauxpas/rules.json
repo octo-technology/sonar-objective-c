@@ -57,6 +57,13 @@
     },
     {
         "category": "BestPractice",
+        "key": "CompleteNotificationCenterDetachment",
+        "name": "Complete NSNotificationCenter detachment",
+        "description": "Warns when an object removes itself as an observer to all notifications (by invoking -[NSNotificationCenter removeObserver:] with self).This can be a problem if a superclass or a subclass wants to keep observing some notifications. The recommended way to handle this is to remove self as an observer only for the specific notifications that you have previously begun observing.This rule does not warn about such removals occuring in -dealloc.",
+        "severity": "MAJOR"
+    },
+    {
+        "category": "BestPractice",
         "key": "OldVerboseObjCSyntax",
         "name": "Old, verbose Objective-C syntax",
         "description": "Warns if Objective-C literals, boxed expressions and subscript notation are not used whenever possible.Note that Xcode can automatically fix your code to do this (see the Edit \u2192 Refactor \u2192 Convert To Modern Objective-C Syntax\u2026 menu item).",
@@ -116,6 +123,13 @@
         "key": "InstanceMethodWritesToStaticVariable",
         "name": "Instance method writes to static variable",
         "description": "Writing to static variables (which is essentially global state) in instance methods is generally considered bad practice, because it easily leads to undesireable behavior when multiple instances are being manipulated.Warnings are suppressed for assignments occurring inside dispatch_once() blocks.",
+        "severity": "MAJOR"
+    },
+    {
+        "category": "BestPractice",
+        "key": "AssociatedObjectOnValueType",
+        "name": "Associated object on value-like type",
+        "description": "Warns when associated objects are attached to value-like types such as NSNumber or UIFont.Instances of these classes may be shared and/or immortal due to de-duplication and tagged pointers.",
         "severity": "MAJOR"
     },
     {
@@ -542,7 +556,7 @@
         "category": "APIUsage",
         "key": "MissingNotificationCenterDetachment",
         "name": "Missing NSNotificationCenter observer detachment",
-        "description": "You must invoke -[NSNotificationCenter removeObserver:] or -[NSNotificationCenter removeObserver:name:object:] before the observer object is deallocated.This rule only considers cases where the observer reference is self, or an instance variable or an Objective-C property in self.",
+        "description": "You must invoke -[NSNotificationCenter removeObserver:] or -[NSNotificationCenter removeObserver:name:object:] before the observer object is deallocated.This rule only considers cases where the observer reference is self, or an instance variable or an Objective-C property in self.This only applies to iOS 8 (and earlier) and OS X 10.10 (and earlier).",
         "severity": "CRITICAL"
     },
     {
@@ -575,16 +589,16 @@
     },
     {
         "category": "Style",
-        "key": "NullCoalescingOp",
-        "name": "Null coalescing operator usage",
-        "description": "Expressions of the form (obj ? obj : other) should be written as obj ?: other.",
+        "key": "StrongInsteadOfRetain",
+        "name": "Usage of retain in ARC code",
+        "description": "In files compiled with ARC, warns if the retain property attribute is used. The strong and retain attributes are functionally equivalent, but the former could be considered more idiomatic with ARC.",
         "severity": "MAJOR"
     },
     {
         "category": "Style",
-        "key": "StrongInsteadOfRetain",
-        "name": "Usage of retain in ARC code",
-        "description": "In files compiled with ARC, warns if the retain property attribute is used. The strong and retain attributes are functionally equivalent, but the former could be considered more idiomatic with ARC.",
+        "key": "NullCoalescingOp",
+        "name": "Null coalescing operator usage",
+        "description": "Expressions of the form (obj ? obj : other) should be written as obj ?: other.",
         "severity": "MAJOR"
     },
     {
