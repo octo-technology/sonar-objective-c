@@ -86,8 +86,11 @@ public class LizardSensor implements Sensor {
      * @return Map containing as key the name of the file and as value a list containing the measures for that file
      */
     private Map<String, List<Measure>> parseReportsIn(final String baseDir, LizardReportParser parser) {
-        final StringBuilder reportFileName = new StringBuilder(baseDir);
-        reportFileName.append("/").append(reportPath());
+        final StringBuilder reportFileName = new StringBuilder();
+        if (!(new File(reportPath()).isAbsolute())) {
+            reportFileName.append(baseDir).append("/");
+        }
+        reportFileName.append(reportPath());
         LoggerFactory.getLogger(getClass()).info("Processing complexity report ");
         return parser.parseReport(new File(reportFileName.toString()));
     }
