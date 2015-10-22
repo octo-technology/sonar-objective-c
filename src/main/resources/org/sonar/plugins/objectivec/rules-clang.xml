@@ -1,0 +1,9 @@
+<rules>
+    <rule>
+        <key>other</key>
+        <configKey>other</configKey>
+        <name>Clang Static Analyzer warning - other</name>
+        <priority>MAJOR</priority>
+        <description>Warning reported by Clang Static Analyzer (uncategorized).</description>
+    </rule>
+</rules>

@@ -34,6 +34,8 @@ import org.sonar.plugins.objectivec.cpd.ObjectiveCCpdMapping;
 
 import com.google.common.collect.ImmutableList;
 
+import org.sonar.plugins.objectivec.issues.ClangRulesDefinition;
+import org.sonar.plugins.objectivec.issues.ClangSensor;
 import org.sonar.plugins.objectivec.tests.SurefireSensor;
 import org.sonar.plugins.objectivec.violations.OCLintProfile;
 import org.sonar.plugins.objectivec.violations.OCLintProfileImporter;
@@ -58,6 +60,9 @@ public class ObjectiveCPlugin extends SonarPlugin {
                 SurefireSensor.class,
 
                 CoberturaSensor.class,
+
+                ClangRulesDefinition.class,
+                ClangSensor.class,
 
                 OCLintRuleRepository.class,
                 OCLintSensor.class,
