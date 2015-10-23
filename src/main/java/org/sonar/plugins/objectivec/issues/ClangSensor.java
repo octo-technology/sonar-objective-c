@@ -46,10 +46,10 @@ public class ClangSensor implements Sensor {
 
     private static final String REPORT_PATH_KEY = ObjectiveCPlugin.PROPERTY_PREFIX + ".clang.reportsPath";
 
-    private FileSystem fileSystem;
-    private ResourcePerspectives resourcePerspectives;
-    private RulesProfile rulesProfile;
-    private Settings settings;
+    private final FileSystem fileSystem;
+    private final ResourcePerspectives resourcePerspectives;
+    private final RulesProfile rulesProfile;
+    private final Settings settings;
 
     public ClangSensor(FileSystem fileSystem, ResourcePerspectives resourcePerspectives, RulesProfile rulesProfile, Settings settings) {
         this.fileSystem = fileSystem;

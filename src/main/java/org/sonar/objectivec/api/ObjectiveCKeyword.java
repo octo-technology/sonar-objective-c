@@ -112,6 +112,7 @@ public enum ObjectiveCKeyword implements TokenType {
     ELSE("else"),
     ENUM("enum"),
     EXTERN("extern"),
+    FALSE("false"),
     FLOAT("float"),
     FOR("for"),
     GOTO("goto"),
@@ -126,6 +127,7 @@ public enum ObjectiveCKeyword implements TokenType {
     STATIC("static"),
     STRUCT("struct"),
     SWITCH("switch"),
+    TRUE("true"),
     TYPEDEF("typedef"),
     UNION("union"),
     UNSIGNED("unsigned"),
@@ -137,6 +139,7 @@ public enum ObjectiveCKeyword implements TokenType {
 
     BOOL("BOOL"),
     SUPER("super"),
+    SELF("self"),
     ID("id"),
     CLASS("Class"),
     IMP("IMP"),
@@ -147,7 +150,7 @@ public enum ObjectiveCKeyword implements TokenType {
 
     private final String value;
 
-    private ObjectiveCKeyword(String value) {
+    /*private*/ ObjectiveCKeyword(String value) {
         this.value = value;
     }
 

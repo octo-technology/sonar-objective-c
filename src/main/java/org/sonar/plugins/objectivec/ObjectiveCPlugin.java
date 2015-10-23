@@ -43,6 +43,7 @@ import org.sonar.plugins.objectivec.violations.OCLintRuleRepository;
 import org.sonar.plugins.objectivec.violations.OCLintSensor;
 
 @Properties({
+        // TODO add missing clang, lizard
         @Property(key = CoberturaSensor.REPORT_PATTERN_KEY, defaultValue = CoberturaSensor.DEFAULT_REPORT_PATTERN, name = "Path to unit test coverage report(s)", description = "Relative to projects' root. Ant patterns are accepted", global = false, project = true),
         @Property(key = OCLintSensor.REPORT_PATH_KEY, defaultValue = OCLintSensor.DEFAULT_REPORT_PATH, name = "Path to oclint pmd formatted report", description = "Relative to projects' root.", global = false, project = true)
 })
