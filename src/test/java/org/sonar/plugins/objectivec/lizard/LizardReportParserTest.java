@@ -1,6 +1,7 @@
 /*
  * Sonar Objective-C Plugin
- * Copyright (C) 2012 OCTO Technology
+ * Copyright (C) 2012 OCTO Technology, Backelite,
+ *             Denis Bregeon, Mete Balci, Andrés Gil Herrera, Matthew DeTullio
  * dev@sonar.codehaus.org
  *
  * This program is free software; you can redistribute it and/or
@@ -17,7 +18,6 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-
 package org.sonar.plugins.objectivec.lizard;
 
 import org.junit.Before;

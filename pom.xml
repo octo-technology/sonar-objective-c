@@ -56,11 +56,11 @@
             <name>Gilles Grousset</name>
             <url>https://github.com/zippy1978</url>
         </developer>
-	<developer>
+        <developer>
             <id>dbregeon</id>
             <name>Denis Bregeon</name>
             <organization>Incept5 LLC</organization>
-        </developer>    
+        </developer>
         <developer>
             <id>fhelg</id>
             <name>François Helg</name>
@@ -77,6 +77,16 @@
             <name>Mete Balci</name>
             <url>https://github.com/metebalci</url>
         </developer>
+        <developer>
+            <id>agh92</id>
+            <name>Andrés Gil Herrera</name>
+            <url>https://github.com/agh92</url>
+        </developer>
+        <developer>
+            <id>mjdetullio</id>
+            <name>Matthew DeTullio</name>
+            <url>https://github.com/mjdetullio</url>
+        </developer>
     </developers>
     <scm>
         <connection>scm:git:git@github.com:octo-technology/sonar-objective-c.git</connection>
@@ -90,7 +100,9 @@
     </ciManagement>
 
     <properties>
-        <license.owner>OCTO Technology</license.owner>
+        <license.owner>OCTO Technology, Backelite,
+            Denis Bregeon, Mete Balci, Andrés Gil Herrera, Matthew DeTullio
+        </license.owner>
         <license.title>Sonar Objective-C Plugin</license.title>
 
         <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
@@ -184,5 +196,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
 </project>
