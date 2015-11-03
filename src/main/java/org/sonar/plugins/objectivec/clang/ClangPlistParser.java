@@ -39,7 +39,7 @@ import java.util.Map;
 /**
  * @author Matthew DeTullio
  */
-public class ClangPlistParser {
+public final class ClangPlistParser {
     private static final Logger LOGGER = LoggerFactory.getLogger(ClangPlistParser.class);
 
     public static List<ClangWarning> parse(final File reportsDir) {

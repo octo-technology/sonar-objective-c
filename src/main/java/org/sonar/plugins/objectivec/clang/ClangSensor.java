@@ -42,7 +42,7 @@ import java.util.List;
 /**
  * @author Matthew DeTullio
  */
-public class ClangSensor implements Sensor {
+public final class ClangSensor implements Sensor {
     private static final Logger LOGGER = LoggerFactory.getLogger(ClangSensor.class.getName());
 
     public static final String REPORTS_PATH_KEY = "sonar.objectivec.clang.reportsPath";
@@ -84,7 +84,15 @@ public class ClangSensor implements Sensor {
         List<ClangWarning> clangWarnings = ClangPlistParser.parse(reportsDir);
 
         for (ClangWarning clangWarning : clangWarnings) {
-            // TODO: Add check for enabled rule if/when rules get split up
+            String type = clangWarning.getType();
+            String ruleKeyName;
+
+            if (ClangRulesDefinition.REPORT_TYPE_TO_RULE_MAP.containsKey(type)) {
+                ruleKeyName = ClangRulesDefinition.REPORT_TYPE_TO_RULE_MAP.get(type);
+            } else {
+                ruleKeyName = "other";
+                LOGGER.debug("Type '{}' is not mapped to a rule -- using default rule '{}'", type, ruleKeyName);
+            }
 
             Resource resource = context.getResource(
                     org.sonar.api.resources.File.fromIOFile(clangWarning.getFile(), project));
@@ -98,8 +106,8 @@ public class ClangSensor implements Sensor {
 
             if (issuable != null) {
                 Issue issue = issuable.newIssueBuilder()
-                        .ruleKey(RuleKey.of(ClangRulesDefinition.REPOSITORY_KEY, "other"))
-                        .message(String.format("%s - %s", clangWarning.getCategory(), clangWarning.getType()))
+                        .ruleKey(RuleKey.of(ClangRulesDefinition.REPOSITORY_KEY, ruleKeyName))
+                        .message(String.format("%s - %s", clangWarning.getCategory(), type))
                         .line(clangWarning.getLine())
                         .build();
 

@@ -32,7 +32,7 @@ import org.sonar.api.scan.filesystem.PathResolver;
 
 import java.io.File;
 
-public class SurefireSensor implements Sensor {
+public final class SurefireSensor implements Sensor {
     private static final Logger LOGGER = LoggerFactory.getLogger(SurefireSensor.class);
 
     public static final String REPORTS_PATH_KEY = "sonar.objectivec.junit.reportsPath";

@@ -23,6 +23,8 @@ package org.sonar.plugins.objectivec;
 import org.sonar.api.SonarPlugin;
 import org.sonar.api.config.PropertyDefinition;
 import org.sonar.api.resources.Qualifiers;
+import org.sonar.plugins.objectivec.clang.ClangProfile;
+import org.sonar.plugins.objectivec.clang.ClangProfileImporter;
 import org.sonar.plugins.objectivec.clang.ClangRulesDefinition;
 import org.sonar.plugins.objectivec.clang.ClangSensor;
 import org.sonar.plugins.objectivec.cobertura.CoberturaSensor;
@@ -56,6 +58,8 @@ public class ObjectiveCPlugin extends SonarPlugin {
 
         extensions.add(ClangRulesDefinition.class);
         extensions.add(ClangSensor.class);
+        extensions.add(ClangProfile.class);
+        extensions.add(ClangProfileImporter.class);
         extensions.add(PropertyDefinition.builder(ClangSensor.REPORTS_PATH_KEY)
                 .name("Clang Static Analyzer Reports")
                 .description("Path to the directory containing all the *.plist Clang report files. The path may be absolute or relative to the project base directory.")

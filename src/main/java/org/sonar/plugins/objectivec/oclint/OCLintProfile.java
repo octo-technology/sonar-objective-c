@@ -51,7 +51,7 @@ public final class OCLintProfile extends ProfileDefinition {
 
             RulesProfile profile = importer.importProfile(profileXmlReader, messages);
             profile.setLanguage(ObjectiveC.KEY);
-            profile.setName(OCLintRulesDefinition.REPOSITORY_KEY);
+            profile.setName(OCLintRulesDefinition.REPOSITORY_NAME);
             profile.setDefaultProfile(true);
 
             return profile;

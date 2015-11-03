@@ -77,6 +77,24 @@
         <chc>
             <key>MEMORY_EFFICIENCY</key>
             <name>Memory use</name>
+            <chc>
+                <rule-repo>clang</rule-repo>
+                <rule-key>osx.cocoa.RetainCount</rule-key>
+                <prop>
+                    <key>remediationFunction</key>
+                    <txt>CONSTANT_ISSUE</txt>
+                </prop>
+                <prop>
+                    <key>remediationFactor</key>
+                    <val>0.0</val>
+                    <txt>d</txt>
+                </prop>
+                <prop>
+                    <key>offset</key>
+                    <val>30.0</val>
+                    <txt>mn</txt>
+                </prop>
+            </chc>
         </chc>
         <chc>
             <key>CPU_EFFICIENCY</key>
@@ -105,10 +123,136 @@
         <chc>
             <key>ARCHITECTURE_RELIABILITY</key>
             <name>Architecture</name>
+            <chc>
+                <rule-repo>clang</rule-repo>
+                <rule-key>osx.cocoa.NSError</rule-key>
+                <prop>
+                    <key>remediationFunction</key>
+                    <txt>CONSTANT_ISSUE</txt>
+                </prop>
+                <prop>
+                    <key>remediationFactor</key>
+                    <val>0.0</val>
+                    <txt>d</txt>
+                </prop>
+                <prop>
+                    <key>offset</key>
+                    <val>30.0</val>
+                    <txt>mn</txt>
+                </prop>
+            </chc>
+            <chc>
+                <rule-repo>clang</rule-repo>
+                <rule-key>osx.cocoa.MissingSuperCall</rule-key>
+                <prop>
+                    <key>remediationFunction</key>
+                    <txt>CONSTANT_ISSUE</txt>
+                </prop>
+                <prop>
+                    <key>remediationFactor</key>
+                    <val>0.0</val>
+                    <txt>d</txt>
+                </prop>
+                <prop>
+                    <key>offset</key>
+                    <val>30.0</val>
+                    <txt>mn</txt>
+                </prop>
+            </chc>
         </chc>
         <chc>
             <key>DATA_RELIABILITY</key>
             <name>Data</name>
+            <chc>
+                <rule-repo>clang</rule-repo>
+                <rule-key>core.UndefinedBinaryOperatorResult</rule-key>
+                <prop>
+                    <key>remediationFunction</key>
+                    <txt>CONSTANT_ISSUE</txt>
+                </prop>
+                <prop>
+                    <key>remediationFactor</key>
+                    <val>0.0</val>
+                    <txt>d</txt>
+                </prop>
+                <prop>
+                    <key>offset</key>
+                    <val>30.0</val>
+                    <txt>mn</txt>
+                </prop>
+            </chc>
+            <chc>
+                <rule-repo>clang</rule-repo>
+                <rule-key>core.uninitialized.Assign</rule-key>
+                <prop>
+                    <key>remediationFunction</key>
+                    <txt>CONSTANT_ISSUE</txt>
+                </prop>
+                <prop>
+                    <key>remediationFactor</key>
+                    <val>0.0</val>
+                    <txt>d</txt>
+                </prop>
+                <prop>
+                    <key>offset</key>
+                    <val>30.0</val>
+                    <txt>mn</txt>
+                </prop>
+            </chc>
+            <chc>
+                <rule-repo>clang</rule-repo>
+                <rule-key>core.uninitialized.Branch</rule-key>
+                <prop>
+                    <key>remediationFunction</key>
+                    <txt>CONSTANT_ISSUE</txt>
+                </prop>
+                <prop>
+                    <key>remediationFactor</key>
+                    <val>0.0</val>
+                    <txt>d</txt>
+                </prop>
+                <prop>
+                    <key>offset</key>
+                    <val>30.0</val>
+                    <txt>mn</txt>
+                </prop>
+            </chc>
+            <chc>
+                <rule-repo>clang</rule-repo>
+                <rule-key>core.uninitialized.UndefReturn</rule-key>
+                <prop>
+                    <key>remediationFunction</key>
+                    <txt>CONSTANT_ISSUE</txt>
+                </prop>
+                <prop>
+                    <key>remediationFactor</key>
+                    <val>0.0</val>
+                    <txt>d</txt>
+                </prop>
+                <prop>
+                    <key>offset</key>
+                    <val>30.0</val>
+                    <txt>mn</txt>
+                </prop>
+            </chc>
+            <chc>
+                <rule-repo>clang</rule-repo>
+                <rule-key>deadcode.DeadStores</rule-key>
+                <prop>
+                    <key>remediationFunction</key>
+                    <txt>CONSTANT_ISSUE</txt>
+                </prop>
+                <prop>
+                    <key>remediationFactor</key>
+                    <val>0.0</val>
+                    <txt>d</txt>
+                </prop>
+                <prop>
+                    <key>offset</key>
+                    <val>30.0</val>
+                    <txt>mn</txt>
+                </prop>
+            </chc>
         </chc>
         <chc>
             <key>EXCEPTION_HANDLING</key>
@@ -151,6 +295,24 @@
         <chc>
             <key>SYNCHRONIZATION_RELIABILITY</key>
             <name>Synchronization</name>
+            <chc>
+                <rule-repo>clang</rule-repo>
+                <rule-key>osx.cocoa.AtSync</rule-key>
+                <prop>
+                    <key>remediationFunction</key>
+                    <txt>CONSTANT_ISSUE</txt>
+                </prop>
+                <prop>
+                    <key>remediationFactor</key>
+                    <val>0.0</val>
+                    <txt>d</txt>
+                </prop>
+                <prop>
+                    <key>offset</key>
+                    <val>30.0</val>
+                    <txt>mn</txt>
+                </prop>
+            </chc>
         </chc>
         <chc>
             <key>UNIT_TESTS</key>

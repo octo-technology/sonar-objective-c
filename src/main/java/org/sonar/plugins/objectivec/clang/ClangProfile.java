@@ -18,40 +18,44 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.objectivec.oclint;
+package org.sonar.plugins.objectivec.clang;
 
+import com.google.common.io.Closeables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.api.profiles.ProfileImporter;
+import org.sonar.api.profiles.ProfileDefinition;
 import org.sonar.api.profiles.RulesProfile;
-import org.sonar.api.profiles.XMLProfileParser;
 import org.sonar.api.utils.ValidationMessages;
 import org.sonar.plugins.objectivec.ObjectiveC;
 
+import java.io.InputStreamReader;
 import java.io.Reader;
 
-public final class OCLintProfileImporter extends ProfileImporter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(OCLintProfileImporter.class);
-    private static final String UNABLE_TO_LOAD_DEFAULT_PROFILE = "Unable to load default OCLint profile";
+public final class ClangProfile extends ProfileDefinition {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClangProfile.class);
 
-    private final XMLProfileParser profileParser;
+    private final ClangProfileImporter importer;
 
-    public OCLintProfileImporter(final XMLProfileParser xmlProfileParser) {
-        super(OCLintRulesDefinition.REPOSITORY_KEY, OCLintRulesDefinition.REPOSITORY_NAME);
-        setSupportedLanguages(ObjectiveC.KEY);
-        profileParser = xmlProfileParser;
+    public ClangProfile(final ClangProfileImporter importer) {
+        this.importer = importer;
     }
 
     @Override
-    public RulesProfile importProfile(final Reader reader,
-            final ValidationMessages messages) {
-        final RulesProfile profile = profileParser.parse(reader, messages);
+    public RulesProfile createProfile(final ValidationMessages messages) {
+        LOGGER.info("Creating Clang Profile");
+        Reader profileXmlReader = null;
 
-        if (null == profile) {
-            messages.addErrorText(UNABLE_TO_LOAD_DEFAULT_PROFILE);
-            LOGGER.error(UNABLE_TO_LOAD_DEFAULT_PROFILE);
+        try {
+            profileXmlReader = new InputStreamReader(ClangProfile.class.getResourceAsStream(
+                    "/org/sonar/plugins/objectivec/profile-clang.xml"));
+
+            RulesProfile profile = importer.importProfile(profileXmlReader, messages);
+            profile.setLanguage(ObjectiveC.KEY);
+            profile.setName(ClangRulesDefinition.REPOSITORY_NAME);
+
+            return profile;
+        } finally {
+            Closeables.closeQuietly(profileXmlReader);
         }
-
-        return profile;
     }
 }

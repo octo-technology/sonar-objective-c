@@ -20,17 +20,38 @@
  */
 package org.sonar.plugins.objectivec.clang;
 
+import com.google.common.collect.ImmutableMap;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.api.server.rule.RulesDefinitionXmlLoader;
 import org.sonar.plugins.objectivec.ObjectiveC;
 import org.sonar.squidbridge.rules.SqaleXmlLoader;
 
+import java.util.Map;
+
 /**
  * @author Matthew DeTullio
  */
-public class ClangRulesDefinition implements RulesDefinition {
+public final class ClangRulesDefinition implements RulesDefinition {
     public static final String REPOSITORY_KEY = "clang";
     public static final String REPOSITORY_NAME = "Clang";
+
+    /**
+     * Map of Clang plist report <code>type</code>s to their corresponding rules.  Multiple types can map to a single
+     * rule.
+     */
+    public static final Map<String, String> REPORT_TYPE_TO_RULE_MAP = ImmutableMap.<String, String>builder()
+            .put("Assigned value is garbage or undefined", "core.uninitialized.Assign") // Logic error
+            .put("Bad return type when passing NSError**", "osx.cocoa.NSError") // Coding conventions (Apple)
+            .put("Branch condition evaluates to a garbage value", "core.uninitialized.Branch") // Logic error
+            .put("Dead assignment", "deadcode.DeadStores") // Dead store
+            .put("Dead increment", "deadcode.DeadStores") // Dead store
+            .put("Dead initialization", "deadcode.DeadStores") // Dead store
+            .put("Garbage return value", "core.uninitialized.UndefReturn") // Logic error
+            .put("Leak", "osx.cocoa.RetainCount") // Memory (Core Foundation/Objective-C)
+            .put("Missing call to superclass", "osx.cocoa.MissingSuperCall") // Core Foundation/Objective-C
+            .put("Nil value used as mutex for @synchronized() (no synchronization will occur)", "osx.cocoa.AtSync") // Logic error
+            .put("Result of operation is garbage or undefined", "core.UndefinedBinaryOperatorResult") // Logic error
+            .build();
 
     @Override
     public void define(Context context) {

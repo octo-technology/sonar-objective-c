@@ -48,7 +48,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class SurefireParser {
+public final class SurefireParser {
     private static final Logger LOGGER = LoggerFactory.getLogger(SurefireParser.class);
 
     private final Project project;
