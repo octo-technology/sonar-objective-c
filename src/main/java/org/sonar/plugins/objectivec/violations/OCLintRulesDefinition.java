@@ -17,19 +17,16 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.objectivec.issues;
+package org.sonar.plugins.objectivec.violations;
 
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.api.server.rule.RulesDefinitionXmlLoader;
 import org.sonar.plugins.objectivec.ObjectiveC;
 import org.sonar.squidbridge.rules.SqaleXmlLoader;
 
-/**
- * @author Matthew DeTullio
- */
-public class ClangRulesDefinition implements RulesDefinition {
-    public static final String REPOSITORY_KEY = "clang";
-    public static final String REPOSITORY_NAME = "Clang";
+public final class OCLintRulesDefinition implements RulesDefinition {
+    public static final String REPOSITORY_KEY = "OCLint";
+    public static final String REPOSITORY_NAME = REPOSITORY_KEY;
 
     @Override
     public void define(Context context) {
@@ -40,10 +37,10 @@ public class ClangRulesDefinition implements RulesDefinition {
         RulesDefinitionXmlLoader ruleLoader = new RulesDefinitionXmlLoader();
         ruleLoader.load(
                 repository,
-                ClangRulesDefinition.class.getResourceAsStream("/org/sonar/plugins/objectivec/rules-clang.xml"),
+                OCLintRulesDefinition.class.getResourceAsStream("/org/sonar/plugins/objectivec/rules-oclint.xml"),
                 "UTF-8");
 
-        SqaleXmlLoader.load(repository, "/com/sonar/sqale/clang-model.xml");
+        SqaleXmlLoader.load(repository, "/com/sonar/sqale/oclint-model.xml");
 
         repository.done();
     }

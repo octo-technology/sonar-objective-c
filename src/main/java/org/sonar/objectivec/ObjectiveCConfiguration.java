@@ -19,9 +19,9 @@
  */
 package org.sonar.objectivec;
 
-import java.nio.charset.Charset;
-
 import org.sonar.squid.api.SquidConfiguration;
+
+import java.nio.charset.Charset;
 
 public class ObjectiveCConfiguration extends SquidConfiguration {
 

@@ -19,6 +19,7 @@
  */
 package org.sonar.plugins.objectivec.issues;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
@@ -32,8 +33,7 @@ import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.rule.RuleKey;
-import org.sonar.plugins.objectivec.ObjectiveCPlugin;
-import org.sonar.plugins.objectivec.core.ObjectiveC;
+import org.sonar.api.scan.filesystem.PathResolver;
 
 import java.io.File;
 import java.util.List;
@@ -44,36 +44,43 @@ import java.util.List;
 public class ClangSensor implements Sensor {
     private static final Logger LOGGER = LoggerFactory.getLogger(ClangSensor.class.getName());
 
-    private static final String REPORT_PATH_KEY = ObjectiveCPlugin.PROPERTY_PREFIX + ".clang.reportsPath";
+    public static final String REPORTS_PATH_KEY = "sonar.objectivec.clang.reportsPath";
 
     private final FileSystem fileSystem;
+    private final PathResolver pathResolver;
     private final ResourcePerspectives resourcePerspectives;
-    private final RulesProfile rulesProfile;
     private final Settings settings;
 
-    public ClangSensor(FileSystem fileSystem, ResourcePerspectives resourcePerspectives, RulesProfile rulesProfile, Settings settings) {
+    public ClangSensor(final FileSystem fileSystem, final PathResolver pathResolver,
+            final ResourcePerspectives resourcePerspectives, final Settings settings) {
         this.fileSystem = fileSystem;
+        this.pathResolver = pathResolver;
         this.resourcePerspectives = resourcePerspectives;
-        this.rulesProfile = rulesProfile;
         this.settings = settings;
     }
 
     @Override
     public boolean shouldExecuteOnProject(Project project) {
-        return project.isRoot() && fileSystem.hasFiles(fileSystem.predicates().hasLanguage(ObjectiveC.KEY))
-                && !rulesProfile.getActiveRulesByRepository(ClangRulesDefinition.REPOSITORY_KEY).isEmpty();
+        return StringUtils.isNotEmpty(settings.getString(REPORTS_PATH_KEY));
     }
 
     @Override
     public void analyse(Project project, SensorContext context) {
-        String reportPath = settings.getString(REPORT_PATH_KEY);
-        if (reportPath == null) {
+        String path = settings.getString(REPORTS_PATH_KEY);
+        File reportsDir = pathResolver.relativeFile(fileSystem.baseDir(), path);
+
+        if (!reportsDir.isDirectory()) {
+            LOGGER.warn("Clang report directory not found at {}", reportsDir);
             return;
         }
 
-        LOGGER.info("Processing Clang reports path: {}", reportPath);
+        collect(project, context, reportsDir);
+    }
 
-        List<ClangWarning> clangWarnings = ClangPlistParser.parse(new File(reportPath));
+    protected void collect(Project project, SensorContext context, File reportsDir) {
+        LOGGER.info("parsing {}", reportsDir);
+
+        List<ClangWarning> clangWarnings = ClangPlistParser.parse(reportsDir);
 
         for (ClangWarning clangWarning : clangWarnings) {
             // TODO: Add check for enabled rule if/when rules get split up

@@ -17,13 +17,15 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-
 package org.sonar.plugins.objectivec.tests;
 
-import com.sun.swing.internal.plaf.metal.resources.metal_sv;
+import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.Metric;
@@ -33,6 +35,7 @@ import org.sonar.api.resources.Resource;
 import org.sonar.api.utils.ParsingUtils;
 import org.sonar.api.utils.StaxParser;
 import org.sonar.api.utils.XmlParserException;
+import org.sonar.plugins.objectivec.ObjectiveC;
 import org.sonar.plugins.surefire.TestCaseDetails;
 import org.sonar.plugins.surefire.TestSuiteParser;
 import org.sonar.plugins.surefire.TestSuiteReport;
@@ -44,31 +47,33 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by gillesgrousset on 06/01/15.
- */
 public class SurefireParser {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SurefireParser.class);
 
-    public void collect(Project project, SensorContext context, File reportsDir) {
+    private final Project project;
+    private final SensorContext context;
+    private final FileSystem fileSystem;
+
+    public SurefireParser(Project project, SensorContext context, FileSystem fileSystem) {
+        this.project = project;
+        this.context = context;
+        this.fileSystem = fileSystem;
+    }
+
+    public void collect(File reportsDir) {
         File[] xmlFiles = getReports(reportsDir);
 
         if (xmlFiles.length == 0) {
-            insertZeroWhenNoReports(project, context);
+            insertZeroWhenNoReports();
         } else {
-            parseFiles(context, xmlFiles);
+            parseFiles(xmlFiles);
         }
     }
 
     private File[] getReports(File dir) {
-        if (dir == null || !dir.isDirectory() || !dir.exists()) {
+        if (!dir.isDirectory() || !dir.exists()) {
             return new File[0];
         }
-
-        File[] list = dir.listFiles(new FilenameFilter() {
-            public boolean accept(File dir, String name) {
-                return name.startsWith("TEST") && name.endsWith(".xml");
-            }
-        });
 
         return dir.listFiles(new FilenameFilter() {
             public boolean accept(File dir, String name) {
@@ -77,13 +82,11 @@ public class SurefireParser {
         });
     }
 
-    private void insertZeroWhenNoReports(Project pom, SensorContext context) {
-        if ( !StringUtils.equalsIgnoreCase("pom", pom.getPackaging())) {
-            context.saveMeasure(CoreMetrics.TESTS, 0.0);
-        }
+    private void insertZeroWhenNoReports() {
+        context.saveMeasure(CoreMetrics.TESTS, 0.0);
     }
 
-    private void parseFiles(SensorContext context, File[] reports) {
+    private void parseFiles(File[] reports) {
         Set<TestSuiteReport> analyzedReports = new HashSet<TestSuiteReport>();
         try {
             for (File report : reports) {
@@ -92,22 +95,22 @@ public class SurefireParser {
                 parser.parse(report);
 
                 for (TestSuiteReport fileReport : parserHandler.getParsedReports()) {
-                    if ( !fileReport.isValid() || analyzedReports.contains(fileReport)) {
+                    if (!fileReport.isValid() || analyzedReports.contains(fileReport)) {
                         continue;
                     }
                     if (fileReport.getTests() > 0) {
                         double testsCount = fileReport.getTests() - fileReport.getSkipped();
-                        saveClassMeasure(context, fileReport, CoreMetrics.SKIPPED_TESTS, fileReport.getSkipped());
-                        saveClassMeasure(context, fileReport, CoreMetrics.TESTS, testsCount);
-                        saveClassMeasure(context, fileReport, CoreMetrics.TEST_ERRORS, fileReport.getErrors());
-                        saveClassMeasure(context, fileReport, CoreMetrics.TEST_FAILURES, fileReport.getFailures());
-                        saveClassMeasure(context, fileReport, CoreMetrics.TEST_EXECUTION_TIME, fileReport.getTimeMS());
+                        saveClassMeasure(fileReport, CoreMetrics.SKIPPED_TESTS, fileReport.getSkipped());
+                        saveClassMeasure(fileReport, CoreMetrics.TESTS, testsCount);
+                        saveClassMeasure(fileReport, CoreMetrics.TEST_ERRORS, fileReport.getErrors());
+                        saveClassMeasure(fileReport, CoreMetrics.TEST_FAILURES, fileReport.getFailures());
+                        saveClassMeasure(fileReport, CoreMetrics.TEST_EXECUTION_TIME, fileReport.getTimeMS());
                         double passedTests = testsCount - fileReport.getErrors() - fileReport.getFailures();
                         if (testsCount > 0) {
                             double percentage = passedTests * 100d / testsCount;
-                            saveClassMeasure(context, fileReport, CoreMetrics.TEST_SUCCESS_DENSITY, ParsingUtils.scaleValue(percentage));
+                            saveClassMeasure(fileReport, CoreMetrics.TEST_SUCCESS_DENSITY, ParsingUtils.scaleValue(percentage));
                         }
-                        saveTestsDetails(context, fileReport);
+                        saveTestsDetails(fileReport);
                         analyzedReports.add(fileReport);
                     }
                 }
@@ -118,7 +121,7 @@ public class SurefireParser {
         }
     }
 
-    private void saveTestsDetails(SensorContext context, TestSuiteReport fileReport) throws TransformerException {
+    private void saveTestsDetails(TestSuiteReport fileReport) throws TransformerException {
         StringBuilder testCaseDetails = new StringBuilder(256);
         testCaseDetails.append("<tests-details>");
         List<TestCaseDetails> details = fileReport.getDetails();
@@ -141,26 +144,52 @@ public class SurefireParser {
         context.saveMeasure(getUnitTestResource(fileReport.getClassKey()), new Measure(CoreMetrics.TEST_DATA, testCaseDetails.toString()));
     }
 
-    private void saveClassMeasure(SensorContext context, TestSuiteReport fileReport, Metric metric, double value) {
-        if ( !Double.isNaN(value)) {
+    private void saveClassMeasure(TestSuiteReport fileReport, Metric metric, double value) {
+        if (!Double.isNaN(value)) {
 
-            String basename = fileReport.getClassKey().replace('.', '/');
+            String className = fileReport.getClassKey();
 
-            // .m file
-            context.saveMeasure(getUnitTestResource(basename + ".m"), metric, value);
+            context.saveMeasure(getUnitTestResource(className), metric, value);
 
-            // Try .m file with + in name
+            // Try with + in name
             try {
-                context.saveMeasure(getUnitTestResource(basename.replace('_', '+') + ".m"), metric, value);
+                context.saveMeasure(getUnitTestResource(className.replace('_', '+')), metric, value);
             } catch (Exception e) {
-                // Nothing : File was probably already registered successfully
+                // no-op - file was probably already registered successfully
             }
         }
     }
 
-    public Resource getUnitTestResource(String filename) {
+    public Resource getUnitTestResource(String classname) {
+        String fileName = classname.replace('.', '/') + ".m";
 
-        org.sonar.api.resources.File sonarFile = new org.sonar.api.resources.File(filename);
+        File file = new File(fileName);
+        if (!file.isAbsolute()) {
+            file = new File(fileSystem.baseDir(), fileName);
+        }
+
+        /*
+         * Most xcodebuild JUnit parsers don't include the path to the class in the class field, so search for if it
+         * wasn't found in the root.
+         */
+        if (!file.isFile() || !file.exists()) {
+            List<File> files = ImmutableList.copyOf(fileSystem.files(fileSystem.predicates().and(
+                    fileSystem.predicates().hasLanguage(ObjectiveC.KEY),
+                    fileSystem.predicates().hasType(InputFile.Type.TEST),
+                    fileSystem.predicates().matchesPathPattern("**/" + fileName))));
+
+            if (files.isEmpty()) {
+                LOGGER.info("Unable to locate test source file {}", fileName);
+            } else {
+                /*
+                 * Lazily get the first file, since we wouldn't be able to determine the correct one from just the
+                 * test class name in the event that there are multiple matches.
+                 */
+                file = files.get(0);
+            }
+        }
+
+        org.sonar.api.resources.File sonarFile = org.sonar.api.resources.File.fromIOFile(file, project);
         sonarFile.setQualifier(Qualifiers.UNIT_TEST_FILE);
         return sonarFile;
     }

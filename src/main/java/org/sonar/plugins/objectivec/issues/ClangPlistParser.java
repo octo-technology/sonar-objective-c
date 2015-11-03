@@ -39,9 +39,9 @@ import java.util.Map;
  * @author Matthew DeTullio
  */
 public class ClangPlistParser {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClangPlistParser.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClangPlistParser.class);
 
-    public static List<ClangWarning> parse(File reportsDir) {
+    public static List<ClangWarning> parse(final File reportsDir) {
         List<ClangWarning> result = new ArrayList<ClangWarning>();
 
         File[] reports = getReports(reportsDir);
@@ -58,7 +58,7 @@ public class ClangPlistParser {
     }
 
     private static File[] getReports(final File reportsDir) {
-        if (reportsDir == null || !reportsDir.isDirectory() || !reportsDir.exists()) {
+        if (!reportsDir.isDirectory() || !reportsDir.exists()) {
             return new File[0];
         }
 

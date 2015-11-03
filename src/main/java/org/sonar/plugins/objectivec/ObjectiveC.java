@@ -17,33 +17,53 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.objectivec.core;
+package org.sonar.plugins.objectivec;
 
-import java.util.List;
-
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.sonar.api.config.Settings;
 import org.sonar.api.resources.AbstractLanguage;
-import org.sonar.plugins.objectivec.ObjectiveCPlugin;
 
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class ObjectiveC extends AbstractLanguage {
 
+    /**
+     * Objective-C key
+     */
     public static final String KEY = "objc";
+
+    /**
+     * Objective-C name
+     */
+    public static final String NAME = "Objective-C";
+
+    /**
+     * Key of the file suffix parameter
+     */
+    public static final String FILE_SUFFIXES_KEY = "sonar.objectivec.file.suffixes";
+
+    /**
+     * Default Java files knows suffixes
+     */
+    public static final String DEFAULT_FILE_SUFFIXES = ".h,.m";
 
     private Settings settings;
 
+    /**
+     * Default constructor
+     *
+     * @param settings Injected project batch and global server settings
+     */
     public ObjectiveC(Settings settings) {
-
-        super(KEY, "Objective-C");
+        super(KEY, NAME);
         this.settings = settings;
     }
 
     public String[] getFileSuffixes() {
-        String[] suffixes = filterEmptyStrings(settings.getStringArray(ObjectiveCPlugin.FILE_SUFFIXES_KEY));
-        if (suffixes == null || suffixes.length == 0) {
-            suffixes = StringUtils.split(ObjectiveCPlugin.FILE_SUFFIXES_DEFVALUE, ",");
+        String[] suffixes = filterEmptyStrings(settings.getStringArray(ObjectiveC.FILE_SUFFIXES_KEY));
+        if (suffixes.length == 0) {
+            suffixes = StringUtils.split(ObjectiveC.DEFAULT_FILE_SUFFIXES, ",");
         }
         return suffixes;
     }
@@ -51,10 +71,10 @@ public class ObjectiveC extends AbstractLanguage {
     private String[] filterEmptyStrings(String[] stringArray) {
         List<String> nonEmptyStrings = Lists.newArrayList();
         for (String string : stringArray) {
-          if (StringUtils.isNotBlank(string.trim())) {
-            nonEmptyStrings.add(string.trim());
-          }
+            if (StringUtils.isNotBlank(string.trim())) {
+                nonEmptyStrings.add(string.trim());
+            }
         }
         return nonEmptyStrings.toArray(new String[nonEmptyStrings.size()]);
-      }
+    }
 }

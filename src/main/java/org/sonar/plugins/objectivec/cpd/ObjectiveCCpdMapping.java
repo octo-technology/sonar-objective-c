@@ -19,23 +19,21 @@
  */
 package org.sonar.plugins.objectivec.cpd;
 
+import net.sourceforge.pmd.cpd.Tokenizer;
+import org.sonar.api.batch.AbstractCpdMapping;
+import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.resources.Language;
+import org.sonar.plugins.objectivec.ObjectiveC;
+
 import java.nio.charset.Charset;
 
-import net.sourceforge.pmd.cpd.Tokenizer;
-
-import org.sonar.api.batch.AbstractCpdMapping;
-import org.sonar.api.resources.Language;
-import org.sonar.api.resources.ProjectFileSystem;
-import org.sonar.plugins.objectivec.core.ObjectiveC;
-
 public class ObjectiveCCpdMapping extends AbstractCpdMapping {
-
     private final ObjectiveC language;
     private final Charset charset;
 
-    public ObjectiveCCpdMapping(ObjectiveC language, ProjectFileSystem fs) {
+    public ObjectiveCCpdMapping(ObjectiveC language, FileSystem fileSystem) {
         this.language = language;
-        this.charset = fs.getSourceCharset();
+        this.charset = fileSystem.encoding();
     }
 
     public Tokenizer getTokenizer() {
@@ -45,5 +43,4 @@ public class ObjectiveCCpdMapping extends AbstractCpdMapping {
     public Language getLanguage() {
         return language;
     }
-
 }

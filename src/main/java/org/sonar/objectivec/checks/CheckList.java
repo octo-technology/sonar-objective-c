@@ -19,9 +19,9 @@
  */
 package org.sonar.objectivec.checks;
 
-import java.util.List;
-
 import com.google.common.collect.ImmutableList;
+
+import java.util.List;
 
 public final class CheckList {
 
@@ -33,9 +33,9 @@ public final class CheckList {
     }
 
     public static List<Class> getChecks() {
-        return ImmutableList.<Class> of(
-
-                );
+        return ImmutableList.<Class>of(
+                // Add checks here
+        );
     }
 
 }

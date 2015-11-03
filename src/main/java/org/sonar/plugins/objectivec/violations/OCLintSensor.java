@@ -19,68 +19,56 @@
  */
 package org.sonar.plugins.objectivec.violations;
 
-import java.io.File;
-import java.util.Collection;
-
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;
-import org.sonar.api.rules.Violation;
-import org.sonar.plugins.objectivec.ObjectiveCPlugin;
-import org.sonar.plugins.objectivec.core.ObjectiveC;
+import org.sonar.api.scan.filesystem.PathResolver;
+
+import java.io.File;
 
 public final class OCLintSensor implements Sensor {
-    public static final String REPORT_PATH_KEY = ObjectiveCPlugin.PROPERTY_PREFIX
-            + ".oclint.report";
-    public static final String DEFAULT_REPORT_PATH = "sonar-reports/oclint.xml";
+    private static final Logger LOGGER = LoggerFactory.getLogger(OCLintSensor.class);
 
-    private final Settings conf;
+    public static final String REPORT_PATH_KEY = "sonar.objectivec.oclint.reportPath";
+
     private final FileSystem fileSystem;
+    private final PathResolver pathResolver;
+    private final ResourcePerspectives resourcePerspectives;
+    private final Settings settings;
 
-    public OCLintSensor(final FileSystem moduleFileSystem, final Settings config) {
-        this.conf = config;
-        this.fileSystem = moduleFileSystem;
+    public OCLintSensor(final FileSystem fileSystem, final PathResolver pathResolver,
+            final ResourcePerspectives resourcePerspectives, final Settings settings) {
+        this.fileSystem = fileSystem;
+        this.pathResolver = pathResolver;
+        this.resourcePerspectives = resourcePerspectives;
+        this.settings = settings;
     }
 
     public boolean shouldExecuteOnProject(final Project project) {
-
-        return project.isRoot() && fileSystem.languages().contains(ObjectiveC.KEY);
-
+        return StringUtils.isNotEmpty(settings.getString(REPORT_PATH_KEY));
     }
 
     public void analyse(final Project project, final SensorContext context) {
-        final String projectBaseDir = project.getFileSystem().getBasedir()
-                .getPath();
-        final OCLintParser parser = new OCLintParser(project, context);
-        saveViolations(parseReportIn(projectBaseDir, parser), context);
+        String path = settings.getString(REPORT_PATH_KEY);
+        File report = pathResolver.relativeFile(fileSystem.baseDir(), path);
 
-    }
-
-    private void saveViolations(final Collection<Violation> violations,
-            final SensorContext context) {
-        for (final Violation violation : violations) {
-            context.saveViolation(violation);
+        if (!report.isFile()) {
+            LOGGER.warn("OCLint report not found at {}", report);
+            return;
         }
+
+        LOGGER.info("parsing {}", report);
+        OCLintParser.parseReport(report, project, context, resourcePerspectives);
     }
 
-    private Collection<Violation> parseReportIn(final String baseDir,
-            final OCLintParser parser) {
-        final StringBuilder reportFileName = new StringBuilder(baseDir);
-        reportFileName.append("/").append(reportPath());
-
-        LoggerFactory.getLogger(getClass()).info("Processing OCLint report {}",
-                reportFileName);
-        return parser.parseReport(new File(reportFileName.toString()));
-    }
-
-    private String reportPath() {
-        String reportPath = conf.getString(REPORT_PATH_KEY);
-        if (reportPath == null) {
-            reportPath = DEFAULT_REPORT_PATH;
-        }
-        return reportPath;
+    @Override
+    public String toString() {
+        return "Objective-C OCLint Sensor";
     }
 }

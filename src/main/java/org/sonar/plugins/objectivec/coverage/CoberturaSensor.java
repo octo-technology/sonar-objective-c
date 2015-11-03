@@ -19,66 +19,56 @@
  */
 package org.sonar.plugins.objectivec.coverage;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonar.api.batch.CoverageExtension;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.config.Settings;
-import org.sonar.api.measures.CoverageMeasuresBuilder;
 import org.sonar.api.resources.Project;
-import org.sonar.plugins.objectivec.ObjectiveCPlugin;
-import org.sonar.plugins.objectivec.core.ObjectiveC;
+import org.sonar.api.scan.filesystem.PathResolver;
+
+import java.io.File;
 
 
-public final class CoberturaSensor implements Sensor {
+public final class CoberturaSensor implements Sensor, CoverageExtension {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CoberturaSensor.class);
 
-    public static final String REPORT_PATTERN_KEY = ObjectiveCPlugin.PROPERTY_PREFIX
-            + ".coverage.reportPattern";
-    public static final String DEFAULT_REPORT_PATTERN = "sonar-reports/coverage*.xml";
+    public static final String REPORT_PATH_KEY = "sonar.objectivec.cobertura.reportPath";
 
-    private final ReportFilesFinder reportFilesFinder;
-    private final CoberturaParser parser = new CoberturaParser();
-
-    private final Settings conf;
     private final FileSystem fileSystem;
+    private final PathResolver pathResolver;
+    private final Settings settings;
 
-    public CoberturaSensor(final FileSystem fileSystem, final Settings config) {
-
-        this.conf = config;
+    public CoberturaSensor(final FileSystem fileSystem, final PathResolver pathResolver, final Settings settings) {
         this.fileSystem = fileSystem;
-
-        reportFilesFinder = new ReportFilesFinder(config, REPORT_PATTERN_KEY, DEFAULT_REPORT_PATTERN);
+        this.pathResolver = pathResolver;
+        this.settings = settings;
     }
 
-    public boolean shouldExecuteOnProject(final Project project) {
-
-        return project.isRoot() && fileSystem.languages().contains(ObjectiveC.KEY);
+    @Override
+    public boolean shouldExecuteOnProject(Project project) {
+        return StringUtils.isNotEmpty(settings.getString(REPORT_PATH_KEY));
     }
 
-    public void analyse(final Project project, final SensorContext context) {
-        final CoverageMeasuresPersistor measuresPersistor = new CoverageMeasuresPersistor(
-                project, context);
-        final String projectBaseDir = project.getFileSystem().getBasedir()
-                .getPath();
+    @Override
+    public void analyse(Project project, SensorContext context) {
+        String path = settings.getString(REPORT_PATH_KEY);
+        File report = pathResolver.relativeFile(fileSystem.baseDir(), path);
 
-        measuresPersistor.saveMeasures(parseReportsIn(projectBaseDir));
-    }
-
-    private Map<String, CoverageMeasuresBuilder> parseReportsIn(
-            final String baseDir) {
-        final Map<String, CoverageMeasuresBuilder> measuresTotal = new HashMap<String, CoverageMeasuresBuilder>();
-
-        for (final File report : reportFilesFinder.reportsIn(baseDir)) {
-            LoggerFactory.getLogger(getClass()).info(
-                    "Processing coverage report {}", report);
-            measuresTotal.putAll(parser.parseReport(report));
+        if (!report.isFile()) {
+            LOGGER.warn("Cobertura report not found at {}", report);
+            return;
         }
 
-        return measuresTotal;
+        LOGGER.info("parsing {}", report);
+        CoberturaReportParser.parseReport(report, fileSystem, project, context);
     }
 
+    @Override
+    public String toString() {
+        return "Objective-C Cobertura Sensor";
+    }
 }

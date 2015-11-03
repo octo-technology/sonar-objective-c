@@ -19,18 +19,16 @@
  */
 package org.sonar.objectivec.parser;
 
+import org.sonar.objectivec.api.ObjectiveCGrammar;
+
 import static com.sonar.sslr.api.GenericTokenType.EOF;
 import static com.sonar.sslr.api.GenericTokenType.LITERAL;
 import static com.sonar.sslr.impl.matcher.GrammarFunctions.Standard.o2n;
 
-import org.sonar.objectivec.api.ObjectiveCGrammar;
-
 public class ObjectiveCGrammarImpl extends ObjectiveCGrammar {
 
     public ObjectiveCGrammarImpl() {
-
-         program.is(o2n(LITERAL), EOF);
-
+        program.is(o2n(LITERAL), EOF);
     }
 
 }

@@ -19,43 +19,43 @@
  */
 package org.sonar.plugins.objectivec.violations;
 
-import java.io.InputStreamReader;
-import java.io.Reader;
-
+import com.google.common.io.Closeables;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.profiles.ProfileDefinition;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.utils.ValidationMessages;
-import org.sonar.plugins.objectivec.core.ObjectiveC;
+import org.sonar.plugins.objectivec.ObjectiveC;
 
-import com.google.common.io.Closeables;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 public final class OCLintProfile extends ProfileDefinition {
+    private static final Logger LOGGER = LoggerFactory.getLogger(OCLintProfile.class);
 
-    private static final String DEFAULT_PROFILE = "/org/sonar/plugins/oclint/profile-oclint.xml";
-    private final OCLintProfileImporter profileImporter;
+    private final OCLintProfileImporter importer;
 
     public OCLintProfile(final OCLintProfileImporter importer) {
-        profileImporter = importer;
+        this.importer = importer;
     }
 
     @Override
     public RulesProfile createProfile(final ValidationMessages messages) {
-        LoggerFactory.getLogger(getClass()).info("Creating OCLint Profile");
-        Reader config = null;
+        LOGGER.info("Creating OCLint Profile");
+        Reader profileXmlReader = null;
 
         try {
-            config = new InputStreamReader(getClass().getResourceAsStream(
-                    DEFAULT_PROFILE));
-            final RulesProfile profile = profileImporter.importProfile(config,
-                    messages);
-            profile.setName(OCLintRuleRepository.REPOSITORY_KEY);
+            profileXmlReader = new InputStreamReader(OCLintProfile.class.getResourceAsStream(
+                    "/org/sonar/plugins/objectivec/profile-oclint.xml"));
+
+            RulesProfile profile = importer.importProfile(profileXmlReader, messages);
             profile.setLanguage(ObjectiveC.KEY);
+            profile.setName(OCLintRulesDefinition.REPOSITORY_KEY);
             profile.setDefaultProfile(true);
 
             return profile;
         } finally {
-            Closeables.closeQuietly(config);
+            Closeables.closeQuietly(profileXmlReader);
         }
     }
 }

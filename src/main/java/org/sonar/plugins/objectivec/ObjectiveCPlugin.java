@@ -19,71 +19,89 @@
  */
 package org.sonar.plugins.objectivec;
 
-import java.util.List;
-
-import org.sonar.api.Extension;
-import org.sonar.api.Properties;
-import org.sonar.api.Property;
 import org.sonar.api.SonarPlugin;
+import org.sonar.api.config.PropertyDefinition;
+import org.sonar.api.resources.Qualifiers;
+import org.sonar.plugins.objectivec.colorizer.ObjectiveCColorizerFormat;
 import org.sonar.plugins.objectivec.complexity.LizardSensor;
 import org.sonar.plugins.objectivec.coverage.CoberturaSensor;
-import org.sonar.plugins.objectivec.colorizer.ObjectiveCColorizerFormat;
-import org.sonar.plugins.objectivec.core.ObjectiveC;
-import org.sonar.plugins.objectivec.core.ObjectiveCSourceImporter;
 import org.sonar.plugins.objectivec.cpd.ObjectiveCCpdMapping;
-
-import com.google.common.collect.ImmutableList;
-
 import org.sonar.plugins.objectivec.issues.ClangRulesDefinition;
 import org.sonar.plugins.objectivec.issues.ClangSensor;
 import org.sonar.plugins.objectivec.tests.SurefireSensor;
 import org.sonar.plugins.objectivec.violations.OCLintProfile;
 import org.sonar.plugins.objectivec.violations.OCLintProfileImporter;
-import org.sonar.plugins.objectivec.violations.OCLintRuleRepository;
+import org.sonar.plugins.objectivec.violations.OCLintRulesDefinition;
 import org.sonar.plugins.objectivec.violations.OCLintSensor;
 
-@Properties({
-        // TODO add missing clang, lizard
-        @Property(key = CoberturaSensor.REPORT_PATTERN_KEY, defaultValue = CoberturaSensor.DEFAULT_REPORT_PATTERN, name = "Path to unit test coverage report(s)", description = "Relative to projects' root. Ant patterns are accepted", global = false, project = true),
-        @Property(key = OCLintSensor.REPORT_PATH_KEY, defaultValue = OCLintSensor.DEFAULT_REPORT_PATH, name = "Path to oclint pmd formatted report", description = "Relative to projects' root.", global = false, project = true)
-})
+import java.util.ArrayList;
+import java.util.List;
+
 public class ObjectiveCPlugin extends SonarPlugin {
+    public List getExtensions() {
+        List<Object> extensions = new ArrayList<Object>();
 
-    public List<Class<? extends Extension>> getExtensions() {
-        return ImmutableList.of(ObjectiveC.class,
-                ObjectiveCSourceImporter.class,
-                ObjectiveCColorizerFormat.class,
-                ObjectiveCCpdMapping.class,
+        extensions.add(ObjectiveC.class);
+        extensions.add(PropertyDefinition.builder(ObjectiveC.FILE_SUFFIXES_KEY)
+                .defaultValue(ObjectiveC.DEFAULT_FILE_SUFFIXES)
+                .name("File suffixes")
+                .description("Comma-separated list of suffixes for files to analyze. To not filter, leave the list empty.")
+                .onQualifiers(Qualifiers.PROJECT)
+                .build());
 
-                ObjectiveCSquidSensor.class,
-                ObjectiveCProfile.class,
+        extensions.add(ObjectiveCColorizerFormat.class);
+        extensions.add(ObjectiveCCpdMapping.class);
 
-                SurefireSensor.class,
+        extensions.add(ObjectiveCSquidSensor.class);
+        extensions.add(ObjectiveCProfile.class);
 
-                CoberturaSensor.class,
+        extensions.add(ClangRulesDefinition.class);
+        extensions.add(ClangSensor.class);
+        extensions.add(PropertyDefinition.builder(ClangSensor.REPORTS_PATH_KEY)
+                .name("Clang Static Analyzer Reports")
+                .description("Path to the directory containing all the *.plist Clang report files. The path may be absolute or relative to the project base directory.")
+                .subCategory("Clang")
+                .onQualifiers(Qualifiers.PROJECT)
+                .build());
 
-                ClangRulesDefinition.class,
-                ClangSensor.class,
+        extensions.add(CoberturaSensor.class);
+        extensions.add(PropertyDefinition.builder(CoberturaSensor.REPORT_PATH_KEY)
+                .name("Report path")
+                .description("Path (absolute or relative) to Cobertura XML report file.")
+                .subCategory("Cobertura")
+                .onQualifiers(Qualifiers.PROJECT)
+                .build());
 
-                OCLintRuleRepository.class,
-                OCLintSensor.class,
-                OCLintProfile.class,
-                OCLintProfileImporter.class,
+        extensions.add(LizardSensor.class);
+        extensions.add(PropertyDefinition.builder(LizardSensor.REPORT_PATH_KEY)
+                .name("Report path")
+                .description("Path (absolute or relative) to Lizard XML report file.")
+                .subCategory("Complexity")
+                .onQualifiers(Qualifiers.PROJECT)
+                .build());
 
-                LizardSensor.class
-                );
+        extensions.add(OCLintRulesDefinition.class);
+        extensions.add(OCLintSensor.class);
+        extensions.add(OCLintProfile.class);
+        extensions.add(OCLintProfileImporter.class);
+        extensions.add(PropertyDefinition.builder(OCLintSensor.REPORT_PATH_KEY)
+                .name("Report path")
+                .description("Path (absolute or relative) to OCLint PMD formatted XML report file.")
+                .subCategory("OCLint")
+                .onQualifiers(Qualifiers.PROJECT)
+                .build());
+
+        extensions.add(SurefireSensor.class);
+        extensions.add(PropertyDefinition.builder(SurefireSensor.REPORTS_PATH_KEY)
+                .name("JUnit Reports")
+                .description("Path to the directory containing all the *.xml JUnit report files. The path may be absolute or relative to the project base directory.<br /><br />"
+                        + "Extra logic has been added to search your test sources for each classname that is defined in the JUnit report.<br /><br />"
+                        + "Classes will attempt to match the pattern: <tt>**/${classname}.m</tt>")
+                .subCategory("JUnit")
+                .onQualifiers(Qualifiers.PROJECT)
+                .build());
+
+        return extensions;
     }
-
-    // Global Objective C constants
-    public static final String FALSE = "false";
-
-    public static final String FILE_SUFFIXES_KEY = "sonar.objectivec.file.suffixes";
-    public static final String FILE_SUFFIXES_DEFVALUE = "h,m";
-
-    public static final String PROPERTY_PREFIX = "sonar.objectivec";
-
-    public static final String TEST_FRAMEWORK_KEY = PROPERTY_PREFIX
-            + ".testframework";
-    public static final String TEST_FRAMEWORK_DEFAULT = "ghunit";
 
 }

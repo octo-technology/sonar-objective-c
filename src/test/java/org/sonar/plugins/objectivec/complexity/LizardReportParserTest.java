@@ -141,11 +141,9 @@ public class LizardReportParserTest {
      */
     @Test
     public void parseReportShouldReturnMapWhenXMLFileIsCorrect() {
-        LizardReportParser parser = new LizardReportParser();
-
         assertNotNull("correct file is null", correctFile);
 
-        Map<String, List<Measure>> report = parser.parseReport(correctFile);
+        Map<String, List<Measure>> report = LizardReportParser.parseReport(correctFile);
 
         assertNotNull("report is null", report);
 
@@ -195,11 +193,9 @@ public class LizardReportParserTest {
      */
     @Test
     public void parseReportShouldReturnNullWhenXMLFileIsIncorrect() {
-        LizardReportParser parser = new LizardReportParser();
-
         assertNotNull("correct file is null", incorrectFile);
 
-        Map<String, List<Measure>> report = parser.parseReport(incorrectFile);
+        Map<String, List<Measure>> report = LizardReportParser.parseReport(incorrectFile);
         assertNull("report is not null", report);
 
     }

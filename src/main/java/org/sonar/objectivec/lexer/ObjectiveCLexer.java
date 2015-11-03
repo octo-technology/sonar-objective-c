@@ -19,14 +19,13 @@
  */
 package org.sonar.objectivec.lexer;
 
+import com.sonar.sslr.impl.Lexer;
+import com.sonar.sslr.impl.channel.BlackHoleChannel;
+import org.sonar.objectivec.ObjectiveCConfiguration;
+
 import static com.sonar.sslr.api.GenericTokenType.LITERAL;
 import static com.sonar.sslr.impl.channel.RegexpChannelBuilder.commentRegexp;
 import static com.sonar.sslr.impl.channel.RegexpChannelBuilder.regexp;
-
-import org.sonar.objectivec.ObjectiveCConfiguration;
-
-import com.sonar.sslr.impl.Lexer;
-import com.sonar.sslr.impl.channel.BlackHoleChannel;
 
 public class ObjectiveCLexer {
 
@@ -43,11 +42,11 @@ public class ObjectiveCLexer {
 
                 .withFailIfNoChannelToConsumeOneCharacter(false)
 
-                // Comments
+                        // Comments
                 .withChannel(commentRegexp("//[^\\n\\r]*+"))
                 .withChannel(commentRegexp("/\\*[\\s\\S]*?\\*/"))
 
-                // All other tokens
+                        // All other tokens
                 .withChannel(regexp(LITERAL, "[^\r\n\\s/]+"))
 
                 .withChannel(new BlackHoleChannel("[\\s]"))

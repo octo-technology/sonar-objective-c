@@ -17,84 +17,60 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-
 package org.sonar.plugins.objectivec.tests;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.api.batch.CoverageExtension;
-import org.sonar.api.batch.DependsUpon;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;
-import org.sonar.plugins.objectivec.core.ObjectiveC;
+import org.sonar.api.scan.filesystem.PathResolver;
 
 import java.io.File;
 
 public class SurefireSensor implements Sensor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SurefireSensor.class);
 
-    private static final Logger LOG = LoggerFactory.getLogger(SurefireSensor.class);
-    public static final String REPORT_PATH_KEY = "sonar.junit.reportsPath";
-    public static final String DEFAULT_REPORT_PATH = "sonar-reports/";
-    private final Settings conf;
+    public static final String REPORTS_PATH_KEY = "sonar.objectivec.junit.reportsPath";
 
-    public SurefireSensor() {
-        this(null);
+    private final FileSystem fileSystem;
+    private final PathResolver pathResolver;
+    private final Settings settings;
+
+    public SurefireSensor(FileSystem fileSystem, PathResolver pathResolver, Settings settings) {
+        this.fileSystem = fileSystem;
+        this.pathResolver = pathResolver;
+        this.settings = settings;
     }
 
-    public SurefireSensor(final Settings config) {
-        conf = config;
-    }
-
-    @DependsUpon
-    public Class<?> dependsUponCoverageSensors() {
-        return CoverageExtension.class;
-    }
-
+    @Override
     public boolean shouldExecuteOnProject(Project project) {
-        return ObjectiveC.KEY.equals(project.getLanguageKey());
+        return StringUtils.isNotEmpty(settings.getString(REPORTS_PATH_KEY));
     }
 
+    @Override
     public void analyse(Project project, SensorContext context) {
+        String path = settings.getString(REPORTS_PATH_KEY);
+        File reportsDir = pathResolver.relativeFile(fileSystem.baseDir(), path);
 
-    /*
-        GitHub Issue #50
-        Formerly we used SurefireUtils.getReportsDirectory(project). It seems that is this one:
-        http://grepcode.com/file/repo1.maven.org/maven2/org.codehaus.sonar.plugins/sonar-surefire-plugin/3.3.2/org/sonar/plugins/surefire/api/SurefireUtils.java?av=f#34
-        However it turns out that the Java plugin contains its own version of SurefireUtils
-        that is very different (and does not contain a matching method).
-        That seems to be this one: http://svn.codehaus.org/sonar-plugins/tags/sonar-groovy-plugin-0.5/src/main/java/org/sonar/plugins/groovy/surefire/SurefireSensor.java
+        if (!reportsDir.isDirectory()) {
+            LOGGER.warn("JUnit report directory not found at {}", reportsDir);
+            return;
+        }
 
-        The result is as follows:
-
-        1.  At runtime getReportsDirectory(project) fails if you have the Java plugin installed
-        2.  At build time the new getReportsDirectory(project,settings) because I guess something in the build chain doesn't know about the Java plugin version
-
-        So the implementation here reaches into the project properties and pulls the path out by itself.
-     */
-
-        collect(project, context, new File(reportPath()));
+        collect(project, context, reportsDir);
     }
 
     protected void collect(Project project, SensorContext context, File reportsDir) {
-        LOG.info("parsing {}", reportsDir);
-        SUREFIRE_PARSER.collect(project, context, reportsDir);
+        LOGGER.info("parsing {}", reportsDir);
+        new SurefireParser(project, context, fileSystem).collect(reportsDir);
     }
-
-    private static final SurefireParser SUREFIRE_PARSER = new SurefireParser();
 
     @Override
     public String toString() {
-        return "Objective-C SurefireSensor";
+        return "Objective-C Surefire Sensor";
     }
-
-    private String reportPath() {
-        String reportPath = conf.getString(REPORT_PATH_KEY);
-        if (reportPath == null) {
-            reportPath = DEFAULT_REPORT_PATH;
-        }
-        return reportPath;
-    }
-
 }

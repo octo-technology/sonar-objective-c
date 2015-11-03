@@ -1,11 +1,20 @@
 // Update rules.txt and profile-clint.xml from OCLint documentation
-// Severity is determined from the category
+// Priority is determined from the category
 
 @Grab(group='org.codehaus.groovy.modules.http-builder',
         module='http-builder', version='0.7')
 
 import groovyx.net.http.*
+import groovy.util.XmlParser
 import groovy.xml.MarkupBuilder
+
+// Files
+def rulesXml() {
+    new File('src/main/resources/org/sonar/plugins/objectivec/rules-oclint.xml')
+}
+def profileXml() {
+    new File('src/main/resources/org/sonar/plugins/objectivec/profile-oclint.xml')
+}
 
 def splitCamelCase(value) {
     value.replaceAll(
@@ -19,199 +28,103 @@ def splitCamelCase(value) {
 }
 
 
-def parseCategory(url, name, severity) {
-
-    def result = []
+def parseCategory(url, name, priority) {
+    def rules = new XmlParser().parse(rulesXml())
 
     def http = new HTTPBuilder(url)
     def html = http.get([:])
 
-    def root = html."**".find { it.@id.toString().contains(name)}
-    root."**".findAll { it.@class.toString() == 'section'}.each {rule ->
-
-        def entry = [:]
-
-
+    def root = html.'**'.find { it.@id.toString().contains(name) }
+    root.'DIV'.each { rule ->
         def ruleName =  splitCamelCase(rule.H2.text() - '¶').capitalize()
 
         // Original name
-        entry.originalName = null
+        def nameInSource = null
         try {
-            def sourceHttp = new HTTPBuilder(rule."**".findAll {it.name() == 'A'}.last().@href)
+            def sourceUrl = rule."**".find { it.name() == 'A' && it.text().contains('oclint-rules/rules') }.@href.toString()
+
+            // Fixes busted URLs in docs
+            sourceUrl = sourceUrl.replace('EmptyElseStatementRule.cpp', 'EmptyElseBlockRule.cpp')
+            sourceUrl = sourceUrl.replace('RedundantNilCheck.cpp', 'RedundantNilCheckRule.cpp')
+
+            def sourceHttp = new HTTPBuilder(sourceUrl)
             def sourceHtml = sourceHttp.get[:]
 
-            def found = sourceHtml."**".find {it.name() == "TR" && it.text().contains("return\"")}.text()
+            def found = sourceHtml."**".find {it.name() == 'TR' && it.text().contains("return\"")}.text()
             def match = found =~ /"([^"]*)"/
-            entry.originalName = match[0][1]
+            nameInSource = match[0][1]
 
         } catch (Exception e) {
 
         }
 
-        if (entry.originalName) {
+        if (nameInSource != null) {
 
-            // Name
-            entry.name = ruleName
+            // Overrides for key not being properly detected in source
+            if (ruleName == "Broken nil check") {
+                nameInSource = "broken nil check"
+            }
+            if (ruleName == "Misplaced nil check") {
+                nameInSource = "misplaced nil check"
+            }
 
+            def existingRule = rules.rule.find { it.key.text() == nameInSource }
 
-            println "Retrieving rule $entry.originalName"
+            if (existingRule) {
+                existingRule.name[0].value = ruleName
+                existingRule.description[0].value = rule.P[1].text()
+                // Keep existing priority
+            } else {
+                def newRule = rules.appendNode('rule')
+                newRule.appendNode('key').value = nameInSource
+                newRule.appendNode('name').value = ruleName
+                newRule.appendNode('priority').value = priority
+                newRule.appendNode('description').value = rule.P[1].text()
+            }
 
-            // Summary
-            entry.summary = rule.P[1].text()
-
-            // Severity
-            entry.severity = severity
-
-            result.add entry
+            println "Retrieved rule ${nameInSource}"
         } else {
-            println "Unable to retrieve rule with name $entry.name"
+            println "Unable to retrieve rule with name ${ruleName}"
         }
     }
 
-    result
-}
-
-def writeRulesTxt(rules, file) {
-
-    def text = "Available issues:\n" +
-            "\n" +
-            "OCLint\n" +
-            "======\n\n"
-
-    rules.each {rule ->
-        if (rule.name != '') {
-            text += rule.originalName + '\n'
-            text += '----------\n'
-            text += '\n'
-
-            // Summary
-            text += "Summary: $rule.summary\n"
-            text += '\n'
-
-            text += "Severity: $rule.severity\n"
-            text += "Category: OCLint\n"
-
-            text += '\n'
-        }
-    }
-
-    file.text = text
-}
-
-def readRulesTxt(file) {
-
-    def result = []
-
-    def previousLine = ''
-    def rule = null
-    file.eachLine {line ->
-
-        if (line.startsWith('--')) {
-            rule = [:]
-            rule.originalName = previousLine.trim()
-            rule.name = rule.originalName
-        }
-
-        if (line.startsWith('Summary:') && rule) {
-            rule.summary = (line - 'Summary:').trim()
-        }
-
-        if (line.startsWith('Severity:') && rule) {
-            rule.severity = Integer.parseInt((line - 'Severity:').trim())
-        }
-
-        if (line.startsWith('Category:') && rule) {
-            rule.category = (line - 'Category:').trim()
-            result.add rule
-            rule = null
-        }
-
-        previousLine = line
-    }
-
-    result
-
-}
-
-def writeProfileOCLint(rls, file) {
     def writer = new StringWriter()
-    def xml = new MarkupBuilder(writer)
+    def printer = new groovy.util.XmlNodePrinter(new IndentPrinter(writer, "    "))
+    printer.setPreserveWhitespace true
+    printer.print(rules)
+    rulesXml().text = writer.toString()
+}
+
+def writeProfileOCLint() {
+    def rulesXml = new XmlParser().parse(rulesXml())
+
+    def writer = new StringWriter()
+    MarkupBuilder xml = new MarkupBuilder(new IndentPrinter(writer, "    "))
     xml.profile() {
         name "OCLint"
         language "objc"
         rules {
-            rls.each {rl ->
+            rulesXml.rule.each { rl ->
                 rule {
                     repositoryKey "OCLint"
-                    key rl.originalName
+                    key rl.key.text()
                 }
             }
         }
     }
 
-    file.text = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" + writer.toString()
-
+    profileXml().text = writer.toString()
 }
-
-def mergeRules(existingRules, freshRules) {
-
-    def result = []
-
-    // Update existing rules
-    existingRules.each {rule ->
-
-        def freshRule = freshRules.find {it.originalName?.trim() == rule.originalName?.trim()}
-        if (freshRule) {
-
-            println "Updating rule [$rule.originalName]"
-            rule.severity = freshRule.severity
-            rule.category = freshRule.category
-            rule.summary = freshRule.summary
-        }
-
-        if (!result.find {it.originalName?.trim() == rule.originalName?.trim()}) {
-            result.add rule
-        } else {
-            println "Skipping rule [$rule.originalName]"
-        }
-    }
-
-    // Add new rules (if any)
-    freshRules.each {rule ->
-
-        def existingRule =  existingRules.find {it.originalName?.trim() == rule.originalName?.trim()}
-        if (!existingRule) {
-            result.add rule
-        }
-    }
-
-    result
-}
-
-// Files
-File rulesTxt = new File('src/main/resources/org/sonar/plugins/oclint/rules.txt')
-File profileXml = new File('src/main/resources/org/sonar/plugins/oclint/profile-oclint.xml')
 
 
 // Parse OCLint online documentation
-def rules = []
+parseCategory("http://docs.oclint.org/en/dev/rules/basic.html", "basic", "CRITICAL")
+parseCategory("http://docs.oclint.org/en/dev/rules/convention.html", "convention", "MAJOR")
+parseCategory("http://docs.oclint.org/en/dev/rules/empty.html", "empty", "CRITICAL")
+parseCategory("http://docs.oclint.org/en/dev/rules/migration.html", "migration", "MINOR")
+parseCategory("http://docs.oclint.org/en/dev/rules/naming.html", "naming", "MAJOR")
+parseCategory("http://docs.oclint.org/en/dev/rules/redundant.html", "redundant", "MINOR")
+parseCategory("http://docs.oclint.org/en/dev/rules/size.html", "size", "CRITICAL")
+parseCategory("http://docs.oclint.org/en/dev/rules/unused.html", "unused", "INFO")
 
-rules.addAll parseCategory("http://docs.oclint.org/en/dev/rules/basic.html", "basic", 3)
-rules.addAll parseCategory("http://docs.oclint.org/en/dev/rules/convention.html", "convention", 2)
-rules.addAll parseCategory("http://docs.oclint.org/en/dev/rules/empty.html", "empty", 3)
-rules.addAll parseCategory("http://docs.oclint.org/en/dev/rules/migration.html", "migration", 1)
-rules.addAll parseCategory("http://docs.oclint.org/en/dev/rules/naming.html", "naming", 2)
-rules.addAll parseCategory("http://docs.oclint.org/en/dev/rules/redundant.html", "redundant", 1)
-rules.addAll parseCategory("http://docs.oclint.org/en/dev/rules/size.html", "size", 3)
-rules.addAll parseCategory("http://docs.oclint.org/en/dev/rules/unused.html", "unused", 0)
-println "${rules.size()} rules found"
-
-
-// Read existing rules
-def existingRules = readRulesTxt(rulesTxt)
-
-// Update existing rules with fresh rules
-def finalRules = mergeRules(existingRules, rules)
-
-writeRulesTxt(finalRules, rulesTxt)
-writeProfileOCLint(finalRules, profileXml)
+writeProfileOCLint()

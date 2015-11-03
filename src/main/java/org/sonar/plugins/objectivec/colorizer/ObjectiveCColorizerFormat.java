@@ -19,8 +19,7 @@
  */
 package org.sonar.plugins.objectivec.colorizer;
 
-import java.util.List;
-
+import com.google.common.collect.ImmutableList;
 import org.sonar.api.web.CodeColorizerFormat;
 import org.sonar.colorizer.CDocTokenizer;
 import org.sonar.colorizer.CppDocTokenizer;
@@ -29,9 +28,9 @@ import org.sonar.colorizer.KeywordsTokenizer;
 import org.sonar.colorizer.StringTokenizer;
 import org.sonar.colorizer.Tokenizer;
 import org.sonar.objectivec.api.ObjectiveCKeyword;
-import org.sonar.plugins.objectivec.core.ObjectiveC;
+import org.sonar.plugins.objectivec.ObjectiveC;
 
-import com.google.common.collect.ImmutableList;
+import java.util.List;
 
 public class ObjectiveCColorizerFormat extends CodeColorizerFormat {
 

@@ -19,57 +19,92 @@
  */
 package org.sonar.plugins.objectivec.violations;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.xml.stream.XMLStreamException;
-
+import org.codehaus.staxmate.in.SMHierarchicCursor;
+import org.codehaus.staxmate.in.SMInputCursor;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.component.ResourcePerspectives;
+import org.sonar.api.issue.Issuable;
+import org.sonar.api.issue.Issue;
 import org.sonar.api.resources.Project;
-import org.sonar.api.rules.Violation;
+import org.sonar.api.rule.RuleKey;
 import org.sonar.api.utils.StaxParser;
+import org.sonar.api.utils.XmlParserException;
+
+import javax.xml.stream.XMLStreamException;
+import java.io.File;
 
 final class OCLintParser {
+    private static final Logger LOGGER = LoggerFactory.getLogger(OCLintParser.class);
+
     private final Project project;
     private final SensorContext context;
+    private final ResourcePerspectives resourcePerspectives;
 
-    public OCLintParser(final Project p, final SensorContext c) {
-        project = p;
-        context = c;
+    private OCLintParser(final Project project, final SensorContext context,
+            final ResourcePerspectives resourcePerspectives) {
+        this.project = project;
+        this.context = context;
+        this.resourcePerspectives = resourcePerspectives;
     }
 
-    public Collection<Violation> parseReport(final File file) {
-        Collection<Violation> result;
+    public static void parseReport(File xmlFile, Project project, SensorContext context,
+            ResourcePerspectives resourcePerspectives) {
+        new OCLintParser(project, context, resourcePerspectives).parse(xmlFile);
+    }
+
+
+    private void parse(File xmlFile) {
         try {
-            final InputStream reportStream = new FileInputStream(file);
-            result = parseReport(reportStream);
-            reportStream.close();
-        } catch (final IOException e) {
-            LoggerFactory.getLogger(getClass()).error(
-                    "Error processing file named {}", file, e);
-            result = new ArrayList<Violation>();
+            StaxParser parser = new StaxParser(new StaxParser.XmlStreamHandler() {
+                @Override
+                public void stream(SMHierarchicCursor rootCursor) throws XMLStreamException {
+                    rootCursor.advance();
+                    collectFiles(rootCursor.childElementCursor("file"));
+                }
+            });
+            parser.parse(xmlFile);
+        } catch (XMLStreamException e) {
+            throw new XmlParserException(e);
         }
-        return result;
     }
 
-    public Collection<Violation> parseReport(final InputStream inputStream) {
-        final Collection<Violation> violations = new ArrayList<Violation>();
-        try {
-            final StaxParser parser = new StaxParser(
-                    new OCLintXMLStreamHandler(violations, project, context));
-            parser.parse(inputStream);
-            LoggerFactory.getLogger(getClass()).error(
-                    "Reporting {} violations.", violations.size());
-        } catch (final XMLStreamException e) {
-            LoggerFactory.getLogger(getClass()).error(
-                    "Error while parsing XML stream.", e);
+    private void collectFiles(final SMInputCursor file) throws XMLStreamException {
+        while (null != file.getNext()) {
+            final String filePath = file.getAttrValue("name");
+            LOGGER.debug("Collecting issues for {}", filePath);
+
+            final org.sonar.api.resources.File resource = org.sonar.api.resources.File.fromIOFile(new File(filePath), project);
+
+            if (context.getResource(resource) != null) {
+                LOGGER.debug("File {} was found in the project.", filePath);
+                collectFileIssues(resource, file);
+            }
         }
-        return violations;
     }
 
+    private void collectFileIssues(final org.sonar.api.resources.File resource,
+            final SMInputCursor file) throws XMLStreamException {
+        final SMInputCursor line = file.childElementCursor("violation");
+
+        while (line.getNext() != null) {
+            recordIssue(resource, line);
+        }
+    }
+
+    private void recordIssue(final org.sonar.api.resources.File resource,
+            final SMInputCursor line) throws XMLStreamException {
+        Issuable issuable = resourcePerspectives.as(Issuable.class, resource);
+
+        if (issuable != null) {
+            Issue issue = issuable.newIssueBuilder()
+                    .ruleKey(RuleKey.of(OCLintRulesDefinition.REPOSITORY_KEY, line.getAttrValue("rule")))
+                    .line(Integer.valueOf(line.getAttrValue("beginline")))
+                    .message(line.getElemStringValue())
+                    .build();
+
+            issuable.addIssue(issue);
+        }
+    }
 }

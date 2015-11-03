@@ -19,21 +19,19 @@
  */
 package org.sonar.plugins.objectivec.cpd;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.List;
-
+import com.sonar.sslr.api.Token;
+import com.sonar.sslr.impl.Lexer;
 import net.sourceforge.pmd.cpd.SourceCode;
 import net.sourceforge.pmd.cpd.TokenEntry;
 import net.sourceforge.pmd.cpd.Tokenizer;
 import net.sourceforge.pmd.cpd.Tokens;
-
 import org.sonar.objectivec.ObjectiveCConfiguration;
 import org.sonar.objectivec.lexer.ObjectiveCLexer;
 
-import com.sonar.sslr.api.Token;
-import com.sonar.sslr.impl.Lexer;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.List;
 
 public class ObjectiveCTokenizer implements Tokenizer {
 

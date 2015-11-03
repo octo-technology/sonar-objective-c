@@ -17,9 +17,10 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-
 package org.sonar.plugins.objectivec.complexity;
 
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
@@ -27,8 +28,8 @@ import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.config.Settings;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.resources.Project;
-import org.sonar.plugins.objectivec.ObjectiveCPlugin;
-import org.sonar.plugins.objectivec.core.ObjectiveC;
+import org.sonar.api.scan.filesystem.PathResolver;
+import org.sonar.plugins.objectivec.ObjectiveC;
 
 import java.io.File;
 import java.util.List;
@@ -41,69 +42,68 @@ import java.util.Map;
  * @author Andres Gil Herrera
  * @since 28/05/15
  */
-@SuppressWarnings("deprecation")
-public class LizardSensor implements Sensor {
+public final class LizardSensor implements Sensor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LizardSensor.class);
 
-    public static final String REPORT_PATH_KEY = ObjectiveCPlugin.PROPERTY_PREFIX
-            + ".lizard.report";
-    public static final String DEFAULT_REPORT_PATH = "sonar-reports/lizard-report.xml";
+    public static final String REPORT_PATH_KEY = "sonar.objectivec.lizard.reportPath";
 
-    private final Settings conf;
     private final FileSystem fileSystem;
+    private final PathResolver pathResolver;
+    private final Settings settings;
 
-    public LizardSensor(final FileSystem moduleFileSystem, final Settings config) {
-        this.conf = config;
-        this.fileSystem = moduleFileSystem;
+    public LizardSensor(final FileSystem fileSystem, final PathResolver pathResolver, final Settings settings) {
+        this.fileSystem = fileSystem;
+        this.pathResolver = pathResolver;
+        this.settings = settings;
     }
 
-    /**
-     *
-     * @param project
-     * @return true if the project is root the root project and uses Objective-C
-     */
     @Override
     public boolean shouldExecuteOnProject(Project project) {
-        return project.isRoot() && fileSystem.languages().contains(ObjectiveC.KEY);
+        return StringUtils.isNotEmpty(settings.getString(REPORT_PATH_KEY))
+                && fileSystem.languages().contains(ObjectiveC.KEY);
     }
 
-    /**
-     *
-     * @param project
-     * @param sensorContext
-     */
     @Override
-    public void analyse(Project project, SensorContext sensorContext) {
-        final String projectBaseDir = project.getFileSystem().getBasedir().getPath();
-        Map<String, List<Measure>> measures = parseReportsIn(projectBaseDir, new LizardReportParser());
-        LoggerFactory.getLogger(getClass()).info("Saving results of complexity analysis");
-        new LizardMeasurePersistor(project, sensorContext).saveMeasures(measures);
+    public void analyse(Project project, SensorContext context) {
+        String path = settings.getString(REPORT_PATH_KEY);
+        File report = pathResolver.relativeFile(fileSystem.baseDir(), path);
+
+        if (!report.isFile()) {
+            LOGGER.warn("Lizard report not found at {}", report);
+            return;
+        }
+
+        LOGGER.info("parsing {}", report);
+        Map<String, List<Measure>> measures = LizardReportParser.parseReport(report);
+
+        if (measures == null) {
+            return;
+        }
+
+        LOGGER.info("Saving results of complexity analysis");
+        saveMeasures(project, context, measures);
     }
 
-    /**
-     *
-     * @param baseDir base directory of the project to search the report
-     * @param parser LizardReportParser to parse the report
-     * @return Map containing as key the name of the file and as value a list containing the measures for that file
-     */
-    private Map<String, List<Measure>> parseReportsIn(final String baseDir, LizardReportParser parser) {
-        final StringBuilder reportFileName = new StringBuilder();
-        if (!(new File(reportPath()).isAbsolute())) {
-            reportFileName.append(baseDir).append("/");
+    private void saveMeasures(Project project, SensorContext context, final Map<String, List<Measure>> measures) {
+        for (Map.Entry<String, List<Measure>> entry : measures.entrySet()) {
+            final org.sonar.api.resources.File file =
+                    org.sonar.api.resources.File.fromIOFile(new File(entry.getKey()), project);
+
+            if (context.getResource(file) != null) {
+                for (Measure measure : entry.getValue()) {
+                    try {
+                        LOGGER.debug("Save measure {} for file {}", measure.getMetric().getName(), file);
+                        context.saveMeasure(file, measure);
+                    } catch (Exception e) {
+                        LOGGER.error(" Exception -> {} -> {}", entry.getKey(), measure.getMetric().getName());
+                    }
+                }
+            }
         }
-        reportFileName.append(reportPath());
-        LoggerFactory.getLogger(getClass()).info("Processing complexity report ");
-        return parser.parseReport(new File(reportFileName.toString()));
     }
 
-    /**
-     *
-     * @return the default report path or the one specified in the sonar-project.properties
-     */
-    private String reportPath() {
-        String reportPath = conf.getString(REPORT_PATH_KEY);
-        if (reportPath == null) {
-            reportPath = DEFAULT_REPORT_PATH;
-        }
-        return reportPath;
+    @Override
+    public String toString() {
+        return "Objective-C Lizard Sensor";
     }
 }

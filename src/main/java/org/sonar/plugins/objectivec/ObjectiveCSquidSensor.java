@@ -41,7 +41,6 @@ import org.sonar.objectivec.ObjectiveCConfiguration;
 import org.sonar.objectivec.api.ObjectiveCGrammar;
 import org.sonar.objectivec.api.ObjectiveCMetric;
 import org.sonar.objectivec.checks.CheckList;
-import org.sonar.plugins.objectivec.core.ObjectiveC;
 import org.sonar.squidbridge.AstScanner;
 import org.sonar.squidbridge.SquidAstVisitor;
 import org.sonar.squidbridge.api.CheckMessage;
@@ -65,7 +64,8 @@ public class ObjectiveCSquidSensor implements Sensor {
     private final PathResolver pathResolver;
     private final ResourcePerspectives resourcePerspectives;
 
-    public ObjectiveCSquidSensor(CheckFactory checkFactory, FileSystem fileSystem, ResourcePerspectives resourcePerspectives, PathResolver pathResolver) {
+    public ObjectiveCSquidSensor(CheckFactory checkFactory, FileSystem fileSystem,
+            ResourcePerspectives resourcePerspectives, PathResolver pathResolver) {
         this.checks = checkFactory
                 .<SquidCheck<ObjectiveCGrammar>>create(CheckList.REPOSITORY_KEY)
                 .addAnnotatedChecks(CheckList.getChecks());
@@ -124,13 +124,17 @@ public class ObjectiveCSquidSensor implements Sensor {
         context.saveMeasure(inputFile, CoreMetrics.NCLOC, squidFile.getDouble(ObjectiveCMetric.LINES_OF_CODE));
         context.saveMeasure(inputFile, CoreMetrics.COMMENT_LINES, squidFile.getDouble(ObjectiveCMetric.COMMENT_LINES));
         /*
+         * Not implemented
+         */
+        //context.saveMeasure(inputFile, CoreMetrics.CLASSES, squidFile.getDouble(ObjectiveCMetric.CLASSES));
+        //context.saveMeasure(inputFile, CoreMetrics.STATEMENTS, squidFile.getDouble(ObjectiveCMetric.STATEMENTS));
+        /*
          * Saving the same measure more than once per file throws  exception. That is why
          * CoreMetrics.FUNCTIONS and CoreMetrics.COMPLEXITY are not allowed to be saved here. In order for the
          * LizardSensor to be able to to its job and save the values for those metrics the functionality has been
          * moved to Lizard classes.
          */
         //context.saveMeasure(inputFile, CoreMetrics.FUNCTIONS, squidFile.getDouble(ObjectiveCMetric.FUNCTIONS));
-        context.saveMeasure(inputFile, CoreMetrics.STATEMENTS, squidFile.getDouble(ObjectiveCMetric.STATEMENTS));
         //context.saveMeasure(inputFile, CoreMetrics.COMPLEXITY, squidFile.getDouble(ObjectiveCMetric.COMPLEXITY));
     }
 
@@ -165,7 +169,7 @@ public class ObjectiveCSquidSensor implements Sensor {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName();
+        return "Objective-C Squid Sensor";
     }
 
 }

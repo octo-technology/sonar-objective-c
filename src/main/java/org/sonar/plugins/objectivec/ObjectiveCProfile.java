@@ -24,7 +24,6 @@ import org.sonar.api.profiles.ProfileDefinition;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.utils.ValidationMessages;
 import org.sonar.objectivec.checks.CheckList;
-import org.sonar.plugins.objectivec.core.ObjectiveC;
 
 public class ObjectiveCProfile extends ProfileDefinition {
 
