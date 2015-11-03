@@ -112,7 +112,7 @@
 
         <!-- Configuration for sonar-packaging-maven-plugin -->
         <sonar.pluginClass>org.sonar.plugins.objectivec.ObjectiveCPlugin</sonar.pluginClass>
-        <sonar.pluginName>ObjectiveC</sonar.pluginName>
+        <sonar.pluginName>Objective-C</sonar.pluginName>
 
     </properties>
 
