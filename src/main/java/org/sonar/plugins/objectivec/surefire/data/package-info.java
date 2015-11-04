@@ -19,6 +19,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 @ParametersAreNonnullByDefault
-package org.sonar.plugins.objectivec.surefire;
+package org.sonar.plugins.objectivec.surefire.data;
 
 import javax.annotation.ParametersAreNonnullByDefault;

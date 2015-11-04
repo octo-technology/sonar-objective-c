@@ -143,11 +143,6 @@
             <version>2.5.3</version>
         </dependency>
         <dependency>
-            <groupId>org.codehaus.sonar.plugins</groupId>
-            <artifactId>sonar-surefire-plugin</artifactId>
-            <version>2.7</version>
-        </dependency>
-        <dependency>
             <groupId>com.googlecode.plist</groupId>
             <artifactId>dd-plist</artifactId>
             <version>1.16</version>

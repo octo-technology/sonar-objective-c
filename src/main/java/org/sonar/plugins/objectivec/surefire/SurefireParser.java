@@ -21,44 +21,49 @@
 package org.sonar.plugins.objectivec.surefire;
 
 import com.google.common.collect.ImmutableList;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
+import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.measures.CoreMetrics;
-import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Qualifiers;
 import org.sonar.api.resources.Resource;
+import org.sonar.api.test.MutableTestPlan;
+import org.sonar.api.test.TestCase;
 import org.sonar.api.utils.ParsingUtils;
+import org.sonar.api.utils.SonarException;
 import org.sonar.api.utils.StaxParser;
-import org.sonar.api.utils.XmlParserException;
 import org.sonar.plugins.objectivec.ObjectiveC;
-import org.sonar.plugins.surefire.TestCaseDetails;
-import org.sonar.plugins.surefire.TestSuiteParser;
-import org.sonar.plugins.surefire.TestSuiteReport;
+import org.sonar.plugins.objectivec.surefire.data.SurefireStaxHandler;
+import org.sonar.plugins.objectivec.surefire.data.UnitTestClassReport;
+import org.sonar.plugins.objectivec.surefire.data.UnitTestIndex;
+import org.sonar.plugins.objectivec.surefire.data.UnitTestResult;
 
-import javax.xml.transform.TransformerException;
+import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 public final class SurefireParser {
     private static final Logger LOGGER = LoggerFactory.getLogger(SurefireParser.class);
 
+    private final FileSystem fileSystem;
     private final Project project;
     private final SensorContext context;
-    private final FileSystem fileSystem;
+    private final ResourcePerspectives perspectives;
 
-    public SurefireParser(Project project, SensorContext context, FileSystem fileSystem) {
-        this.project = project;
-        this.context = context;
+    public SurefireParser(FileSystem fileSystem, Project project, ResourcePerspectives perspectives,
+            SensorContext context) {
         this.fileSystem = fileSystem;
+        this.project = project;
+        this.perspectives = perspectives;
+        this.context = context;
     }
 
     public void collect(File reportsDir) {
@@ -88,75 +93,78 @@ public final class SurefireParser {
     }
 
     private void parseFiles(File[] reports) {
-        Set<TestSuiteReport> analyzedReports = new HashSet<TestSuiteReport>();
-        try {
-            for (File report : reports) {
-                TestSuiteParser parserHandler = new TestSuiteParser();
-                StaxParser parser = new StaxParser(parserHandler, false);
-                parser.parse(report);
+        UnitTestIndex index = new UnitTestIndex();
+        parseFiles(reports, index);
+        sanitize(index);
+        save(index);
+    }
 
-                for (TestSuiteReport fileReport : parserHandler.getParsedReports()) {
-                    if (!fileReport.isValid() || analyzedReports.contains(fileReport)) {
-                        continue;
-                    }
-                    if (fileReport.getTests() > 0) {
-                        double testsCount = fileReport.getTests() - fileReport.getSkipped();
-                        saveClassMeasure(fileReport, CoreMetrics.SKIPPED_TESTS, fileReport.getSkipped());
-                        saveClassMeasure(fileReport, CoreMetrics.TESTS, testsCount);
-                        saveClassMeasure(fileReport, CoreMetrics.TEST_ERRORS, fileReport.getErrors());
-                        saveClassMeasure(fileReport, CoreMetrics.TEST_FAILURES, fileReport.getFailures());
-                        saveClassMeasure(fileReport, CoreMetrics.TEST_EXECUTION_TIME, fileReport.getTimeMS());
-                        double passedTests = testsCount - fileReport.getErrors() - fileReport.getFailures();
-                        if (testsCount > 0) {
-                            double percentage = passedTests * 100d / testsCount;
-                            saveClassMeasure(fileReport, CoreMetrics.TEST_SUCCESS_DENSITY, ParsingUtils.scaleValue(percentage));
-                        }
-                        saveTestsDetails(fileReport);
-                        analyzedReports.add(fileReport);
-                    }
+    private static void parseFiles(File[] reports, UnitTestIndex index) {
+        SurefireStaxHandler staxParser = new SurefireStaxHandler(index);
+        StaxParser parser = new StaxParser(staxParser, false);
+        for (File report : reports) {
+            try {
+                parser.parse(report);
+            } catch (XMLStreamException e) {
+                throw new SonarException("Fail to parse the Surefire report: " + report, e);
+            }
+        }
+    }
+
+    private static void sanitize(UnitTestIndex index) {
+        for (String classname : index.getClassnames()) {
+            if (StringUtils.contains(classname, "$")) {
+                // Surefire reports classes whereas sonar supports files
+                String parentClassName = StringUtils.substringBefore(classname, "$");
+                index.merge(classname, parentClassName);
+            }
+        }
+    }
+
+    private void save(UnitTestIndex index) {
+        long negativeTimeTestNumber = 0;
+        for (Map.Entry<String, UnitTestClassReport> entry : index.getIndexByClassname().entrySet()) {
+            UnitTestClassReport report = entry.getValue();
+            if (report.getTests() > 0) {
+                negativeTimeTestNumber += report.getNegativeTimeTestNumber();
+                Resource resource = getUnitTestResource(entry.getKey());
+                if (resource != null) {
+                    save(report, resource);
+                } else {
+                    LOGGER.warn("Resource not found: {}", entry.getKey());
                 }
             }
-
-        } catch (Exception e) {
-            throw new XmlParserException("Can not parse surefire reports", e);
+        }
+        if (negativeTimeTestNumber > 0) {
+            LOGGER.warn("There is {} test(s) reported with negative time by surefire, total duration may not be accurate.", negativeTimeTestNumber);
         }
     }
 
-    private void saveTestsDetails(TestSuiteReport fileReport) throws TransformerException {
-        StringBuilder testCaseDetails = new StringBuilder(256);
-        testCaseDetails.append("<tests-details>");
-        List<TestCaseDetails> details = fileReport.getDetails();
-        for (TestCaseDetails detail : details) {
-            testCaseDetails.append("<testcase status=\"").append(detail.getStatus())
-                    .append("\" time=\"").append(detail.getTimeMS())
-                    .append("\" name=\"").append(detail.getName()).append("\"");
-            boolean isError = detail.getStatus().equals(TestCaseDetails.STATUS_ERROR);
-            if (isError || detail.getStatus().equals(TestCaseDetails.STATUS_FAILURE)) {
-                testCaseDetails.append(">")
-                        .append(isError ? "<error message=\"" : "<failure message=\"")
-                        .append(StringEscapeUtils.escapeXml(detail.getErrorMessage())).append("\">")
-                        .append("<![CDATA[").append(StringEscapeUtils.escapeXml(detail.getStackTrace())).append("]]>")
-                        .append(isError ? "</error>" : "</failure>").append("</testcase>");
-            } else {
-                testCaseDetails.append("/>");
-            }
+    private void save(UnitTestClassReport report, Resource resource) {
+        double testsCount = report.getTests() - report.getSkipped();
+        saveMeasure(resource, CoreMetrics.SKIPPED_TESTS, report.getSkipped());
+        saveMeasure(resource, CoreMetrics.TESTS, testsCount);
+        saveMeasure(resource, CoreMetrics.TEST_ERRORS, report.getErrors());
+        saveMeasure(resource, CoreMetrics.TEST_FAILURES, report.getFailures());
+        saveMeasure(resource, CoreMetrics.TEST_EXECUTION_TIME, report.getDurationMilliseconds());
+        double passedTests = testsCount - report.getErrors() - report.getFailures();
+        if (testsCount > 0) {
+            double percentage = passedTests * 100d / testsCount;
+            saveMeasure(resource, CoreMetrics.TEST_SUCCESS_DENSITY, ParsingUtils.scaleValue(percentage));
         }
-        testCaseDetails.append("</tests-details>");
-        context.saveMeasure(getUnitTestResource(fileReport.getClassKey()), new Measure(CoreMetrics.TEST_DATA, testCaseDetails.toString()));
+        saveResults(resource, report);
     }
 
-    private void saveClassMeasure(TestSuiteReport fileReport, Metric metric, double value) {
-        if (!Double.isNaN(value)) {
-
-            String className = fileReport.getClassKey();
-
-            context.saveMeasure(getUnitTestResource(className), metric, value);
-
-            // Try with + in name
-            try {
-                context.saveMeasure(getUnitTestResource(className.replace('_', '+')), metric, value);
-            } catch (Exception e) {
-                // no-op - file was probably already registered successfully
+    protected void saveResults(Resource testFile, UnitTestClassReport report) {
+        for (UnitTestResult unitTestResult : report.getResults()) {
+            MutableTestPlan testPlan = perspectives.as(MutableTestPlan.class, testFile);
+            if (testPlan != null) {
+                testPlan.addTestCase(unitTestResult.getName())
+                        .setDurationInMs(Math.max(unitTestResult.getDurationMilliseconds(), 0))
+                        .setStatus(TestCase.Status.of(unitTestResult.getStatus()))
+                        .setMessage(unitTestResult.getMessage())
+                        .setType(TestCase.TYPE_UNIT)
+                        .setStackTrace(unitTestResult.getStackTrace());
             }
         }
     }
@@ -170,12 +178,11 @@ public final class SurefireParser {
         }
 
         /*
-         * Most xcodebuild JUnit parsers don't include the path to the class in the class field, so search for if it
+         * Most xcodebuild JUnit parsers don't include the path to the class in the class field, so search for it if it
          * wasn't found in the root.
          */
         if (!file.isFile() || !file.exists()) {
             List<File> files = ImmutableList.copyOf(fileSystem.files(fileSystem.predicates().and(
-                    fileSystem.predicates().hasLanguage(ObjectiveC.KEY),
                     fileSystem.predicates().hasType(InputFile.Type.TEST),
                     fileSystem.predicates().matchesPathPattern("**/" + fileName))));
 
@@ -193,5 +200,11 @@ public final class SurefireParser {
         org.sonar.api.resources.File sonarFile = org.sonar.api.resources.File.fromIOFile(file, project);
         sonarFile.setQualifier(Qualifiers.UNIT_TEST_FILE);
         return sonarFile;
+    }
+
+    private void saveMeasure(Resource resource, Metric metric, double value) {
+        if (!Double.isNaN(value)) {
+            context.saveMeasure(resource, metric, value);
+        }
     }
 }

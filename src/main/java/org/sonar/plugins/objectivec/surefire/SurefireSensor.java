@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;
 import org.sonar.api.scan.filesystem.PathResolver;
@@ -39,11 +40,14 @@ public final class SurefireSensor implements Sensor {
 
     private final FileSystem fileSystem;
     private final PathResolver pathResolver;
+    private final ResourcePerspectives resourcePerspectives;
     private final Settings settings;
 
-    public SurefireSensor(FileSystem fileSystem, PathResolver pathResolver, Settings settings) {
+    public SurefireSensor(FileSystem fileSystem, PathResolver pathResolver, ResourcePerspectives resourcePerspectives,
+            Settings settings) {
         this.fileSystem = fileSystem;
         this.pathResolver = pathResolver;
+        this.resourcePerspectives = resourcePerspectives;
         this.settings = settings;
     }
 
@@ -67,7 +71,7 @@ public final class SurefireSensor implements Sensor {
 
     protected void collect(Project project, SensorContext context, File reportsDir) {
         LOGGER.info("parsing {}", reportsDir);
-        new SurefireParser(project, context, fileSystem).collect(reportsDir);
+        new SurefireParser(fileSystem, project, resourcePerspectives, context).collect(reportsDir);
     }
 
     @Override
