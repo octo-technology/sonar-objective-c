@@ -2,34 +2,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <repositories>
-        <repository>
-            <id>sonar</id>
-            <url>http://repository.sonarsource.org/content/repositories/sonar</url>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>sonar</id>
-            <url>http://repository.sonarsource.org/content/repositories/sonar</url>
-        </pluginRepository>
-    </pluginRepositories>
-
     <parent>
-        <groupId>org.codehaus.sonar-plugins</groupId>
+        <groupId>org.sonarsource.parent</groupId>
         <artifactId>parent</artifactId>
-        <version>18</version>
+        <version>23</version>
     </parent>
 
     <groupId>org.codehaus.sonar-plugin.objectivec</groupId>
     <artifactId>sonar-objective-c-plugin</artifactId>
     <version>0.5.0-SNAPSHOT</version>
-
     <packaging>sonar-plugin</packaging>
 
-    <name>Objective-C Sonar Plugin</name>
-    <description>Enables analysis of Objective-C projects into Sonar.</description>
+    <name>SonarQube Objective-C Plugin</name>
+    <description>Enable analysis and reporting on Objective-C projects.</description>
     <url>https://github.com/octo-technology/sonar-objective-c</url>
 
 
@@ -100,10 +85,10 @@
     </ciManagement>
 
     <properties>
-        <license.owner>OCTO Technology, Backelite,
+        <license.owner>OCTO Technology, Backelite, SonarSource,
             Denis Bregeon, Mete Balci, Andrés Gil Herrera, Matthew DeTullio
         </license.owner>
-        <license.title>Sonar Objective-C Plugin</license.title>
+        <license.title>SonarQube Objective-C Plugin</license.title>
 
         <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
 
@@ -121,6 +106,7 @@
             <groupId>org.codehaus.sonar</groupId>
             <artifactId>sonar-plugin-api</artifactId>
             <version>${sonar.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.codehaus.sonar.sslr</groupId>

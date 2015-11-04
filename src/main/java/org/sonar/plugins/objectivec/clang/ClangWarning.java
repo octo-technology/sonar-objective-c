@@ -1,8 +1,8 @@
 /*
- * Sonar Objective-C Plugin
- * Copyright (C) 2012 OCTO Technology, Backelite,
+ * SonarQube Objective-C Plugin
+ * Copyright (C) 2012 OCTO Technology, Backelite, SonarSource,
  *             Denis Bregeon, Mete Balci, Andrés Gil Herrera, Matthew DeTullio
- * dev@sonar.codehaus.org
+ * sonarqube@googlegroups.com
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
