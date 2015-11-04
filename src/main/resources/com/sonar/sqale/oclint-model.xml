@@ -50,17 +50,17 @@
                 <rule-key>unused method parameter</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -68,17 +68,17 @@
                 <rule-key>unused local variable</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -86,17 +86,17 @@
                 <rule-key>replace with number literal</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -104,17 +104,17 @@
                 <rule-key>replace with boxed expression</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -122,17 +122,17 @@
                 <rule-key>unnecessary else statement</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -140,17 +140,17 @@
                 <rule-key>redundant local variable</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -158,17 +158,17 @@
                 <rule-key>redundant if statement</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -176,17 +176,17 @@
                 <rule-key>redundant conditional operator</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -194,17 +194,17 @@
                 <rule-key>replace with container literal</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -212,17 +212,17 @@
                 <rule-key>long line</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -230,17 +230,17 @@
                 <rule-key>long method</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>30</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>30</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -248,17 +248,17 @@
                 <rule-key>for loop should be while loop</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -266,17 +266,17 @@
                 <rule-key>too many methods</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
-                    <txt>h</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>1</val>
+                    <txt>h</txt>
                 </prop>
             </chc>
             <chc>
@@ -284,17 +284,17 @@
                 <rule-key>long class</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
-                    <txt>h</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>1</val>
+                    <txt>h</txt>
                 </prop>
             </chc>
             <chc>
@@ -302,17 +302,17 @@
                 <rule-key>too many fields</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>1</val>
-                    <txt>h</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>1</val>
+                    <txt>h</txt>
                 </prop>
             </chc>
             <chc>
@@ -320,17 +320,17 @@
                 <rule-key>collapsible if statements</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>30</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>30</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -338,17 +338,17 @@
                 <rule-key>deep nested block</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>30</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>30</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -356,17 +356,17 @@
                 <rule-key>high cyclomatic complexity</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>30</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>30</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -374,17 +374,17 @@
                 <rule-key>too few branches in switch statement</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -392,17 +392,17 @@
                 <rule-key>non case label in switch statement</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -410,17 +410,17 @@
                 <rule-key>short variable name</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -428,17 +428,17 @@
                 <rule-key>long variable name</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -446,17 +446,17 @@
                 <rule-key>default label not last in switch statement</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -464,17 +464,17 @@
                 <rule-key>replace with object subscripting</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
         </chc>
@@ -486,17 +486,17 @@
                 <rule-key>useless parentheses</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -504,17 +504,17 @@
                 <rule-key>use early exits and continue</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -522,17 +522,17 @@
                 <rule-key>high npath complexity</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>30</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>30</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -540,17 +540,17 @@
                 <rule-key>inverted logic</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -558,17 +558,17 @@
                 <rule-key>multiple unary operator</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -576,17 +576,17 @@
                 <rule-key>redundant nil check</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -594,17 +594,17 @@
                 <rule-key>high ncss method</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -612,17 +612,17 @@
                 <rule-key>dead code</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -630,17 +630,17 @@
                 <rule-key>double negative</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -648,17 +648,17 @@
                 <rule-key>bitwise operator in conditional</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -666,17 +666,17 @@
                 <rule-key>empty if statement</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -684,17 +684,17 @@
                 <rule-key>empty while statement</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -702,17 +702,17 @@
                 <rule-key>empty else block</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -720,17 +720,17 @@
                 <rule-key>empty for statement</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -738,17 +738,17 @@
                 <rule-key>empty do/while statement</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -756,17 +756,17 @@
                 <rule-key>empty switch statement</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -774,17 +774,17 @@
                 <rule-key>too many parameters</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>30</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>30</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -792,17 +792,17 @@
                 <rule-key>switch statements don't need default when fully covered</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
         </chc>
@@ -874,17 +874,17 @@
                 <rule-key>empty finally statement</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -892,17 +892,17 @@
                 <rule-key>return from finally block</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -910,17 +910,17 @@
                 <rule-key>empty catch statement</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -928,17 +928,17 @@
                 <rule-key>empty try statement</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -946,17 +946,17 @@
                 <rule-key>throw exception from finally block</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
         </chc>
@@ -972,17 +972,17 @@
                 <rule-key>must override hash with isEqual</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -990,17 +990,17 @@
                 <rule-key>parameter reassignment</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>30</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>30</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -1008,17 +1008,17 @@
                 <rule-key>ivar assignment outside accessors or init</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
         </chc>
@@ -1030,17 +1030,17 @@
                 <rule-key>missing break in switch statement</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -1048,17 +1048,17 @@
                 <rule-key>avoid branching statement as last in loop</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>30</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>30</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -1066,17 +1066,17 @@
                 <rule-key>switch statements should have default</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -1084,17 +1084,17 @@
                 <rule-key>jumbled incrementer</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -1102,17 +1102,17 @@
                 <rule-key>broken null check</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -1120,17 +1120,17 @@
                 <rule-key>broken nil check</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -1138,17 +1138,17 @@
                 <rule-key>broken oddness check</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -1156,17 +1156,17 @@
                 <rule-key>misplaced nil check</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -1174,17 +1174,35 @@
                 <rule-key>misplaced null check</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
+                    <val>0.0</val>
+                    <txt>d</txt>
+                </prop>
+                <prop>
+                    <key>offset</key>
                     <val>10</val>
                     <txt>mn</txt>
                 </prop>
+            </chc>
+            <chc>
+                <rule-repo>OCLint</rule-repo>
+                <rule-key>goto statement</rule-key>
                 <prop>
-                    <key>offset</key>
+                    <key>remediationFunction</key>
+                    <txt>CONSTANT_ISSUE</txt>
+                </prop>
+                <prop>
+                    <key>remediationFactor</key>
                     <val>0.0</val>
                     <txt>d</txt>
+                </prop>
+                <prop>
+                    <key>offset</key>
+                    <val>30</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -1192,35 +1210,17 @@
                 <rule-key>goto statement</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>30</val>
-                    <txt>mn</txt>
-                </prop>
-                <prop>
-                    <key>offset</key>
                     <val>0.0</val>
                     <txt>d</txt>
                 </prop>
-            </chc>
-            <chc>
-                <rule-repo>OCLint</rule-repo>
-                <rule-key>goto statement</rule-key>
-                <prop>
-                    <key>remediationFunction</key>
-                    <txt>linear</txt>
-                </prop>
-                <prop>
-                    <key>remediationFactor</key>
-                    <val>30</val>
-                    <txt>mn</txt>
-                </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>30</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -1228,17 +1228,17 @@
                 <rule-key>constant if expression</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
             <chc>
@@ -1246,17 +1246,17 @@
                 <rule-key>constant conditional operator</rule-key>
                 <prop>
                     <key>remediationFunction</key>
-                    <txt>linear</txt>
+                    <txt>CONSTANT_ISSUE</txt>
                 </prop>
                 <prop>
                     <key>remediationFactor</key>
-                    <val>10</val>
-                    <txt>mn</txt>
+                    <val>0.0</val>
+                    <txt>d</txt>
                 </prop>
                 <prop>
                     <key>offset</key>
-                    <val>0.0</val>
-                    <txt>d</txt>
+                    <val>10</val>
+                    <txt>mn</txt>
                 </prop>
             </chc>
         </chc>
