@@ -102,7 +102,7 @@ def writeProfileOCLint() {
     MarkupBuilder xml = new MarkupBuilder(new IndentPrinter(writer, "    "))
     xml.profile() {
         name "OCLint"
-        language "objc"
+        language "objectivec"
         rules {
             rulesXml.rule.each { rl ->
                 rule {

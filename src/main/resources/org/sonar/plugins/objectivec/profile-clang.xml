@@ -1,6 +1,6 @@
 <profile>
     <name>Clang</name>
-    <language>objc</language>
+    <language>objectivec</language>
     <rules>
         <rule>
             <repositoryKey>clang</repositoryKey>

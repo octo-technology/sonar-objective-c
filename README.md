@@ -1,4 +1,4 @@
-# SonarQube Plugin for Objective-C
+# SonarQube Objective-C (Community) Plugin
 
 This repository hosts the Objective-C plugin for
 [SonarQube](http://www.sonarqube.org/).  This plugin aims to analyze and track

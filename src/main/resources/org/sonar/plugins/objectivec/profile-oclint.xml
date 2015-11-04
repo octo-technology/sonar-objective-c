@@ -1,6 +1,6 @@
 <profile>
     <name>OCLint</name>
-    <language>objc</language>
+    <language>objectivec</language>
     <rules>
         <rule>
             <repositoryKey>OCLint</repositoryKey>

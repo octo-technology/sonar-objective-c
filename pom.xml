@@ -13,7 +13,7 @@
     <version>0.5.0-SNAPSHOT</version>
     <packaging>sonar-plugin</packaging>
 
-    <name>SonarQube Objective-C Plugin</name>
+    <name>SonarQube Objective-C (Community) Plugin</name>
     <description>Enable analysis and reporting on Objective-C projects.</description>
     <url>https://github.com/octo-technology/sonar-objective-c</url>
 
@@ -97,7 +97,7 @@
 
         <!-- Configuration for sonar-packaging-maven-plugin -->
         <sonar.pluginClass>org.sonar.plugins.objectivec.ObjectiveCPlugin</sonar.pluginClass>
-        <sonar.pluginName>Objective-C</sonar.pluginName>
+        <sonar.pluginName>Objective-C (Community)</sonar.pluginName>
 
     </properties>
 

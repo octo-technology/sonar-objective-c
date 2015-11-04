@@ -32,12 +32,12 @@ public class ObjectiveC extends AbstractLanguage {
     /**
      * Objective-C key
      */
-    public static final String KEY = "objc";
+    public static final String KEY = "objectivec";
 
     /**
      * Objective-C name
      */
-    public static final String NAME = "Objective-C";
+    public static final String NAME = "Objective-C (Community)";
 
     /**
      * Key of the file suffix parameter
