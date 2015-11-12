@@ -19,6 +19,7 @@
  */
 package org.sonar.plugins.objectivec.violations.fauxpas;
 
+import org.apache.tools.ant.DirectoryScanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
@@ -31,13 +32,14 @@ import org.sonar.plugins.objectivec.ObjectiveCPlugin;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class FauxPasSensor implements Sensor {
 
     public static final String REPORT_PATH_KEY = ObjectiveCPlugin.PROPERTY_PREFIX
             + ".fauxpas.report";
-    public static final String DEFAULT_REPORT_PATH = "sonar-reports/fauxpas.json";
+    public static final String DEFAULT_REPORT_PATH = "sonar-reports/*fauxpas.json";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FauxPasSensor.class);
 
@@ -70,10 +72,22 @@ public class FauxPasSensor implements Sensor {
     }
 
     private Collection<Violation> parseReportIn(final String baseDir, final FauxPasReportParser parser) {
-        final StringBuilder reportFileName = new StringBuilder(baseDir);
-        reportFileName.append("/").append(reportPath());
-        LOGGER.info("Processing FauxPas report {}", reportFileName);
-        return parser.parseReport(new File(reportFileName.toString()));
+
+        DirectoryScanner scanner = new DirectoryScanner();
+        scanner.setIncludes(new String[]{reportPath()});
+        scanner.setBasedir(baseDir);
+        scanner.setCaseSensitive(false);
+        scanner.scan();
+        String[] files = scanner.getIncludedFiles();
+
+        Collection<Violation> result = new ArrayList<Violation>();
+        for(String filename : files) {
+            LOGGER.info("Processing FauxPas report {}", filename);
+            result.addAll(parser.parseReport(new File(filename)));
+        }
+
+        return result;
+
     }
 
     private String reportPath() {

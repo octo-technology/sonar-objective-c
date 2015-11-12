@@ -155,10 +155,16 @@ fi
 workspaceFile=''; readParameter workspaceFile 'sonar.objectivec.workspace'
 projectFile=''; readParameter projectFile 'sonar.objectivec.project'
 if [[ "$workspaceFile" != "" ]] ; then
-	xctoolCmdPrefix="xctool -workspace $workspaceFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO OBJROOT=./build"
+	xctoolCmdPrefix="xctool -workspace $workspaceFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
 else
-	xctoolCmdPrefix="xctool -project $projectFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO OBJROOT=./build"
-fi	
+	xctoolCmdPrefix="xctool -project $projectFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
+fi
+
+# Count projects
+projectCount=$(echo $projectFile | sed -n 1'p' | tr ',' '\n' | wc -l | tr -d '[[:space:]]')
+if [ "$vflag" = "on" ]; then
+    echo "Project count is [$projectCount]"
+fi
 
 # Source directories for .h/.m files
 srcDirs=''; readParameter srcDirs 'sonar.sources'
@@ -207,16 +213,11 @@ if [ "$vflag" = "" -a "$nflag" = "" ]; then
 fi
 
 # Create sonar-reports/ for reports output
-if [[ ! (-d "sonar-reports") && ("$nflag" != "on") ]]; then
-	if [ "$vflag" = "on" ]; then
-		echo 'Creating directory sonar-reports/'
-	fi
-	mkdir sonar-reports
-	if [[ $? != 0 ]] ; then
-		stopProgress
-    	exit $?
-	fi
+if [ "$vflag" = "on" ]; then
+    echo 'Creating directory sonar-reports/'
 fi
+rm -rf sonar-reports
+mkdir sonar-reports
 
 # Extracting project information needed later
 echo -n 'Extracting Xcode project information'
@@ -240,37 +241,28 @@ else
 
 	echo -n 'Computing coverage report'
 
-	# We do it for every xcodeproject (in case of workspaces)
+	# Build the --exclude flags
+    excludedCommandLineFlags=""
+    if [ ! -z "$excludedPathsFromCoverage" -a "$excludedPathsFromCoverage" != " " ]; then
+        echo $excludedPathsFromCoverage | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh2
+        while read word; do
+            excludedCommandLineFlags+=" --exclude $word"
+        done < tmpFileRunSonarSh2
+        rm -rf tmpFileRunSonarSh2
+    fi
+    if [ "$vflag" = "on" ]; then
+        echo "Command line exclusion flags for gcovr is:$excludedCommandLineFlags"
+    fi
 
-	# Extract the path to the .gcno/.gcda coverage files
-	echo $projectFile | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh
-	while read projectName; do
+    # Create symlink on the build directory to enable its access from the workspace
+    coverageFilesPath=$(grep 'command' compile_commands.json | sed 's#^.*-o \\/#\/#;s#",##' | grep "${projectName%%.*}.build" | awk 'NR<2' | sed 's/\\\//\//g' | sed 's/\\\\//g' | xargs -0 dirname)
+    splitIndex=$(awk -v a="$coverageFilesPath" -v b="/Intermediates" 'BEGIN{print index(a,b)}')
+    coverageFilesPath=$(echo ${coverageFilesPath:0:$splitIndex}Intermediates)
+    ln -s $coverageFilesPath sonar-reports/build
 
-        projectName=$(basename $projectFile .xcodeproj)
-	    coverageFilesPath="build/$projectName.build/Debug-iphonesimulator/$appScheme.build/Objects-normal/i386"
-		if [ "$vflag" = "on" ]; then
-			echo
-			echo "Path for .gcno/.gcda coverage files is: $coverageFilesPath"
-		fi
+    # Run gcovr with the right options
+    runCommand "sonar-reports/coverage.xml" gcovr -r . $excludedCommandLineFlags --xml
 
-		# Build the --exclude flags
-		excludedCommandLineFlags=""
-		if [ ! -z "$excludedPathsFromCoverage" -a "$excludedPathsFromCoverage" != " " ]; then
-			echo $excludedPathsFromCoverage | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh2
-			while read word; do
-				excludedCommandLineFlags+=" --exclude $word"
-			done < tmpFileRunSonarSh2
-			rm -rf tmpFileRunSonarSh2
-		fi
-		if [ "$vflag" = "on" ]; then
-			echo "Command line exclusion flags for gcovr is:$excludedCommandLineFlags"
-		fi
-	
-		# Run gcovr with the right options
-		runCommand "sonar-reports/coverage-${projectName%%.*}.xml" gcovr -r . --object-directory "$coverageFilesPath" $excludedCommandLineFlags --xml
-
-	done < tmpFileRunSonarSh
-	rm -rf tmpFileRunSonarSh
 	
 fi	
 
@@ -278,24 +270,28 @@ if [ "$oclint" = "on" ]; then
 
 	# OCLint
 	echo -n 'Running OCLint...'
-	
+
+	# Options
+	maxPriority=10000
+    longLineThreshold=250
+
 	# Build the --include flags
 	currentDirectory=${PWD##*/}
-	includedCommandLineFlags=""
 	echo "$srcDirs" | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh
 	while read word; do
-		includedCommandLineFlags+=" --include .*/${currentDirectory}/${word}"
+
+		includedCommandLineFlags=" --include .*/${currentDirectory}/${word}"
+		if [ "$vflag" = "on" ]; then
+            echo
+            echo -n "Path included in oclint analysis is:$includedCommandLineFlags"
+        fi
+		# Run OCLint with the right set of compiler options
+	    runCommand no oclint-json-compilation-database -v $includedCommandLineFlags -- -rc LONG_LINE=$longLineThreshold -max-priority-1 $maxPriority -max-priority-2 $maxPriority -max-priority-3 $maxPriority -report-type pmd -o sonar-reports/$(echo $word | sed 's/\//_/g')-oclint.xml
+
 	done < tmpFileRunSonarSh
 	rm -rf tmpFileRunSonarSh
-	if [ "$vflag" = "on" ]; then
-		echo
-		echo -n "Path included in oclint analysis is:$includedCommandLineFlags"
-	fi
-	
-	# Run OCLint with the right set of compiler options
-    maxPriority=10000
-    longLineThreshold=250
-	runCommand no oclint-json-compilation-database $includedCommandLineFlags -- -rc LONG_LINE=$longLineThreshold -max-priority-1 $maxPriority -max-priority-2 $maxPriority -max-priority-3 $maxPriority -report-type pmd -o sonar-reports/oclint.xml
+
+
 else
 	echo 'Skipping OCLint (test purposes only!)'
 fi
@@ -306,7 +302,42 @@ if [ "$fauxpas" = "on" ]; then
 
         #FauxPas
         echo -n 'Running FauxPas...'
-        fauxpas -t $appScheme -o json check $projectFile > sonar-reports/fauxpas.json
+
+        if [ "$projectCount" = "1" ]
+        then
+
+            fauxpas -o json check $projectFile --workspace $workspaceFile --scheme $appScheme > sonar-reports/fauxpas.json
+
+
+        else
+
+            echo $projectFile | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh
+            while read projectName; do
+
+                xcodebuild -list -project $projectName | sed -n '/Schemes/,$p' | while read scheme
+                do
+
+                if [ "$scheme" = "" ]
+                then
+                exit
+                fi
+
+                if [ "$scheme" == "${scheme/Schemes/}" ]
+                then
+                    if [ "$scheme" != "$testScheme" ]
+                    then
+                        projectBaseDir=$(dirname $projectName)
+                        workspaceRelativePath=$(python -c "import os.path; print os.path.relpath('$workspaceFile', '$projectBaseDir')")
+                        fauxpas -o json check $projectName --workspace $workspaceRelativePath --scheme $scheme > sonar-reports/$(basename $projectName .xcodeproj)-$scheme-fauxpas.json
+                    fi
+                fi
+
+                done
+
+            done < tmpFileRunSonarSh
+            rm -rf tmpFileRunSonarSh
+
+	    fi
 
     else
         echo 'Skipping FauxPas (not installed)'

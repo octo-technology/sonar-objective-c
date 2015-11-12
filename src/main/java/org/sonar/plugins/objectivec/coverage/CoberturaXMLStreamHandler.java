@@ -72,7 +72,7 @@ class CoberturaXMLStreamHandler implements StaxParser.XmlStreamHandler {
             final CoverageMeasuresBuilder builder) throws XMLStreamException {
         final int lineId = Integer.parseInt(line.getAttrValue("number"));
         final int noHits = (int) Math.min(
-                Long.parseLong(line.getAttrValue("hits")), Integer.MAX_VALUE);
+                Double.parseDouble(line.getAttrValue("hits")), Integer.MAX_VALUE);
         final String isBranch = line.getAttrValue("branch");
         final String conditionText = line.getAttrValue("condition-coverage");
 

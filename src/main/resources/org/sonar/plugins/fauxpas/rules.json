@@ -36,6 +36,13 @@
     },
     {
         "category": "BestPractice",
+        "key": "HardcodedSelfClass",
+        "name": "Hardcoded self class reference",
+        "description": "Warns if an Objective-C class (or an instance of a class) sends a message to its own class object using a hardcoded reference to the class, e.g. [FOOThing alloc].It is recommended to use self instead (e.g. [self alloc] or [[self class] alloc]) so that the concrete class would receive the message, and subclassing behavior would not be impeded.",
+        "severity": "MAJOR"
+    },
+    {
+        "category": "BestPractice",
         "key": "MacroBasedIncludeGuard",
         "name": "Macro-based include guard",
         "description": "Simplify the header by replacing the macro definition check -based include guard with the \u2018once\u2019 pragma.",
@@ -46,6 +53,13 @@
         "key": "RetainingImmutableProperty",
         "name": "Non-copying property of immutable NSCopying type",
         "description": "Warns if \u201Cretaining\u201D semantics are specified in a @property declaration for a common immutable NSCopying class type that also has a mutable subclass variant (for example NSString).This rule helps avoid situations where the value of a property could change without the setter being invoked (i.e. the object gets mutated).",
+        "severity": "MAJOR"
+    },
+    {
+        "category": "BestPractice",
+        "key": "CompleteNotificationCenterDetachment",
+        "name": "Complete NSNotificationCenter detachment",
+        "description": "Warns when an object removes itself as an observer to all notifications (by invoking -[NSNotificationCenter removeObserver:] with self).This can be a problem if a superclass or a subclass wants to keep observing some notifications. The recommended way to handle this is to remove self as an observer only for the specific notifications that you have previously begun observing.This rule does not warn about such removals occuring in -dealloc.",
         "severity": "MAJOR"
     },
     {
@@ -109,6 +123,13 @@
         "key": "InstanceMethodWritesToStaticVariable",
         "name": "Instance method writes to static variable",
         "description": "Writing to static variables (which is essentially global state) in instance methods is generally considered bad practice, because it easily leads to undesireable behavior when multiple instances are being manipulated.Warnings are suppressed for assignments occurring inside dispatch_once() blocks.",
+        "severity": "MAJOR"
+    },
+    {
+        "category": "BestPractice",
+        "key": "AssociatedObjectOnValueType",
+        "name": "Associated object on value-like type",
+        "description": "Warns when associated objects are attached to value-like types such as NSNumber or UIFont.Instances of these classes may be shared and/or immortal due to de-duplication and tagged pointers.",
         "severity": "MAJOR"
     },
     {
@@ -360,7 +381,7 @@
         "category": "Config",
         "key": "XcconfigOverwrites",
         "name": "Xcode build configuration file overwrites previously set value",
-        "description": "Overwriting a previously set value in a build configuration file is often a sign of a mistake somewhere.",
+        "description": "Overwriting a previously set value in a build configuration file is often a sign of a mistake somewhere.It is recommended to set custom intermediary settings in \u201Cparent\u201D configuration files and then compose final values for actual build settings in leaf configuration files.",
         "severity": "MINOR"
     },
     {
@@ -512,6 +533,20 @@
     },
     {
         "category": "APIUsage",
+        "key": "FixedFormatDateFormatter",
+        "name": "Fixed-format NSDateFormatter not using invariant (POSIX) locale",
+        "description": "Warns when an NSDateFormatter is used with fixed-format dates without using the invariant en_US_POSIX locale. If any other locale is used, the date format string may be overwritten, depending on system date and time settings.When working with user-visible dates, date and time styles should be used instead of setting a date format.",
+        "severity": "CRITICAL"
+    },
+    {
+        "category": "APIUsage",
+        "key": "SuspiciousDateTimeFormat",
+        "name": "Suspicious date-time format",
+        "description": "Warns about date-time formats that are likely to have unintentional behavior, e.g. \u201Cweek-year\u201D specifiers (uppercase Y) instead of normal calendar year specifiers (lowercase y).",
+        "severity": "CRITICAL"
+    },
+    {
+        "category": "APIUsage",
         "key": "BlockAPIRetainCycle",
         "name": "Retain cycle in block API usage",
         "description": "Warns if self is referenced in a block that is used in a context where it is known to cause a retain cycle.The Clang compiler\u2019s -Warc-retain-cycles warning implements generic retain cycle detection \u2014 this rule only considers specific known system framework APIs that the compiler warning does not warn about.",
@@ -521,7 +556,7 @@
         "category": "APIUsage",
         "key": "MissingNotificationCenterDetachment",
         "name": "Missing NSNotificationCenter observer detachment",
-        "description": "You must invoke -[NSNotificationCenter removeObserver:] or -[NSNotificationCenter removeObserver:name:object:] before the observer object is deallocated.This rule only considers cases where the observer reference is self, or an instance variable or an Objective-C property in self.",
+        "description": "You must invoke -[NSNotificationCenter removeObserver:] or -[NSNotificationCenter removeObserver:name:object:] before the observer object is deallocated.This rule only considers cases where the observer reference is self, or an instance variable or an Objective-C property in self.This only applies to iOS 8 (and earlier) and OS X 10.10 (and earlier).",
         "severity": "CRITICAL"
     },
     {
@@ -554,16 +589,16 @@
     },
     {
         "category": "Style",
-        "key": "NullCoalescingOp",
-        "name": "Null coalescing operator usage",
-        "description": "Expressions of the form (obj ? obj : other) should be written as obj ?: other.",
+        "key": "StrongInsteadOfRetain",
+        "name": "Usage of retain in ARC code",
+        "description": "In files compiled with ARC, warns if the retain property attribute is used. The strong and retain attributes are functionally equivalent, but the former could be considered more idiomatic with ARC.",
         "severity": "MAJOR"
     },
     {
         "category": "Style",
-        "key": "StrongInsteadOfRetain",
-        "name": "Usage of retain in ARC code",
-        "description": "In files compiled with ARC, warns if the retain property attribute is used. The strong and retain attributes are functionally equivalent, but the former could be considered more idiomatic with ARC.",
+        "key": "NullCoalescingOp",
+        "name": "Null coalescing operator usage",
+        "description": "Expressions of the form (obj ? obj : other) should be written as obj ?: other.",
         "severity": "MAJOR"
     },
     {
@@ -645,6 +680,13 @@
     },
     {
         "category": "Pedantic",
+        "key": "DefaultInExhaustiveSwitch",
+        "name": "Unnecessary default case in exhaustive switch statement",
+        "description": "If a switch statement explicitly handles all possible values, then the default case is unnecessary dead code, and might even be misleading to people reading the code.If the intended purpose of the default case is to safeguard against enum fields that are added in the future but accidentally left unhandled in the switch, the compiler warning -Wswitch-enum is recommended for that purpose instead.",
+        "severity": "MINOR"
+    },
+    {
+        "category": "Pedantic",
         "key": "MallocCast",
         "name": "Casting the return value of malloc()",
         "description": "In C, it is not recommended to explicitly cast the return value of malloc() (and other related memory allocation functions.)This rule does not warn about casts that occur in compilation units compiled in C++ (or Objective-C++) mode.",
@@ -690,13 +732,6 @@
         "key": "OrderedPointerToZeroComparison",
         "name": "Ordered comparison of pointer and zero",
         "description": "Warns whenever a pointer value is compared to zero using an ordered comparison operator.The Clang compiler should warn about similar comparisons to values other than zero.",
-        "severity": "MINOR"
-    },
-    {
-        "category": "Miscellaneous",
-        "key": "FixedFormatDateFormatter",
-        "name": "Fixed-format NSDateFormatter not using invariant (POSIX) locale",
-        "description": "Warns when an NSDateFormatter is used with fixed-format dates without using the invariant en_US_POSIX locale. If any other locale is used, the date format string may be overwritten, depending on system date and time settings.When working with user-visible dates, date and time styles should be used instead of setting a date format.",
         "severity": "MINOR"
     },
     {
