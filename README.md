@@ -27,7 +27,7 @@ A SonarQube 5.0 dashboard of the iOS open source project [GreatReader](https://g
 | Duplications	|YES		|			|
 | Issues		|YES		| Uses [OCLint](http://docs.oclint.org/en/dev/intro/installation.html): 63 rules, and [Faux Pas](http://fauxpasapp.com/): 102 rules|
 | Size			|YES		|			|
-| Tests			|YES		| Uses [xctool](https://github.com/facebook/xctool), probably to xcodebuild + xcpretty [xcpretty](https://github.com/supermarin/xcpretty) soon			|
+| Tests			|YES		| Uses [xctool](https://github.com/facebook/xctool), will probably switch to xcodebuild + [xcpretty](https://github.com/supermarin/xcpretty) soon			|
 | Code coverage	|YES		| With [gcovr](http://gcovr.com), probably [slather](https://github.com/venmo/slather) soon|
 
 
