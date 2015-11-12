@@ -19,13 +19,17 @@ A SonarQube 5.0 dashboard of the iOS open source project [GreatReader](https://g
 
 ###Features
 
-- [ ] Complexity
-- [ ] Design
-- [x] Documentation
-- [x] Duplications
-- [x] Issues (OCLint: 63 rules, Faux Pas: 102 rules)
-- [x] Size
-- [x] Tests
+| Feature 		| Supported	| Details	|
+|---------------|----------|:-----------:|
+| Complexity	|NO			|			|
+| Design		|NO			|			|
+| Documentation	|YES		|			|
+| Duplications	|YES		|			|
+| Issues		|YES		| Uses [OCLint](http://docs.oclint.org/en/dev/intro/installation.html): 63 rules, and [Faux Pas](http://fauxpasapp.com/): 102 rules|
+| Size			|YES		|			|
+| Tests			|YES		| Uses [xctool](https://github.com/facebook/xctool), probably to xcodebuild + xcpretty [xcpretty](https://github.com/supermarin/xcpretty) soon			|
+| Code coverage	|YES		| With [gcovr](http://gcovr.com), probably [slather](https://github.com/venmo/slather) soon|
+
 
 ###Compatibility
 
@@ -45,6 +49,10 @@ Binary packages are available in the release section.
 
 
 ###Release history
+
+####0.4.0.2 (based on 0.4.0)
+- Faux Pas support for release 1.5 and 1.6
+- Support for multiple projects in a same workspace
 
 ####0.4.0.1 (based on 0.4.0)
 - Faux Pas support
