@@ -6,6 +6,7 @@
 #
 
 # Global parameters
+XCTOOL_CMD=xctool
 SLATHER_CMD=slather
 XCPRETTY_CMD=xcpretty
 
@@ -159,9 +160,9 @@ fi
 workspaceFile=''; readParameter workspaceFile 'sonar.objectivec.workspace'
 projectFile=''; readParameter projectFile 'sonar.objectivec.project'
 if [[ "$workspaceFile" != "" ]] ; then
-	xctoolCmdPrefix="xctool -workspace $workspaceFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
+	xctoolCmdPrefix="$XCTOOL_CMD -workspace $workspaceFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
 else
-	xctoolCmdPrefix="xctool -project $projectFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
+	xctoolCmdPrefix="$XCTOOL_CMD -project $projectFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
 fi
 
 # Count projects
@@ -231,6 +232,11 @@ if [ "$vflag" = "on" ]; then
 fi
 rm -rf sonar-reports
 mkdir sonar-reports
+
+# Extracting project information needed later
+echo -n 'Extracting Xcode project information'
+runCommand /dev/stdout $xctoolCmdPrefix -scheme "$appScheme" clean
+runCommand /dev/stdout $xctoolCmdPrefix -scheme "$appScheme" -reporter plain -reporter json-compilation-database:compile_commands.json build
 
 # Unit tests and coverage
 if [ "$testScheme" = "" ]; then

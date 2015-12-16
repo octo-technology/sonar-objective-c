@@ -46,6 +46,7 @@ Binary packages will be available soon...
 - a Mac with Xcode
 - [SonarQube](http://docs.codehaus.org/display/SONAR/Setup+and+Upgrade) and [SonarQube Runner](http://docs.codehaus.org/display/SONAR/Installing+and+Configuring+SonarQube+Runner) installed ([HomeBrew](http://brew.sh) installed and ```brew install sonar-runner```)
 - [xcpretty](https://github.com/supermarin/xcpretty) (```gem install xcpretty```)
+- [xctool](https://github.com/facebook/xctool) ([HomeBrew](http://brew.sh) installed and ```brew install xctool```). If you are using Xcode 6, make sure to update xctool (```brew upgrade xctool```) to a version > 0.2.2.
 - [OCLint](http://docs.oclint.org/en/dev/intro/installation.html) installed. Version 0.10.1 recommended. 
 - [gcovr](http://gcovr.com) installed for legacy (pre Xcode 7 coverage)
 - [slather](https://github.com/venmo/slather) with profdata support (see instructions below) for Xcode 7 and above.
