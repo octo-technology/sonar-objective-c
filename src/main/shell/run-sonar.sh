@@ -243,7 +243,15 @@ else
 
     echo -n 'Running tests'
     runCommand /dev/stdout xcodebuild clean -workspace $workspaceFile -scheme $appScheme
-    buildCmd=(xcodebuild test -workspace $workspaceFile -scheme $appScheme -sdk iphonesimulator -configuration Debug -enableCodeCoverage YES)
+
+    if [ "$coverageType" = "profdata" -o "$coverageType" = "" ]; then
+    	# profdata
+    	buildCmd=(xcodebuild test -workspace $workspaceFile -scheme $appScheme -sdk iphonesimulator -configuration Debug -enableCodeCoverage YES)
+    else
+    	# Legacy coverage
+    	buildCmd=(xcodebuild test -workspace $workspaceFile -scheme $appScheme -sdk iphonesimulator -configuration Debug)
+    fi
+
     if [[ ! -z "$destinationSimulator" ]]; then
         buildCmd+=(-destination "$destinationSimulator" -destination-timeout 60)
     fi
