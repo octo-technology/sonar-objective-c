@@ -5,6 +5,11 @@
 ## WARNING: edit your project parameters in sonar-project.properties rather than modifying this script
 #
 
+# Global parameters
+XCTOOL_CMD=xctool
+SLATHER_CMD=slather
+XCPRETTY_CMD=xcpretty
+
 trap "echo 'Script interrupted by Ctrl+C'; stopProgress; exit 1" SIGHUP SIGINT SIGTERM
 
 function startProgress() {
@@ -155,9 +160,9 @@ fi
 workspaceFile=''; readParameter workspaceFile 'sonar.objectivec.workspace'
 projectFile=''; readParameter projectFile 'sonar.objectivec.project'
 if [[ "$workspaceFile" != "" ]] ; then
-	xctoolCmdPrefix="xctool -workspace $workspaceFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
+	xctoolCmdPrefix="$XCTOOL_CMD -workspace $workspaceFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
 else
-	xctoolCmdPrefix="xctool -project $projectFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
+	xctoolCmdPrefix="$XCTOOL_CMD -project $projectFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
 fi
 
 # Count projects
@@ -175,6 +180,11 @@ appScheme=''; readParameter appScheme 'sonar.objectivec.appScheme'
 testScheme=''; readParameter testScheme 'sonar.objectivec.testScheme'
 # The file patterns to exclude from coverage report
 excludedPathsFromCoverage=''; readParameter excludedPathsFromCoverage 'sonar.objectivec.excludedPathsFromCoverage'
+# Read coverage type
+coverageType=''; readParameter coverageType 'sonar.objectivec.coverageType'
+# Read destination simulator
+destinationSimulator=''; readParameter destinationSimulator 'sonar.objectivec.simulator'
+
 
 # Check for mandatory parameters
 if [ -z "$projectFile" -o "$projectFile" = " " ]; then
@@ -192,6 +202,10 @@ if [ -z "$srcDirs" -o "$srcDirs" = " " ]; then
 fi
 if [ -z "$appScheme" -o "$appScheme" = " " ]; then
 	echo >&2 "ERROR - sonar.objectivec.appScheme parameter is missing in sonar-project.properties. You must specify which scheme is used to build your application."
+	exit 1
+fi
+if [ -z "$destinationSimulator" -o "$destinationSimulator" = " " ]; then
+	echo >&2 "ERROR - sonar.objectivec.simulator parameter is missing in sonar-project.properties. You must specify which simulator to use."
 	exit 1
 fi
 
@@ -233,35 +247,75 @@ if [ "$testScheme" = "" ]; then
 	echo "<?xml version='1.0' ?><!DOCTYPE coverage SYSTEM 'http://cobertura.sourceforge.net/xml/coverage-03.dtd'><coverage><sources></sources><packages></packages></coverage>" > sonar-reports/coverage.xml
 else
 
-	echo -n 'Running tests using xctool'	
-    # Not using runCommand function because xctool may return 1, even if everything is fine (maybe a xctool bug ?)
-	#runCommand /dev/null $xctoolCmdPrefix -scheme "$testScheme" GCC_PRECOMPILE_PREFIX_HEADER=NO GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES -reporter junit:sonar-reports/TEST-report.xml -reporter plain clean test
-     $xctoolCmdPrefix -scheme "$testScheme" GCC_PRECOMPILE_PREFIX_HEADER=NO GCC_GENERATE_TEST_COVERAGE_FILES=YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES -reporter junit:sonar-reports/TEST-report.xml -reporter plain clean test
+    echo -n 'Running tests'
+    runCommand /dev/stdout xcodebuild clean -workspace $workspaceFile -scheme $appScheme
 
+    if [ "$coverageType" = "profdata" -o "$coverageType" = "" ]; then
+    	# profdata
+    	buildCmd=(xcodebuild test -workspace $workspaceFile -scheme $appScheme -sdk iphonesimulator -configuration Debug -enableCodeCoverage YES)
+    else
+    	# Legacy coverage
+    	buildCmd=(xcodebuild test -workspace $workspaceFile -scheme $appScheme -sdk iphonesimulator -configuration Debug)
+    fi
+
+    if [[ ! -z "$destinationSimulator" ]]; then
+        buildCmd+=(-destination "$destinationSimulator" -destination-timeout 60)
+    fi
+    runCommand  sonar-reports/xcodebuild.log "${buildCmd[@]}"
+    cat sonar-reports/xcodebuild.log  | $XCPRETTY_CMD -t --report junit
+    mv build/reports/junit.xml sonar-reports/TEST-report.xml
 
 	echo -n 'Computing coverage report'
 
-	# Build the --exclude flags
-    excludedCommandLineFlags=""
-    if [ ! -z "$excludedPathsFromCoverage" -a "$excludedPathsFromCoverage" != " " ]; then
-        echo $excludedPathsFromCoverage | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh2
-        while read word; do
-            excludedCommandLineFlags+=" --exclude $word"
-        done < tmpFileRunSonarSh2
-        rm -rf tmpFileRunSonarSh2
-    fi
-    if [ "$vflag" = "on" ]; then
-        echo "Command line exclusion flags for gcovr is:$excludedCommandLineFlags"
-    fi
+	if [ "$coverageType" = "profdata" -o "$coverageType" = "" ]; then
 
-    # Create symlink on the build directory to enable its access from the workspace
-    coverageFilesPath=$(grep 'command' compile_commands.json | sed 's#^.*-o \\/#\/#;s#",##' | grep "${projectName%%.*}.build" | awk 'NR<2' | sed 's/\\\//\//g' | sed 's/\\\\//g' | xargs -0 dirname)
-    splitIndex=$(awk -v a="$coverageFilesPath" -v b="/Intermediates" 'BEGIN{print index(a,b)}')
-    coverageFilesPath=$(echo ${coverageFilesPath:0:$splitIndex}Intermediates)
-    ln -s $coverageFilesPath sonar-reports/build
+	    # profdata = use slather
 
-    # Run gcovr with the right options
-    runCommand "sonar-reports/coverage.xml" gcovr -r . $excludedCommandLineFlags --xml
+	    echo 'Using profdata'
+
+	    # Build the --exclude flags
+        excludedCommandLineFlags=""
+        if [ ! -z "$excludedPathsFromCoverage" -a "$excludedPathsFromCoverage" != " " ]; then
+            echo $excludedPathsFromCoverage | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh2
+            while read word; do
+                excludedCommandLineFlags+=" -i $word"
+            done < tmpFileRunSonarSh2
+            rm -rf tmpFileRunSonarSh2
+        fi
+        if [ "$vflag" = "on" ]; then
+            echo "Command line exclusion flags for slather is:$excludedCommandLineFlags"
+        fi
+
+        runCommand /dev/stdout $SLATHER_CMD coverage --input-format profdata $excludedCommandLineFlags --cobertura-xml --output-directory sonar-reports --scheme $appScheme $projectFile
+        mv sonar-reports/cobertura.xml sonar-reports/coverage.xml
+
+	else
+
+	    # Legacy mode = use gcovr
+
+		# Build the --exclude flags
+		excludedCommandLineFlags=""
+		if [ ! -z "$excludedPathsFromCoverage" -a "$excludedPathsFromCoverage" != " " ]; then
+			echo $excludedPathsFromCoverage | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh2
+			while read word; do
+				excludedCommandLineFlags+=" --exclude $word"
+			done < tmpFileRunSonarSh2
+			rm -rf tmpFileRunSonarSh2
+		fi
+		if [ "$vflag" = "on" ]; then
+			echo "Command line exclusion flags for gcovr is:$excludedCommandLineFlags"
+		fi
+
+		# Create symlink on the build directory to enable its access from the workspace
+		coverageFilesPath=$(grep 'command' compile_commands.json | sed 's#^.*-o \\/#\/#;s#",##' | grep "${projectName%%.*}.build" | awk 'NR<2' | sed 's/\\\//\//g' | sed 's/\\\\//g' | xargs -0 dirname)
+		splitIndex=$(awk -v a="$coverageFilesPath" -v b="/Intermediates" 'BEGIN{print index(a,b)}')
+		coverageFilesPath=$(echo ${coverageFilesPath:0:$splitIndex}Intermediates)
+		ln -s $coverageFilesPath sonar-reports/build
+
+		# Run gcovr with the right options
+		runCommand "sonar-reports/coverage.xml" gcovr -r . $excludedCommandLineFlags --xml
+
+	fi
 
 	
 fi	

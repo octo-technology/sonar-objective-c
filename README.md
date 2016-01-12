@@ -65,10 +65,33 @@ Binary packages are available in the release section.
 
 - a Mac with Xcode
 - [SonarQube](http://docs.codehaus.org/display/SONAR/Setup+and+Upgrade) and [SonarQube Runner](http://docs.codehaus.org/display/SONAR/Installing+and+Configuring+SonarQube+Runner) installed ([HomeBrew](http://brew.sh) installed and ```brew install sonar-runner```)
+- [xcpretty](https://github.com/supermarin/xcpretty) (```gem install xcpretty```)
 - [xctool](https://github.com/facebook/xctool) ([HomeBrew](http://brew.sh) installed and ```brew install xctool```). If you are using Xcode 6, make sure to update xctool (```brew upgrade xctool```) to a version > 0.2.2.
-- [OCLint](http://docs.oclint.org/en/dev/intro/installation.html) installed. Version 0.8.1 recommended  ([HomeBrew](http://brew.sh) installed and ```brew install https://gist.githubusercontent.com/TonyAnhTran/e1522b93853c5a456b74/raw/157549c7a77261e906fb88bc5606afd8bd727a73/oclint.rb```). 
-- [gcovr](http://gcovr.com) installed
+- [OCLint](http://docs.oclint.org/en/dev/intro/installation.html) installed. Version 0.10.1 recommended. 
+- [gcovr](http://gcovr.com) installed for legacy (pre Xcode 7 coverage)
+- [slather](https://github.com/venmo/slather) with profdata support (see instructions below) for Xcode 7 and above.
 - [Faux Pas](http://fauxpasapp.com/) command line tools installed (optional)
+
+###Installation of slather with profdata support
+
+At the time, slather does not support profdata. A special version of slather needs t be installed.
+
+To install slather with profdata support, follow those steps :
+
+	git clone https://github.com/mattdelves/slather.git
+	cd slather
+	git checkout feature-profdata
+	gem build slather.gemspec
+	gem install --both slather-1.8.1.gem
+
+
+###Code coverage data format
+
+Since Xcode 7, Apple changed its coverage data format to a new format called 'profdata'.
+By default this format will be used by the plugin, except if you explicitly force it to legacy mode (for Xcode 6 and below) in your *sonar-project.properties* with this line:
+
+    sonar.objectivec.coverageType=legacy
+  
 
 ###Installation (once for all your Objective-C projects)
 - Download the plugin binary into the $SONARQUBE_HOME/extensions/plugins directory
