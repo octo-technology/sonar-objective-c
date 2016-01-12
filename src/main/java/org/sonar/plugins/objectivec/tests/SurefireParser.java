@@ -78,9 +78,9 @@ public class SurefireParser {
     }
 
     private void insertZeroWhenNoReports(Project pom, SensorContext context) {
-        if ( !StringUtils.equalsIgnoreCase("pom", pom.getPackaging())) {
+    //    if ( !StringUtils.equalsIgnoreCase("pom", pom.getPackaging())) {
             context.saveMeasure(CoreMetrics.TESTS, 0.0);
-        }
+    //    }
     }
 
     private void parseFiles(SensorContext context, File[] reports) {
