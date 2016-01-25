@@ -160,9 +160,9 @@ fi
 workspaceFile=''; readParameter workspaceFile 'sonar.objectivec.workspace'
 projectFile=''; readParameter projectFile 'sonar.objectivec.project'
 if [[ "$workspaceFile" != "" ]] ; then
-	xctoolCmdPrefix="$XCTOOL_CMD -workspace $workspaceFile"
+	xctoolCmdPrefix="$XCTOOL_CMD -workspace $workspaceFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
 else
-	xctoolCmdPrefix="$XCTOOL_CMD -project $projectFile"
+	xctoolCmdPrefix="$XCTOOL_CMD -project $projectFile -sdk iphonesimulator ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
 fi
 
 # Count projects
