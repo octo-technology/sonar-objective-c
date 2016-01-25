@@ -252,14 +252,14 @@ else
 
     if [ "$coverageType" = "profdata" -o "$coverageType" = "" ]; then
     	# profdata
-    	buildCmd=(xcodebuild test -workspace $workspaceFile -scheme $appScheme -sdk iphonesimulator -configuration Debug -enableCodeCoverage YES)
+    	buildCmd=(xcodebuild build test -workspace $workspaceFile -scheme $appScheme -configuration Debug -enableCodeCoverage YES)
     else
     	# Legacy coverage
-    	buildCmd=(xcodebuild test -workspace $workspaceFile -scheme $appScheme -sdk iphonesimulator -configuration Debug)
+    	buildCmd=(xcodebuild build test -workspace $workspaceFile -scheme $appScheme -configuration Debug)
     fi
 
     if [[ ! -z "$destinationSimulator" ]]; then
-        buildCmd+=(-destination "$destinationSimulator" -destination-timeout 60)
+        buildCmd+=(-destination "$destinationSimulator" -destination-timeout 360)
     fi
     runCommand  sonar-reports/xcodebuild.log "${buildCmd[@]}"
     cat sonar-reports/xcodebuild.log  | $XCPRETTY_CMD -t --report junit
