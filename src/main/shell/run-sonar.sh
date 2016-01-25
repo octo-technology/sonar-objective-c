@@ -160,9 +160,9 @@ fi
 workspaceFile=''; readParameter workspaceFile 'sonar.objectivec.workspace'
 projectFile=''; readParameter projectFile 'sonar.objectivec.project'
 if [[ "$workspaceFile" != "" ]] ; then
-	xctoolCmdPrefix="$XCTOOL_CMD -workspace $workspaceFile ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
+	xctoolCmdPrefix="$XCTOOL_CMD -workspace $workspaceFile"
 else
-	xctoolCmdPrefix="$XCTOOL_CMD -project $projectFile  ARCHS=i386 VALID_ARCHS=i386 CURRENT_ARCH=i386 ONLY_ACTIVE_ARCH=NO"
+	xctoolCmdPrefix="$XCTOOL_CMD -project $projectFile"
 fi
 
 # Count projects
