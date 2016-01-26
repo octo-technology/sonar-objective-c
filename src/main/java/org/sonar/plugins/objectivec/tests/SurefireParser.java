@@ -22,6 +22,8 @@ package org.sonar.plugins.objectivec.tests;
 import com.sun.swing.internal.plaf.metal.resources.metal_sv;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
@@ -47,6 +49,8 @@ import java.util.Set;
  * Created by gillesgrousset on 06/01/15.
  */
 public class SurefireParser {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SurefireParser.class);
 
     public void collect(Project project, SensorContext context, File reportsDir) {
         File[] xmlFiles = getReports(reportsDir);
@@ -113,6 +117,7 @@ public class SurefireParser {
             }
 
         } catch (Exception e) {
+            LOG.error("Can not parse surefire reports", e);
             throw new XmlParserException("Can not parse surefire reports", e);
         }
     }
