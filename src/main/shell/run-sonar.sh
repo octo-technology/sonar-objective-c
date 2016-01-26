@@ -248,14 +248,13 @@ if [ "$testScheme" = "" ]; then
 else
 
     echo -n 'Running tests'
-    runCommand /dev/stdout xcodebuild clean -workspace $workspaceFile -scheme $appScheme
 
     if [ "$coverageType" = "profdata" -o "$coverageType" = "" ]; then
     	# profdata
-    	buildCmd=(xcodebuild build test -workspace $workspaceFile -scheme $appScheme -configuration Debug -enableCodeCoverage YES)
+    	buildCmd=(xcodebuild clean build test -workspace $workspaceFile -scheme $appScheme -configuration Debug -enableCodeCoverage YES)
     else
     	# Legacy coverage
-    	buildCmd=(xcodebuild build test -workspace $workspaceFile -scheme $appScheme -configuration Debug)
+    	buildCmd=(xcodebuild clean build test -workspace $workspaceFile -scheme $appScheme -configuration Debug)
     fi
 
     if [[ ! -z "$destinationSimulator" ]]; then
