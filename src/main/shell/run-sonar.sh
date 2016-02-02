@@ -287,7 +287,10 @@ else
             echo "Command line exclusion flags for slather is:$excludedCommandLineFlags"
         fi
 
-        runCommand /dev/stdout $SLATHER_CMD coverage --input-format profdata $excludedCommandLineFlags --cobertura-xml --output-directory sonar-reports --scheme $appScheme $projectFile
+
+		projectArray=(${projectFile//,/ })
+		firstProject=${projectArray[0]}
+        runCommand /dev/stdout $SLATHER_CMD coverage --input-format profdata $excludedCommandLineFlags --cobertura-xml --output-directory sonar-reports --scheme $appScheme $firstProject
         mv sonar-reports/cobertura.xml sonar-reports/coverage.xml
 
 	else
