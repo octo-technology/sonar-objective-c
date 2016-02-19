@@ -37,8 +37,7 @@ public final class OCLintProfileImporter extends ProfileImporter {
     private final XMLProfileParser profileParser;
 
     public OCLintProfileImporter(final XMLProfileParser xmlProfileParser) {
-        super(OCLintRuleRepository.REPOSITORY_KEY,
-                OCLintRuleRepository.REPOSITORY_KEY);
+        super(OCLintRulesDefinition.REPOSITORY_KEY, OCLintRulesDefinition.REPOSITORY_KEY);
         setSupportedLanguages(ObjectiveC.KEY);
         profileParser = xmlProfileParser;
     }

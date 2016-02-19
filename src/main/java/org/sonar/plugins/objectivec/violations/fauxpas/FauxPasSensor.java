@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;
 import org.sonar.api.rules.Violation;
@@ -45,10 +46,12 @@ public class FauxPasSensor implements Sensor {
 
     private final Settings conf;
     private final FileSystem fileSystem;
+    private final ResourcePerspectives resourcePerspectives;
 
-    public FauxPasSensor(final FileSystem moduleFileSystem, final Settings config) {
+    public FauxPasSensor(final FileSystem moduleFileSystem, final Settings config, final ResourcePerspectives resourcePerspectives) {
         this.conf = config;
         this.fileSystem = moduleFileSystem;
+        this.resourcePerspectives = resourcePerspectives;
     }
 
     @Override
@@ -59,19 +62,14 @@ public class FauxPasSensor implements Sensor {
     @Override
     public void analyse(Project module, SensorContext context) {
 
-        final String projectBaseDir = module.getFileSystem().getBasedir().getPath();
+        final String projectBaseDir = fileSystem.baseDir().getPath();
 
-        FauxPasReportParser parser = new FauxPasReportParser(module, context);
-        saveViolations(parseReportIn(projectBaseDir, parser), context);
+        FauxPasReportParser parser = new FauxPasReportParser(module, context, resourcePerspectives);
+        parseReportIn(projectBaseDir, parser);
     }
 
-    private void saveViolations(final Collection<Violation> violations, final SensorContext context) {
-        for (final Violation violation : violations) {
-            context.saveViolation(violation);
-        }
-    }
 
-    private Collection<Violation> parseReportIn(final String baseDir, final FauxPasReportParser parser) {
+    private void parseReportIn(final String baseDir, final FauxPasReportParser parser) {
 
         DirectoryScanner scanner = new DirectoryScanner();
         scanner.setIncludes(new String[]{reportPath()});
@@ -80,13 +78,10 @@ public class FauxPasSensor implements Sensor {
         scanner.scan();
         String[] files = scanner.getIncludedFiles();
 
-        Collection<Violation> result = new ArrayList<Violation>();
         for(String filename : files) {
             LOGGER.info("Processing FauxPas report {}", filename);
-            result.addAll(parser.parseReport(new File(filename)));
+            parser.parseReport(new File(filename));
         }
-
-        return result;
 
     }
 

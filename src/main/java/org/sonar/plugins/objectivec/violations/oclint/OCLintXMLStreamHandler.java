@@ -20,64 +20,58 @@
 package org.sonar.plugins.objectivec.violations.oclint;
 
 import java.io.File;
-import java.util.Collection;
 
 import javax.xml.stream.XMLStreamException;
 
 import org.codehaus.staxmate.in.SMHierarchicCursor;
 import org.codehaus.staxmate.in.SMInputCursor;
+import org.json.simple.JSONObject;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.component.ResourcePerspectives;
+import org.sonar.api.issue.Issuable;
+import org.sonar.api.issue.Issue;
 import org.sonar.api.resources.Project;
+import org.sonar.api.rule.RuleKey;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RulePriority;
 import org.sonar.api.rules.Violation;
 import org.sonar.api.utils.StaxParser.XmlStreamHandler;
+import org.sonar.plugins.objectivec.violations.fauxpas.FauxPasRulesDefinition;
 
 final class OCLintXMLStreamHandler implements XmlStreamHandler {
     private static final int PMD_MINIMUM_PRIORITY = 5;
-    private final Collection<Violation> foundViolations;
     private final Project project;
     private final SensorContext context;
+    private final ResourcePerspectives resourcePerspectives;
 
-    public OCLintXMLStreamHandler(final Collection<Violation> violations,
-            final Project p, final SensorContext c) {
-        foundViolations = violations;
+    public OCLintXMLStreamHandler(final Project p, final SensorContext c, final ResourcePerspectives resourcePerspectives) {
         project = p;
         context = c;
+        this.resourcePerspectives = resourcePerspectives;
     }
 
-    public void stream(final SMHierarchicCursor rootCursor)
-            throws XMLStreamException {
-        final SMInputCursor file = rootCursor.advance().childElementCursor(
-                "file");
+    public void stream(final SMHierarchicCursor rootCursor) throws XMLStreamException {
 
+        final SMInputCursor file = rootCursor.advance().childElementCursor("file");
         while (null != file.getNext()) {
-            collectViolationsFor(file);
+            collectIssuesFor(file);
         }
     }
 
-    private void collectViolationsFor(final SMInputCursor file)
-            throws XMLStreamException {
+    private void collectIssuesFor(final SMInputCursor file) throws XMLStreamException {
+
         final String filePath = file.getAttrValue("name");
-        LoggerFactory.getLogger(getClass()).debug(
-                "Collection violations for {}", filePath);
+        LoggerFactory.getLogger(getClass()).debug("Collection violations for {}", filePath);
         final org.sonar.api.resources.File resource = findResource(filePath);
         if (fileExists(resource)) {
-            LoggerFactory.getLogger(getClass()).debug(
-                    "File {} was found in the project.", filePath);
-            collectFileViolations(resource, file);
+            LoggerFactory.getLogger(getClass()).debug("File {} was found in the project.", filePath);
+            collectFileIssues(resource, file);
         }
     }
 
-    private org.sonar.api.resources.File findResource(final String filePath) {
-        return org.sonar.api.resources.File.fromIOFile(new File(filePath),
-                project);
-    }
+    private void collectFileIssues(final org.sonar.api.resources.File resource, final SMInputCursor file) throws XMLStreamException {
 
-    private void collectFileViolations(
-            final org.sonar.api.resources.File resource,
-            final SMInputCursor file) throws XMLStreamException {
         final SMInputCursor line = file.childElementCursor("violation");
 
         while (null != line.getNext()) {
@@ -85,22 +79,26 @@ final class OCLintXMLStreamHandler implements XmlStreamHandler {
         }
     }
 
-    private void recordViolation(final org.sonar.api.resources.File resource,
-            final SMInputCursor line) throws XMLStreamException {
-        final Rule rule = Rule.create();
-        final Violation violation = Violation.create(rule, resource);
+    private org.sonar.api.resources.File findResource(final String filePath) {
+        return org.sonar.api.resources.File.fromIOFile(new File(filePath), project);
+    }
 
-        // PMD Priorities are 1, 2, 3, 4, 5 RulePriority[0] is INFO
-        rule.setSeverity(RulePriority.values()[PMD_MINIMUM_PRIORITY
-                - Integer.valueOf(line.getAttrValue("priority"))]);
-        rule.setKey(line.getAttrValue("rule"));
-        rule.setRepositoryKey(OCLintRuleRepository.REPOSITORY_KEY);
+    private void recordViolation(final org.sonar.api.resources.File resource, final SMInputCursor line) throws XMLStreamException {
 
-        violation.setLineId(Integer.valueOf(line.getAttrValue("beginline")));
+        Issuable issuable = resourcePerspectives.as(Issuable.class, resource);
 
-        violation.setMessage(line.getElemStringValue());
+        if (issuable != null) {
 
-        foundViolations.add(violation);
+            Issue issue = issuable.newIssueBuilder()
+                    .ruleKey(RuleKey.of(FauxPasRulesDefinition.REPOSITORY_KEY, line.getAttrValue("rule")))
+                    .line(Integer.valueOf(line.getAttrValue("beginline")))
+                    .message(line.getElemStringValue())
+                    .build();
+
+            issuable.addIssue(issue);
+
+
+        }
     }
 
     private boolean fileExists(final org.sonar.api.resources.File file) {

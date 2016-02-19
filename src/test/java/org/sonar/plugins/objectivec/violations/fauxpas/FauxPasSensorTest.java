@@ -22,6 +22,7 @@ package org.sonar.plugins.objectivec.violations.fauxpas;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
@@ -52,11 +53,12 @@ public class FauxPasSensorTest {
         final Project project = new Project("Test");
 
         FileSystem fileSystem = mock(FileSystem.class);
+        ResourcePerspectives resourcePerspectives = mock(ResourcePerspectives.class);
         SortedSet<String> languages = new TreeSet<String>();
         languages.add(ObjectiveC.KEY);
         when(fileSystem.languages()).thenReturn(languages);
 
-        final FauxPasSensor testedSensor = new FauxPasSensor(fileSystem, settings);
+        final FauxPasSensor testedSensor = new FauxPasSensor(fileSystem, settings, resourcePerspectives);
 
         assertTrue(testedSensor.shouldExecuteOnProject(project));
     }
@@ -66,11 +68,12 @@ public class FauxPasSensorTest {
         final Project project = new Project("Test");
 
         FileSystem fileSystem = mock(FileSystem.class);
+        ResourcePerspectives resourcePerspectives = mock(ResourcePerspectives.class);
         SortedSet<String> languages = new TreeSet<String>();
         languages.add("Test");
         when(fileSystem.languages()).thenReturn(languages);
 
-        final FauxPasSensor testedSensor = new FauxPasSensor(fileSystem, settings);
+        final FauxPasSensor testedSensor = new FauxPasSensor(fileSystem, settings, resourcePerspectives);
 
         assertFalse(testedSensor.shouldExecuteOnProject(project));
     }

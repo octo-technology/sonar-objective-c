@@ -27,6 +27,7 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
@@ -48,12 +49,13 @@ public final class OCLintSensorTest {
 	public void shouldExecuteOnProjectShouldBeTrueWhenProjectIsObjc() {
 		final Project project = new Project("Test");
 
+        ResourcePerspectives resourcePerspectives = mock(ResourcePerspectives.class);
         FileSystem fileSystem = mock(FileSystem.class);
         SortedSet<String> languages = new TreeSet<String>();
         languages.add(ObjectiveC.KEY);
         when(fileSystem.languages()).thenReturn(languages);
 
-		final OCLintSensor testedSensor = new OCLintSensor(fileSystem, settings);
+		final OCLintSensor testedSensor = new OCLintSensor(fileSystem, settings, resourcePerspectives);
 
 		assertTrue(testedSensor.shouldExecuteOnProject(project));
 	}
@@ -62,12 +64,13 @@ public final class OCLintSensorTest {
 	public void shouldExecuteOnProjectShouldBeFalseWhenProjectIsSomethingElse() {
 		final Project project = new Project("Test");
 
+        ResourcePerspectives resourcePerspectives = mock(ResourcePerspectives.class);
         FileSystem fileSystem = mock(FileSystem.class);
         SortedSet<String> languages = new TreeSet<String>();
         languages.add("Test");
         when(fileSystem.languages()).thenReturn(languages);
 
-		final OCLintSensor testedSensor = new OCLintSensor(fileSystem, settings);
+		final OCLintSensor testedSensor = new OCLintSensor(fileSystem, settings, resourcePerspectives);
 
 		assertFalse(testedSensor.shouldExecuteOnProject(project));
 	}

@@ -31,14 +31,14 @@ public class ObjectiveCParser {
     private ObjectiveCParser() {
     }
 
-    public static Parser<ObjectiveCGrammar> create(ParsingEventListener... parsingEventListeners) {
-        return create(new ObjectiveCConfiguration(), parsingEventListeners);
+    public static Parser<ObjectiveCGrammar> create() {
+        return create(new ObjectiveCConfiguration());
     }
 
-    public static Parser<ObjectiveCGrammar> create(ObjectiveCConfiguration conf, ParsingEventListener... parsingEventListeners) {
+    public static Parser<ObjectiveCGrammar> create(ObjectiveCConfiguration conf) {
         return Parser.builder((ObjectiveCGrammar) new ObjectiveCGrammarImpl())
                 .withLexer(ObjectiveCLexer.create(conf))
-                .setParsingEventListeners(parsingEventListeners).build();
+                .build();
     }
 
 }

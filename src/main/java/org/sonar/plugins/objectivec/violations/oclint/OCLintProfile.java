@@ -52,7 +52,7 @@ public final class OCLintProfile extends ProfileDefinition {
                     PROFILE_PATH));
             final RulesProfile profile = profileImporter.importProfile(config,
                     messages);
-            profile.setName(OCLintRuleRepository.REPOSITORY_KEY);
+            profile.setName(OCLintRulesDefinition.REPOSITORY_KEY);
             profile.setLanguage(ObjectiveC.KEY);
 
             return profile;

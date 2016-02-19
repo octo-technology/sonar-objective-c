@@ -37,12 +37,9 @@ import org.sonar.plugins.objectivec.tests.SurefireSensor;
 import org.sonar.plugins.objectivec.violations.ObjectiveCProfile;
 import org.sonar.plugins.objectivec.violations.fauxpas.FauxPasProfile;
 import org.sonar.plugins.objectivec.violations.fauxpas.FauxPasProfileImporter;
-import org.sonar.plugins.objectivec.violations.fauxpas.FauxPasRuleRepository;
+import org.sonar.plugins.objectivec.violations.fauxpas.FauxPasRulesDefinition;
 import org.sonar.plugins.objectivec.violations.fauxpas.FauxPasSensor;
-import org.sonar.plugins.objectivec.violations.oclint.OCLintProfile;
-import org.sonar.plugins.objectivec.violations.oclint.OCLintProfileImporter;
-import org.sonar.plugins.objectivec.violations.oclint.OCLintRuleRepository;
-import org.sonar.plugins.objectivec.violations.oclint.OCLintSensor;
+import org.sonar.plugins.objectivec.violations.oclint.*;
 
 @Properties({
         @Property(key = CoberturaSensor.REPORT_PATTERN_KEY, defaultValue = CoberturaSensor.DEFAULT_REPORT_PATTERN, name = "Path to unit test coverage report(s)", description = "Relative to projects' root. Ant patterns are accepted", global = false, project = true),
@@ -62,13 +59,13 @@ public class ObjectiveCPlugin extends SonarPlugin {
                 SurefireSensor.class,
                 CoberturaSensor.class,
 
-                OCLintRuleRepository.class,
+                OCLintRulesDefinition.class,
                 OCLintSensor.class,
                 OCLintProfile.class,
                 OCLintProfileImporter.class,
 
                 FauxPasSensor.class,
-                FauxPasRuleRepository.class,
+                FauxPasRulesDefinition.class,
                 FauxPasProfile.class,
                 FauxPasProfileImporter.class
                 );

@@ -20,41 +20,37 @@
 package org.sonar.plugins.objectivec.violations.fauxpas;
 
 import org.apache.commons.io.IOUtils;
-import org.codehaus.staxmate.in.SMInputCursor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.component.ResourcePerspectives;
+import org.sonar.api.issue.Issuable;
+import org.sonar.api.issue.Issue;
 import org.sonar.api.resources.Project;
-import org.sonar.api.rules.Rule;
-import org.sonar.api.rules.RulePriority;
-import org.sonar.api.rules.Violation;
-import org.sonar.plugins.objectivec.violations.oclint.OCLintRuleRepository;
+import org.sonar.api.rule.RuleKey;
 
-import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Collection;
 
 public class FauxPasReportParser {
 
     private final Project project;
     private final SensorContext context;
+    private final ResourcePerspectives resourcePerspectives;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FauxPasReportParser.class);
 
-    public FauxPasReportParser(final Project p, final SensorContext c) {
+    public FauxPasReportParser(final Project p, final SensorContext c, final ResourcePerspectives resourcePerspectives) {
         project = p;
         context = c;
+        this.resourcePerspectives = resourcePerspectives;
     }
 
-    public Collection<Violation> parseReport(File reportFile) {
-
-        final Collection<Violation> violations = new ArrayList<Violation>();
+    public void parseReport(File reportFile) {
 
         try {
             // Read and parse report
@@ -69,7 +65,7 @@ public class FauxPasReportParser {
                 JSONArray diagnosticsJson = (JSONArray)reportJson.get("diagnostics");
 
                 for (Object obj : diagnosticsJson) {
-                    recordViolation((JSONObject)obj, violations);
+                    recordIssue((JSONObject) obj);
 
                 }
             }
@@ -77,12 +73,9 @@ public class FauxPasReportParser {
         } catch (FileNotFoundException e) {
             LOGGER.error("Failed to parse FauxPas report file", e);
         }
-
-
-        return violations;
     }
 
-    private void recordViolation(final JSONObject diagnosticJson, Collection<Violation> violations) {
+    private void recordIssue(final JSONObject diagnosticJson) {
 
         String filePath = (String)diagnosticJson.get("file");
 
@@ -90,31 +83,34 @@ public class FauxPasReportParser {
 
             org.sonar.api.resources.File resource = org.sonar.api.resources.File.fromIOFile(new File(filePath), project);
 
-            final Rule rule = Rule.create();
-            final Violation violation = Violation.create(rule, resource);
+            Issuable issuable = resourcePerspectives.as(Issuable.class, resource);
 
-            rule.setRepositoryKey(FauxPasRuleRepository.REPOSITORY_KEY);
-            rule.setKey((String)diagnosticJson.get("ruleShortName"));
+            if (issuable != null) {
 
-            String info = (String)diagnosticJson.get("info");
-            if (info == null) {
-                info = "Description not available";
+                JSONObject extent = (JSONObject)diagnosticJson.get("extent");
+                JSONObject start = (JSONObject)extent.get("start");
+
+                String info = (String)diagnosticJson.get("info");
+                if (info == null) {
+                    info = (String)diagnosticJson.get("ruleName");
+                }
+
+                // Prevent line num 0 case
+                int lineNum = Integer.parseInt(start.get("line").toString());
+                if (lineNum == 0) {
+                    lineNum++;
+                }
+
+                Issue issue = issuable.newIssueBuilder()
+                        .ruleKey(RuleKey.of(FauxPasRulesDefinition.REPOSITORY_KEY, (String) diagnosticJson.get("ruleShortName")))
+                        .line(lineNum)
+                        .message(info)
+                        .build();
+
+                issuable.addIssue(issue);
+
+
             }
-            violation.setMessage(info);
-
-
-            JSONObject extent = (JSONObject)diagnosticJson.get("extent");
-            JSONObject start = (JSONObject)extent.get("start");
-
-            int lineNumber = Integer.parseInt(start.get("line").toString());
-
-            // Avoid line 0
-            if (lineNumber == 0) {
-                lineNumber++;
-            }
-            violation.setLineId(Integer.parseInt(start.get("line").toString()));
-
-            violations.add(violation);
 
         }
 

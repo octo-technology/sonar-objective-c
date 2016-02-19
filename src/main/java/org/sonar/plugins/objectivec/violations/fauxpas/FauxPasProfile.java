@@ -50,7 +50,7 @@ public class FauxPasProfile extends ProfileDefinition {
             config = new InputStreamReader(getClass().getResourceAsStream(
                     PROFILE_PATH));
             final RulesProfile profile = profileImporter.importProfile(config, messages);
-            profile.setName(FauxPasRuleRepository.REPOSITORY_KEY);
+            profile.setName(FauxPasRulesDefinition.REPOSITORY_KEY);
             profile.setLanguage(ObjectiveC.KEY);
 
             return profile;

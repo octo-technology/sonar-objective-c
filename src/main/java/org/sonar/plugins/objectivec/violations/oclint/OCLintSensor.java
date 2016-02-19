@@ -28,23 +28,26 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;
 import org.sonar.api.rules.Violation;
 import org.sonar.plugins.objectivec.ObjectiveCPlugin;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
+import org.sonar.plugins.objectivec.violations.fauxpas.FauxPasReportParser;
 
 public final class OCLintSensor implements Sensor {
-    public static final String REPORT_PATH_KEY = ObjectiveCPlugin.PROPERTY_PREFIX
-            + ".oclint.report";
+    public static final String REPORT_PATH_KEY = ObjectiveCPlugin.PROPERTY_PREFIX + ".oclint.report";
     public static final String DEFAULT_REPORT_PATH = "sonar-reports/*oclint.xml";
 
     private final Settings conf;
     private final FileSystem fileSystem;
+    private final ResourcePerspectives resourcePerspectives;
 
-    public OCLintSensor(final FileSystem moduleFileSystem, final Settings config) {
+    public OCLintSensor(final FileSystem fileSystem, final Settings config, final ResourcePerspectives resourcePerspectives) {
         this.conf = config;
-        this.fileSystem = moduleFileSystem;
+        this.fileSystem = fileSystem;
+        this.resourcePerspectives = resourcePerspectives;
     }
 
     public boolean shouldExecuteOnProject(final Project project) {
@@ -54,22 +57,14 @@ public final class OCLintSensor implements Sensor {
     }
 
     public void analyse(final Project project, final SensorContext context) {
-        final String projectBaseDir = project.getFileSystem().getBasedir()
-                .getPath();
-        final OCLintParser parser = new OCLintParser(project, context);
-        saveViolations(parseReportIn(projectBaseDir, parser), context);
+        final String projectBaseDir = fileSystem.baseDir().getPath();
+        final OCLintParser parser = new OCLintParser(project, context, resourcePerspectives);
+
+        parseReportIn(projectBaseDir, parser);
 
     }
 
-    private void saveViolations(final Collection<Violation> violations,
-            final SensorContext context) {
-        for (final Violation violation : violations) {
-            context.saveViolation(violation);
-        }
-    }
-
-    private Collection<Violation> parseReportIn(final String baseDir,
-            final OCLintParser parser) {
+    private void parseReportIn(final String baseDir, final OCLintParser parser) {
 
         DirectoryScanner scanner = new DirectoryScanner();
         scanner.setIncludes(new String[]{reportPath()});
@@ -78,13 +73,10 @@ public final class OCLintSensor implements Sensor {
         scanner.scan();
         String[] files = scanner.getIncludedFiles();
 
-        Collection<Violation> result = new ArrayList<Violation>();
         for(String filename : files) {
             LoggerFactory.getLogger(getClass()).info("Processing OCLint report {}", filename);
-            result.addAll(parser.parseReport(new File(filename)));
+            parser.parseReport(new File(filename));
         }
-
-        return result;
     }
 
     private String reportPath() {

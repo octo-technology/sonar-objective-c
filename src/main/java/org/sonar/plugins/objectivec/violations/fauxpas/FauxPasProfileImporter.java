@@ -37,7 +37,7 @@ public class FauxPasProfileImporter extends ProfileImporter {
     private final XMLProfileParser profileParser;
 
     public FauxPasProfileImporter(final XMLProfileParser xmlProfileParser) {
-        super(FauxPasRuleRepository.REPOSITORY_KEY, FauxPasRuleRepository.REPOSITORY_KEY);
+        super(FauxPasRulesDefinition.REPOSITORY_KEY, FauxPasRulesDefinition.REPOSITORY_KEY);
         setSupportedLanguages(ObjectiveC.KEY);
         profileParser = xmlProfileParser;
     }

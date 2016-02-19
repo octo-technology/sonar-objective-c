@@ -60,9 +60,8 @@ public final class CoberturaSensor implements Sensor {
     }
 
     public void analyse(final Project project, final SensorContext context) {
-        final CoverageMeasuresPersistor measuresPersistor = new CoverageMeasuresPersistor(
-                project, context);
-        final String projectBaseDir = project.getFileSystem().getBasedir()
+        final CoverageMeasuresPersistor measuresPersistor = new CoverageMeasuresPersistor(project, context, fileSystem);
+        final String projectBaseDir = fileSystem.baseDir()
                 .getPath();
 
         measuresPersistor.saveMeasures(parseReportsIn(projectBaseDir));

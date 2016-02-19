@@ -8,14 +8,8 @@ if [ "$?" != 0 ]; then
 	exit $?
 fi
 
-# Run shell tests
-#shelltest src/test/shell --execdir --diff
-#if [ "$?" != 0 ]; then
-#	echo "ERROR - Shell tests failed!" 1>&2
-#	exit $?
-#fi
-
 # Deploy new verion of plugin in Sonar dir
+rm -rf $SONARQUBE_HOME/extensions/plugins/sonar-objective-c-*
 cp target/*.jar $SONARQUBE_HOME/extensions/plugins
 
 # Stop/start Sonar

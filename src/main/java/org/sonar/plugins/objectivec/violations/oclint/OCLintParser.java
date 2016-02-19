@@ -30,46 +30,45 @@ import javax.xml.stream.XMLStreamException;
 
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.resources.Project;
 import org.sonar.api.rules.Violation;
 import org.sonar.api.utils.StaxParser;
 
 final class OCLintParser {
+
     private final Project project;
     private final SensorContext context;
+    private final ResourcePerspectives resourcePerspectives;
 
-    public OCLintParser(final Project p, final SensorContext c) {
+    public OCLintParser(final Project p, final SensorContext c, final ResourcePerspectives resourcePerspectives) {
         project = p;
         context = c;
+        this.resourcePerspectives = resourcePerspectives;
     }
 
-    public Collection<Violation> parseReport(final File file) {
-        Collection<Violation> result;
+    public void parseReport(final File file) {
+
         try {
             final InputStream reportStream = new FileInputStream(file);
-            result = parseReport(reportStream);
+            parseReport(reportStream);
             reportStream.close();
         } catch (final IOException e) {
-            LoggerFactory.getLogger(getClass()).error(
-                    "Error processing file named {}", file, e);
-            result = new ArrayList<Violation>();
+            LoggerFactory.getLogger(getClass()).error("Error processing file named {}", file, e);
         }
-        return result;
+
     }
 
-    public Collection<Violation> parseReport(final InputStream inputStream) {
-        final Collection<Violation> violations = new ArrayList<Violation>();
+    public void parseReport(final InputStream inputStream) {
+
         try {
             final StaxParser parser = new StaxParser(
-                    new OCLintXMLStreamHandler(violations, project, context));
+                    new OCLintXMLStreamHandler(project, context, resourcePerspectives));
             parser.parse(inputStream);
-            LoggerFactory.getLogger(getClass()).error(
-                    "Reporting {} violations.", violations.size());
         } catch (final XMLStreamException e) {
             LoggerFactory.getLogger(getClass()).error(
                     "Error while parsing XML stream.", e);
         }
-        return violations;
     }
 
 }

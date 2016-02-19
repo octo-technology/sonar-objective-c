@@ -17,34 +17,24 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
+
 package org.sonar.plugins.objectivec.violations.oclint;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+/**
+ * Created by gillesgrousset on 18/02/2016.
+ */
+public enum OCLintRuleSeverity {
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+    // Rules are priority
+    // INFO = 0, MINOR = 1, MAJOR = 2, CRITICAL = 3, BLOCKER = 4
 
-import org.sonar.api.resources.Project;
-import org.sonar.api.resources.ProjectFileSystem;
+    INFO,
+    MINOR,
+    MAJOR,
+    CRITICAL,
+    BLOCKER;
 
-final class ProjectBuilder {
-	private final Project project = new Project("Test");
-	private final ProjectFileSystem fileSystem = mock(ProjectFileSystem.class);
-	private final List<File> sourceDirs = new ArrayList<File>();
-
-	public ProjectBuilder() {
-		project.setFileSystem(fileSystem);
-		when(fileSystem.getSourceDirs()).thenReturn(sourceDirs);
-        when(fileSystem.getBasedir()).thenReturn(new File("."));
-	}
-
-	public Project project() {
-		return project;
-	}
-
-	public void containingSourceDirectory(final String d) {
-		sourceDirs.add(new File(d));
-	}
+    public static OCLintRuleSeverity valueOfInt(int ordinal) {
+        return values()[ordinal];
+    }
 }

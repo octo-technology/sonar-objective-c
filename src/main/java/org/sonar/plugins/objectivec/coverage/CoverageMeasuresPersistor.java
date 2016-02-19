@@ -27,6 +27,7 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.measures.CoverageMeasuresBuilder;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.resources.Project;
@@ -36,10 +37,12 @@ import org.sonar.api.utils.PathUtils;
 final class CoverageMeasuresPersistor {
     private final Project project;
     private final SensorContext context;
+    private final FileSystem fileSystem;
 
-    public CoverageMeasuresPersistor(final Project p, final SensorContext c) {
+    public CoverageMeasuresPersistor(final Project p, final SensorContext c, final FileSystem fileSystem) {
         project = p;
         context = c;
+        this.fileSystem = fileSystem;
     }
 
     public void saveMeasures(final Map<String, CoverageMeasuresBuilder> coverageMeasures) {
@@ -52,7 +55,7 @@ final class CoverageMeasuresPersistor {
     private void saveMeasuresForFile(final CoverageMeasuresBuilder measureBuilder, final String filePath) {
 
         LoggerFactory.getLogger(getClass()).debug("Saving measures for {}", filePath);
-        final org.sonar.api.resources.File objcfile = org.sonar.api.resources.File.fromIOFile(new File(project.getFileSystem().getBasedir(), filePath), project);
+        final org.sonar.api.resources.File objcfile = org.sonar.api.resources.File.fromIOFile(new File(fileSystem.baseDir(), filePath), project);
 
         if (fileExists(context, objcfile)) {
             LoggerFactory.getLogger(getClass()).debug(
