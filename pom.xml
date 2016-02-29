@@ -24,7 +24,7 @@
 
     <groupId>org.codehaus.sonar-plugin.objectivec</groupId>
     <artifactId>sonar-objective-c-plugin</artifactId>
-    <version>0.5</version>
+    <version>0.5.0</version>
 
     <packaging>sonar-plugin</packaging>
 
