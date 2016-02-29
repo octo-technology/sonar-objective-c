@@ -50,6 +50,10 @@ Binary packages are available in the release section.
 
 ###Release history
 
+####0.5 (detached from octo project)
+- Detached from octo project (to hard to maintain compatibility)
+- Removed deprecated API usages for Sonarube 5.3 support
+
 ####0.4.0.3 (based on 0.4.0)
 - Xcode 7 coverage support (profdata)
 
