@@ -589,16 +589,16 @@
     },
     {
         "category": "Style",
-        "key": "StrongInsteadOfRetain",
-        "name": "Usage of retain in ARC code",
-        "description": "In files compiled with ARC, warns if the retain property attribute is used. The strong and retain attributes are functionally equivalent, but the former could be considered more idiomatic with ARC.",
+        "key": "NullCoalescingOp",
+        "name": "Null coalescing operator usage",
+        "description": "Expressions of the form (obj ? obj : other) should be written as obj ?: other.",
         "severity": "MAJOR"
     },
     {
         "category": "Style",
-        "key": "NullCoalescingOp",
-        "name": "Null coalescing operator usage",
-        "description": "Expressions of the form (obj ? obj : other) should be written as obj ?: other.",
+        "key": "StrongInsteadOfRetain",
+        "name": "Usage of retain in ARC code",
+        "description": "In files compiled with ARC, warns if the retain property attribute is used. The strong and retain attributes are functionally equivalent, but the former could be considered more idiomatic with ARC.",
         "severity": "MAJOR"
     },
     {

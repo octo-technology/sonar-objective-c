@@ -25,7 +25,6 @@ import javax.xml.stream.XMLStreamException;
 
 import org.codehaus.staxmate.in.SMHierarchicCursor;
 import org.codehaus.staxmate.in.SMInputCursor;
-import org.json.simple.JSONObject;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.component.ResourcePerspectives;
@@ -33,11 +32,7 @@ import org.sonar.api.issue.Issuable;
 import org.sonar.api.issue.Issue;
 import org.sonar.api.resources.Project;
 import org.sonar.api.rule.RuleKey;
-import org.sonar.api.rules.Rule;
-import org.sonar.api.rules.RulePriority;
-import org.sonar.api.rules.Violation;
 import org.sonar.api.utils.StaxParser.XmlStreamHandler;
-import org.sonar.plugins.objectivec.violations.fauxpas.FauxPasRulesDefinition;
 
 final class OCLintXMLStreamHandler implements XmlStreamHandler {
     private static final int PMD_MINIMUM_PRIORITY = 5;
@@ -90,7 +85,7 @@ final class OCLintXMLStreamHandler implements XmlStreamHandler {
         if (issuable != null) {
 
             Issue issue = issuable.newIssueBuilder()
-                    .ruleKey(RuleKey.of(FauxPasRulesDefinition.REPOSITORY_KEY, line.getAttrValue("rule")))
+                    .ruleKey(RuleKey.of(OCLintRulesDefinition.REPOSITORY_KEY, line.getAttrValue("rule")))
                     .line(Integer.valueOf(line.getAttrValue("beginline")))
                     .message(line.getElemStringValue())
                     .build();

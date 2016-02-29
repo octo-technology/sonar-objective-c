@@ -28,7 +28,6 @@ import org.sonar.api.SonarPlugin;
 import org.sonar.plugins.objectivec.coverage.CoberturaSensor;
 import org.sonar.plugins.objectivec.colorizer.ObjectiveCColorizerFormat;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
-import org.sonar.plugins.objectivec.core.ObjectiveCSourceImporter;
 import org.sonar.plugins.objectivec.cpd.ObjectiveCCpdMapping;
 
 import com.google.common.collect.ImmutableList;
@@ -50,7 +49,6 @@ public class ObjectiveCPlugin extends SonarPlugin {
 
     public List<Class<? extends Extension>> getExtensions() {
         return ImmutableList.of(ObjectiveC.class,
-                ObjectiveCSourceImporter.class,
                 ObjectiveCColorizerFormat.class,
                 ObjectiveCCpdMapping.class,
 

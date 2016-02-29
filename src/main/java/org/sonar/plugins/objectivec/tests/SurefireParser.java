@@ -19,12 +19,16 @@
  */
 package org.sonar.plugins.objectivec.tests;
 
+import com.google.common.collect.ImmutableList;
 import com.sun.swing.internal.plaf.metal.resources.metal_sv;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.batch.fs.InputFile;
+import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.Metric;
@@ -52,7 +56,20 @@ public class SurefireParser {
 
     private static final Logger LOG = LoggerFactory.getLogger(SurefireParser.class);
 
-    public void collect(Project project, SensorContext context, File reportsDir) {
+    private final Project project;
+    private final FileSystem fileSystem;
+    private final ResourcePerspectives resourcePerspectives;
+    private final SensorContext context;
+
+    public SurefireParser(Project project, FileSystem fileSystem, ResourcePerspectives resourcePerspectives, SensorContext context) {
+        this.project = project;
+        this.fileSystem = fileSystem;
+        this.resourcePerspectives = resourcePerspectives;
+        this.context = context;
+    }
+
+    public void collect(File reportsDir) {
+
         File[] xmlFiles = getReports(reportsDir);
 
         if (xmlFiles.length == 0) {
@@ -81,9 +98,8 @@ public class SurefireParser {
     }
 
     private void insertZeroWhenNoReports(Project pom, SensorContext context) {
-        if ( !StringUtils.equalsIgnoreCase("pom", pom.getPackaging())) {
-            context.saveMeasure(CoreMetrics.TESTS, 0.0);
-        }
+
+        context.saveMeasure(CoreMetrics.TESTS, 0.0);
     }
 
     private void parseFiles(SensorContext context, File[] reports) {
@@ -146,7 +162,14 @@ public class SurefireParser {
     }
 
     private void saveClassMeasure(SensorContext context, TestSuiteReport fileReport, Metric metric, double value) {
+
         if ( !Double.isNaN(value)) {
+
+            context.saveMeasure(getUnitTestResource(fileReport.getClassKey()), metric, value);
+
+        }
+
+        /*if ( !Double.isNaN(value)) {
 
             String basename = fileReport.getClassKey().replace('.', '/');
 
@@ -159,13 +182,46 @@ public class SurefireParser {
             } catch (Exception e) {
                 // Nothing : File was probably already registered successfully
             }
-        }
+        }*/
     }
 
-    public Resource getUnitTestResource(String filename) {
+    public Resource getUnitTestResource(String classname) {
 
-        org.sonar.api.resources.File sonarFile = new org.sonar.api.resources.File(filename);
+        String fileName = classname.replace('.', '/') + ".m";
+
+        File file = new File(fileName);
+        if (!file.isAbsolute()) {
+            file = new File(fileSystem.baseDir(), fileName);
+        }
+
+        // Category naming case
+        if (!file.isFile() || !file.exists()) {
+            file = new File(fileSystem.baseDir(), fileName.replace("_", "+"));
+        }
+
+        /*
+         * Most xcodebuild JUnit parsers don't include the path to the class in the class field, so search for it if it
+         * wasn't found in the root.
+         */
+        if (!file.isFile() || !file.exists()) {
+            List<File> files = ImmutableList.copyOf(fileSystem.files(fileSystem.predicates().and(
+                    fileSystem.predicates().hasType(InputFile.Type.TEST),
+                    fileSystem.predicates().matchesPathPattern("**/" + fileName))));
+
+            if (files.isEmpty()) {
+                LOG.info("Unable to locate test source file {}", fileName);
+            } else {
+                /*
+                 * Lazily get the first file, since we wouldn't be able to determine the correct one from just the
+                 * test class name in the event that there are multiple matches.
+                 */
+                file = files.get(0);
+            }
+        }
+
+        org.sonar.api.resources.File sonarFile = org.sonar.api.resources.File.fromIOFile(file, project);
         sonarFile.setQualifier(Qualifiers.UNIT_TEST_FILE);
         return sonarFile;
+
     }
 }
