@@ -10,6 +10,7 @@
 XCTOOL_CMD=xcodebuild
 SLATHER_CMD=slather
 XCPRETTY_CMD=xcpretty
+LIZARD_CMD=lizard
 
 trap "echo 'Script interrupted by Ctrl+C'; stopProgress; exit 1" SIGHUP SIGINT SIGTERM
 
@@ -124,6 +125,7 @@ vflag=""
 nflag=""
 oclint="on"
 fauxpas="on"
+lizard="on"
 while [ $# -gt 0 ]
 do
     case "$1" in
@@ -402,6 +404,18 @@ if [ "$fauxpas" = "on" ]; then
     fi
 else
     echo 'Skipping FauxPas'
+fi
+
+# Lizard Complexity
+if [ "$lizard" = "on" ]; then
+	if hash $LIZARD_CMD 2>/dev/null; then
+		echo -n 'Running Lizard...'
+  		$LIZARD_CMD --xml "$srcDirs" > sonar-reports/lizard-report.xml
+  	else
+  		echo 'Skipping Lizard (not installed!)'
+  	fi
+else
+ 	echo 'Skipping Lizard (test purposes only!)'
 fi
 
 # SonarQube
