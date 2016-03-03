@@ -80,6 +80,7 @@ Binary packages are available in the release section.
 - [OCLint](http://docs.oclint.org/en/dev/intro/installation.html) installed. Version 0.10.1 recommended. 
 - [gcovr](http://gcovr.com) installed for legacy (pre Xcode 7 coverage)
 - [slather](https://github.com/venmo/slather) with profdata support (see instructions below) for Xcode 7 and above.
+- [lizard](https://github.com/terryyin/lizard) ([PIP](https://pip.pypa.io/en/stable/installing/) installed and ```sudo pip install lizard```)
 - [Faux Pas](http://fauxpasapp.com/) command line tools installed (optional)
 
 ###Installation of slather with profdata support
