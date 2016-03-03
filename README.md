@@ -21,7 +21,7 @@ A SonarQube 5.0 dashboard of the iOS open source project [GreatReader](https://g
 
 | Feature 		| Supported	| Details	|
 |---------------|----------|:-----------:|
-| Complexity	|NO			|			|
+| Complexity	|NO			| Uses [Lizard](https://github.com/terryyin/lizard)			|
 | Design		|NO			|			|
 | Documentation	|YES		|			|
 | Duplications	|YES		|			|
@@ -49,6 +49,9 @@ Binary packages are available in the release section.
 
 
 ###Release history
+
+####0.5.1
+- Complexity with Lizard !
 
 ####0.5.0 (detached from octo project)
 - Detached from octo project (to hard to maintain compatibility)

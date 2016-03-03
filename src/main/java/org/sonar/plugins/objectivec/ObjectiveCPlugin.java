@@ -25,6 +25,7 @@ import org.sonar.api.Extension;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.api.SonarPlugin;
+import org.sonar.plugins.objectivec.complexity.LizardSensor;
 import org.sonar.plugins.objectivec.coverage.CoberturaSensor;
 import org.sonar.plugins.objectivec.colorizer.ObjectiveCColorizerFormat;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
@@ -43,7 +44,8 @@ import org.sonar.plugins.objectivec.violations.oclint.*;
 @Properties({
         @Property(key = CoberturaSensor.REPORT_PATTERN_KEY, defaultValue = CoberturaSensor.DEFAULT_REPORT_PATTERN, name = "Path to unit test coverage report(s)", description = "Relative to projects' root. Ant patterns are accepted", global = false, project = true),
         @Property(key = OCLintSensor.REPORT_PATH_KEY, defaultValue = OCLintSensor.DEFAULT_REPORT_PATH, name = "Path to oclint pmd formatted report", description = "Relative to projects' root.", global = false, project = true),
-        @Property(key = FauxPasSensor.REPORT_PATH_KEY, defaultValue = FauxPasSensor.DEFAULT_REPORT_PATH, name = "Path to fauxpas json formatted report", description = "Relative to projects' root.", global = false, project = true)
+        @Property(key = FauxPasSensor.REPORT_PATH_KEY, defaultValue = FauxPasSensor.DEFAULT_REPORT_PATH, name = "Path to fauxpas json formatted report", description = "Relative to projects' root.", global = false, project = true),
+        @Property(key = LizardSensor.REPORT_PATH_KEY, defaultValue = LizardSensor.DEFAULT_REPORT_PATH, name = "Path to lizard report", description = "Relative to projects' root.", global = false, project = true)
 })
 public class ObjectiveCPlugin extends SonarPlugin {
 
@@ -65,7 +67,9 @@ public class ObjectiveCPlugin extends SonarPlugin {
                 FauxPasSensor.class,
                 FauxPasRulesDefinition.class,
                 FauxPasProfile.class,
-                FauxPasProfileImporter.class
+                FauxPasProfileImporter.class,
+
+                LizardSensor.class
                 );
     }
 

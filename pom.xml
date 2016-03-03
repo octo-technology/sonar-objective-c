@@ -23,8 +23,8 @@
     </parent>
 
     <groupId>org.codehaus.sonar-plugin.objectivec</groupId>
-    <artifactId>sonar-objective-c-plugin</artifactId>
-    <version>0.5.0</version>
+    <artifactId>backelite-sonar-objective-c-plugin</artifactId>
+    <version>0.5.1</version>
 
     <packaging>sonar-plugin</packaging>
 
