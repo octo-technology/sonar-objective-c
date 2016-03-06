@@ -29,15 +29,11 @@ import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Metric;
-import org.sonar.api.resources.Project;
-import org.sonar.api.resources.Qualifiers;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.test.MutableTestPlan;
 import org.sonar.api.test.TestCase;
 import org.sonar.api.utils.ParsingUtils;
-import org.sonar.api.utils.SonarException;
 import org.sonar.api.utils.StaxParser;
-import org.sonar.plugins.objectivec.ObjectiveC;
 import org.sonar.plugins.objectivec.surefire.data.SurefireStaxHandler;
 import org.sonar.plugins.objectivec.surefire.data.UnitTestClassReport;
 import org.sonar.plugins.objectivec.surefire.data.UnitTestIndex;
@@ -53,14 +49,12 @@ public final class SurefireParser {
     private static final Logger LOGGER = LoggerFactory.getLogger(SurefireParser.class);
 
     private final FileSystem fileSystem;
-    private final Project project;
     private final SensorContext context;
     private final ResourcePerspectives perspectives;
 
-    public SurefireParser(FileSystem fileSystem, Project project, ResourcePerspectives perspectives,
+    public SurefireParser(FileSystem fileSystem, ResourcePerspectives perspectives,
             SensorContext context) {
         this.fileSystem = fileSystem;
-        this.project = project;
         this.perspectives = perspectives;
         this.context = context;
     }
@@ -81,6 +75,7 @@ public final class SurefireParser {
         }
 
         return dir.listFiles(new FilenameFilter() {
+            @Override
             public boolean accept(File dir, String name) {
                 return name.startsWith("TEST") && name.endsWith(".xml");
             }
@@ -105,7 +100,7 @@ public final class SurefireParser {
             try {
                 parser.parse(report);
             } catch (XMLStreamException e) {
-                throw new SonarException("Fail to parse the Surefire report: " + report, e);
+                throw new IllegalStateException("Fail to parse the Surefire report: " + report, e);
             }
         }
     }
@@ -171,17 +166,14 @@ public final class SurefireParser {
     public Resource getUnitTestResource(String classname) {
         String fileName = classname.replace('.', '/') + ".m";
 
-        File file = new File(fileName);
-        if (!file.isAbsolute()) {
-            file = new File(fileSystem.baseDir(), fileName);
-        }
+        InputFile inputFile = fileSystem.inputFile(fileSystem.predicates().hasPath(fileName));
 
         /*
          * Most xcodebuild JUnit parsers don't include the path to the class in the class field, so search for it if it
          * wasn't found in the root.
          */
-        if (!file.isFile() || !file.exists()) {
-            List<File> files = ImmutableList.copyOf(fileSystem.files(fileSystem.predicates().and(
+        if (inputFile == null) {
+            List<InputFile> files = ImmutableList.copyOf(fileSystem.inputFiles(fileSystem.predicates().and(
                     fileSystem.predicates().hasType(InputFile.Type.TEST),
                     fileSystem.predicates().matchesPathPattern("**/" + fileName))));
 
@@ -192,13 +184,11 @@ public final class SurefireParser {
                  * Lazily get the first file, since we wouldn't be able to determine the correct one from just the
                  * test class name in the event that there are multiple matches.
                  */
-                file = files.get(0);
+                inputFile = files.get(0);
             }
         }
 
-        org.sonar.api.resources.File sonarFile = org.sonar.api.resources.File.fromIOFile(file, project);
-        sonarFile.setQualifier(Qualifiers.UNIT_TEST_FILE);
-        return sonarFile;
+        return inputFile == null ? null : context.getResource(inputFile);
     }
 
     private void saveMeasure(Resource resource, Metric metric, double value) {

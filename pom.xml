@@ -95,7 +95,7 @@
     <properties>
         <license.owner>${project.organization.name}</license.owner>
         <license.mailto>${project.organization.url}</license.mailto>
-        <sonar.version>4.3</sonar.version>
+        <sonar.version>4.5.2</sonar.version>
         <sslr.version>1.20</sslr.version>
         <orchestrator.version>3.10.1</orchestrator.version>
     </properties>

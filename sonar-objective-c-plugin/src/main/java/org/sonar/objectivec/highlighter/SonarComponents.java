@@ -17,30 +17,33 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.objectivec;
+package org.sonar.objectivec.highlighter;
 
-import org.sonar.squid.api.SquidConfiguration;
+import org.sonar.api.BatchExtension;
+import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.batch.fs.InputFile;
+import org.sonar.api.component.ResourcePerspectives;
+import org.sonar.api.source.Highlightable;
 
-import java.nio.charset.Charset;
+import javax.annotation.CheckForNull;
+import java.io.File;
 
-public class ObjectiveCConfiguration extends SquidConfiguration {
+public class SonarComponents implements BatchExtension {
 
-    private boolean ignoreHeaderComments;
+    private final ResourcePerspectives resourcePerspectives;
+    private final FileSystem fs;
 
-    public ObjectiveCConfiguration() {
-        // no-op
+    public SonarComponents(ResourcePerspectives resourcePerspectives, FileSystem fs) {
+        this.resourcePerspectives = resourcePerspectives;
+        this.fs = fs;
     }
 
-    public ObjectiveCConfiguration(Charset charset) {
-        super(charset);
+    @CheckForNull
+    public InputFile inputFileFor(File file) {
+        return fs.inputFile(fs.predicates().hasAbsolutePath(file.getAbsolutePath()));
     }
 
-    public void setIgnoreHeaderComments(boolean ignoreHeaderComments) {
-        this.ignoreHeaderComments = ignoreHeaderComments;
+    public Highlightable highlightableFor(InputFile inputFile) {
+        return resourcePerspectives.as(Highlightable.class, inputFile);
     }
-
-    public boolean getIgnoreHeaderComments() {
-        return ignoreHeaderComments;
-    }
-
 }

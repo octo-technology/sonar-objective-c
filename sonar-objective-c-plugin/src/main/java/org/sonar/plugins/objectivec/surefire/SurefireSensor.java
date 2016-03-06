@@ -65,12 +65,12 @@ public final class SurefireSensor implements Sensor {
             return;
         }
 
-        collect(project, context, reportsDir);
+        collect(context, reportsDir);
     }
 
-    protected void collect(Project project, SensorContext context, File reportsDir) {
+    protected void collect(SensorContext context, File reportsDir) {
         LOGGER.info("parsing {}", reportsDir);
-        new SurefireParser(fileSystem, project, resourcePerspectives, context).collect(reportsDir);
+        new SurefireParser(fileSystem, resourcePerspectives, context).collect(reportsDir);
     }
 
     @Override

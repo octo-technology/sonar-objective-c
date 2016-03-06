@@ -41,8 +41,12 @@ import java.util.Map;
 public final class ClangPlistParser {
     private static final Logger LOGGER = LoggerFactory.getLogger(ClangPlistParser.class);
 
+    private ClangPlistParser() {
+        // Prevents outside instantiation
+    }
+
     public static List<ClangWarning> parse(final File reportsDir) {
-        List<ClangWarning> result = new ArrayList<ClangWarning>();
+        List<ClangWarning> result = new ArrayList<>();
 
         File[] reports = getReports(reportsDir);
 
@@ -63,6 +67,7 @@ public final class ClangPlistParser {
         }
 
         return reportsDir.listFiles(new FilenameFilter() {
+            @Override
             public boolean accept(File dir, String name) {
                 return name.endsWith(".plist");
             }
@@ -71,7 +76,7 @@ public final class ClangPlistParser {
 
     @SuppressWarnings("unchecked")
     private static List<ClangWarning> parsePlist(final File file) {
-        List<ClangWarning> result = new ArrayList<ClangWarning>();
+        List<ClangWarning> result = new ArrayList<>();
 
         try {
             // Clang report is NSDictionary, which converts to a Map
@@ -79,14 +84,14 @@ public final class ClangPlistParser {
                     (Map<String, Object>) XMLPropertyListParser.parse(file).toJavaObject();
 
             // Files reported on in this report
-            List<String> files = new ArrayList<String>();
+            List<String> files = new ArrayList<>();
             for (Object obj : (Object[]) report.get("files")) {
                 files.add((String) obj);
             }
 
             // Diagnostics which contain the warning and the execution path
             // (we're only interested in the final location)
-            List<Map<String, Object>> diagnostics = new ArrayList<Map<String, Object>>();
+            List<Map<String, Object>> diagnostics = new ArrayList<>();
             for (Object obj : (Object[]) report.get("diagnostics")) {
                 diagnostics.add((Map<String, Object>) obj);
             }
@@ -104,15 +109,7 @@ public final class ClangPlistParser {
 
                 result.add(clangWarning);
             }
-        } catch (final IOException e) {
-            LOGGER.error("Error processing file named {}", file, e);
-        } catch (final ParserConfigurationException e) {
-            LOGGER.error("Error processing file named {}", file, e);
-        } catch (final ParseException e) {
-            LOGGER.error("Error processing file named {}", file, e);
-        } catch (final SAXException e) {
-            LOGGER.error("Error processing file named {}", file, e);
-        } catch (final PropertyListFormatException e) {
+        } catch (final IOException | ParserConfigurationException | ParseException | SAXException | PropertyListFormatException e) {
             LOGGER.error("Error processing file named {}", file, e);
         }
 

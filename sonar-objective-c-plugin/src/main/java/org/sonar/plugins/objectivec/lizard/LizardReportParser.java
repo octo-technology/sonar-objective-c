@@ -86,12 +86,8 @@ public final class LizardReportParser {
             result = new LizardReportParser().parseFile(document);
         } catch (final FileNotFoundException e) {
             LOGGER.error("Lizard Report not found {}", xmlFile, e);
-        } catch (final IOException e) {
-            LOGGER.error("Error processing file named {}", xmlFile, e);
-        } catch (final ParserConfigurationException e) {
+        } catch (final IOException | ParserConfigurationException | SAXException e) {
             LOGGER.error("Error parsing file named {}", xmlFile, e);
-        } catch (final SAXException e) {
-            LOGGER.error("Error processing file named {}", xmlFile, e);
         }
 
         return result;
@@ -102,8 +98,8 @@ public final class LizardReportParser {
      * @return Map containing as key the name of the file and as value a list containing the measures for that file
      */
     private Map<String, List<Measure>> parseFile(Document document) {
-        final Map<String, List<Measure>> reportMeasures = new HashMap<String, List<Measure>>();
-        final List<ObjCFunction> functions = new ArrayList<ObjCFunction>();
+        final Map<String, List<Measure>> reportMeasures = new HashMap<>();
+        final List<ObjCFunction> functions = new ArrayList<>();
 
         NodeList nodeList = document.getElementsByTagName(MEASURE);
 
@@ -157,7 +153,7 @@ public final class LizardReportParser {
      * @return returns a list of tree measures COMPLEXITY, FUNCTIONS, FILE_COMPLEXITY with the values specified
      */
     private List<Measure> buildMeasureList(int complexity, double fileComplexity, int numberOfFunctions) {
-        List<Measure> list = new ArrayList<Measure>();
+        List<Measure> list = new ArrayList<>();
         list.add(new Measure(CoreMetrics.COMPLEXITY).setIntValue(complexity));
         list.add(new Measure(CoreMetrics.FUNCTIONS).setIntValue(numberOfFunctions));
         list.add(new Measure(CoreMetrics.FILE_COMPLEXITY, fileComplexity));
@@ -227,7 +223,7 @@ public final class LizardReportParser {
      */
     public List<Measure> buildFuncionMeasuresList(double complexMean, int complexityInFunctions,
             RangeDistributionBuilder builder) {
-        List<Measure> list = new ArrayList<Measure>();
+        List<Measure> list = new ArrayList<>();
         list.add(new Measure(CoreMetrics.FUNCTION_COMPLEXITY, complexMean));
         list.add(new Measure(CoreMetrics.COMPLEXITY_IN_FUNCTIONS).setIntValue(complexityInFunctions));
         list.add(builder.build().setPersistenceMode(PersistenceMode.MEMORY));

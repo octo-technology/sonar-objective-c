@@ -41,6 +41,7 @@ public class ObjectiveCTokenizer implements Tokenizer {
         this.charset = charset;
     }
 
+    @Override
     public void tokenize(SourceCode source, Tokens cpdTokens) throws IOException {
         Lexer lexer = ObjectiveCLexer.create(new ObjectiveCConfiguration(charset));
         String fileName = source.getFileName();

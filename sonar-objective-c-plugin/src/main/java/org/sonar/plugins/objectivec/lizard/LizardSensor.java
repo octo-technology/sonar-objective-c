@@ -25,9 +25,11 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.config.Settings;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.resources.Project;
+import org.sonar.api.resources.Resource;
 import org.sonar.api.scan.filesystem.PathResolver;
 import org.sonar.plugins.objectivec.ObjectiveC;
 
@@ -81,22 +83,18 @@ public final class LizardSensor implements Sensor {
         }
 
         LOGGER.info("Saving results of complexity analysis");
-        saveMeasures(project, context, measures);
+        saveMeasures(context, measures);
     }
 
-    private void saveMeasures(Project project, SensorContext context, final Map<String, List<Measure>> measures) {
+    private void saveMeasures(SensorContext context, final Map<String, List<Measure>> measures) {
         for (Map.Entry<String, List<Measure>> entry : measures.entrySet()) {
-            final org.sonar.api.resources.File file =
-                    org.sonar.api.resources.File.fromIOFile(new File(entry.getKey()), project);
+            final InputFile inputFile = fileSystem.inputFile(fileSystem.predicates().hasPath(entry.getKey()));
+            final Resource resource = inputFile == null ? null : context.getResource(inputFile);
 
-            if (context.getResource(file) != null) {
+            if (resource != null) {
                 for (Measure measure : entry.getValue()) {
-                    try {
-                        LOGGER.debug("Save measure {} for file {}", measure.getMetric().getName(), file);
-                        context.saveMeasure(file, measure);
-                    } catch (Exception e) {
-                        LOGGER.error(" Exception -> {} -> {}", entry.getKey(), measure.getMetric().getName());
-                    }
+                    LOGGER.debug("Save measure {} for file {}", measure.getMetric().getName(), resource.getPath());
+                    context.saveMeasure(resource, measure);
                 }
             }
         }

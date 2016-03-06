@@ -17,18 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.objectivec.parser;
+@ParametersAreNonnullByDefault
+package org.sonar.objectivec.highlighter;
 
-import org.sonar.objectivec.api.ObjectiveCGrammar;
-
-import static com.sonar.sslr.api.GenericTokenType.EOF;
-import static com.sonar.sslr.api.GenericTokenType.LITERAL;
-import static com.sonar.sslr.impl.matcher.GrammarFunctions.Standard.o2n;
-
-public class ObjectiveCGrammarImpl extends ObjectiveCGrammar {
-
-    public ObjectiveCGrammarImpl() {
-        program.is(o2n(LITERAL), EOF);
-    }
-
-}
+import javax.annotation.ParametersAreNonnullByDefault;

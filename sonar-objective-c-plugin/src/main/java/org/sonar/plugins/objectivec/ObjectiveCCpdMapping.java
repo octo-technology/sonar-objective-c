@@ -35,10 +35,12 @@ public class ObjectiveCCpdMapping extends AbstractCpdMapping {
         this.charset = fileSystem.encoding();
     }
 
+    @Override
     public Tokenizer getTokenizer() {
         return new ObjectiveCTokenizer(charset);
     }
 
+    @Override
     public Language getLanguage() {
         return language;
     }

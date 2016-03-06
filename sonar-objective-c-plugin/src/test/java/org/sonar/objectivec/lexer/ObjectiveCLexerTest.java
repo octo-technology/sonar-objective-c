@@ -33,6 +33,7 @@ import org.junit.Test;
 import com.sonar.sslr.api.GenericTokenType;
 import com.sonar.sslr.api.Token;
 import com.sonar.sslr.impl.Lexer;
+import org.sonar.objectivec.api.ObjectiveCKeyword;
 
 public class ObjectiveCLexerTest {
 
@@ -63,7 +64,7 @@ public class ObjectiveCLexerTest {
 
     @Test
     public void lexLineOfCode() {
-        assertThat(lexer.lex("[self init];"), hasToken("[self", GenericTokenType.LITERAL));
+        assertThat(lexer.lex("[self init];"), hasToken("self", ObjectiveCKeyword.SELF));
     }
 
     @Test
@@ -76,7 +77,7 @@ public class ObjectiveCLexerTest {
     @Test
     public void lexSampleFile() {
         List<Token> tokens = lexer.lex(new File("src/test/resources/objcSample.h"));
-        assertThat(tokens.size(), equalTo(16));
+        assertThat(tokens.size(), equalTo(24));
         assertThat(tokens, hasToken(GenericTokenType.EOF));
     }
 

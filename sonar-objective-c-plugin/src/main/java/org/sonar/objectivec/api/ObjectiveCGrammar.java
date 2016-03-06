@@ -20,27 +20,22 @@
 package org.sonar.objectivec.api;
 
 import com.sonar.sslr.api.Grammar;
-import com.sonar.sslr.api.Rule;
+import org.sonar.sslr.grammar.GrammarRuleKey;
+import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 
-public class ObjectiveCGrammar extends Grammar {
+import static com.sonar.sslr.api.GenericTokenType.EOF;
 
-    public Rule identifierName;
+public enum ObjectiveCGrammar implements GrammarRuleKey {
 
-    // A.1 Lexical
+    COMPILATION_UNIT;
 
-    public Rule literal;
-    public Rule nullLiteral;
-    public Rule booleanLiteral;
-    public Rule stringLiteral;
+    public static Grammar create() {
+        LexerfulGrammarBuilder b = LexerfulGrammarBuilder.create();
 
-    public Rule program;
+        b.rule(COMPILATION_UNIT).is(b.zeroOrMore(b.nextNot(EOF), b.anyToken()), EOF);
+        b.setRootRule(COMPILATION_UNIT);
 
-    public Rule sourceElements;
-    public Rule sourceElement;
-
-    @Override
-    public Rule getRootRule() {
-        return program;
+        return b.buildWithMemoizationOfMatchesForAllRules();
     }
 
 }

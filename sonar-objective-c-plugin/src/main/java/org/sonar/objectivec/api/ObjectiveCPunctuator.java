@@ -93,18 +93,21 @@ public enum ObjectiveCPunctuator implements TokenType {
 
     private final String value;
 
-    private ObjectiveCPunctuator(String word) {
+    /*private*/ ObjectiveCPunctuator(String word) {
         this.value = word;
     }
 
+    @Override
     public String getName() {
         return name();
     }
 
+    @Override
     public String getValue() {
         return value;
     }
 
+    @Override
     public boolean hasToBeSkippedFromAst(AstNode node) {
         return false;
     }

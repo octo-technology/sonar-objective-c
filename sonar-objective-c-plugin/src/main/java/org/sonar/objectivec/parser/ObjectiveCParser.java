@@ -19,6 +19,7 @@
  */
 package org.sonar.objectivec.parser;
 
+import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.impl.Parser;
 import org.sonar.objectivec.ObjectiveCConfiguration;
 import org.sonar.objectivec.api.ObjectiveCGrammar;
@@ -30,12 +31,12 @@ public class ObjectiveCParser {
         // Prevent outside instantiation
     }
 
-    public static Parser<ObjectiveCGrammar> create() {
+    public static Parser<Grammar> create() {
         return create(new ObjectiveCConfiguration());
     }
 
-    public static Parser<ObjectiveCGrammar> create(ObjectiveCConfiguration conf) {
-        return Parser.builder((ObjectiveCGrammar) new ObjectiveCGrammarImpl())
+    public static Parser<Grammar> create(ObjectiveCConfiguration conf) {
+        return Parser.builder(ObjectiveCGrammar.create())
                 .withLexer(ObjectiveCLexer.create(conf))
                 .build();
     }

@@ -32,7 +32,8 @@ implemented or pending.
 ## Compatibility
 
 - Use 0.3.x releases for SonarQube < 4.3
-- Use 0.4.0 or later releases for SonarQube >= 4.3 (4.x and 5.x)
+- Use 0.4.x releases for SonarQube 4.3 and 4.4
+- Use 0.5.x releases for SonarQube >= 4.5.2 LTS
 
 
 ## Download

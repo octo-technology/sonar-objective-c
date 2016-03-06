@@ -19,9 +19,11 @@
  */
 package org.sonar.objectivec;
 
+import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.impl.Parser;
-import org.sonar.objectivec.api.ObjectiveCGrammar;
 import org.sonar.objectivec.api.ObjectiveCMetric;
+import org.sonar.objectivec.highlighter.SonarComponents;
+import org.sonar.objectivec.highlighter.SyntaxHighlighterVisitor;
 import org.sonar.objectivec.parser.ObjectiveCParser;
 import org.sonar.squidbridge.AstScanner;
 import org.sonar.squidbridge.CommentAnalyser;
@@ -35,22 +37,25 @@ import org.sonar.squidbridge.metrics.CommentsVisitor;
 import org.sonar.squidbridge.metrics.LinesOfCodeVisitor;
 import org.sonar.squidbridge.metrics.LinesVisitor;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Collection;
 
 public class ObjectiveCAstScanner {
 
     private ObjectiveCAstScanner() {
+        // prevents outside instantiation
     }
 
     /**
      * Helper method for testing checks without having to deploy them on a Sonar instance.
      */
-    public static SourceFile scanSingleFile(File file, SquidAstVisitor<ObjectiveCGrammar>... visitors) {
+    @SafeVarargs
+    public static SourceFile scanSingleFile(File file, SquidAstVisitor<Grammar>... visitors) {
         if (!file.isFile()) {
             throw new IllegalArgumentException("File '" + file + "' not found.");
         }
-        AstScanner<ObjectiveCGrammar> scanner = create(new ObjectiveCConfiguration(), visitors);
+        AstScanner<Grammar> scanner = create(new ObjectiveCConfiguration(), null, visitors);
         scanner.scanFile(file);
         Collection<SourceCode> sources = scanner.getIndex().search(new QueryByType(SourceFile.class));
         if (sources.size() != 1) {
@@ -59,12 +64,13 @@ public class ObjectiveCAstScanner {
         return (SourceFile) sources.iterator().next();
     }
 
-    public static AstScanner<ObjectiveCGrammar> create(ObjectiveCConfiguration conf,
-            SquidAstVisitor<ObjectiveCGrammar>... visitors) {
-        final SquidAstVisitorContextImpl<ObjectiveCGrammar> context = new SquidAstVisitorContextImpl<ObjectiveCGrammar>(new SourceProject("Objective-C Project"));
-        final Parser<ObjectiveCGrammar> parser = ObjectiveCParser.create(conf);
+    @SafeVarargs
+    public static AstScanner<Grammar> create(ObjectiveCConfiguration conf,
+            @Nullable SonarComponents sonarComponents, SquidAstVisitor<Grammar>... visitors) {
+        final SquidAstVisitorContextImpl<Grammar> context = new SquidAstVisitorContextImpl<>(new SourceProject("Objective-C Project"));
+        final Parser<Grammar> parser = ObjectiveCParser.create(conf);
 
-        AstScanner.Builder<ObjectiveCGrammar> builder = AstScanner.<ObjectiveCGrammar>builder(context).setBaseParser(parser);
+        AstScanner.Builder<Grammar> builder = AstScanner.builder(context).setBaseParser(parser);
 
         /* Metrics */
         builder.withMetrics(ObjectiveCMetric.values());
@@ -92,12 +98,22 @@ public class ObjectiveCAstScanner {
         builder.setFilesMetric(ObjectiveCMetric.FILES);
 
         /* Metrics */
-        builder.withSquidAstVisitor(new LinesVisitor<ObjectiveCGrammar>(ObjectiveCMetric.LINES));
-        builder.withSquidAstVisitor(new LinesOfCodeVisitor<ObjectiveCGrammar>(ObjectiveCMetric.LINES_OF_CODE));
-        builder.withSquidAstVisitor(CommentsVisitor.<ObjectiveCGrammar>builder().withCommentMetric(ObjectiveCMetric.COMMENT_LINES)
+        builder.withSquidAstVisitor(new LinesVisitor<>(ObjectiveCMetric.LINES));
+        builder.withSquidAstVisitor(new LinesOfCodeVisitor<>(ObjectiveCMetric.LINES_OF_CODE));
+        builder.withSquidAstVisitor(CommentsVisitor.builder().withCommentMetric(ObjectiveCMetric.COMMENT_LINES)
                 .withNoSonar(true)
                 .withIgnoreHeaderComment(conf.getIgnoreHeaderComments())
                 .build());
+
+        /* Syntax highlighter */
+        if (sonarComponents != null) {
+            builder.withSquidAstVisitor(new SyntaxHighlighterVisitor(sonarComponents, conf.getCharset()));
+        }
+
+        /* External visitors */
+        for (SquidAstVisitor<Grammar> visitor : visitors) {
+            builder.withSquidAstVisitor(visitor);
+        }
 
         return builder.build();
     }

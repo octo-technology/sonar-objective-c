@@ -64,7 +64,7 @@ public final class CoberturaSensor implements Sensor, CoverageExtension {
         }
 
         LOGGER.info("parsing {}", report);
-        CoberturaReportParser.parseReport(report, fileSystem, project, context);
+        CoberturaReportParser.parseReport(report, fileSystem, context);
     }
 
     @Override

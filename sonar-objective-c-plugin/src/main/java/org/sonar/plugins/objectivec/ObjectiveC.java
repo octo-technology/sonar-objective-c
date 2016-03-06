@@ -60,6 +60,7 @@ public class ObjectiveC extends AbstractLanguage {
         this.settings = settings;
     }
 
+    @Override
     public String[] getFileSuffixes() {
         String[] suffixes = filterEmptyStrings(settings.getStringArray(ObjectiveC.FILE_SUFFIXES_KEY));
         if (suffixes.length == 0) {

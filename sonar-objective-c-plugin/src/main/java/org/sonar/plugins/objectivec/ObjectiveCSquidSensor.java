@@ -21,6 +21,7 @@ package org.sonar.plugins.objectivec;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.sonar.sslr.api.Grammar;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.fs.FilePredicate;
@@ -38,9 +39,9 @@ import org.sonar.api.rule.RuleKey;
 import org.sonar.api.scan.filesystem.PathResolver;
 import org.sonar.objectivec.ObjectiveCAstScanner;
 import org.sonar.objectivec.ObjectiveCConfiguration;
-import org.sonar.objectivec.api.ObjectiveCGrammar;
 import org.sonar.objectivec.api.ObjectiveCMetric;
 import org.sonar.objectivec.checks.CheckList;
+import org.sonar.objectivec.highlighter.SonarComponents;
 import org.sonar.squidbridge.AstScanner;
 import org.sonar.squidbridge.SquidAstVisitor;
 import org.sonar.squidbridge.api.CheckMessage;
@@ -49,16 +50,17 @@ import org.sonar.squidbridge.api.SourceFile;
 import org.sonar.squidbridge.checks.SquidCheck;
 import org.sonar.squidbridge.indexer.QueryByType;
 
+import javax.annotation.Nullable;
+import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
 
 public class ObjectiveCSquidSensor implements Sensor {
-    private Project project;
     private SensorContext context;
 
-    private final Checks<SquidCheck<ObjectiveCGrammar>> checks;
+    private final Checks<SquidCheck<Grammar>> checks;
     private final FileSystem fileSystem;
     private final FilePredicate mainFilePredicates;
     private final PathResolver pathResolver;
@@ -67,7 +69,7 @@ public class ObjectiveCSquidSensor implements Sensor {
     public ObjectiveCSquidSensor(CheckFactory checkFactory, FileSystem fileSystem,
             ResourcePerspectives resourcePerspectives, PathResolver pathResolver) {
         this.checks = checkFactory
-                .<SquidCheck<ObjectiveCGrammar>>create(CheckList.REPOSITORY_KEY)
+                .<SquidCheck<Grammar>>create(CheckList.REPOSITORY_KEY)
                 .addAnnotatedChecks(CheckList.getChecks());
         this.fileSystem = fileSystem;
         this.mainFilePredicates = fileSystem.predicates().and(
@@ -77,18 +79,20 @@ public class ObjectiveCSquidSensor implements Sensor {
         this.resourcePerspectives = resourcePerspectives;
     }
 
+    @Override
     public boolean shouldExecuteOnProject(Project project) {
         return project.isRoot() && fileSystem.hasFiles(fileSystem.predicates().hasLanguage(ObjectiveC.KEY));
     }
 
+    @Override
     public void analyse(Project project, SensorContext context) {
-        this.project = project;
         this.context = context;
 
-        List<SquidAstVisitor<ObjectiveCGrammar>> visitors = Lists.<SquidAstVisitor<ObjectiveCGrammar>>newArrayList(checks.all());
+        List<SquidAstVisitor<Grammar>> visitors = Lists.<SquidAstVisitor<Grammar>>newArrayList(checks.all());
 
-        @SuppressWarnings("unchecked") AstScanner<ObjectiveCGrammar> scanner =
-                ObjectiveCAstScanner.create(createConfiguration(), visitors.toArray(new SquidAstVisitor[visitors.size()]));
+        @SuppressWarnings("unchecked") AstScanner<Grammar> scanner = ObjectiveCAstScanner.create(
+                createConfiguration(), new SonarComponents(resourcePerspectives, fileSystem),
+                visitors.toArray(new SquidAstVisitor[visitors.size()]));
 
         scanner.scanFiles(ImmutableList.copyOf(fileSystem.files(mainFilePredicates)));
 
@@ -104,7 +108,7 @@ public class ObjectiveCSquidSensor implements Sensor {
         for (SourceCode squidSourceFile : squidSourceFiles) {
             SourceFile squidFile = (SourceFile) squidSourceFile;
 
-            String relativePath = pathResolver.relativePath(fileSystem.baseDir(), new java.io.File(squidFile.getKey()));
+            String relativePath = pathResolver.relativePath(fileSystem.baseDir(), new File(squidFile.getKey()));
             InputFile inputFile = fileSystem.inputFile(fileSystem.predicates().hasRelativePath(relativePath));
 
             /*
@@ -138,16 +142,15 @@ public class ObjectiveCSquidSensor implements Sensor {
         //context.saveMeasure(inputFile, CoreMetrics.COMPLEXITY, squidFile.getDouble(ObjectiveCMetric.COMPLEXITY));
     }
 
-    private void saveViolations(InputFile inputFile, SourceFile squidFile) {
+    private void saveViolations(@Nullable InputFile inputFile, SourceFile squidFile) {
         Collection<CheckMessage> messages = squidFile.getCheckMessages();
 
-        Resource resource = context.getResource(
-                org.sonar.api.resources.File.fromIOFile(inputFile.file(), project));
+        final Resource resource = inputFile == null ? null : context.getResource(inputFile);
 
         if (messages != null && resource != null) {
             for (CheckMessage message : messages) {
                 @SuppressWarnings("unchecked") RuleKey ruleKey =
-                        checks.ruleKey((SquidCheck<ObjectiveCGrammar>) message.getCheck());
+                        checks.ruleKey((SquidCheck<Grammar>) message.getCheck());
 
                 Issuable issuable = resourcePerspectives.as(Issuable.class, resource);
 

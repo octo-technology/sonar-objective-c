@@ -154,14 +154,17 @@ public enum ObjectiveCKeyword implements TokenType {
         this.value = value;
     }
 
+    @Override
     public String getName() {
         return name();
     }
 
+    @Override
     public String getValue() {
         return value;
     }
 
+    @Override
     public boolean hasToBeSkippedFromAst(AstNode node) {
         return false;
     }

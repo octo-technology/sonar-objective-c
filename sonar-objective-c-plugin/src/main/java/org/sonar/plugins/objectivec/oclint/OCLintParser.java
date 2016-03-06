@@ -24,10 +24,12 @@ import org.codehaus.staxmate.in.SMInputCursor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.issue.Issuable;
 import org.sonar.api.issue.Issue;
-import org.sonar.api.resources.Project;
+import org.sonar.api.resources.Resource;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.api.utils.StaxParser;
 import org.sonar.api.utils.XmlParserException;
@@ -38,20 +40,20 @@ import java.io.File;
 final class OCLintParser {
     private static final Logger LOGGER = LoggerFactory.getLogger(OCLintParser.class);
 
-    private final Project project;
+    private final FileSystem fileSystem;
     private final SensorContext context;
     private final ResourcePerspectives resourcePerspectives;
 
-    private OCLintParser(final Project project, final SensorContext context,
+    private OCLintParser(final FileSystem fileSystem, final SensorContext context,
             final ResourcePerspectives resourcePerspectives) {
-        this.project = project;
+        this.fileSystem = fileSystem;
         this.context = context;
         this.resourcePerspectives = resourcePerspectives;
     }
 
-    public static void parseReport(File xmlFile, Project project, SensorContext context,
+    public static void parseReport(File xmlFile, FileSystem fileSystem, SensorContext context,
             ResourcePerspectives resourcePerspectives) {
-        new OCLintParser(project, context, resourcePerspectives).parse(xmlFile);
+        new OCLintParser(fileSystem, context, resourcePerspectives).parse(xmlFile);
     }
 
 
@@ -75,17 +77,17 @@ final class OCLintParser {
             final String filePath = file.getAttrValue("name");
             LOGGER.debug("Collecting issues for {}", filePath);
 
-            final org.sonar.api.resources.File resource = org.sonar.api.resources.File.fromIOFile(new File(filePath), project);
+            final InputFile inputFile = fileSystem.inputFile(fileSystem.predicates().hasPath(filePath));
+            final Resource resource = inputFile == null ? null : context.getResource(inputFile);
 
-            if (context.getResource(resource) != null) {
+            if (resource != null) {
                 LOGGER.debug("File {} was found in the project.", filePath);
                 collectFileIssues(resource, file);
             }
         }
     }
 
-    private void collectFileIssues(final org.sonar.api.resources.File resource,
-            final SMInputCursor file) throws XMLStreamException {
+    private void collectFileIssues(final Resource resource, final SMInputCursor file) throws XMLStreamException {
         final SMInputCursor line = file.childElementCursor("violation");
 
         while (line.getNext() != null) {
@@ -93,8 +95,7 @@ final class OCLintParser {
         }
     }
 
-    private void recordIssue(final org.sonar.api.resources.File resource,
-            final SMInputCursor line) throws XMLStreamException {
+    private void recordIssue(final Resource resource, final SMInputCursor line) throws XMLStreamException {
         Issuable issuable = resourcePerspectives.as(Issuable.class, resource);
 
         if (issuable != null) {

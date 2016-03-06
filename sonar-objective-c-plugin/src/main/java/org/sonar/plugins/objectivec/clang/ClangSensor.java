@@ -25,11 +25,11 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.config.Settings;
 import org.sonar.api.issue.Issuable;
 import org.sonar.api.issue.Issue;
-import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.rule.RuleKey;
@@ -74,10 +74,10 @@ public final class ClangSensor implements Sensor {
             return;
         }
 
-        collect(project, context, reportsDir);
+        collect(context, reportsDir);
     }
 
-    protected void collect(Project project, SensorContext context, File reportsDir) {
+    protected void collect(SensorContext context, File reportsDir) {
         LOGGER.info("parsing {}", reportsDir);
 
         List<ClangWarning> clangWarnings = ClangPlistParser.parse(reportsDir);
@@ -93,8 +93,9 @@ public final class ClangSensor implements Sensor {
                 LOGGER.debug("Type '{}' is not mapped to a rule -- using default rule '{}'", type, ruleKeyName);
             }
 
-            Resource resource = context.getResource(
-                    org.sonar.api.resources.File.fromIOFile(clangWarning.getFile(), project));
+            final InputFile inputFile =
+                    fileSystem.inputFile(fileSystem.predicates().hasPath(clangWarning.getFile().getPath()));
+            final Resource resource = inputFile == null ? null : context.getResource(inputFile);
 
             if (resource == null) {
                 LOGGER.debug("Skipping file (not found in index): {}", clangWarning.getFile().getPath());

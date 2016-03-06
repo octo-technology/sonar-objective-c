@@ -38,8 +38,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ObjectiveCPlugin extends SonarPlugin {
+    @Override
     public List getExtensions() {
-        List<Object> extensions = new ArrayList<Object>();
+        List<Object> extensions = new ArrayList<>();
 
         extensions.add(ObjectiveC.class);
         extensions.add(PropertyDefinition.builder(ObjectiveC.FILE_SUFFIXES_KEY)
@@ -49,7 +50,6 @@ public class ObjectiveCPlugin extends SonarPlugin {
                 .onQualifiers(Qualifiers.PROJECT)
                 .build());
 
-        extensions.add(ObjectiveCColorizerFormat.class);
         extensions.add(ObjectiveCCpdMapping.class);
 
         extensions.add(ObjectiveCSquidSensor.class);

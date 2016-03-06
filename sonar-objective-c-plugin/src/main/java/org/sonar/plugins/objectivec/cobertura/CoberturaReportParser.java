@@ -25,9 +25,9 @@ import org.codehaus.staxmate.in.SMHierarchicCursor;
 import org.codehaus.staxmate.in.SMInputCursor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.measures.CoverageMeasuresBuilder;
 import org.sonar.api.measures.Measure;
-import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.utils.ParsingUtils;
 import org.sonar.api.utils.StaxParser;
@@ -41,26 +41,23 @@ import java.util.Map;
 
 final class CoberturaReportParser {
     private final FileSystem fileSystem;
-    private final Project project;
     private final SensorContext context;
 
-    private CoberturaReportParser(FileSystem fileSystem, Project project, SensorContext context) {
+    private CoberturaReportParser(FileSystem fileSystem, SensorContext context) {
         this.fileSystem = fileSystem;
-        this.project = project;
         this.context = context;
     }
 
     /**
      * Parse a Cobertura xml report and create measures accordingly
      */
-    public static void parseReport(File xmlFile, FileSystem fileSystem, Project project, SensorContext context) {
-        new CoberturaReportParser(fileSystem, project, context).parse(xmlFile);
+    public static void parseReport(File xmlFile, FileSystem fileSystem, SensorContext context) {
+        new CoberturaReportParser(fileSystem, context).parse(xmlFile);
     }
 
     private void parse(File xmlFile) {
         try {
             StaxParser parser = new StaxParser(new StaxParser.XmlStreamHandler() {
-
                 @Override
                 public void stream(SMHierarchicCursor rootCursor) throws XMLStreamException {
                     rootCursor.advance();
@@ -77,10 +74,13 @@ final class CoberturaReportParser {
         while (pack.getNext() != null) {
             Map<String, CoverageMeasuresBuilder> builderByFilename = Maps.newHashMap();
             collectFileMeasures(pack.descendantElementCursor("class"), builderByFilename);
+
             for (Map.Entry<String, CoverageMeasuresBuilder> entry : builderByFilename.entrySet()) {
                 String filePath = entry.getKey();
-                Resource resource = org.sonar.api.resources.File.fromIOFile(new File(fileSystem.baseDir(), filePath), project);
-                if (resourceExists(resource)) {
+                final InputFile inputFile = fileSystem.inputFile(fileSystem.predicates().hasPath(filePath));
+                final Resource resource = inputFile == null ? null : context.getResource(inputFile);
+
+                if (resource != null) {
                     for (Measure measure : entry.getValue().createMeasures()) {
                         context.saveMeasure(resource, measure);
                     }
@@ -89,19 +89,17 @@ final class CoberturaReportParser {
         }
     }
 
-    private boolean resourceExists(Resource file) {
-        return context.getResource(file) != null;
-    }
-
     private static void collectFileMeasures(SMInputCursor clazz,
             Map<String, CoverageMeasuresBuilder> builderByFilename) throws XMLStreamException {
         while (clazz.getNext() != null) {
             String fileName = clazz.getAttrValue("filename");
             CoverageMeasuresBuilder builder = builderByFilename.get(fileName);
+
             if (builder == null) {
                 builder = CoverageMeasuresBuilder.create();
                 builderByFilename.put(fileName, builder);
             }
+
             collectFileData(clazz, builder);
         }
     }

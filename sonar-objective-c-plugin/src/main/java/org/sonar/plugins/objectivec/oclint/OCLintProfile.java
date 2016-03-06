@@ -19,7 +19,6 @@
  */
 package org.sonar.plugins.objectivec.oclint;
 
-import com.google.common.io.Closeables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.profiles.ProfileDefinition;
@@ -27,6 +26,7 @@ import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.utils.ValidationMessages;
 import org.sonar.plugins.objectivec.ObjectiveC;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
@@ -42,11 +42,9 @@ public final class OCLintProfile extends ProfileDefinition {
     @Override
     public RulesProfile createProfile(final ValidationMessages messages) {
         LOGGER.info("Creating OCLint Profile");
-        Reader profileXmlReader = null;
 
-        try {
-            profileXmlReader = new InputStreamReader(OCLintProfile.class.getResourceAsStream(
-                    "/org/sonar/plugins/objectivec/profile-oclint.xml"));
+        try (Reader profileXmlReader = new InputStreamReader(OCLintProfile.class.getResourceAsStream(
+                "/org/sonar/plugins/objectivec/profile-oclint.xml"))) {
 
             RulesProfile profile = importer.importProfile(profileXmlReader, messages);
             profile.setLanguage(ObjectiveC.KEY);
@@ -54,8 +52,8 @@ public final class OCLintProfile extends ProfileDefinition {
             profile.setDefaultProfile(true);
 
             return profile;
-        } finally {
-            Closeables.closeQuietly(profileXmlReader);
+        } catch (IOException e) {
+            throw new IllegalStateException("Unable to read profile XML", e);
         }
     }
 }

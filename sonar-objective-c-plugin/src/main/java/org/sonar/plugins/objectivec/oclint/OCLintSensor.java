@@ -50,10 +50,12 @@ public final class OCLintSensor implements Sensor {
         this.settings = settings;
     }
 
+    @Override
     public boolean shouldExecuteOnProject(final Project project) {
         return StringUtils.isNotEmpty(settings.getString(REPORT_PATH_KEY));
     }
 
+    @Override
     public void analyse(final Project project, final SensorContext context) {
         String path = settings.getString(REPORT_PATH_KEY);
         File report = pathResolver.relativeFile(fileSystem.baseDir(), path);
@@ -64,7 +66,7 @@ public final class OCLintSensor implements Sensor {
         }
 
         LOGGER.info("parsing {}", report);
-        OCLintParser.parseReport(report, project, context, resourcePerspectives);
+        OCLintParser.parseReport(report, fileSystem, context, resourcePerspectives);
     }
 
     @Override

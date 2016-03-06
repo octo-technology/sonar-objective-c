@@ -21,7 +21,11 @@ package org.sonar.objectivec.lexer;
 
 import com.sonar.sslr.impl.Lexer;
 import com.sonar.sslr.impl.channel.BlackHoleChannel;
+import com.sonar.sslr.impl.channel.IdentifierAndKeywordChannel;
+import com.sonar.sslr.impl.channel.PunctuatorChannel;
 import org.sonar.objectivec.ObjectiveCConfiguration;
+import org.sonar.objectivec.api.ObjectiveCKeyword;
+import org.sonar.objectivec.api.ObjectiveCPunctuator;
 
 import static com.sonar.sslr.api.GenericTokenType.LITERAL;
 import static com.sonar.sslr.impl.channel.RegexpChannelBuilder.commentRegexp;
@@ -30,6 +34,7 @@ import static com.sonar.sslr.impl.channel.RegexpChannelBuilder.regexp;
 public class ObjectiveCLexer {
 
     private ObjectiveCLexer() {
+        // prevents outside instantiation
     }
 
     public static Lexer create() {
@@ -42,11 +47,15 @@ public class ObjectiveCLexer {
 
                 .withFailIfNoChannelToConsumeOneCharacter(false)
 
-                        // Comments
+                /* Comments */
                 .withChannel(commentRegexp("//[^\\n\\r]*+"))
                 .withChannel(commentRegexp("/\\*[\\s\\S]*?\\*/"))
 
-                        // All other tokens
+                /* Identifiers, keywords, and punctuators */
+                .withChannel(new IdentifierAndKeywordChannel("(#|@)?[a-zA-Z]([a-zA-Z0-9_]*[a-zA-Z0-9])?+((\\s+)?\\*)?", true, ObjectiveCKeyword.values()))
+                .withChannel(new PunctuatorChannel(ObjectiveCPunctuator.values()))
+
+                /* All other tokens */
                 .withChannel(regexp(LITERAL, "[^\r\n\\s/]+"))
 
                 .withChannel(new BlackHoleChannel("[\\s]"))
