@@ -14,11 +14,6 @@ If you wish to contribute, check the
 [Contributing](https://github.com/octo-technology/sonar-objective-c/wiki/Contributing)
 wiki page.
 
-Find below an example of an iOS SonarQube dashboard:
-<p align="center">
-  <img src="sample/screen%20shot%20SonarQube%20dashboard.png" alt="Example iOS SonarQube dashboard" width="80%"/>
-</p>
-
 ## Features
 
 - [x] Complexity
