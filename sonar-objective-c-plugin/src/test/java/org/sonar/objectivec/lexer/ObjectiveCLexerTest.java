@@ -77,7 +77,7 @@ public class ObjectiveCLexerTest {
     @Test
     public void lexSampleFile() {
         List<Token> tokens = lexer.lex(new File("src/test/resources/objcSample.h"));
-        assertThat(tokens.size(), equalTo(24));
+        assertThat(tokens.size(), equalTo(26));
         assertThat(tokens, hasToken(GenericTokenType.EOF));
     }
 

@@ -19,12 +19,19 @@
  */
 package org.sonar.objectivec.api;
 
+import com.google.common.collect.ImmutableList;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.TokenType;
 
-public enum ObjectiveCTokenType implements TokenType {
+import java.util.List;
 
-    NUMERIC_LITERAL;
+public enum ObjectiveCTokenType implements TokenType {
+    CHARACTER_LITERAL,
+    DOUBLE_LITERAL,
+    FLOAT_LITERAL,
+    INTEGER_LITERAL,
+    LONG_LITERAL,
+    STRING_LITERAL;
 
     @Override
     public String getName() {
@@ -41,4 +48,7 @@ public enum ObjectiveCTokenType implements TokenType {
         return false;
     }
 
+    public static List numberLiterals() {
+        return ImmutableList.of(DOUBLE_LITERAL, FLOAT_LITERAL, INTEGER_LITERAL, LONG_LITERAL);
+    }
 }

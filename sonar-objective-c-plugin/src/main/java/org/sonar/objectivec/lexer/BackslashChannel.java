@@ -17,18 +17,30 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.objectivec.api;
+package org.sonar.objectivec.lexer;
 
-import org.junit.Test;
+import com.sonar.sslr.impl.Lexer;
+import org.sonar.sslr.channel.Channel;
+import org.sonar.sslr.channel.CodeReader;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+/**
+ * @author Sonar C++ Plugin (Community) authors
+ */
+public class BackslashChannel extends Channel<Lexer> {
+    @Override
+    public boolean consume(CodeReader code, Lexer output) {
+        char ch = (char) code.peek();
 
-public class ObjectiveCPunctuatorTest {
+        if ((ch == '\\') && isNewLine(code.charAt(1))) {
+            // just throw away the backslash
+            code.pop();
+            return true;
+        }
 
-    @Test
-    public void test() {
-        assertThat(ObjectiveCPunctuator.values().length, is(49));
+        return false;
     }
 
+    private static boolean isNewLine(char ch) {
+        return (ch == '\n') || (ch == '\r');
+    }
 }

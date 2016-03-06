@@ -89,6 +89,7 @@ public enum ObjectiveCPunctuator implements TokenType {
 
     MINUSLT("->"),
     MINUSLTSTAR("->*"),
+    DOT("."),
     DOTSTAR(".*");
 
     private final String value;

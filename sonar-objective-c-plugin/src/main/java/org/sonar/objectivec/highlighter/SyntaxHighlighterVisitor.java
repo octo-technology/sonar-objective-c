@@ -33,6 +33,7 @@ import com.sonar.sslr.api.Trivia;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.source.Highlightable;
 import org.sonar.objectivec.api.ObjectiveCKeyword;
+import org.sonar.objectivec.api.ObjectiveCTokenType;
 import org.sonar.squidbridge.SquidAstVisitor;
 
 import java.io.IOException;
@@ -100,11 +101,13 @@ public class SyntaxHighlighterVisitor extends SquidAstVisitor<Grammar> implement
 
     @Override
     public void visitToken(Token token) {
+        // Use org.sonar.api.batch.sensor.highlighting.TypeOfText here?
+
         for (Trivia trivia : token.getTrivia()) {
             if (trivia.isComment()) {
                 Token triviaToken = trivia.getToken();
                 if (triviaToken.getValue().startsWith("/**")) {
-                    highlightToken(triviaToken, "jd");
+                    highlightToken(triviaToken, "j");
                 } else if (triviaToken.getValue().startsWith("/*")) {
                     highlightToken(triviaToken, "cppd");
                 } else {
@@ -115,6 +118,15 @@ public class SyntaxHighlighterVisitor extends SquidAstVisitor<Grammar> implement
 
         if (token.getType() instanceof ObjectiveCKeyword) {
             highlightToken(token, "k");
+        }
+
+        if (ObjectiveCTokenType.numberLiterals().contains(token.getType())) {
+            highlightToken(token, "c");
+        }
+
+        if (ObjectiveCTokenType.STRING_LITERAL.equals(token.getType())
+                || ObjectiveCTokenType.CHARACTER_LITERAL.equals(token.getType())) {
+            highlightToken(token, "s");
         }
     }
 
