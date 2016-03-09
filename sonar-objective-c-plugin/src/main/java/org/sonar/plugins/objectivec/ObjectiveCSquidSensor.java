@@ -42,6 +42,7 @@ import org.sonar.objectivec.ObjectiveCConfiguration;
 import org.sonar.objectivec.api.ObjectiveCMetric;
 import org.sonar.objectivec.checks.CheckList;
 import org.sonar.objectivec.highlighter.SonarComponents;
+import org.sonar.plugins.objectivec.api.ObjectiveC;
 import org.sonar.squidbridge.AstScanner;
 import org.sonar.squidbridge.SquidAstVisitor;
 import org.sonar.squidbridge.api.CheckMessage;

@@ -20,7 +20,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>sonar-objective-c-plugin</artifactId>
+            <artifactId>objective-c-squid</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -67,7 +67,7 @@
                         </goals>
                         <configuration>
                             <includes>
-                                <include>${project.groupId}:sonar-objective-c-plugin</include>
+                                <include>${project.groupId}:objective-c-squid</include>
                                 <include>org.sonarsource.sslr:sslr-core</include>
                                 <include>org.sonarsource.sslr:sslr-xpath</include>
                                 <include>jaxen:jaxen</include>
@@ -105,8 +105,8 @@
                         <configuration>
                             <rules>
                                 <requireFilesSize>
-                                    <maxsize>4700000</maxsize>
-                                    <minsize>4600000</minsize>
+                                    <maxsize>3500000</maxsize>
+                                    <minsize>3400000</minsize>
                                     <files>
                                         <file>${project.build.directory}/${project.build.finalName}.jar</file>
                                     </files>

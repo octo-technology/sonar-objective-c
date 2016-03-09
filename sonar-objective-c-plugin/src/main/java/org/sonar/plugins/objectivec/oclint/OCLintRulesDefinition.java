@@ -21,7 +21,7 @@ package org.sonar.plugins.objectivec.oclint;
 
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.api.server.rule.RulesDefinitionXmlLoader;
-import org.sonar.plugins.objectivec.ObjectiveC;
+import org.sonar.plugins.objectivec.api.ObjectiveC;
 import org.sonar.squidbridge.rules.SqaleXmlLoader;
 
 public final class OCLintRulesDefinition implements RulesDefinition {

@@ -1,5 +1,5 @@
 /*
- * SonarQube Objective-C (Community) Plugin
+ * SonarQube Objective-C (Community) :: Squid
  * Copyright (C) 2012-2016 OCTO Technology, Backelite, and contributors
  * mailto:sonarqube@googlegroups.com
  *
@@ -17,26 +17,41 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.plugins.objectivec;
+package org.sonar.objectivec.api;
 
-import org.sonar.api.profiles.AnnotationProfileParser;
-import org.sonar.api.profiles.ProfileDefinition;
-import org.sonar.api.profiles.RulesProfile;
-import org.sonar.api.utils.ValidationMessages;
-import org.sonar.objectivec.checks.CheckList;
-import org.sonar.plugins.objectivec.api.ObjectiveC;
+import org.sonar.squidbridge.measures.CalculatedMetricFormula;
+import org.sonar.squidbridge.measures.MetricDef;
 
-public class ObjectiveCProfile extends ProfileDefinition {
+public enum ObjectiveCMetric implements MetricDef {
+    FILES,
+    LINES,
+    LINES_OF_CODE,
+    COMMENT_LINES,
+    COMPLEXITY,
+    FUNCTIONS;
 
-    private final AnnotationProfileParser annotationProfileParser;
-
-    public ObjectiveCProfile(AnnotationProfileParser annotationProfileParser) {
-        this.annotationProfileParser = annotationProfileParser;
+    @Override
+    public String getName() {
+        return name();
     }
 
     @Override
-    public RulesProfile createProfile(ValidationMessages validation) {
-        return annotationProfileParser.parse(CheckList.REPOSITORY_KEY, CheckList.SONAR_WAY_PROFILE, ObjectiveC.KEY, CheckList.getChecks(), validation);
+    public boolean isCalculatedMetric() {
+        return false;
     }
 
+    @Override
+    public boolean aggregateIfThereIsAlreadyAValue() {
+        return true;
+    }
+
+    @Override
+    public boolean isThereAggregationFormula() {
+        return true;
+    }
+
+    @Override
+    public CalculatedMetricFormula getCalculatedMetricFormula() {
+        return null;
+    }
 }

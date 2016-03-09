@@ -28,6 +28,7 @@
     </licenses>
 
     <modules>
+        <module>objective-c-squid</module>
         <module>sonar-objective-c-plugin</module>
         <module>sslr-objective-c-toolkit</module>
         <module>its</module>

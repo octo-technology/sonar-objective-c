@@ -25,7 +25,7 @@ import org.sonar.api.profiles.ProfileImporter;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.profiles.XMLProfileParser;
 import org.sonar.api.utils.ValidationMessages;
-import org.sonar.plugins.objectivec.ObjectiveC;
+import org.sonar.plugins.objectivec.api.ObjectiveC;
 
 import java.io.Reader;
 

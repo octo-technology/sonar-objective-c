@@ -22,7 +22,7 @@ package org.sonar.plugins.objectivec.clang;
 import com.google.common.collect.ImmutableMap;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.api.server.rule.RulesDefinitionXmlLoader;
-import org.sonar.plugins.objectivec.ObjectiveC;
+import org.sonar.plugins.objectivec.api.ObjectiveC;
 import org.sonar.squidbridge.rules.SqaleXmlLoader;
 
 import java.util.Map;

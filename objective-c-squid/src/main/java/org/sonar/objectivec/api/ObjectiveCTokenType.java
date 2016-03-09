@@ -1,5 +1,5 @@
 /*
- * SonarQube Objective-C (Community) Plugin
+ * SonarQube Objective-C (Community) :: Squid
  * Copyright (C) 2012-2016 OCTO Technology, Backelite, and contributors
  * mailto:sonarqube@googlegroups.com
  *
@@ -17,26 +17,38 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.plugins.objectivec;
+package org.sonar.objectivec.api;
 
-import org.sonar.api.profiles.AnnotationProfileParser;
-import org.sonar.api.profiles.ProfileDefinition;
-import org.sonar.api.profiles.RulesProfile;
-import org.sonar.api.utils.ValidationMessages;
-import org.sonar.objectivec.checks.CheckList;
-import org.sonar.plugins.objectivec.api.ObjectiveC;
+import com.google.common.collect.ImmutableList;
+import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.TokenType;
 
-public class ObjectiveCProfile extends ProfileDefinition {
+import java.util.List;
 
-    private final AnnotationProfileParser annotationProfileParser;
+public enum ObjectiveCTokenType implements TokenType {
+    CHARACTER_LITERAL,
+    DOUBLE_LITERAL,
+    FLOAT_LITERAL,
+    INTEGER_LITERAL,
+    LONG_LITERAL,
+    STRING_LITERAL;
 
-    public ObjectiveCProfile(AnnotationProfileParser annotationProfileParser) {
-        this.annotationProfileParser = annotationProfileParser;
+    @Override
+    public String getName() {
+        return name();
     }
 
     @Override
-    public RulesProfile createProfile(ValidationMessages validation) {
-        return annotationProfileParser.parse(CheckList.REPOSITORY_KEY, CheckList.SONAR_WAY_PROFILE, ObjectiveC.KEY, CheckList.getChecks(), validation);
+    public String getValue() {
+        return name();
     }
 
+    @Override
+    public boolean hasToBeSkippedFromAst(AstNode node) {
+        return false;
+    }
+
+    public static List numberLiterals() {
+        return ImmutableList.of(DOUBLE_LITERAL, FLOAT_LITERAL, INTEGER_LITERAL, LONG_LITERAL);
+    }
 }

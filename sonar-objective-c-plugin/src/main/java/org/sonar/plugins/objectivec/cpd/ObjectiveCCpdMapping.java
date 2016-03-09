@@ -17,26 +17,32 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.plugins.objectivec;
+package org.sonar.plugins.objectivec.cpd;
 
-import org.sonar.api.profiles.AnnotationProfileParser;
-import org.sonar.api.profiles.ProfileDefinition;
-import org.sonar.api.profiles.RulesProfile;
-import org.sonar.api.utils.ValidationMessages;
-import org.sonar.objectivec.checks.CheckList;
+import net.sourceforge.pmd.cpd.Tokenizer;
+import org.sonar.api.batch.AbstractCpdMapping;
+import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.resources.Language;
 import org.sonar.plugins.objectivec.api.ObjectiveC;
 
-public class ObjectiveCProfile extends ProfileDefinition {
+import java.nio.charset.Charset;
 
-    private final AnnotationProfileParser annotationProfileParser;
+public class ObjectiveCCpdMapping extends AbstractCpdMapping {
+    private final ObjectiveC language;
+    private final Charset charset;
 
-    public ObjectiveCProfile(AnnotationProfileParser annotationProfileParser) {
-        this.annotationProfileParser = annotationProfileParser;
+    public ObjectiveCCpdMapping(ObjectiveC language, FileSystem fileSystem) {
+        this.language = language;
+        this.charset = fileSystem.encoding();
     }
 
     @Override
-    public RulesProfile createProfile(ValidationMessages validation) {
-        return annotationProfileParser.parse(CheckList.REPOSITORY_KEY, CheckList.SONAR_WAY_PROFILE, ObjectiveC.KEY, CheckList.getChecks(), validation);
+    public Tokenizer getTokenizer() {
+        return new ObjectiveCTokenizer(charset);
     }
 
+    @Override
+    public Language getLanguage() {
+        return language;
+    }
 }

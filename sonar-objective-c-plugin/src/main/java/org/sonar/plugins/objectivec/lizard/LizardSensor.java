@@ -31,7 +31,7 @@ import org.sonar.api.measures.Measure;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.scan.filesystem.PathResolver;
-import org.sonar.plugins.objectivec.ObjectiveC;
+import org.sonar.plugins.objectivec.api.ObjectiveC;
 
 import java.io.File;
 import java.util.List;
