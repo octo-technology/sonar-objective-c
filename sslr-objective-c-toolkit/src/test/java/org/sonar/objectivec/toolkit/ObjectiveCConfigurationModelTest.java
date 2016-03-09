@@ -1,5 +1,5 @@
 /*
- * SonarQube Objective-C (Community) Plugin
+ * SonarQube Objective-C (Community) :: SSLR Toolkit
  * Copyright (C) 2012-2016 OCTO Technology, Backelite, and contributors
  * mailto:sonarqube@googlegroups.com
  *
@@ -17,30 +17,21 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.objectivec;
+package org.sonar.objectivec.toolkit;
 
-import org.sonar.squidbridge.api.SquidConfiguration;
+import org.junit.Test;
 
-import java.nio.charset.Charset;
+import static org.fest.assertions.Assertions.assertThat;
 
-public class ObjectiveCConfiguration extends SquidConfiguration {
-
-    private boolean ignoreHeaderComments;
-
-    public ObjectiveCConfiguration() {
-        // no-op
+public class ObjectiveCConfigurationModelTest {
+    @Test
+    public void getProperties() {
+        ObjectiveCConfigurationModel model = new ObjectiveCConfigurationModel();
+        assertThat(model.getProperties()).isEmpty();
     }
 
-    public ObjectiveCConfiguration(Charset charset) {
-        super(charset);
+    @Test
+    public void getTokenizers() {
+        assertThat(new ObjectiveCConfigurationModel().getTokenizers()).isEmpty();
     }
-
-    public void setIgnoreHeaderComments(boolean ignoreHeaderComments) {
-        this.ignoreHeaderComments = ignoreHeaderComments;
-    }
-
-    public boolean getIgnoreHeaderComments() {
-        return ignoreHeaderComments;
-    }
-
 }

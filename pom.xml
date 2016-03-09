@@ -29,6 +29,7 @@
 
     <modules>
         <module>sonar-objective-c-plugin</module>
+        <module>sslr-objective-c-toolkit</module>
         <module>its</module>
     </modules>
 
@@ -96,7 +97,7 @@
         <license.owner>${project.organization.name}</license.owner>
         <license.mailto>${project.organization.url}</license.mailto>
         <sonar.version>4.5.2</sonar.version>
-        <sslr.version>1.20</sslr.version>
+        <sslr.version>1.21</sslr.version>
         <orchestrator.version>3.10.1</orchestrator.version>
     </properties>
 
@@ -109,24 +110,24 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.codehaus.sonar.sslr</groupId>
+                <groupId>org.sonarsource.sslr</groupId>
                 <artifactId>sslr-core</artifactId>
                 <version>${sslr.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.codehaus.sonar.sslr</groupId>
+                <groupId>org.sonarsource.sslr</groupId>
                 <artifactId>sslr-xpath</artifactId>
                 <version>${sslr.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.codehaus.sonar.sslr</groupId>
+                <groupId>org.sonarsource.sslr</groupId>
                 <artifactId>sslr-toolkit</artifactId>
                 <version>${sslr.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.codehaus.sonar.sslr-squid-bridge</groupId>
+                <groupId>org.sonarsource.sslr-squid-bridge</groupId>
                 <artifactId>sslr-squid-bridge</artifactId>
-                <version>2.5.3</version>
+                <version>2.6.1</version>
             </dependency>
             <dependency>
                 <groupId>com.googlecode.plist</groupId>
@@ -141,7 +142,7 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.codehaus.sonar.sslr</groupId>
+                <groupId>org.sonarsource.sslr</groupId>
                 <artifactId>sslr-testing-harness</artifactId>
                 <version>${sslr.version}</version>
                 <scope>test</scope>
@@ -149,19 +150,7 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.10</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-all</artifactId>
-                <version>1.9.0</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.hamcrest</groupId>
-                <artifactId>hamcrest-all</artifactId>
-                <version>1.1</version>
+                <version>4.12</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
