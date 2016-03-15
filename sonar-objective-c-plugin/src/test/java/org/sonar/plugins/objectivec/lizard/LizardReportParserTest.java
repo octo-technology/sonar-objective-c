@@ -23,8 +23,13 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.mockito.Mockito;
+import org.sonar.api.batch.SensorContext;
+import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
+import org.sonar.api.profiles.RulesProfile;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -34,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Andres Gil Herrera
@@ -72,9 +78,9 @@ public class LizardReportParserTest {
         out.write("<item name=\"viewWillAppear:(...) at App/Controller/Accelerate/AccelerationViewController.m:130\">");
         out.write("<value>3</value><value>20</value><value>5</value></item>");
         //average and close funciton measure
-        out.write("<average lable=\"NCSS\" value=\"17\"/><average lable=\"CCN\" value=\"3\"/><average lable=\"NCSS\" value=\"17\"/>");
-        out.write("<average lable=\"CCN\" value=\"3\"/><average lable=\"NCSS\" value=\"17\"/><average lable=\"CCN\" value=\"3\"/>");
-        out.write("<average lable=\"NCSS\" value=\"17\"/><average lable=\"CCN\" value=\"3\"/></measure>");
+        out.write("<average label=\"NCSS\" value=\"17\"/><average label=\"CCN\" value=\"3\"/><average label=\"NCSS\" value=\"17\"/>");
+        out.write("<average label=\"CCN\" value=\"3\"/><average label=\"NCSS\" value=\"17\"/><average label=\"CCN\" value=\"3\"/>");
+        out.write("<average label=\"NCSS\" value=\"17\"/><average label=\"CCN\" value=\"3\"/></measure>");
         //open file measure and add the labels
         out.write("<measure type=\"File\"><labels><label>Nr.</label><label>NCSS</label><label>CCN</label><label>Functions</label></labels>");
         //items for file
@@ -83,9 +89,9 @@ public class LizardReportParserTest {
         out.write("<item name=\"App/Controller/Accelerate/AccelerationViewController.m\">");
         out.write("<value>2</value><value>868</value><value>6</value><value>2</value></item>");
         //add averages
-        out.write("<average lable=\"NCSS\" value=\"435\"/><average lable=\"CCN\" value=\"70\"/><average lable=\"Functions\" value=\"21\"/>");
+        out.write("<average label=\"NCSS\" value=\"435\"/><average label=\"CCN\" value=\"70\"/><average label=\"Functions\" value=\"21\"/>");
         //add sum
-        out.write("<sum lable=\"NCSS\" value=\"870\"/><sum lable=\"CCN\" value=\"141\"/><sum lable=\"Functions\" value=\"42\"/>");
+        out.write("<sum label=\"NCSS\" value=\"870\"/><sum label=\"CCN\" value=\"141\"/><sum label=\"Functions\" value=\"42\"/>");
         //close measures and root object
         out.write("</measure></cppncss>");
 
@@ -113,9 +119,9 @@ public class LizardReportParserTest {
         out.write("<item name=\"viewWillAppear:(...) at App/Controller/Accelerate/AccelerationViewController.m:130\">");
         out.write("<value>3</value><value>20</value><value>5</value></item>");
         //average and close funciton measure
-        out.write("<average lable=\"NCSS\" value=\"17\"/><average lable=\"CCN\" value=\"3\"/><average lable=\"NCSS\" value=\"17\"/>");
-        out.write("<average lable=\"CCN\" value=\"3\"/><average lable=\"NCSS\" value=\"17\"/><average lable=\"CCN\" value=\"3\"/>");
-        out.write("<average lable=\"NCSS\" value=\"17\"/><average lable=\"CCN\" value=\"3\"/></measure>");
+        out.write("<average label=\"NCSS\" value=\"17\"/><average label=\"CCN\" value=\"3\"/><average label=\"NCSS\" value=\"17\"/>");
+        out.write("<average label=\"CCN\" value=\"3\"/><average label=\"NCSS\" value=\"17\"/><average label=\"CCN\" value=\"3\"/>");
+        out.write("<average label=\"NCSS\" value=\"17\"/><average label=\"CCN\" value=\"3\"/></measure>");
         //open file measure and add the labels
         out.write("<measure type=\"File\"><labels><label>Nr.</label><label>NCSS</label><label>CCN</label><label>Functions</label></labels>");
         //items for file 3th value tag has no closing tag
@@ -124,9 +130,9 @@ public class LizardReportParserTest {
         out.write("<item name=\"App/Controller/Accelerate/AccelerationViewController.m\">");
         out.write("<value>2</value><value>868</value><value>6</value><value>2</value></item>");
         //add averages
-        out.write("<average lable=\"NCSS\" value=\"435\"/><average lable=\"CCN\" value=\"70\"/><average lable=\"Functions\" value=\"21\"/>");
+        out.write("<average label=\"NCSS\" value=\"435\"/><average label=\"CCN\" value=\"70\"/><average label=\"Functions\" value=\"21\"/>");
         //add sum
-        out.write("<sum lable=\"NCSS\" value=\"870\"/><sum lable=\"CCN\" value=\"141\"/><sum lable=\"Functions\" value=\"42\"/>");
+        out.write("<sum label=\"NCSS\" value=\"870\"/><sum label=\"CCN\" value=\"141\"/><sum label=\"Functions\" value=\"42\"/>");
         //close measures and root object no close tag for measure
         out.write("</cppncss>");
 
@@ -142,7 +148,13 @@ public class LizardReportParserTest {
     public void parseReportShouldReturnMapWhenXMLFileIsCorrect() {
         assertNotNull("correct file is null", correctFile);
 
-        Map<String, List<Measure>> report = LizardReportParser.parseReport(correctFile);
+        FileSystem fileSystem = mock(FileSystem.class);
+        ResourcePerspectives resourcePerspectives = mock(ResourcePerspectives.class);
+        RulesProfile rulesProfile = mock(RulesProfile.class);
+        SensorContext sensorContext = mock(SensorContext.class);
+
+        Map<String, List<Measure>> report = LizardReportParser.parseReport(fileSystem, resourcePerspectives,
+                rulesProfile, sensorContext, correctFile);
 
         assertNotNull("report is null", report);
 
@@ -194,7 +206,13 @@ public class LizardReportParserTest {
     public void parseReportShouldReturnNullWhenXMLFileIsIncorrect() {
         assertNotNull("correct file is null", incorrectFile);
 
-        Map<String, List<Measure>> report = LizardReportParser.parseReport(incorrectFile);
+        FileSystem fileSystem = mock(FileSystem.class);
+        ResourcePerspectives resourcePerspectives = mock(ResourcePerspectives.class);
+        RulesProfile rulesProfile = mock(RulesProfile.class);
+        SensorContext sensorContext = mock(SensorContext.class);
+
+        Map<String, List<Measure>> report = LizardReportParser.parseReport(fileSystem, resourcePerspectives,
+                rulesProfile, sensorContext, incorrectFile);
         assertNull("report is not null", report);
 
     }

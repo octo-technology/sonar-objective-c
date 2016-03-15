@@ -26,8 +26,10 @@ import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
+import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.config.Settings;
 import org.sonar.api.measures.Measure;
+import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.scan.filesystem.PathResolver;
@@ -51,11 +53,16 @@ public final class LizardSensor implements Sensor {
 
     private final FileSystem fileSystem;
     private final PathResolver pathResolver;
+    private final ResourcePerspectives resourcePerspectives;
+    private final RulesProfile rulesProfile;
     private final Settings settings;
 
-    public LizardSensor(final FileSystem fileSystem, final PathResolver pathResolver, final Settings settings) {
+    public LizardSensor(final FileSystem fileSystem, final PathResolver pathResolver,
+            final ResourcePerspectives resourcePerspectives, final RulesProfile rulesProfile, final Settings settings) {
         this.fileSystem = fileSystem;
         this.pathResolver = pathResolver;
+        this.resourcePerspectives = resourcePerspectives;
+        this.rulesProfile = rulesProfile;
         this.settings = settings;
     }
 
@@ -76,7 +83,8 @@ public final class LizardSensor implements Sensor {
         }
 
         LOGGER.info("parsing {}", report);
-        Map<String, List<Measure>> measures = LizardReportParser.parseReport(report);
+        Map<String, List<Measure>> measures = LizardReportParser.parseReport(fileSystem, resourcePerspectives,
+                rulesProfile, context, report);
 
         if (measures == null) {
             return;

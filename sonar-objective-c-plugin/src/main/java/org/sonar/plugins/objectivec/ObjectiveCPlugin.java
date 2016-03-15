@@ -29,6 +29,7 @@ import org.sonar.plugins.objectivec.clang.ClangRulesDefinition;
 import org.sonar.plugins.objectivec.clang.ClangSensor;
 import org.sonar.plugins.objectivec.cobertura.CoberturaSensor;
 import org.sonar.plugins.objectivec.cpd.ObjectiveCCpdMapping;
+import org.sonar.plugins.objectivec.lizard.LizardRulesDefinition;
 import org.sonar.plugins.objectivec.lizard.LizardSensor;
 import org.sonar.plugins.objectivec.oclint.OCLintProfile;
 import org.sonar.plugins.objectivec.oclint.OCLintProfileImporter;
@@ -77,6 +78,7 @@ public class ObjectiveCPlugin extends SonarPlugin {
                 .build());
 
         extensions.add(LizardSensor.class);
+        extensions.add(LizardRulesDefinition.class);
         extensions.add(PropertyDefinition.builder(LizardSensor.REPORT_PATH_KEY)
                 .name("Report path")
                 .description("Path (absolute or relative) to Lizard XML report file.")

@@ -21,10 +21,20 @@ package org.sonar.plugins.objectivec.lizard;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonar.api.batch.SensorContext;
+import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.batch.fs.InputFile;
+import org.sonar.api.component.ResourcePerspectives;
+import org.sonar.api.issue.Issuable;
+import org.sonar.api.issue.Issue;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.PersistenceMode;
 import org.sonar.api.measures.RangeDistributionBuilder;
+import org.sonar.api.profiles.RulesProfile;
+import org.sonar.api.resources.Resource;
+import org.sonar.api.rule.RuleKey;
+import org.sonar.api.rules.ActiveRule;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -67,8 +77,17 @@ public final class LizardReportParser {
     private static final Number[] FUNCTIONS_DISTRIB_BOTTOM_LIMITS = {1, 2, 4, 6, 8, 10, 12, 20, 30};
     private static final Number[] FILES_DISTRIB_BOTTOM_LIMITS = {0, 5, 10, 20, 30, 60, 90};
 
-    private LizardReportParser() {
-        // Prevent outside instantiation
+    private final FileSystem fileSystem;
+    private final ResourcePerspectives resourcePerspectives;
+    private final RulesProfile rulesProfile;
+    private final SensorContext sensorContext;
+
+    private LizardReportParser(final FileSystem fileSystem, final ResourcePerspectives resourcePerspectives,
+            final RulesProfile rulesProfile, final SensorContext sensorContext) {
+        this.fileSystem = fileSystem;
+        this.resourcePerspectives = resourcePerspectives;
+        this.rulesProfile = rulesProfile;
+        this.sensorContext = sensorContext;
     }
 
     /**
@@ -76,14 +95,16 @@ public final class LizardReportParser {
      * @return Map containing as key the name of the file and as value a list containing the measures for that file
      */
     @CheckForNull
-    public static Map<String, List<Measure>> parseReport(final File xmlFile) {
+    public static Map<String, List<Measure>> parseReport(final FileSystem fileSystem,
+            final ResourcePerspectives resourcePerspectives, final RulesProfile rulesProfile,
+            final SensorContext sensorContext, final File xmlFile) {
         Map<String, List<Measure>> result = null;
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(xmlFile);
-            result = new LizardReportParser().parseFile(document);
+            result = new LizardReportParser(fileSystem, resourcePerspectives, rulesProfile, sensorContext).parseFile(document);
         } catch (final FileNotFoundException e) {
             LOGGER.error("Lizard Report not found {}", xmlFile, e);
         } catch (final IOException | ParserConfigurationException | SAXException e) {
@@ -197,6 +218,7 @@ public final class LizardReportParser {
                     complexityDistribution.add(func.getCyclomaticComplexity());
                     count++;
                     complexityInFunctions += func.getCyclomaticComplexity();
+                    createFunctionComplexityIssue(entry.getKey(), func);
                 }
             }
 
@@ -205,13 +227,100 @@ public final class LizardReportParser {
                 for (Measure m : entry.getValue()) {
                     if (m.getMetric().getKey().equalsIgnoreCase(CoreMetrics.FILE_COMPLEXITY.getKey())) {
                         complex = m.getValue();
+                        createFileComplexityIssue(entry.getKey(), (int) complex);
                         break;
                     }
                 }
 
                 double complexMean = complex / (double) count;
-                entry.getValue().addAll(buildFuncionMeasuresList(complexMean, complexityInFunctions, complexityDistribution));
+                entry.getValue().addAll(buildFunctionMeasuresList(complexMean, complexityInFunctions, complexityDistribution));
             }
+        }
+    }
+
+    private void createFileComplexityIssue(String fileName, int complexity) {
+        ActiveRule activeRule = rulesProfile.getActiveRule(
+                LizardRulesDefinition.REPOSITORY_KEY,
+                LizardRulesDefinition.FILE_CYCLOMATIC_COMPLEXITY_RULE_KEY);
+
+        if (activeRule == null) {
+            // Rule is not active
+            return;
+        }
+
+        int threshold = Integer.parseInt(activeRule.getParameter(LizardRulesDefinition.FILE_CYCLOMATIC_COMPLEXITY_PARAM_KEY));
+
+        if (complexity <= threshold) {
+            // Complexity is lower or equal to the defined threshold
+            return;
+        }
+
+        final InputFile inputFile = fileSystem.inputFile(fileSystem.predicates().hasPath(fileName));
+        final Resource resource = inputFile == null ? null : sensorContext.getResource(inputFile);
+
+        if (resource == null) {
+            LOGGER.debug("Skipping file (not found in index): {}", fileName);
+            return;
+        }
+
+        Issuable issuable = resourcePerspectives.as(Issuable.class, resource);
+
+        if (issuable != null) {
+            Issue issue = issuable.newIssueBuilder()
+                    .ruleKey(RuleKey.of(LizardRulesDefinition.REPOSITORY_KEY, LizardRulesDefinition.FILE_CYCLOMATIC_COMPLEXITY_RULE_KEY))
+                    .message(String.format("The Cyclomatic Complexity of this file \"%s\" is %d which is greater than %d authorized.", fileName, complexity, threshold))
+                    .effortToFix((double) (complexity - threshold))
+                    .build();
+
+            issuable.addIssue(issue);
+        }
+    }
+
+    private void createFunctionComplexityIssue(String fileName, ObjCFunction func) {
+        ActiveRule activeRule = rulesProfile.getActiveRule(
+                LizardRulesDefinition.REPOSITORY_KEY,
+                LizardRulesDefinition.FUNCTION_CYCLOMATIC_COMPLEXITY_RULE_KEY);
+
+        if (activeRule == null) {
+            // Rule is not active
+            return;
+        }
+
+        int complexity = func.getCyclomaticComplexity();
+        int threshold = Integer.parseInt(activeRule.getParameter(LizardRulesDefinition.FUNCTION_CYCLOMATIC_COMPLEXITY_PARAM_KEY));
+
+        if (complexity <= threshold) {
+            // Complexity is lower or equal to the defined threshold
+            return;
+        }
+
+        final InputFile inputFile = fileSystem.inputFile(fileSystem.predicates().hasPath(fileName));
+        final Resource resource = inputFile == null ? null : sensorContext.getResource(inputFile);
+
+        if (resource == null) {
+            LOGGER.debug("Skipping file (not found in index): {}", fileName);
+            return;
+        }
+
+        Issuable issuable = resourcePerspectives.as(Issuable.class, resource);
+
+        if (issuable != null) {
+            String name = func.getName();
+
+            int lastColonIndex = name.lastIndexOf(':');
+            Integer lineNumber = lastColonIndex == -1 ? null : Integer.valueOf(name.substring(lastColonIndex + 1));
+
+            int atIndex = name.indexOf(" at ");
+            String functionName = atIndex == -1 ? name : name.substring(0, atIndex);
+
+            Issue issue = issuable.newIssueBuilder()
+                    .ruleKey(RuleKey.of(LizardRulesDefinition.REPOSITORY_KEY, LizardRulesDefinition.FUNCTION_CYCLOMATIC_COMPLEXITY_RULE_KEY))
+                    .message(String.format("The Cyclomatic Complexity of this function \"%s\" is %d which is greater than %d authorized.", functionName, complexity, threshold))
+                    .line(lineNumber)
+                    .effortToFix((double) (complexity - threshold))
+                    .build();
+
+            issuable.addIssue(issue);
         }
     }
 
@@ -221,7 +330,7 @@ public final class LizardReportParser {
      * @param builder               Builder ready to build FUNCTION_COMPLEXITY_DISTRIBUTION
      * @return list of Measures containing FUNCTION_COMPLEXITY_DISTRIBUTION, FUNCTION_COMPLEXITY and COMPLEXITY_IN_FUNCTIONS
      */
-    public List<Measure> buildFuncionMeasuresList(double complexMean, int complexityInFunctions,
+    public List<Measure> buildFunctionMeasuresList(double complexMean, int complexityInFunctions,
             RangeDistributionBuilder builder) {
         List<Measure> list = new ArrayList<>();
         list.add(new Measure(CoreMetrics.FUNCTION_COMPLEXITY, complexMean));
