@@ -299,8 +299,6 @@ else
 		fi
 		slatherCmd+=( --scheme "$appScheme" $firstProject)
 
-		runCommand  sonar-reports/xcodebuild.log "${buildCmd[@]}"
-
 		runCommand /dev/stdout "${slatherCmd[@]}"
 		mv sonar-reports/cobertura.xml sonar-reports/coverage.xml
 
