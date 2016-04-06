@@ -292,8 +292,17 @@ else
 
 		projectArray=(${projectFile//,/ })
 		firstProject=${projectArray[0]}
-        runCommand /dev/stdout $SLATHER_CMD coverage --input-format profdata $excludedCommandLineFlags --cobertura-xml --output-directory sonar-reports --scheme $appScheme $firstProject
-        mv sonar-reports/cobertura.xml sonar-reports/coverage.xml
+
+        slatherCmd=($SLATHER_CMD coverage --input-format profdata $excludedCommandLineFlags --cobertura-xml --output-directory sonar-reports)
+		if [[ ! -z "$workspaceFile" ]]; then
+			slatherCmd+=( --workspace $workspaceFile)
+		fi
+		slatherCmd+=( --scheme "$appScheme" $firstProject)
+
+		runCommand  sonar-reports/xcodebuild.log "${buildCmd[@]}"
+
+		runCommand /dev/stdout "${slatherCmd[@]}"
+		mv sonar-reports/cobertura.xml sonar-reports/coverage.xml
 
 	else
 
