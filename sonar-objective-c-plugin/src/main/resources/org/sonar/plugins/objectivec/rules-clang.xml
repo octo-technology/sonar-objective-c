@@ -1,5 +1,11 @@
 <rules>
     <rule>
+        <key>core.CallAndMessage</key>
+        <name>Check for logical errors for function calls and Objective-C message expressions (e.g., uninitialized arguments, null function pointers)</name>
+        <priority>CRITICAL</priority>
+        <description>Check for logical errors for function calls and Objective-C message expressions (e.g., uninitialized arguments, null function pointers)</description>
+    </rule>
+    <rule>
         <key>core.UndefinedBinaryOperatorResult</key>
         <name>Check for undefined results of binary operators</name>
         <priority>MAJOR</priority>

@@ -4,6 +4,10 @@
     <rules>
         <rule>
             <repositoryKey>clang</repositoryKey>
+            <key>core.CallAndMessage</key>
+        </rule>
+        <rule>
+            <repositoryKey>clang</repositoryKey>
             <key>core.UndefinedBinaryOperatorResult</key>
         </rule>
         <rule>

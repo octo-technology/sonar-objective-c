@@ -50,6 +50,7 @@ public final class ClangRulesDefinition implements RulesDefinition {
             .put("Missing call to superclass", "osx.cocoa.MissingSuperCall") // Core Foundation/Objective-C
             .put("Nil value used as mutex for @synchronized() (no synchronization will occur)", "osx.cocoa.AtSync") // Logic error
             .put("Result of operation is garbage or undefined", "core.UndefinedBinaryOperatorResult") // Logic error
+            .put("Uninitialized argument value", "core.CallAndMessage") // Logic error
             .build();
 
     @Override
