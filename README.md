@@ -79,20 +79,9 @@ Binary packages are available in the release section.
 - [xctool](https://github.com/facebook/xctool) ([HomeBrew](http://brew.sh) installed and ```brew install xctool```). If you are using Xcode 6, make sure to update xctool (```brew upgrade xctool```) to a version > 0.2.2.
 - [OCLint](http://docs.oclint.org/en/dev/intro/installation.html) installed. Version 0.10.1 recommended. 
 - [gcovr](http://gcovr.com) installed for legacy (pre Xcode 7 coverage)
-- [slather](https://github.com/SlatherOrg/slather) (see instructions below) for Xcode 7 and above.
+- [slather](https://github.com/SlatherOrg/slather) (```gem install slather```). Version 2.1.0 or above.
 - [lizard](https://github.com/terryyin/lizard) ([PIP](https://pip.pypa.io/en/stable/installing/) installed and ```sudo pip install lizard```)
 - [Faux Pas](http://fauxpasapp.com/) command line tools installed (optional)
-
-###Installation of slather from master repository
-
-At the time, no Xcode 7.3 compliant slather version is released. You need to install it from the master.
-
-Follow those steps :
-
-	git clone https://github.com/SlatherOrg/slather.git
-	cd slather
-	gem build slather.gemspec
-	gem install --both slather-2.0.2.gem
 
 ###Installation of xcpretty with JUnit reports fix
 
