@@ -1,0 +1,380 @@
+<rules>
+    <rule>
+        <key>bitwise operator in conditional</key>
+        <name>Bitwise operator in conditional</name>
+        <priority>CRITICAL</priority>
+        <description>Checks for bitwise operations in conditionals. Although being written on purpose in some rare cases, bitwise operations are considered to be too “smart”. Smart code is not easy to understand.</description>
+    </rule>
+    <rule>
+        <key>broken nil check</key>
+        <name>Broken nil check</name>
+        <priority>CRITICAL</priority>
+        <description>The broken nil check in Objective-C in some cases returns just the opposite result.</description>
+    </rule>
+    <rule>
+        <key>broken null check</key>
+        <name>Broken null check</name>
+        <priority>CRITICAL</priority>
+        <description>The broken null check itself will crash the program.</description>
+    </rule>
+    <rule>
+        <key>broken oddness check</key>
+        <name>Broken oddness check</name>
+        <priority>CRITICAL</priority>
+        <description>Checking oddness by x%2==1 won’t work for negative numbers. Use x&amp;1==1, or x%2!=0 instead.</description>
+    </rule>
+    <rule>
+        <key>collapsible if statements</key>
+        <name>Collapsible if statements</name>
+        <priority>CRITICAL</priority>
+        <description>This rule detects instances where the conditions of two consecutive if statements can combined into one in order to increase code cleanness and readability.</description>
+    </rule>
+    <rule>
+        <key>constant conditional operator</key>
+        <name>Constant conditional operator</name>
+        <priority>CRITICAL</priority>
+        <description>conditionaloperator whose conditionals are always true or always false are confusing.</description>
+    </rule>
+    <rule>
+        <key>constant if expression</key>
+        <name>Constant if expression</name>
+        <priority>CRITICAL</priority>
+        <description>if statements whose conditionals are always true or always false are confusing.</description>
+    </rule>
+    <rule>
+        <key>dead code</key>
+        <name>Dead code</name>
+        <priority>CRITICAL</priority>
+        <description>Code after return, break, continue, and throw statements are unreachable and will never be executed.</description>
+    </rule>
+    <rule>
+        <key>double negative</key>
+        <name>Double negative</name>
+        <priority>CRITICAL</priority>
+        <description>There is no point in using a double negative, it is always positive.</description>
+    </rule>
+    <rule>
+        <key>for loop should be while loop</key>
+        <name>For loop should be while loop</name>
+        <priority>CRITICAL</priority>
+        <description>Under certain circumstances, some for loops can be simplified to while loops to make code more concise.</description>
+    </rule>
+    <rule>
+        <key>goto statement</key>
+        <name>Goto statement</name>
+        <priority>CRITICAL</priority>
+        <description>“Go To Statement Considered Harmful”</description>
+    </rule>
+    <rule>
+        <key>misplaced nil check</key>
+        <name>Misplaced nil check</name>
+        <priority>CRITICAL</priority>
+        <description>The nil check is misplaced. In Objective-C, sending a message to a nil pointer simply does nothing. But code readers may be confused about the misplaced nil check.</description>
+    </rule>
+    <rule>
+        <key>misplaced null check</key>
+        <name>Misplaced null check</name>
+        <priority>CRITICAL</priority>
+        <description>The null check is misplaced. In C and C++, sending a message to a null pointer could crash the app. When null is misplaced, either the check is useless or it’s incorrect.</description>
+    </rule>
+    <rule>
+        <key>multiple unary operator</key>
+        <name>Multiple unary operator</name>
+        <priority>CRITICAL</priority>
+        <description>Multiple unary operator can always be confusing and should be simplified.</description>
+    </rule>
+    <rule>
+        <key>return from finally block</key>
+        <name>Return from finally block</name>
+        <priority>CRITICAL</priority>
+        <description>Returning from a finally block is not recommended.</description>
+    </rule>
+    <rule>
+        <key>throw exception from finally block</key>
+        <name>Throw exception from finally block</name>
+        <priority>CRITICAL</priority>
+        <description>Throwing exceptions within a finally block may mask other exceptions or code defects.</description>
+    </rule>
+    <rule>
+        <key>avoid branching statement as last in loop</key>
+        <name>Avoid branching statement as last in loop</name>
+        <priority>MAJOR</priority>
+        <description>Having branching statement as the last statement inside a loop is very confusing, and could largely be forgetting of something and turning into a bug.</description>
+    </rule>
+    <rule>
+        <key>default label not last in switch statement</key>
+        <name>Default label not last in switch statement</name>
+        <priority>MAJOR</priority>
+        <description>It is very confusing when default label is not the last label in a switch statement.</description>
+    </rule>
+    <rule>
+        <key>inverted logic</key>
+        <name>Inverted logic</name>
+        <priority>MAJOR</priority>
+        <description>An inverted logic is hard to understand.</description>
+    </rule>
+    <rule>
+        <key>non case label in switch statement</key>
+        <name>Non case label in switch statement</name>
+        <priority>MAJOR</priority>
+        <description>It is very confusing when default label is not the last label in a switch statement.</description>
+    </rule>
+    <rule>
+        <key>parameter reassignment</key>
+        <name>Parameter reassignment</name>
+        <priority>MAJOR</priority>
+        <description>Reassigning values to parameters is very problematic in most cases.</description>
+    </rule>
+    <rule>
+        <key>switch statements should have default</key>
+        <name>Switch statements should have default</name>
+        <priority>MAJOR</priority>
+        <description>Switch statements should a default statement.</description>
+    </rule>
+    <rule>
+        <key>too few branches in switch statement</key>
+        <name>Too few branches in switch statement</name>
+        <priority>MAJOR</priority>
+        <description>To increase code readability, when a switch consists of only a few branches, it’s much better to use if statement.</description>
+    </rule>
+    <rule>
+        <key>empty catch statement</key>
+        <name>Empty catch statement</name>
+        <priority>CRITICAL</priority>
+        <description>This rule detects instances where an exception is caught, but nothing is done about it.</description>
+    </rule>
+    <rule>
+        <key>empty do/while statement</key>
+        <name>Empty do while statement</name>
+        <priority>CRITICAL</priority>
+        <description>This rule detects instances where a do-while statement does nothing.</description>
+    </rule>
+    <rule>
+        <key>empty else block</key>
+        <name>Empty else block</name>
+        <priority>CRITICAL</priority>
+        <description>This rule detects instances where a else statement does nothing.</description>
+    </rule>
+    <rule>
+        <key>empty finally statement</key>
+        <name>Empty finally statement</name>
+        <priority>CRITICAL</priority>
+        <description>This rule detects instances where a finally statement does nothing.</description>
+    </rule>
+    <rule>
+        <key>empty for statement</key>
+        <name>Empty for statement</name>
+        <priority>CRITICAL</priority>
+        <description>This rule detects instances where a for statement does nothing.</description>
+    </rule>
+    <rule>
+        <key>empty if statement</key>
+        <name>Empty if statement</name>
+        <priority>CRITICAL</priority>
+        <description>This rule detects instances where a condition is checked, but nothing is done about it.</description>
+    </rule>
+    <rule>
+        <key>empty switch statement</key>
+        <name>Empty switch statement</name>
+        <priority>CRITICAL</priority>
+        <description>This rule detects instances where a switch statement does nothing.</description>
+    </rule>
+    <rule>
+        <key>empty try statement</key>
+        <name>Empty try statement</name>
+        <priority>CRITICAL</priority>
+        <description>This rule detects instances where a try statement is empty.</description>
+    </rule>
+    <rule>
+        <key>empty while statement</key>
+        <name>Empty while statement</name>
+        <priority>CRITICAL</priority>
+        <description>This rule detects instances where a while statement does nothing.</description>
+    </rule>
+    <rule>
+        <key>replace with boxed expression</key>
+        <name>Obj c boxed expressions</name>
+        <priority>MINOR</priority>
+        <description>This rule locates the places that can be migrated to the new Objective-C literals with boxed expressions.</description>
+    </rule>
+    <rule>
+        <key>replace with container literal</key>
+        <name>Obj c container literals</name>
+        <priority>MINOR</priority>
+        <description>This rule locates the places that can be migrated to the new Objective-C literals with container literals.</description>
+    </rule>
+    <rule>
+        <key>replace with number literal</key>
+        <name>Obj cns number literals</name>
+        <priority>MINOR</priority>
+        <description>This rule locates the places that can be migrated to the new Objective-C literals with number literals.</description>
+    </rule>
+    <rule>
+        <key>replace with object subscripting</key>
+        <name>Obj c object subscripting</name>
+        <priority>MINOR</priority>
+        <description>This rule locates the places that can be migrated to the new Objective-C literals with object subscripting.</description>
+    </rule>
+    <rule>
+        <key>long variable name</key>
+        <name>Long variable name</name>
+        <priority>MAJOR</priority>
+        <description>Variables with long names harm readability.</description>
+    </rule>
+    <rule>
+        <key>short variable name</key>
+        <name>Short variable name</name>
+        <priority>MAJOR</priority>
+        <description>Variable with a short name is hard to understand what it stands for. Variable with name, but the name has number of characters less than the threshold will be emitted.</description>
+    </rule>
+    <rule>
+        <key>redundant conditional operator</key>
+        <name>Redundant conditional operator</name>
+        <priority>MINOR</priority>
+        <description>This rule detects three types of redundant conditional operators:</description>
+    </rule>
+    <rule>
+        <key>redundant if statement</key>
+        <name>Redundant if statement</name>
+        <priority>MINOR</priority>
+        <description>This rule detects unnecessary if statements.</description>
+    </rule>
+    <rule>
+        <key>redundant local variable</key>
+        <name>Redundant local variable</name>
+        <priority>MINOR</priority>
+        <description>This rule detects cases where a variable declaration immediately followed by a return of that variable.</description>
+    </rule>
+    <rule>
+        <key>redundant nil check</key>
+        <name>Redundant nil check</name>
+        <priority>MINOR</priority>
+        <description>C/C++-style null check in Objective-C like foo!=nil&amp;&amp;[foobar] is redundant, since sending a message to a nil object in this case simply return a false-y value.</description>
+    </rule>
+    <rule>
+        <key>unnecessary else statement</key>
+        <name>Unnecessary else statement</name>
+        <priority>MINOR</priority>
+        <description>When an if statement block ends with a return statement, or all branches in the if statement block end with return statements, then the else statement is unnecessary. The code in the else statement can be run without being in the block.</description>
+    </rule>
+    <rule>
+        <key>useless parentheses</key>
+        <name>Useless parentheses</name>
+        <priority>MINOR</priority>
+        <description>This rule detects useless parentheses.</description>
+    </rule>
+    <rule>
+        <key>high cyclomatic complexity</key>
+        <name>Cyclomatic complexity</name>
+        <priority>CRITICAL</priority>
+        <description>Cyclomatic complexity is determined by the number of linearly independent paths through a program’s source code. In other words, cyclomatic complexity of a method is measured by the number of decision points, like if, while, and for statements, plus one for the method entry.</description>
+    </rule>
+    <rule>
+        <key>long class</key>
+        <name>Long class</name>
+        <priority>MAJOR</priority>
+        <description>Long class generally indicates that this class tries to so many things. Each class should do one thing and one thing well.</description>
+    </rule>
+    <rule>
+        <key>long line</key>
+        <name>Long line</name>
+        <priority>MINOR</priority>
+        <description>When number of characters for one line of code is very long, it largely harm the readability. Break long line of code into multiple lines.</description>
+    </rule>
+    <rule>
+        <key>long method</key>
+        <name>Long method</name>
+        <priority>MAJOR</priority>
+        <description>Long method generally indicates that this method tries to so many things. Each method should do one thing and one thing well.</description>
+    </rule>
+    <rule>
+        <key>high ncss method</key>
+        <name>Ncss method count</name>
+        <priority>CRITICAL</priority>
+        <description>This rule counts number of lines for a method by counting Non Commenting Source Statements (NCSS). NCSS only takes actual statements into consideration, in other words, ignores empty statements, empty blocks, closing brackets or semicolons after closing brackets. Meanwhile, statement that is break into multiple lines contribute only one count.</description>
+    </rule>
+    <rule>
+        <key>deep nested block</key>
+        <name>Nested block depth</name>
+        <priority>CRITICAL</priority>
+        <description>This rule indicates blocks nested more deeply than the upper limit.</description>
+    </rule>
+    <rule>
+        <key>high npath complexity</key>
+        <name>N path complexity</name>
+        <priority>CRITICAL</priority>
+        <description>NPath complexity is determined by the number of execution paths through that method. Compared to cyclomatic complexity, NPath complexity has two outstanding characteristics: first, it distinguish between different kinds of control flow structures; second, it takes the various type of acyclic paths in a flow graph into consideration.</description>
+    </rule>
+    <rule>
+        <key>too many fields</key>
+        <name>Too many fields</name>
+        <priority>CRITICAL</priority>
+        <description>A class with too many fields indicates it does too many things and is lack of proper abstraction. It can be resigned to have fewer fields.</description>
+    </rule>
+    <rule>
+        <key>too many methods</key>
+        <name>Too many methods</name>
+        <priority>CRITICAL</priority>
+        <description>A class with too many methods indicates it does too many things and hard to read and understand. It usually contains complicated code, and should be refactored.</description>
+    </rule>
+    <rule>
+        <key>too many parameters</key>
+        <name>Too many parameters</name>
+        <priority>CRITICAL</priority>
+        <description>Methods with too many parameters are hard to understand and maintain, and are thirsty for refactorings, like Replace Parameter With method, Introduce Parameter Object, or Preserve Whole Object.</description>
+    </rule>
+    <rule>
+        <key>unused local variable</key>
+        <name>Unused local variable</name>
+        <priority>INFO</priority>
+        <description>This rule detects local variables that are declared, but not used.</description>
+    </rule>
+    <rule>
+        <key>unused method parameter</key>
+        <name>Unused method parameter</name>
+        <priority>INFO</priority>
+        <description>This rule detects parameters that are not used in the method.</description>
+    </rule>
+    <rule>
+        <key>feature envy</key>
+        <name>Feature envy</name>
+        <priority>CRITICAL</priority>
+        <description>Feature envy</description>
+    </rule>
+    <rule>
+        <key>ivar assignment outside accessors or init</key>
+        <name>Ivar assignment outside accessors or init</name>
+        <priority>MAJOR</priority>
+        <description>Ivar assignment outside accessors or init</description>
+    </rule>
+    <rule>
+        <key>jumbled incrementer</key>
+        <name>Jumbled incrementer</name>
+        <priority>MAJOR</priority>
+        <description>Jumbled incrementer</description>
+    </rule>
+    <rule>
+        <key>missing break in switch statement</key>
+        <name>Missing break in switch statement</name>
+        <priority>MAJOR</priority>
+        <description>Missing break in switch statement</description>
+    </rule>
+    <rule>
+        <key>must override hash with isEqual</key>
+        <name>Must override hash with isEqual</name>
+        <priority>MINOR</priority>
+        <description>Must override hash with isEqual</description>
+    </rule>
+    <rule>
+        <key>switch statements don't need default when fully covered</key>
+        <name>Switch statements don't need default when fully covered</name>
+        <priority>MAJOR</priority>
+        <description>Switch statements don't need default when fully covered</description>
+    </rule>
+    <rule>
+        <key>use early exits and continue</key>
+        <name>Use early exits and continue</name>
+        <priority>MAJOR</priority>
+        <description>Use early exits and continue</description>
+    </rule>
+</rules>

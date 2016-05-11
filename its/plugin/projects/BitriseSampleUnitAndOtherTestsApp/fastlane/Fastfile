@@ -1,0 +1,62 @@
+# vim: set filetype=ruby:
+fastlane_version "1.61.0"
+opt_out_usage
+
+lane :clean do
+  sh "cd .. && rm -rf build/"
+  sh "cd .. && rm -rf BitriseSampleUnitAndOtherTestsApp.xcworkspace/"
+  sh "cd .. && rm -rf DerivedData/"
+  sh "cd .. && rm -rf Pods/"
+  sh "cd .. && rm -f fastlane/report.xml"
+  sh "cd .. && rm -rf fastlane/test_output/"
+  sh "cd .. && rm -f compile_commands.json"
+end
+
+platform :ios do
+  before_all do
+    # Uncomment to enable auto-install of Xcode and/or auto-detection of DEVELOPER_DIR
+    #xcode_install(version: "7.2")
+    cocoapods
+  end
+
+  lane :test_and_analyze do
+    # Ensure clean simulator state for tests
+    sh "killall 'iOS Simulator' 'iPhone Simulator' 'Simulator' || true"
+    sh "SNAPSHOT_FORCE_DELETE=true snapshot reset_simulators"
+
+    # Run xcodebuild test and analyze actions
+    scan(
+      workspace: "BitriseSampleUnitAndOtherTestsApp.xcworkspace",
+      scheme: "BitriseSampleUnitAndOtherTestsApp",
+      xcargs: "-derivedDataPath DerivedData analyze CLANG_ANALYZER_OUTPUT_DIR=#{Dir.pwd}/../build/reports/clang/",
+      code_coverage: true,
+      output_types: "html,junit,json-compilation-database",
+      output_directory: "build/reports",
+    )
+
+    # Don't keep analysis on Pods
+    sh "cd .. && rm -rf build/reports/clang/StaticAnalyzer/Pods/"
+
+    # Move JUnit reports into their own directory and make files match naming standard
+    sh "cd .. && mkdir build/reports/junit/"
+    sh "cd .. && mv build/reports/report.junit build/reports/junit/TESTS-BitriseSampleUnitAndOtherTestsApp.xml"
+  end
+
+  lane :oclint do
+    sh "cd .. && cp build/reports/report.json-compilation-database compile_commands.json"
+    sh "cd .. && mkdir -p build/reports"
+    oclint(
+      select_regex: /BitriseSampleUnitAndOtherTestsApp\/.*/,
+      report_type: "pmd",
+      report_path: "build/reports/oclint.xml",
+      max_priority_1: 10000,
+      max_priority_2: 10000,
+      max_priority_3: 10000,
+    )
+    sh "cd .. && rm -f compile_commands.json"
+  end
+
+  lane :lizard do
+    sh "cd .. && lizard --xml BitriseSampleUnitAndOtherTestsApp/ > build/reports/lizard.xml"
+  end
+end

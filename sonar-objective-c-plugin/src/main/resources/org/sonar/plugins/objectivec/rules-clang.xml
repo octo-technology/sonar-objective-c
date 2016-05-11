@@ -1,0 +1,68 @@
+<rules>
+    <rule>
+        <key>core.CallAndMessage</key>
+        <name>Check for logical errors for function calls and Objective-C message expressions (e.g., uninitialized arguments, null function pointers)</name>
+        <priority>CRITICAL</priority>
+        <description>Check for logical errors for function calls and Objective-C message expressions (e.g., uninitialized arguments, null function pointers)</description>
+    </rule>
+    <rule>
+        <key>core.UndefinedBinaryOperatorResult</key>
+        <name>Check for undefined results of binary operators</name>
+        <priority>MAJOR</priority>
+        <description>Check for undefined results of binary operators</description>
+    </rule>
+    <rule>
+        <key>core.uninitialized.Assign</key>
+        <name>Check for assigning uninitialized values</name>
+        <priority>MAJOR</priority>
+        <description>Check for assigning uninitialized values</description>
+    </rule>
+    <rule>
+        <key>core.uninitialized.Branch</key>
+        <name>Check for uninitialized values used as branch conditions</name>
+        <priority>MAJOR</priority>
+        <description>Check for uninitialized values used as branch conditions</description>
+    </rule>
+    <rule>
+        <key>core.uninitialized.UndefReturn</key>
+        <name>Check for uninitialized values being returned to the caller</name>
+        <priority>MAJOR</priority>
+        <description>Check for uninitialized values being returned to the caller</description>
+    </rule>
+    <rule>
+        <key>deadcode.DeadStores</key>
+        <name>Check for values stored to variables that are never read afterwards</name>
+        <priority>MAJOR</priority>
+        <description>Check for values stored to variables that are never read afterwards</description>
+    </rule>
+    <rule>
+        <key>osx.cocoa.AtSync</key>
+        <name>Check for nil pointers used as mutexes for @synchronized</name>
+        <priority>MAJOR</priority>
+        <description>Check for nil pointers used as mutexes for @synchronized</description>
+    </rule>
+    <rule>
+        <key>osx.cocoa.MissingSuperCall</key>
+        <name>Warn about Objective-C methods that lack a necessary call to super</name>
+        <priority>MAJOR</priority>
+        <description>Warn about Objective-C methods that lack a necessary call to super</description>
+    </rule>
+    <rule>
+        <key>osx.cocoa.NSError</key>
+        <name>Check usage of NSError** parameters</name>
+        <priority>MAJOR</priority>
+        <description>Check usage of NSError** parameters</description>
+    </rule>
+    <rule>
+        <key>osx.cocoa.RetainCount</key>
+        <name>Check for leaks and violations of the Cocoa Memory Management rules</name>
+        <priority>CRITICAL</priority>
+        <description>Check for leaks and violations of the Cocoa Memory Management rules</description>
+    </rule>
+    <rule>
+        <key>other</key>
+        <name>All other Clang Static Analyzer warnings</name>
+        <priority>MAJOR</priority>
+        <description>Warning reported by Clang Static Analyzer (uncategorized).</description>
+    </rule>
+</rules>

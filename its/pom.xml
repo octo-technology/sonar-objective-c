@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.sonarqubecommunity.objectivec</groupId>
+        <artifactId>objective-c</artifactId>
+        <version>0.5.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>objective-c-its</artifactId>
+    <name>SonarQube Objective-C (Community) :: ITs</name>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>plugin</module>
+    </modules>
+
+    <properties>
+        <skipTests>true</skipTests>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+</project>

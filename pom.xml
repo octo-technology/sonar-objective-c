@@ -2,40 +2,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <repositories>
-        <repository>
-            <id>sonar</id>
-            <url>http://repository.sonarsource.org/content/repositories/sonar</url>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>sonar</id>
-            <url>http://repository.sonarsource.org/content/repositories/sonar</url>
-        </pluginRepository>
-    </pluginRepositories>
-
     <parent>
-        <groupId>org.codehaus.sonar-plugins</groupId>
+        <groupId>org.sonarsource.parent</groupId>
         <artifactId>parent</artifactId>
-        <version>18</version>
+        <version>29</version>
     </parent>
 
-    <groupId>org.codehaus.sonar-plugin.objectivec</groupId>
-    <artifactId>sonar-objective-c-plugin</artifactId>
-    <version>0.4.0</version>
+    <groupId>org.sonarqubecommunity.objectivec</groupId>
+    <artifactId>objective-c</artifactId>
+    <version>0.5.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-    <packaging>sonar-plugin</packaging>
-
-    <name>Objective-C Sonar Plugin</name>
-    <description>Enables analysis of Objective-C projects into Sonar.</description>
-    <url>https://github.com/octo-technology/sonar-objective-c</url>
-
-
+    <name>SonarQube Objective-C (Community)</name>
     <inceptionYear>2012</inceptionYear>
     <organization>
-        <name>OCTO Technology</name>
+        <name>OCTO Technology, Backelite, and contributors</name>
+        <url>mailto:sonarqube@googlegroups.com</url>
     </organization>
     <licenses>
         <license>
@@ -44,6 +26,13 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
+    <modules>
+        <module>objective-c-squid</module>
+        <module>sonar-objective-c-plugin</module>
+        <module>sslr-objective-c-toolkit</module>
+        <module>its</module>
+    </modules>
 
     <developers>
         <developer>
@@ -56,11 +45,11 @@
             <name>Gilles Grousset</name>
             <url>https://github.com/zippy1978</url>
         </developer>
-	<developer>
+        <developer>
             <id>dbregeon</id>
             <name>Denis Bregeon</name>
             <organization>Incept5 LLC</organization>
-        </developer>    
+        </developer>
         <developer>
             <id>fhelg</id>
             <name>François Helg</name>
@@ -77,112 +66,106 @@
             <name>Mete Balci</name>
             <url>https://github.com/metebalci</url>
         </developer>
+        <developer>
+            <id>agh92</id>
+            <name>Andrés Gil Herrera</name>
+            <url>https://github.com/agh92</url>
+        </developer>
+        <developer>
+            <id>mjdetullio</id>
+            <name>Matthew DeTullio</name>
+            <url>https://github.com/mjdetullio</url>
+        </developer>
     </developers>
+
     <scm>
-        <connection>scm:git:git@github.com:octo-technology/sonar-objective-c.git</connection>
-        <developerConnection>scm:git:git@github.com:octo-technology/sonar-objective-c.git</developerConnection>
-        <url>https://github.com/octo-technology/sonar-objective-c</url>
+        <connection>scm:git:git@github.com:mjdetullio/sonar-objective-c.git</connection>
+        <developerConnection>scm:git:git@github.com:mjdetullio/sonar-objective-c.git</developerConnection>
+        <url>https://github.com/mjdetullio/sonar-objective-c</url>
     </scm>
 
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/mjdetullio/sonar-objective-c/issues</url>
+    </issueManagement>
+
     <ciManagement>
-        <system>Cloudbees</system>
-        <url>https://rfelden.ci.cloudbees.com/job/sonar-objective-c/</url>
+        <system>Travis CI</system>
+        <url>https://travis-ci.org/mjdetullio/sonar-objective-c</url>
     </ciManagement>
 
     <properties>
-        <license.owner>OCTO Technology</license.owner>
-        <license.title>Sonar Objective-C Plugin</license.title>
-
-        <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
-
-        <sonar.version>4.3</sonar.version>
-        <sslr.version>1.20</sslr.version>
-
-        <!-- Configuration for sonar-packaging-maven-plugin -->
-        <sonar.pluginClass>org.sonar.plugins.objectivec.ObjectiveCPlugin</sonar.pluginClass>
-        <sonar.pluginName>ObjectiveC</sonar.pluginName>
-
+        <license.owner>${project.organization.name}</license.owner>
+        <license.mailto>${project.organization.url}</license.mailto>
+        <sonar.version>4.5.2</sonar.version>
+        <sslr.version>1.21</sslr.version>
+        <orchestrator.version>3.10.1</orchestrator.version>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.codehaus.sonar</groupId>
-            <artifactId>sonar-plugin-api</artifactId>
-            <version>${sonar.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.sonar</groupId>
-            <artifactId>sonar-testing-harness</artifactId>
-            <version>${sonar.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.sonar</groupId>
-            <artifactId>sonar-deprecated</artifactId>
-            <version>${sonar.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.codehaus.sonar.sslr</groupId>
-            <artifactId>sslr-core</artifactId>
-            <version>${sslr.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.sonar.sslr</groupId>
-            <artifactId>sslr-xpath</artifactId>
-            <version>${sslr.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.sonar.sslr</groupId>
-            <artifactId>sslr-toolkit</artifactId>
-            <version>${sslr.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.sonar.sslr</groupId>
-            <artifactId>sslr-testing-harness</artifactId>
-            <version>${sslr.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.sonar.sslr-squid-bridge</groupId>
-            <artifactId>sslr-squid-bridge</artifactId>
-            <version>2.4</version>
-        </dependency>
-        <dependency>
-            <groupId>ant</groupId>
-            <artifactId>ant</artifactId>
-            <version>1.6</version>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.10</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>1.9.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-all</artifactId>
-            <version>1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.easytesting</groupId>
-            <artifactId>fest-assert</artifactId>
-            <version>1.4</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>0.9.30</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.sonar.plugins</groupId>
-            <artifactId>sonar-surefire-plugin</artifactId>
-            <version>2.7</version>
-        </dependency>
-
-    </dependencies>
-
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.codehaus.sonar</groupId>
+                <artifactId>sonar-plugin-api</artifactId>
+                <version>${sonar.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.sonarsource.sslr</groupId>
+                <artifactId>sslr-core</artifactId>
+                <version>${sslr.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.sonarsource.sslr</groupId>
+                <artifactId>sslr-xpath</artifactId>
+                <version>${sslr.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.sonarsource.sslr</groupId>
+                <artifactId>sslr-toolkit</artifactId>
+                <version>${sslr.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.sonarsource.sslr-squid-bridge</groupId>
+                <artifactId>sslr-squid-bridge</artifactId>
+                <version>2.6.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.googlecode.plist</groupId>
+                <artifactId>dd-plist</artifactId>
+                <version>1.16</version>
+            </dependency>
+            <!-- unit tests -->
+            <dependency>
+                <groupId>org.codehaus.sonar</groupId>
+                <artifactId>sonar-testing-harness</artifactId>
+                <version>${sonar.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.sonarsource.sslr</groupId>
+                <artifactId>sslr-testing-harness</artifactId>
+                <version>${sslr.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.easytesting</groupId>
+                <artifactId>fest-assert</artifactId>
+                <version>1.4</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.1.3</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
