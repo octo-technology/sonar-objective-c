@@ -189,21 +189,21 @@ def mergeRules(existingRules, freshRules) {
 }
 
 // Files
-File rulesTxt = new File('src/main/resources/org/sonar/plugins/fauxpas/rules.txt')
-File profileXml = new File('src/main/resources/org/sonar/plugins/fauxpas/profile-fauxpas.xml')
+File rulesTxt = new File('src/main/resources/org/sonar/plugins/oclint/rules.txt')
+File profileXml = new File('src/main/resources/org/sonar/plugins/oclint/profile-oclint.xml')
 
 
 // Parse OCLint online documentation
 def rules = []
 
-rules.addAll parseCategory("http://docs.fauxpas.org/en/dev/rules/basic.html", "basic", 3)
-rules.addAll parseCategory("http://docs.fauxpas.org/en/dev/rules/convention.html", "convention", 2)
-rules.addAll parseCategory("http://docs.fauxpas.org/en/dev/rules/empty.html", "empty", 3)
-rules.addAll parseCategory("http://docs.fauxpas.org/en/dev/rules/migration.html", "migration", 1)
-rules.addAll parseCategory("http://docs.fauxpas.org/en/dev/rules/naming.html", "naming", 2)
-rules.addAll parseCategory("http://docs.fauxpas.org/en/dev/rules/redundant.html", "redundant", 1)
-rules.addAll parseCategory("http://docs.fauxpas.org/en/dev/rules/size.html", "size", 3)
-rules.addAll parseCategory("http://docs.fauxpas.org/en/dev/rules/unused.html", "unused", 0)
+rules.addAll parseCategory("http://docs.oclint.org/en/stable/rules/basic.html", "basic", 3)
+rules.addAll parseCategory("http://docs.oclint.org/en/stable/rules/convention.html", "convention", 2)
+rules.addAll parseCategory("http://docs.oclint.org/en/stable/rules/empty.html", "empty", 3)
+rules.addAll parseCategory("http://docs.oclint.org/en/stable/rules/migration.html", "migration", 1)
+rules.addAll parseCategory("http://docs.oclint.org/en/stable/rules/naming.html", "naming", 2)
+rules.addAll parseCategory("http://docs.oclint.org/en/stable/rules/redundant.html", "redundant", 1)
+rules.addAll parseCategory("http://docs.oclint.org/en/stable/rules/size.html", "size", 3)
+rules.addAll parseCategory("http://docs.oclint.org/en/stable/rules/unused.html", "unused", 0)
 println "${rules.size()} rules found"
 
 
