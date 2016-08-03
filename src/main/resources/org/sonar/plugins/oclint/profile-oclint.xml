@@ -255,5 +255,17 @@
       <repositoryKey>OCLint</repositoryKey>
       <key>ivar assignment outside accessors or init</key>
     </rule>
+    <rule>
+      <repositoryKey>OCLint</repositoryKey>
+      <key>covered switch statements dont need default</key>
+    </rule>
+    <rule>
+      <repositoryKey>OCLint</repositoryKey>
+      <key>class </key>
+    </rule>
+    <rule>
+      <repositoryKey>OCLint</repositoryKey>
+      <key>unnecessary null check for dealloc</key>
+    </rule>
   </rules>
 </profile>
