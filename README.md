@@ -50,6 +50,9 @@ Binary packages are available in the release section.
 
 ###Release history
 
+###0.5.2
+- OCLint 0.10.3 support
+
 ####0.5.1
 - Complexity with Lizard !
 
