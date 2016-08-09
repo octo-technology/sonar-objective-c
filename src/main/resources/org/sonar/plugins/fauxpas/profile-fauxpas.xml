@@ -341,11 +341,11 @@
     </rule>
     <rule>
       <repositoryKey>FauxPas</repositoryKey>
-      <key>NullCoalescingOp</key>
+      <key>StrongInsteadOfRetain</key>
     </rule>
     <rule>
       <repositoryKey>FauxPas</repositoryKey>
-      <key>StrongInsteadOfRetain</key>
+      <key>NullCoalescingOp</key>
     </rule>
     <rule>
       <repositoryKey>FauxPas</repositoryKey>

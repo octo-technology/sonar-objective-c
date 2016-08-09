@@ -10,7 +10,7 @@
         "category": "BestPractice",
         "key": "MallocWithoutSizeof",
         "name": "Memory allocation without using sizeof",
-        "description": "The sizeof operator should be used to obtain the correct size for any allocated structure or variable \u2014 the sizes of some data types vary between the 32-bit and 64-bit runtimes.This rule is na\u00EFve and may produce false positives in many cases.",
+        "description": "The sizeof operator should be used to obtain the correct size for any allocated structure or variable \u2014 the sizes of some data types vary between the 32-bit and 64-bit runtimes.This rule is na\u00efve and may produce false positives in many cases.",
         "severity": "MAJOR"
     },
     {
@@ -52,7 +52,7 @@
         "category": "BestPractice",
         "key": "RetainingImmutableProperty",
         "name": "Non-copying property of immutable NSCopying type",
-        "description": "Warns if \u201Cretaining\u201D semantics are specified in a @property declaration for a common immutable NSCopying class type that also has a mutable subclass variant (for example NSString).This rule helps avoid situations where the value of a property could change without the setter being invoked (i.e. the object gets mutated).",
+        "description": "Warns if \u201cretaining\u201d semantics are specified in a @property declaration for a common immutable NSCopying class type that also has a mutable subclass variant (for example NSString).This rule helps avoid situations where the value of a property could change without the setter being invoked (i.e. the object gets mutated).",
         "severity": "MAJOR"
     },
     {
@@ -115,7 +115,7 @@
         "category": "BestPractice",
         "key": "CopyingMutableProperty",
         "name": "Copying property of mutable NSCopying type",
-        "description": "Warns if \u201Ccopying\u201D semantics are specified in a @property declaration for a common mutable NSCopying class type that has an immutable superclass (for example NSMutableArray).Invoking -[NSCopying copy] for such objects will in many cases return an immutable copy. This means that after assigning a mutable object value to such a property, it may in fact get an immutable copy of the assigned value (which will lead to crashes as soon as any attempt is made to mutate this immutable object).",
+        "description": "Warns if \u201ccopying\u201d semantics are specified in a @property declaration for a common mutable NSCopying class type that has an immutable superclass (for example NSMutableArray).Invoking -[NSCopying copy] for such objects will in many cases return an immutable copy. This means that after assigning a mutable object value to such a property, it may in fact get an immutable copy of the assigned value (which will lead to crashes as soon as any attempt is made to mutate this immutable object).",
         "severity": "MAJOR"
     },
     {
@@ -149,7 +149,7 @@
     {
         "category": "BestPractice",
         "key": "PrivateCategory",
-        "name": "Category used for \u201Cprivate\u201D declarations",
+        "name": "Category used for \u201cprivate\u201d declarations",
         "description": "A class extension should be used instead, because they enable compiler warnings for detecting unimplemented methods.",
         "severity": "MAJOR"
     },
@@ -157,7 +157,7 @@
         "category": "BestPractice",
         "key": "IBOutletsInPublicInterface",
         "name": "IBOutlets in public interface",
-        "description": "IBOutlets are often private implementation details, and should thus be in a private class extension.This rule warns only about cases where the class is the \u201CFile\u2019s Owner\u201D of a XIB whose basename is the same as the class name, and that contains a connection to the outlet.",
+        "description": "IBOutlets are often private implementation details, and should thus be in a private class extension.This rule warns only about cases where the class is the \u201cFile\u2019s Owner\u201d of a XIB whose basename is the same as the class name, and that contains a connection to the outlet.",
         "severity": "MAJOR"
     },
     {
@@ -381,7 +381,7 @@
         "category": "Config",
         "key": "XcconfigOverwrites",
         "name": "Xcode build configuration file overwrites previously set value",
-        "description": "Overwriting a previously set value in a build configuration file is often a sign of a mistake somewhere.It is recommended to set custom intermediary settings in \u201Cparent\u201D configuration files and then compose final values for actual build settings in leaf configuration files.",
+        "description": "Overwriting a previously set value in a build configuration file is often a sign of a mistake somewhere.It is recommended to set custom intermediary settings in \u201cparent\u201d configuration files and then compose final values for actual build settings in leaf configuration files.",
         "severity": "MINOR"
     },
     {
@@ -395,7 +395,7 @@
         "category": "Config",
         "key": "BuildSettingPlacement",
         "name": "Incorrect placement of build setting value",
-        "description": "Warns if preprocessor definitions are defined explicitly using the -D argument instead of defining them in the GCC_PREPROCESSOR_DEFINITIONS (\u201CPreprocessor macros\u201D) build setting.Also warns if non-warning flags are defined in WARNING_CFLAGS (instead of OTHER_CFLAGS).",
+        "description": "Warns if preprocessor definitions are defined explicitly using the -D argument instead of defining them in the GCC_PREPROCESSOR_DEFINITIONS (\u201cPreprocessor macros\u201d) build setting.Also warns if non-warning flags are defined in WARNING_CFLAGS (instead of OTHER_CFLAGS).",
         "severity": "MINOR"
     },
     {
@@ -542,7 +542,7 @@
         "category": "APIUsage",
         "key": "SuspiciousDateTimeFormat",
         "name": "Suspicious date-time format",
-        "description": "Warns about date-time formats that are likely to have unintentional behavior, e.g. \u201Cweek-year\u201D specifiers (uppercase Y) instead of normal calendar year specifiers (lowercase y).",
+        "description": "Warns about date-time formats that are likely to have unintentional behavior, e.g. \u201cweek-year\u201d specifiers (uppercase Y) instead of normal calendar year specifiers (lowercase y).",
         "severity": "CRITICAL"
     },
     {
@@ -589,16 +589,16 @@
     },
     {
         "category": "Style",
-        "key": "NullCoalescingOp",
-        "name": "Null coalescing operator usage",
-        "description": "Expressions of the form (obj ? obj : other) should be written as obj ?: other.",
+        "key": "StrongInsteadOfRetain",
+        "name": "Usage of retain in ARC code",
+        "description": "In files compiled with ARC, warns if the retain property attribute is used. The strong and retain attributes are functionally equivalent, but the former could be considered more idiomatic with ARC.",
         "severity": "MAJOR"
     },
     {
         "category": "Style",
-        "key": "StrongInsteadOfRetain",
-        "name": "Usage of retain in ARC code",
-        "description": "In files compiled with ARC, warns if the retain property attribute is used. The strong and retain attributes are functionally equivalent, but the former could be considered more idiomatic with ARC.",
+        "key": "NullCoalescingOp",
+        "name": "Null coalescing operator usage",
+        "description": "Expressions of the form (obj ? obj : other) should be written as obj ?: other.",
         "severity": "MAJOR"
     },
     {
@@ -703,7 +703,7 @@
         "category": "Pedantic",
         "key": "UsedVariableMarkedUnused",
         "name": "Using a variable marked unused",
-        "description": "Warns when a variable is annotated with the \u201Cunused\u201D attribute, but is actually used. This rule does not warn about cases where a variable is marked unused via a pragma directive.",
+        "description": "Warns when a variable is annotated with the \u201cunused\u201d attribute, but is actually used. This rule does not warn about cases where a variable is marked unused via a pragma directive.",
         "severity": "MINOR"
     },
     {
