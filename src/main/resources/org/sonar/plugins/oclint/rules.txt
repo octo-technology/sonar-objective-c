@@ -6,7 +6,7 @@ OCLint
 use early exits and continue
 ----------
 
-Summary: 
+Summary: Early exits can reduce the indentation of a block of code, so that reader do not have to remember all the previous decisions, therefore, makes it easier to understand the code.
 
 Severity: 2
 Category: OCLint
@@ -22,7 +22,7 @@ Category: OCLint
 bitwise operator in conditional
 ----------
 
-Summary: Checks for bitwise operations in conditionals. Although being written on purpose in some rare cases, bitwise operations are considered to be too “smart”. Smart code is not easy to understand.
+Summary: Checks for bitwise operations in conditionals. Although being written on purpose in some rare cases, bitwise operations are considered to be too ?smart?. Smart code is not easy to understand.
 
 Severity: 3
 Category: OCLint
@@ -30,9 +30,9 @@ Category: OCLint
 broken null check
 ----------
 
-Summary: The broken nil check in Objective-C in some cases returns just the opposite result.
+Summary: The broken null check itself will crash the program.
 
-Severity: 4
+Severity: 3
 Category: OCLint
 
 broken nil check
@@ -46,7 +46,7 @@ Category: OCLint
 broken oddness check
 ----------
 
-Summary: Checking oddness by x%2==1 won’t work for negative numbers. Use x&1==1, or x%2!=0 instead.
+Summary: Checking oddness by x%2==1 won?t work for negative numbers. Use x&1==1, or x%2!=0 instead.
 
 Severity: 3
 Category: OCLint
@@ -54,7 +54,7 @@ Category: OCLint
 collapsible if statements
 ----------
 
-Summary: This rule detects instances where the conditions of two consecutive if statements can combined into one in order to increase code cleanness and readability.
+Summary: This rule detects instances where the conditions of two consecutive if statements can be combined into one in order to increase code cleanness and readability.
 
 Severity: 3
 Category: OCLint
@@ -86,7 +86,7 @@ Category: OCLint
 dead code
 ----------
 
-Summary: Code after return, break, continue, and throw statements are unreachable and will never be executed.
+Summary: Code after return, break, continue, and throw statements is unreachable and will never be executed.
 
 Severity: 3
 Category: OCLint
@@ -118,7 +118,7 @@ Category: OCLint
 empty do/while statement
 ----------
 
-Summary: This rule detects instances where a do-while statement does nothing.
+Summary: This rule detects instances where do-while statement does nothing.
 
 Severity: 3
 Category: OCLint
@@ -126,9 +126,9 @@ Category: OCLint
 empty else block
 ----------
 
-Summary: 
+Summary: This rule detects instances where a else statement does nothing.
 
-Severity: 2
+Severity: 3
 Category: OCLint
 
 empty finally statement
@@ -214,15 +214,15 @@ Category: OCLint
 jumbled incrementer
 ----------
 
-Summary: 
+Summary: Jumbled incrementers are usually typos. If it?s done on purpose, it?s very confusing for code readers.
 
-Severity: 2
+Severity: 3
 Category: OCLint
 
 long class
 ----------
 
-Summary: Long class generally indicates that this class tries to so many things. Each class should do one thing and one thing well.
+Summary: Long class generally indicates that this class tries to do many things. Each class should do one thing and that one thing well.
 
 Severity: 3
 Category: OCLint
@@ -230,15 +230,15 @@ Category: OCLint
 long line
 ----------
 
-Summary: When number of characters for one line of code is very long, it largely harm the readability. Break long line of code into multiple lines.
+Summary: When the number of characters for one line of code is very high, it largely harms the readability. Break long lines of code into multiple lines.
 
-Severity: 2
+Severity: 3
 Category: OCLint
 
 long method
 ----------
 
-Summary: Long method generally indicates that this method tries to so many things. Each method should do one thing and one thing well.
+Summary: Long method generally indicates that this method tries to do many things. Each method should do one thing and that one thing well.
 
 Severity: 3
 Category: OCLint
@@ -254,7 +254,7 @@ Category: OCLint
 misplaced null check
 ----------
 
-Summary: The nil check is misplaced. In Objective-C, sending a message to a nil pointer simply does nothing. But code readers may be confused about the misplaced nil check.
+Summary: The null check is misplaced. In C and C++, sending a message to a null pointer could crash the app. When null is misplaced, either the check is useless or it?s incorrect.
 
 Severity: 3
 Category: OCLint
@@ -270,7 +270,7 @@ Category: OCLint
 missing break in switch statement
 ----------
 
-Summary: 
+Summary: A switch statement without a break statement has a very large chance to contribute a bug.
 
 Severity: 2
 Category: OCLint
@@ -294,7 +294,7 @@ Category: OCLint
 high ncss method
 ----------
 
-Summary: This rule counts number of lines for a method by counting Non Commenting Source Statements (NCSS). NCSS only takes actual statements into consideration, in other words, ignores empty statements, empty blocks, closing brackets or semicolons after closing brackets. Meanwhile, statement that is break into multiple lines contribute only one count.
+Summary: This rule counts number of lines for a method by counting Non Commenting Source Statements (NCSS). NCSS only takes actual statements into consideration, in other words, ignores empty statements, empty blocks, closing brackets or semicolons after closing brackets. Meanwhile, a statement that is broken into multiple lines contribute only one count.
 
 Severity: 3
 Category: OCLint
@@ -310,7 +310,7 @@ Category: OCLint
 non case label in switch statement
 ----------
 
-Summary: It is very confusing when default label is not the last label in a switch statement.
+Summary: It is very confusing when label becomes part of the switch statement.
 
 Severity: 2
 Category: OCLint
@@ -382,7 +382,7 @@ Category: OCLint
 redundant local variable
 ----------
 
-Summary: This rule detects cases where a variable declaration immediately followed by a return of that variable.
+Summary: This rule detects cases where a variable declaration is immediately followed by a return of that variable.
 
 Severity: 1
 Category: OCLint
@@ -390,9 +390,9 @@ Category: OCLint
 redundant nil check
 ----------
 
-Summary: 
+Summary: C/C++-style null check in Objective-C like foo!=nil&&[foobar] is redundant, since sending a message to a nil object in this case simply returns a false-y value.
 
-Severity: 3
+Severity: 1
 Category: OCLint
 
 return from finally block
@@ -422,7 +422,7 @@ Category: OCLint
 switch statements should have default
 ----------
 
-Summary: Switch statements should a default statement.
+Summary: Switch statements should have a default statement.
 
 Severity: 2
 Category: OCLint
@@ -446,7 +446,7 @@ Category: OCLint
 too many fields
 ----------
 
-Summary: A class with too many fields indicates it does too many things and is lack of proper abstraction. It can be resigned to have fewer fields.
+Summary: A class with too many fields indicates it does too many things and lacks proper abstraction. It can be redesigned to have fewer fields.
 
 Severity: 3
 Category: OCLint
@@ -454,7 +454,7 @@ Category: OCLint
 too many methods
 ----------
 
-Summary: A class with too many methods indicates it does too many things and hard to read and understand. It usually contains complicated code, and should be refactored.
+Summary: A class with too many methods indicates it does too many things and is hard to read and understand. It usually contains complicated code, and should be refactored.
 
 Severity: 3
 Category: OCLint
@@ -502,8 +502,32 @@ Category: OCLint
 ivar assignment outside accessors or init
 ----------
 
-Summary: 
+Summary: This rule prevents assigning an ivar outside of getters, setters, and init method.
 
 Severity: 2
+Category: OCLint
+
+covered switch statements dont need default
+----------
+
+Summary: When a switch statement covers all possible cases, a default label is not needed and should be removed. If the switch is not fully covered, the SwitchStatementsShouldHaveDefault rule will report.
+
+Severity: 2
+Category: OCLint
+
+class 
+----------
+
+Summary: This rule enforces the destructor of a virtual class must be virtual.
+
+Severity: 2
+Category: OCLint
+
+unnecessary null check for dealloc
+----------
+
+Summary: char*p=0;deletep; is valid. This rule locates unnecessary if(p) checks.
+
+Severity: 1
 Category: OCLint
 
