@@ -149,7 +149,6 @@ echo "Running run-sonar.sh..."
 
 # xctool, gcovr and oclint installed
 testIsInstalled xcodebuild
-testIsInstalled gcovr
 testIsInstalled oclint
 testIsInstalled oclint-xcodebuild
 
