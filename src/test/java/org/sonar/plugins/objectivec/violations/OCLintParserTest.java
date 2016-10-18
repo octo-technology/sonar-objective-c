@@ -19,6 +19,7 @@
  */
 package org.sonar.plugins.objectivec.violations;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
@@ -40,6 +41,7 @@ import org.sonar.api.rules.Violation;
 
 public class OCLintParserTest {
 	private final String VALID_REPORT = "<pmd version=\"violations-0.8dev\"><file name=\"/dummy/TEST_FILE\"><violation beginline=\"19\" endline=\"19\" begincolumn=\"13\" endcolumn=\"20\" rule=\"UselessOperationOnImmutable\" ruleset=\"Basic Rules\" package=\"org.sprunck.bee\" class=\"Bee\" method=\"toString\" externalInfoUrl=\"http://pmd.sourceforge.net/rules/basic.html#UselessOperationOnImmutable\" priority=\"3\">An operation on an Immutable object (String, BigDecimal or BigInteger) won't change the object itself</violation></file></pmd>";
+    private final String VALID_REPORT_WITH_DUP = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><pmd version=\"oclint-0.8dev\"><file name=\"/dummy/TEST_FILE\"><violation begincolumn=\"1\" endcolumn=\"124\" beginline=\"106\" endline=\"106\" priority=\"5\" rule=\"long line\">Line with 124 characters exceeds limit of 120</violation></file><file name=\"/dummy/TEST_FILE_2\"><violation begincolumn=\"44\" endcolumn=\"67\" beginline=\"298\" endline=\"298\" priority=\"5\" rule=\"long variable name\">Variable name with 22 characters is longer than the threshold of 20</violation></file><file name=\"/dummy/TEST_FILE\"><violation begincolumn=\"1\" endcolumn=\"124\" beginline=\"106\" endline=\"106\" priority=\"5\" rule=\"long line\">Line with 124 characters exceeds limit of 120</violation></file></pmd>";
 
 	@Test
 	public void parseReportShouldReturnAnEmptyCollectionWhenTheReportIsInvalid() {
@@ -77,5 +79,23 @@ public class OCLintParserTest {
 		assertFalse(violations.isEmpty());
 	}
 
+    @Test
+    public void parseReportShouldReturnACollectionOfViolationsWithoutDuplicates() {
+        final Project project = new Project("Test");
+        final org.sonar.api.resources.File dummyFile = new org.sonar.api.resources.File("dummy/test");
+        final SensorContext context = mock(SensorContext.class);
+        final ProjectFileSystem fileSystem = mock(ProjectFileSystem.class);
+        final List<File> sourceDirs = new ArrayList<File>();
+
+        final OCLintParser testedParser = new OCLintParser(project, context);
+
+        sourceDirs.add(new File("/dummy"));
+        when(fileSystem.getSourceDirs()).thenReturn(sourceDirs);
+        when(context.getResource(any(Resource.class))).thenReturn(dummyFile);
+        project.setFileSystem(fileSystem);
+
+        final Collection<Violation> violations = testedParser.parseReport(new StringInputStream(VALID_REPORT_WITH_DUP));
+        assertEquals(2, violations.size());
+    }
 
 }

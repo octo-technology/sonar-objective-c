@@ -21,6 +21,8 @@ package org.sonar.plugins.objectivec.violations;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -37,6 +39,7 @@ import org.sonar.api.utils.StaxParser.XmlStreamHandler;
 final class OCLintXMLStreamHandler implements XmlStreamHandler {
     private static final int PMD_MINIMUM_PRIORITY = 5;
     private final Collection<Violation> foundViolations;
+    private final Set<OCLintViolation> foundOCLintViolations;
     private final Project project;
     private final SensorContext context;
 
@@ -45,6 +48,7 @@ final class OCLintXMLStreamHandler implements XmlStreamHandler {
         foundViolations = violations;
         project = p;
         context = c;
+        foundOCLintViolations = new HashSet<OCLintViolation>();
     }
 
     public void stream(final SMHierarchicCursor rootCursor)
@@ -55,6 +59,8 @@ final class OCLintXMLStreamHandler implements XmlStreamHandler {
         while (null != file.getNext()) {
             collectViolationsFor(file);
         }
+
+        populateFoundViolations();
     }
 
     private void collectViolationsFor(final SMInputCursor file)
@@ -85,10 +91,15 @@ final class OCLintXMLStreamHandler implements XmlStreamHandler {
         }
     }
 
+    private void populateFoundViolations() {
+        for (OCLintViolation violation: foundOCLintViolations) {
+            foundViolations.add(violation.toSonarViolation());
+        }
+    }
+
     private void recordViolation(final org.sonar.api.resources.File resource,
             final SMInputCursor line) throws XMLStreamException {
         final Rule rule = Rule.create();
-        final Violation violation = Violation.create(rule, resource);
 
         // PMD Priorities are 1, 2, 3, 4, 5 RulePriority[0] is INFO
         rule.setSeverity(RulePriority.values()[PMD_MINIMUM_PRIORITY
@@ -96,15 +107,74 @@ final class OCLintXMLStreamHandler implements XmlStreamHandler {
         rule.setKey(line.getAttrValue("rule"));
         rule.setRepositoryKey(OCLintRuleRepository.REPOSITORY_KEY);
 
-        violation.setLineId(Integer.valueOf(line.getAttrValue("beginline")));
+        OCLintViolation violation = new OCLintViolation(resource, rule,
+                Integer.valueOf(line.getAttrValue("begincolumn")),
+                Integer.valueOf(line.getAttrValue("endcolumn")),
+                Integer.valueOf(line.getAttrValue("beginline")),
+                Integer.valueOf(line.getAttrValue("endline")),
+                line.getElemStringValue());
 
-        violation.setMessage(line.getElemStringValue());
-
-        foundViolations.add(violation);
+        foundOCLintViolations.add(violation);
     }
 
     private boolean fileExists(final org.sonar.api.resources.File file) {
         return context.getResource(file) != null;
+    }
+
+    private static class OCLintViolation
+    {
+        private final org.sonar.api.resources.File resource;
+        private final Rule rule;
+        private final int begincolumn;
+        private final int endcolumn;
+        private final int beginline;
+        private final int endline;
+        private final String comment;
+
+        private OCLintViolation(org.sonar.api.resources.File resource, Rule rule, int begincolumn, int endcolumn, int beginline, int endline, String comment) {
+            this.resource = resource;
+            this.rule = rule;
+            this.begincolumn = begincolumn;
+            this.endcolumn = endcolumn;
+            this.beginline = beginline;
+            this.endline = endline;
+            this.comment = comment;
+        }
+
+        public Violation toSonarViolation() {
+            final Violation violation = Violation.create(rule, resource);
+            violation.setLineId(beginline);
+            violation.setMessage(comment);
+            return violation;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            OCLintViolation that = (OCLintViolation) o;
+
+            if (!rule.equals(that.rule)) return false;
+            if (!resource.getLongName().equals(that.resource.getLongName())) return false;
+            if (begincolumn != that.begincolumn) return false;
+            if (beginline != that.beginline) return false;
+            if (endcolumn != that.endcolumn) return false;
+            if (endline != that.endline) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = begincolumn;
+            result = 31 * result + endcolumn;
+            result = 31 * result + beginline;
+            result = 31 * result + endline;
+            result = 31 * result + rule.hashCode();
+            result = 31 * result + resource.getLongName().hashCode();
+            return result;
+        }
     }
 
 }
