@@ -21,7 +21,7 @@ A SonarQube 5.0 dashboard of the iOS open source project [GreatReader](https://g
 
 | Feature 		| Supported	| Details	|
 |---------------|----------|:-----------:|
-| Complexity	|NO			| Uses [Lizard](https://github.com/terryyin/lizard)			|
+| Complexity	|YES			| Uses [Lizard](https://github.com/terryyin/lizard)			|
 | Design		|NO			|			|
 | Documentation	|YES		|			|
 | Duplications	|YES		|			|
