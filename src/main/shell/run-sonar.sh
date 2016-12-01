@@ -235,7 +235,12 @@ mkdir sonar-reports
 
 # Extracting project information needed later
 echo -n 'Extracting Xcode project information'
-buildCmd=(xcodebuild clean build -workspace $workspaceFile -scheme $appScheme)
+if [[ "$workspaceFile" != "" ]] ; then
+    buildCmdPrefix="-workspace $workspaceFile"
+else
+    buildCmdPrefix="-project $projectFile"
+fi
+buildCmd=(xcodebuild clean build $buildCmdPrefix -scheme $appScheme)
 if [[ ! -z "$destinationSimulator" ]]; then
     buildCmd+=(-destination "$destinationSimulator" -destination-timeout 360)
 fi
@@ -246,7 +251,7 @@ oclint-xcodebuild # Transform the xcodebuild.log file into a compile_command.jso
 # Unit tests and coverage
 if [ "$testScheme" = "" ]; then
 	echo 'Skipping tests as no test scheme has been provided!'
-	
+
 	# Put default xml files with no tests and no coverage...
 	echo "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><testsuites name='AllTestUnits'></testsuites>" > sonar-reports/TEST-report.xml
 	echo "<?xml version='1.0' ?><!DOCTYPE coverage SYSTEM 'http://cobertura.sourceforge.net/xml/coverage-03.dtd'><coverage><sources></sources><packages></packages></coverage>" > sonar-reports/coverage.xml
@@ -256,10 +261,10 @@ else
 
     if [ "$coverageType" = "profdata" -o "$coverageType" = "" ]; then
     	# profdata
-    	buildCmd=(xcodebuild clean build test -workspace $workspaceFile -scheme $appScheme -configuration Debug -enableCodeCoverage YES)
+    	buildCmd=(xcodebuild test $buildCmdPrefix -scheme "$testScheme" -configuration Debug -enableCodeCoverage YES)
     else
     	# Legacy coverage
-    	buildCmd=(xcodebuild clean build test -workspace $workspaceFile -scheme $appScheme -configuration Debug)
+    	buildCmd=(xcodebuild test $buildCmdPrefix -scheme "$testScheme" -configuration Debug)
     fi
 
     if [[ ! -z "$destinationSimulator" ]]; then
@@ -427,8 +432,8 @@ fi
 
 # SonarQube
 echo -n 'Running SonarQube using SonarQube Runner'
-runCommand /dev/stdout sonar-runner
-	
+runCommand /dev/stdout sonar-runner -Dsonar.projectVersion=$projectVersion
+
 # Kill progress indicator
 stopProgress
 
