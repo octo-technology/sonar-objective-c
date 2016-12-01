@@ -206,7 +206,8 @@ public class SurefireParser {
         if (!file.isFile() || !file.exists()) {
             List<File> files = ImmutableList.copyOf(fileSystem.files(fileSystem.predicates().and(
                     fileSystem.predicates().hasType(InputFile.Type.TEST),
-                    fileSystem.predicates().matchesPathPattern("**/" + fileName))));
+                    fileSystem.predicates().or(fileSystem.predicates().matchesPathPattern("**/" + fileName),
+                                               fileSystem.predicates().matchesPathPattern("**/" + fileName.replace("_", "+"))))));
 
             if (files.isEmpty()) {
                 LOG.info("Unable to locate test source file {}", fileName);
