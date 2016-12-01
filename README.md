@@ -25,7 +25,7 @@ A SonarQube 5.0 dashboard of the iOS open source project [GreatReader](https://g
 | Design		|NO			|			|
 | Documentation	|YES		|			|
 | Duplications	|YES		|			|
-| Issues		|YES		| Uses [OCLint](http://docs.oclint.org/en/dev/intro/installation.html): 63 rules, and [Faux Pas](http://fauxpasapp.com/): 102 rules|
+| Issues		|YES		| Uses [OCLint](http://docs.oclint.org/en/dev/intro/installation.html): 71 rules, and [Faux Pas](http://fauxpasapp.com/): 102 rules|
 | Size			|YES		|			|
 | Tests			|YES		| Uses [xctool](https://github.com/facebook/xctool), will probably switch to xcodebuild + [xcpretty](https://github.com/supermarin/xcpretty) soon			|
 | Code coverage	|YES		| With [gcovr](http://gcovr.com) for project before Xcode 7, otherwise [slather](https://github.com/venmo/slather)|
@@ -49,6 +49,11 @@ Binary packages are available in the release section.
 
 
 ###Release history
+
+###0.5.2
+- OCLint 0.11.0 support (see https://github.com/Backelite/sonar-objective-c/pull/13)
+- Removed required gcovr check in run-sonar.sh (see https://github.com/Backelite/sonar-objective-c/pull/10)
+- Fixed issued in run-sonar.sh (see https://github.com/Backelite/sonar-objective-c/pull/2)
 
 ####0.5.1
 - Complexity with Lizard !
@@ -77,7 +82,7 @@ Binary packages are available in the release section.
 - [SonarQube](http://docs.codehaus.org/display/SONAR/Setup+and+Upgrade) and [SonarQube Runner](http://docs.codehaus.org/display/SONAR/Installing+and+Configuring+SonarQube+Runner) installed ([HomeBrew](http://brew.sh) installed and ```brew install sonar-runner```)
 - [xcpretty](https://github.com/supermarin/xcpretty) (see instructions below)
 - [xctool](https://github.com/facebook/xctool) ([HomeBrew](http://brew.sh) installed and ```brew install xctool```). If you are using Xcode 6, make sure to update xctool (```brew upgrade xctool```) to a version > 0.2.2.
-- [OCLint](http://docs.oclint.org/en/dev/intro/installation.html) installed. Version 0.10.1 recommended. 
+- [OCLint](http://oclint-docs.readthedocs.io/en/stable/) installed. Version 0.11.0 recommended. 
 - [gcovr](http://gcovr.com) installed for legacy (pre Xcode 7 coverage)
 - [slather](https://github.com/SlatherOrg/slather) (```gem install slather```). Version 2.1.0 or above.
 - [lizard](https://github.com/terryyin/lizard) ([PIP](https://pip.pypa.io/en/stable/installing/) installed and ```sudo pip install lizard```)

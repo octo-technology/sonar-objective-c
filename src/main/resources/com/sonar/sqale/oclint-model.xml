@@ -73,7 +73,7 @@
             </chc>
             <chc>
                 <rule-repo>OCLint</rule-repo>
-                <rule-key>replace with number literal</rule-key>
+                <rule-key>use number literal</rule-key>
                 <prop>
                     <key>remediationFunction</key>
                     <txt>CONSTANT_ISSUE</txt>
@@ -86,7 +86,7 @@
             </chc>
             <chc>
                 <rule-repo>OCLint</rule-repo>
-                <rule-key>replace with boxed expression</rule-key>
+                <rule-key>use boxed expression</rule-key>
                 <prop>
                     <key>remediationFunction</key>
                     <txt>CONSTANT_ISSUE</txt>
@@ -100,6 +100,19 @@
             <chc>
                 <rule-repo>OCLint</rule-repo>
                 <rule-key>unnecessary else statement</rule-key>
+                <prop>
+                    <key>remediationFunction</key>
+                    <txt>CONSTANT_ISSUE</txt>
+                </prop>
+                <prop>
+                    <key>offset</key>
+                    <val>10</val>
+                    <txt>min</txt>
+                </prop>
+            </chc>
+            <chc>
+                <rule-repo>OCLint</rule-repo>
+                <rule-key>unnecessary null check for dealloc</rule-key>
                 <prop>
                     <key>remediationFunction</key>
                     <txt>CONSTANT_ISSUE</txt>
@@ -151,7 +164,7 @@
             </chc>
             <chc>
                 <rule-repo>OCLint</rule-repo>
-                <rule-key>replace with container literal</rule-key>
+                <rule-key>use container literal</rule-key>
                 <prop>
                     <key>remediationFunction</key>
                     <txt>CONSTANT_ISSUE</txt>
@@ -333,7 +346,7 @@
             </chc>
             <chc>
                 <rule-repo>OCLint</rule-repo>
-                <rule-key>default label not last in switch statement</rule-key>
+                <rule-key>ill-placed default label in switch statement</rule-key>
                 <prop>
                     <key>remediationFunction</key>
                     <txt>CONSTANT_ISSUE</txt>
@@ -346,7 +359,20 @@
             </chc>
             <chc>
                 <rule-repo>OCLint</rule-repo>
-                <rule-key>replace with object subscripting</rule-key>
+                <rule-key>unnecessary default statement in covered switch statement</rule-key>
+                <prop>
+                    <key>remediationFunction</key>
+                    <txt>CONSTANT_ISSUE</txt>
+                </prop>
+                <prop>
+                    <key>offset</key>
+                    <val>10</val>
+                    <txt>min</txt>
+                </prop>
+            </chc>
+            <chc>
+                <rule-repo>OCLint</rule-repo>
+                <rule-key>use object subscripting</rule-key>
                 <prop>
                     <key>remediationFunction</key>
                     <txt>CONSTANT_ISSUE</txt>
@@ -376,7 +402,7 @@
             </chc>
             <chc>
                 <rule-repo>OCLint</rule-repo>
-                <rule-key>use early exits and continue</rule-key>
+                <rule-key>prefer early exits and continue</rule-key>
                 <prop>
                     <key>remediationFunction</key>
                     <txt>CONSTANT_ISSUE</txt>
@@ -603,6 +629,19 @@
         <chc>
             <key>API_ABUSE</key>
             <name>API abuse</name>
+			<chc>
+				<rule-repo>OCLint</rule-repo>
+				<rule-key>calling prohibited method</rule-key>
+				<prop>
+					<key>remediationFunction</key>
+					<txt>CONSTANT_ISSUE</txt>
+				</prop>
+				<prop>
+					<key>offset</key>
+					<val>10</val>
+					<txt>min</txt>
+				</prop>
+			</chc>
         </chc>
         <chc>
             <key>ERRORS</key>
@@ -732,9 +771,35 @@
         <chc>
             <key>INSTRUCTION_RELIABILITY</key>
             <name>Instruction</name>
+			<chc>
+				<rule-repo>OCLint</rule-repo>
+				<rule-key>calling protected method</rule-key>
+				<prop>
+					<key>remediationFunction</key>
+					<txt>CONSTANT_ISSUE</txt>
+				</prop>
+				<prop>
+					<key>offset</key>
+					<val>10</val>
+					<txt>min</txt>
+				</prop>
+			</chc>
+			<chc>
+				<rule-repo>OCLint</rule-repo>
+				<rule-key>missing abstract method implementation</rule-key>
+				<prop>
+					<key>remediationFunction</key>
+					<txt>CONSTANT_ISSUE</txt>
+				</prop>
+				<prop>
+					<key>offset</key>
+					<val>10</val>
+					<txt>min</txt>
+				</prop>
+			</chc>
             <chc>
                 <rule-repo>OCLint</rule-repo>
-                <rule-key>must override hash with isEqual</rule-key>
+                <rule-key>missing hash method</rule-key>
                 <prop>
                     <key>remediationFunction</key>
                     <txt>CONSTANT_ISSUE</txt>
@@ -745,6 +810,19 @@
                     <txt>min</txt>
                 </prop>
             </chc>
+			<chc>
+				<rule-repo>OCLint</rule-repo>
+				<rule-key>missing call to base method</rule-key>
+				<prop>
+					<key>remediationFunction</key>
+					<txt>CONSTANT_ISSUE</txt>
+				</prop>
+				<prop>
+					<key>offset</key>
+					<val>10</val>
+					<txt>min</txt>
+				</prop>
+			</chc>
             <chc>
                 <rule-repo>OCLint</rule-repo>
                 <rule-key>parameter reassignment</rule-key>
@@ -803,7 +881,7 @@
             </chc>
             <chc>
                 <rule-repo>OCLint</rule-repo>
-                <rule-key>switch statements should have default</rule-key>
+                <rule-key>missing default in switch statements</rule-key>
                 <prop>
                     <key>remediationFunction</key>
                     <txt>CONSTANT_ISSUE</txt>

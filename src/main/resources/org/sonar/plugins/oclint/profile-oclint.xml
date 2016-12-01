@@ -145,10 +145,6 @@
     </rule>
     <rule>
       <repositoryKey>OCLint</repositoryKey>
-      <key>must override hash with isEqual</key>
-    </rule>
-    <rule>
-      <repositoryKey>OCLint</repositoryKey>
       <key>high ncss method</key>
     </rule>
     <rule>
@@ -255,5 +251,65 @@
       <repositoryKey>OCLint</repositoryKey>
       <key>ivar assignment outside accessors or init</key>
     </rule>
+    <rule>
+      <repositoryKey>OCLint</repositoryKey>
+      <key>covered switch statements dont need default</key>
+    </rule>
+    <rule>
+      <repositoryKey>OCLint</repositoryKey>
+      <key>class</key>
+    </rule>
+    <rule>
+      <repositoryKey>OCLint</repositoryKey>
+      <key>unnecessary null check for dealloc</key>
+    </rule>
+    <rule>
+      <repositoryKey>OCLint</repositoryKey>
+      <key>unnecessary default statement in covered switch statement</key>
+    </rule>
+    <rule>
+      <repositoryKey>OCLint</repositoryKey>
+      <key>ill-placed default label in switch statement</key>
+    </rule>
+    <rule>
+      <repositoryKey>OCLint</repositoryKey>
+      <key>prefer early exits and continue</key>
+    </rule>
+    <rule>
+      <repositoryKey>OCLint</repositoryKey>
+      <key>missing default in switch statements</key>
+    </rule>
+    <rule>
+      <repositoryKey>OCLint</repositoryKey>
+      <key>use object subscripting</key>
+    </rule>
+    <rule>
+      <repositoryKey>OCLint</repositoryKey>
+      <key>use boxed expression</key>
+    </rule>
+    <rule>
+      <repositoryKey>OCLint</repositoryKey>
+      <key>use container literal</key>
+    </rule>
+    <rule>
+      <repositoryKey>OCLint</repositoryKey>
+      <key>use number literal</key>
+    </rule>
+	<rule>
+		<repositoryKey>OCLint</repositoryKey>
+		<key>missing hash method</key>
+	</rule>
+	<rule>
+		<repositoryKey>OCLint</repositoryKey>
+		<key>missing call to base method</key>
+	</rule>
+	<rule>
+		<repositoryKey>OCLint</repositoryKey>
+		<key>calling prohibited method</key>
+	</rule>
+	<rule>
+		<repositoryKey>OCLint</repositoryKey>
+		<key>missing abstract method implementation</key>
+	</rule>
   </rules>
 </profile>

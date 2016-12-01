@@ -3,18 +3,10 @@ Available issues:
 OCLint
 ======
 
-use early exits and continue
-----------
-
-Summary: 
-
-Severity: 2
-Category: OCLint
-
 avoid branching statement as last in loop
 ----------
 
-Summary: Having branching statement as the last statement inside a loop is very confusing, and could largely be forgetting of something and turning into a bug.
+Summary: Name: avoid branching statement as last in loop
 
 Severity: 2
 Category: OCLint
@@ -22,7 +14,7 @@ Category: OCLint
 bitwise operator in conditional
 ----------
 
-Summary: Checks for bitwise operations in conditionals. Although being written on purpose in some rare cases, bitwise operations are considered to be too “smart”. Smart code is not easy to understand.
+Summary: Name: bitwise operator in conditional
 
 Severity: 3
 Category: OCLint
@@ -30,9 +22,9 @@ Category: OCLint
 broken null check
 ----------
 
-Summary: The broken nil check in Objective-C in some cases returns just the opposite result.
+Summary: Name: broken null check
 
-Severity: 4
+Severity: 3
 Category: OCLint
 
 broken nil check
@@ -46,7 +38,7 @@ Category: OCLint
 broken oddness check
 ----------
 
-Summary: Checking oddness by x%2==1 won’t work for negative numbers. Use x&1==1, or x%2!=0 instead.
+Summary: Name: broken oddness check
 
 Severity: 3
 Category: OCLint
@@ -54,7 +46,7 @@ Category: OCLint
 collapsible if statements
 ----------
 
-Summary: This rule detects instances where the conditions of two consecutive if statements can combined into one in order to increase code cleanness and readability.
+Summary: Name: collapsible if statements
 
 Severity: 3
 Category: OCLint
@@ -62,7 +54,7 @@ Category: OCLint
 constant conditional operator
 ----------
 
-Summary: conditionaloperator whose conditionals are always true or always false are confusing.
+Summary: Name: constant conditional operator
 
 Severity: 3
 Category: OCLint
@@ -70,7 +62,7 @@ Category: OCLint
 constant if expression
 ----------
 
-Summary: if statements whose conditionals are always true or always false are confusing.
+Summary: Name: constant if expression
 
 Severity: 3
 Category: OCLint
@@ -86,23 +78,15 @@ Category: OCLint
 dead code
 ----------
 
-Summary: Code after return, break, continue, and throw statements are unreachable and will never be executed.
+Summary: Name: dead code
 
 Severity: 3
-Category: OCLint
-
-default label not last in switch statement
-----------
-
-Summary: It is very confusing when default label is not the last label in a switch statement.
-
-Severity: 2
 Category: OCLint
 
 double negative
 ----------
 
-Summary: There is no point in using a double negative, it is always positive.
+Summary: Name: double negative
 
 Severity: 3
 Category: OCLint
@@ -110,7 +94,7 @@ Category: OCLint
 empty catch statement
 ----------
 
-Summary: This rule detects instances where an exception is caught, but nothing is done about it.
+Summary: Name: empty catch statement
 
 Severity: 3
 Category: OCLint
@@ -118,7 +102,7 @@ Category: OCLint
 empty do/while statement
 ----------
 
-Summary: This rule detects instances where a do-while statement does nothing.
+Summary: Name: empty do/while statement
 
 Severity: 3
 Category: OCLint
@@ -126,15 +110,15 @@ Category: OCLint
 empty else block
 ----------
 
-Summary: 
+Summary: Name: empty else block
 
-Severity: 2
+Severity: 3
 Category: OCLint
 
 empty finally statement
 ----------
 
-Summary: This rule detects instances where a finally statement does nothing.
+Summary: Name: empty finally statement
 
 Severity: 3
 Category: OCLint
@@ -142,7 +126,7 @@ Category: OCLint
 empty for statement
 ----------
 
-Summary: This rule detects instances where a for statement does nothing.
+Summary: Name: empty for statement
 
 Severity: 3
 Category: OCLint
@@ -150,7 +134,7 @@ Category: OCLint
 empty if statement
 ----------
 
-Summary: This rule detects instances where a condition is checked, but nothing is done about it.
+Summary: Name: empty if statement
 
 Severity: 3
 Category: OCLint
@@ -158,7 +142,7 @@ Category: OCLint
 empty switch statement
 ----------
 
-Summary: This rule detects instances where a switch statement does nothing.
+Summary: Name: empty switch statement
 
 Severity: 3
 Category: OCLint
@@ -166,7 +150,7 @@ Category: OCLint
 empty try statement
 ----------
 
-Summary: This rule detects instances where a try statement is empty.
+Summary: Name: empty try statement
 
 Severity: 3
 Category: OCLint
@@ -190,7 +174,7 @@ Category: OCLint
 for loop should be while loop
 ----------
 
-Summary: Under certain circumstances, some for loops can be simplified to while loops to make code more concise.
+Summary: Name: for loop should be while loop
 
 Severity: 3
 Category: OCLint
@@ -206,7 +190,7 @@ Category: OCLint
 inverted logic
 ----------
 
-Summary: An inverted logic is hard to understand.
+Summary: Name: inverted logic
 
 Severity: 2
 Category: OCLint
@@ -214,15 +198,15 @@ Category: OCLint
 jumbled incrementer
 ----------
 
-Summary: 
+Summary: Name: jumbled incrementer
 
-Severity: 2
+Severity: 3
 Category: OCLint
 
 long class
 ----------
 
-Summary: Long class generally indicates that this class tries to so many things. Each class should do one thing and one thing well.
+Summary: Name: long class
 
 Severity: 3
 Category: OCLint
@@ -230,15 +214,15 @@ Category: OCLint
 long line
 ----------
 
-Summary: When number of characters for one line of code is very long, it largely harm the readability. Break long line of code into multiple lines.
+Summary: Name: long line
 
-Severity: 2
+Severity: 3
 Category: OCLint
 
 long method
 ----------
 
-Summary: Long method generally indicates that this method tries to so many things. Each method should do one thing and one thing well.
+Summary: Name: long method
 
 Severity: 3
 Category: OCLint
@@ -246,7 +230,7 @@ Category: OCLint
 long variable name
 ----------
 
-Summary: Variables with long names harm readability.
+Summary: Name: long variable name
 
 Severity: 2
 Category: OCLint
@@ -254,7 +238,7 @@ Category: OCLint
 misplaced null check
 ----------
 
-Summary: The nil check is misplaced. In Objective-C, sending a message to a nil pointer simply does nothing. But code readers may be confused about the misplaced nil check.
+Summary: Name: misplaced null check
 
 Severity: 3
 Category: OCLint
@@ -270,7 +254,7 @@ Category: OCLint
 missing break in switch statement
 ----------
 
-Summary: 
+Summary: Name: missing break in switch statement
 
 Severity: 2
 Category: OCLint
@@ -278,7 +262,7 @@ Category: OCLint
 multiple unary operator
 ----------
 
-Summary: Multiple unary operator can always be confusing and should be simplified.
+Summary: Name: multiple unary operator
 
 Severity: 3
 Category: OCLint
@@ -294,7 +278,7 @@ Category: OCLint
 high ncss method
 ----------
 
-Summary: This rule counts number of lines for a method by counting Non Commenting Source Statements (NCSS). NCSS only takes actual statements into consideration, in other words, ignores empty statements, empty blocks, closing brackets or semicolons after closing brackets. Meanwhile, statement that is break into multiple lines contribute only one count.
+Summary: Name: high ncss method
 
 Severity: 3
 Category: OCLint
@@ -302,7 +286,7 @@ Category: OCLint
 deep nested block
 ----------
 
-Summary: This rule indicates blocks nested more deeply than the upper limit.
+Summary: Name: deep nested block
 
 Severity: 3
 Category: OCLint
@@ -310,7 +294,7 @@ Category: OCLint
 non case label in switch statement
 ----------
 
-Summary: It is very confusing when default label is not the last label in a switch statement.
+Summary: Name: non case label in switch statement
 
 Severity: 2
 Category: OCLint
@@ -323,42 +307,10 @@ Summary:
 Severity: 2
 Category: OCLint
 
-replace with boxed expression
-----------
-
-Summary: This rule locates the places that can be migrated to the new Objective-C literals with boxed expressions.
-
-Severity: 1
-Category: OCLint
-
-replace with container literal
-----------
-
-Summary: This rule locates the places that can be migrated to the new Objective-C literals with container literals.
-
-Severity: 1
-Category: OCLint
-
-replace with number literal
-----------
-
-Summary: This rule locates the places that can be migrated to the new Objective-C literals with number literals.
-
-Severity: 1
-Category: OCLint
-
-replace with object subscripting
-----------
-
-Summary: 
-
-Severity: 1
-Category: OCLint
-
 parameter reassignment
 ----------
 
-Summary: Reassigning values to parameters is very problematic in most cases.
+Summary: Name: parameter reassignment
 
 Severity: 2
 Category: OCLint
@@ -366,7 +318,7 @@ Category: OCLint
 redundant conditional operator
 ----------
 
-Summary: This rule detects three types of redundant conditional operators:
+Summary: Name: redundant conditional operator
 
 Severity: 1
 Category: OCLint
@@ -374,7 +326,7 @@ Category: OCLint
 redundant if statement
 ----------
 
-Summary: This rule detects unnecessary if statements.
+Summary: Name: redundant if statement
 
 Severity: 1
 Category: OCLint
@@ -382,7 +334,7 @@ Category: OCLint
 redundant local variable
 ----------
 
-Summary: This rule detects cases where a variable declaration immediately followed by a return of that variable.
+Summary: Name: redundant local variable
 
 Severity: 1
 Category: OCLint
@@ -390,15 +342,15 @@ Category: OCLint
 redundant nil check
 ----------
 
-Summary: 
+Summary: Name: redundant nil check
 
-Severity: 3
+Severity: 1
 Category: OCLint
 
 return from finally block
 ----------
 
-Summary: Returning from a finally block is not recommended.
+Summary: Name: return from finally block
 
 Severity: 3
 Category: OCLint
@@ -417,14 +369,6 @@ switch statements don't need default when fully covered
 Summary: 
 
 Severity: 3
-Category: OCLint
-
-switch statements should have default
-----------
-
-Summary: Switch statements should a default statement.
-
-Severity: 2
 Category: OCLint
 
 throw exception from finally block
@@ -446,7 +390,7 @@ Category: OCLint
 too many fields
 ----------
 
-Summary: A class with too many fields indicates it does too many things and is lack of proper abstraction. It can be resigned to have fewer fields.
+Summary: Name: too many fields
 
 Severity: 3
 Category: OCLint
@@ -454,7 +398,7 @@ Category: OCLint
 too many methods
 ----------
 
-Summary: A class with too many methods indicates it does too many things and hard to read and understand. It usually contains complicated code, and should be refactored.
+Summary: Name: too many methods
 
 Severity: 3
 Category: OCLint
@@ -470,7 +414,7 @@ Category: OCLint
 unnecessary else statement
 ----------
 
-Summary: When an if statement block ends with a return statement, or all branches in the if statement block end with return statements, then the else statement is unnecessary. The code in the else statement can be run without being in the block.
+Summary: Name: unnecessary else statement
 
 Severity: 1
 Category: OCLint
@@ -478,7 +422,7 @@ Category: OCLint
 unused local variable
 ----------
 
-Summary: This rule detects local variables that are declared, but not used.
+Summary: Name: unused local variable
 
 Severity: 0
 Category: OCLint
@@ -502,8 +446,121 @@ Category: OCLint
 ivar assignment outside accessors or init
 ----------
 
-Summary: 
+Summary: Name: ivar assignment outside accessors or init
 
 Severity: 2
 Category: OCLint
+
+class
+----------
+
+Summary: Name: destructor of virtual class
+
+Severity: 2
+Category: OCLint
+
+unnecessary null check for dealloc
+----------
+
+Summary: Name: unnecessary null check for dealloc
+
+Severity: 1
+Category: OCLint
+
+unnecessary default statement in covered switch statement
+----------
+
+Summary: When a switch statement covers all possible cases, a default label is not needed and should be removed. If the switch is not fully covered, the SwitchStatementsShouldHaveDefault rule will report.
+
+Severity: 2
+Category: OCLint
+
+ill-placed default label in switch statement
+----------
+
+Summary: It is very confusing when default label is not the last label in a switch statement.
+
+Severity: 2
+Category: OCLint
+
+prefer early exits and continue
+----------
+
+Summary: Early exits can reduce the indentation of a block of code, so that reader do not have to remember all the previous decisions, therefore, makes it easier to understand the code.
+
+Severity: 2
+Category: OCLint
+
+missing default in switch statements
+----------
+
+Summary: Switch statements should have a default statement.
+
+Severity: 2
+Category: OCLint
+
+use boxed expression
+----------
+
+Summary: This rule locates the places that can be migrated to the new Objective-C literals with boxed expressions.
+
+Severity: 1
+Category: OCLint
+
+use container literal
+----------
+
+Summary: This rule locates the places that can be migrated to the new Objective-C literals with container literals.
+
+Severity: 1
+Category: OCLint
+
+use number literal
+----------
+
+Summary: This rule locates the places that can be migrated to the new Objective-C literals with number literals.
+
+Severity: 1
+Category: OCLint
+
+use object subscripting
+----------
+
+Summary: Name: use object subscripting
+
+Severity: 1
+Category: OCLint
+
+missing hash method
+----------
+
+Summary: Name: missing hash method
+
+Severity: 1
+Category: OCLint
+
+missing call to base method
+----------
+
+Summary: Name: missing call to base method
+
+Severity: 1
+Category: OCLint
+
+calling prohibited method
+----------
+
+Summary: Name: calling prohibited method
+
+Severity: 1
+Category: OCLint
+
+missing abstract method implementation
+----------
+
+Summary: Name: missing abstract method implementation
+
+Severity: 1
+Category: OCLint
+
 
