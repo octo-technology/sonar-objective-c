@@ -50,11 +50,9 @@ Binary packages are available in the release section.
 
 ###Release history
 
-###0.5.3-SNAPSHOT
-- OCLint 0.11.0 support
-
 ###0.5.2
-- OCLint 0.10.3 support
+- OCLint 0.11.0 support (see https://github.com/Backelite/sonar-objective-c/pull/13)
+- Removed required gcovr check in run-sonar.sh (see https://github.com/Backelite/sonar-objective-c/pull/10)
 
 ####0.5.1
 - Complexity with Lizard !

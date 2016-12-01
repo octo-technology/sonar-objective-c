@@ -147,9 +147,8 @@ echo "Running run-sonar.sh..."
 
 ## CHECK PREREQUISITES
 
-# xctool, gcovr and oclint installed
+# xctool, oclint installed
 testIsInstalled xcodebuild
-testIsInstalled gcovr
 testIsInstalled oclint
 testIsInstalled oclint-xcodebuild
 
