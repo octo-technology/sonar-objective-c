@@ -1,5 +1,5 @@
 <p align="left">
-  <img src="http://www.backelite.com/bkimages/extension/backelite/design/backelite/templates/img/header_logo.png/3840/2160/PNG" width="100"/>
+  <img src="https://www.backelite.com/wp-content/uploads/2016/09/logo-backelite-square.png" width="100"/>
 </p>
 
 | Branch   |      Status                                                                                                                                |
@@ -54,6 +54,7 @@ Binary packages are available in the release section.
 - OCLint 0.11.0 support (see https://github.com/Backelite/sonar-objective-c/pull/13)
 - Removed required gcovr check in run-sonar.sh (see https://github.com/Backelite/sonar-objective-c/pull/10)
 - Fixed issued in run-sonar.sh (see https://github.com/Backelite/sonar-objective-c/pull/2)
+- Better test file detection pattern (see https://github.com/Backelite/sonar-objective-c/pull/3/files)
 
 ####0.5.1
 - Complexity with Lizard !
