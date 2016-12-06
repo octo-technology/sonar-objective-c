@@ -30,6 +30,7 @@ import javax.xml.stream.XMLStreamException;
 
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.resources.Project;
 import org.sonar.api.rules.Violation;
@@ -40,11 +41,13 @@ final class OCLintParser {
     private final Project project;
     private final SensorContext context;
     private final ResourcePerspectives resourcePerspectives;
+    private final FileSystem fileSystem;
 
-    public OCLintParser(final Project p, final SensorContext c, final ResourcePerspectives resourcePerspectives) {
+    public OCLintParser(final Project p, final SensorContext c, final ResourcePerspectives resourcePerspectives, final FileSystem fileSystem) {
         project = p;
         context = c;
         this.resourcePerspectives = resourcePerspectives;
+        this.fileSystem = fileSystem;
     }
 
     public void parseReport(final File file) {
@@ -63,7 +66,7 @@ final class OCLintParser {
 
         try {
             final StaxParser parser = new StaxParser(
-                    new OCLintXMLStreamHandler(project, context, resourcePerspectives));
+                    new OCLintXMLStreamHandler(project, context, resourcePerspectives, fileSystem));
             parser.parse(inputStream);
         } catch (final XMLStreamException e) {
             LoggerFactory.getLogger(getClass()).error(

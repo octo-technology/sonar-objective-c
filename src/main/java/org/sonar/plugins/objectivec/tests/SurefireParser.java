@@ -189,40 +189,21 @@ public class SurefireParser {
 
         String fileName = classname.replace('.', '/') + ".m";
 
-        File file = new File(fileName);
-        if (!file.isAbsolute()) {
-            file = new File(fileSystem.baseDir(), fileName);
+        InputFile inputFile = fileSystem.inputFile(fileSystem.predicates().or(fileSystem.predicates().matchesPathPattern("**/" + fileName),
+                fileSystem.predicates().matchesPathPattern("**/" + fileName.replace("_", "+"))));
+        if (inputFile == null) {
+            return null;
         }
 
-        // Category naming case
-        if (!file.isFile() || !file.exists()) {
-            file = new File(fileSystem.baseDir(), fileName.replace("_", "+"));
+        Resource resource = context.getResource(inputFile);
+
+        if(resource instanceof org.sonar.api.resources.File) {
+            org.sonar.api.resources.File sonarFile = (org.sonar.api.resources.File) resource;
+            sonarFile.setQualifier(Qualifiers.UNIT_TEST_FILE);
         }
 
-        /*
-         * Most xcodebuild JUnit parsers don't include the path to the class in the class field, so search for it if it
-         * wasn't found in the root.
-         */
-        if (!file.isFile() || !file.exists()) {
-            List<File> files = ImmutableList.copyOf(fileSystem.files(fileSystem.predicates().and(
-                    fileSystem.predicates().hasType(InputFile.Type.TEST),
-                    fileSystem.predicates().or(fileSystem.predicates().matchesPathPattern("**/" + fileName),
-                                               fileSystem.predicates().matchesPathPattern("**/" + fileName.replace("_", "+"))))));
 
-            if (files.isEmpty()) {
-                LOG.info("Unable to locate test source file {}", fileName);
-            } else {
-                /*
-                 * Lazily get the first file, since we wouldn't be able to determine the correct one from just the
-                 * test class name in the event that there are multiple matches.
-                 */
-                file = files.get(0);
-            }
-        }
-
-        org.sonar.api.resources.File sonarFile = org.sonar.api.resources.File.fromIOFile(file, project);
-        sonarFile.setQualifier(Qualifiers.UNIT_TEST_FILE);
-        return sonarFile;
+        return resource;
 
     }
 }
