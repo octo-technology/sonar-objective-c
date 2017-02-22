@@ -158,7 +158,6 @@ public class SurefireParser {
             }
         }
         testCaseDetails.append("</tests-details>");
-        context.saveMeasure(getUnitTestResource(fileReport.getClassKey()), new Measure(CoreMetrics.TEST_DATA, testCaseDetails.toString()));
     }
 
     private void saveClassMeasure(SensorContext context, TestSuiteReport fileReport, Metric metric, double value) {
