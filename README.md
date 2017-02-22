@@ -50,10 +50,10 @@ Binary packages are available in the release section.
 
 ###Release history
 
-####0.5.3
-- 
+###0.6.0
+- SonarQube 6 support. Important : will work with SonarQube 5.x and above only. Will not work anymore with SonarQube 4.5.x anymore.
 
-####0.5.2
+###0.5.2
 - OCLint 0.11.0 support (see https://github.com/Backelite/sonar-objective-c/pull/13)
 - Removed required gcovr check in run-sonar.sh (see https://github.com/Backelite/sonar-objective-c/pull/10)
 - Fixed issued in run-sonar.sh (see https://github.com/Backelite/sonar-objective-c/pull/2)

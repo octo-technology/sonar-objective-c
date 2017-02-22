@@ -431,7 +431,7 @@ fi
 
 # SonarQube
 echo -n 'Running SonarQube using SonarQube Runner'
-runCommand /dev/stdout sonar-runner -Dsonar.projectVersion=$projectVersion
+runCommand /dev/stdout sonar-runner
 
 # Kill progress indicator
 stopProgress

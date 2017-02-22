@@ -56,7 +56,7 @@ public final class OCLintSensor implements Sensor {
 
     public void analyse(final Project project, final SensorContext context) {
         final String projectBaseDir = fileSystem.baseDir().getPath();
-        final OCLintParser parser = new OCLintParser(project, context, resourcePerspectives);
+        final OCLintParser parser = new OCLintParser(project, context, resourcePerspectives, fileSystem);
 
         parseReportIn(projectBaseDir, parser);
 

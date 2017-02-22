@@ -29,7 +29,7 @@
     <packaging>sonar-plugin</packaging>
 
     <name>Objective-C Sonar Plugin</name>
-    <description>Enables analysis of Objective-C projects into Sonar.</description>
+    <description>Enables analysis of Objective-C projects into SonarQube.</description>
     <url>https://github.com/Backelite/sonar-objective-c</url>
 
 
@@ -95,7 +95,7 @@
 
         <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
 
-        <sonar.version>4.3</sonar.version>
+        <sonar.version>5.0</sonar.version>
         <sslr.version>1.20</sslr.version>
 
         <!-- Configuration for sonar-packaging-maven-plugin -->

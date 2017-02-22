@@ -26,6 +26,8 @@ import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.issue.Issuable;
 import org.sonar.api.issue.Issue;
@@ -41,13 +43,15 @@ public class FauxPasReportParser {
     private final Project project;
     private final SensorContext context;
     private final ResourcePerspectives resourcePerspectives;
+    private final FileSystem fileSystem;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FauxPasReportParser.class);
 
-    public FauxPasReportParser(final Project p, final SensorContext c, final ResourcePerspectives resourcePerspectives) {
+    public FauxPasReportParser(final Project p, final SensorContext c, final ResourcePerspectives resourcePerspectives, final FileSystem fileSystem) {
         project = p;
         context = c;
         this.resourcePerspectives = resourcePerspectives;
+        this.fileSystem = fileSystem;
     }
 
     public void parseReport(File reportFile) {
@@ -81,9 +85,9 @@ public class FauxPasReportParser {
 
         if (filePath != null) {
 
-            org.sonar.api.resources.File resource = org.sonar.api.resources.File.fromIOFile(new File(filePath), project);
 
-            Issuable issuable = resourcePerspectives.as(Issuable.class, resource);
+            InputFile inputFile = fileSystem.inputFile(fileSystem.predicates().hasAbsolutePath(filePath));
+            Issuable issuable = resourcePerspectives.as(Issuable.class, inputFile);
 
             if (issuable != null) {
 
