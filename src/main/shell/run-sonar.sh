@@ -254,7 +254,7 @@ oclint-xcodebuild # Transform the xcodebuild.log file into a compile_command.jso
 
 # Unit tests and coverage
 if [ "$testScheme" = "" ] || [ "$unittests" = "" ]; then
-	echo 'Skipping tests as no test scheme has been provided!'
+	echo 'Skipping tests!'
 
 	# Put default xml files with no tests and no coverage...
 	echo "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><testsuites name='AllTestUnits'></testsuites>" > sonar-reports/TEST-report.xml
