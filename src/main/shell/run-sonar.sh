@@ -123,16 +123,21 @@ function runCommand() {
 ## COMMAND LINE OPTIONS
 vflag=""
 nflag=""
+unittests="on"
 oclint="on"
 fauxpas="on"
 lizard="on"
+sonarscanner=""
+
 while [ $# -gt 0 ]
 do
     case "$1" in
     -v)	vflag=on;;
     -n) nflag=on;;
-	-nooclint) oclint="";;
+    -nounittests) unittests="";;
+    -nooclint) oclint="";;
     -nofauxpas) fauxpas="";;
+    -usesonarscanner) sonarscanner="on";;
 	--)	shift; break;;
 	-*)
         echo >&2 "Usage: $0 [-v]"
@@ -248,7 +253,7 @@ oclint-xcodebuild # Transform the xcodebuild.log file into a compile_command.jso
 
 
 # Unit tests and coverage
-if [ "$testScheme" = "" ]; then
+if [ "$testScheme" = "" ] || [ "$unittests" = "" ]; then
 	echo 'Skipping tests as no test scheme has been provided!'
 
 	# Put default xml files with no tests and no coverage...
@@ -430,8 +435,21 @@ else
 fi
 
 # SonarQube
-echo -n 'Running SonarQube using SonarQube Runner'
-runCommand /dev/stdout sonar-runner
+if [ "$sonarscanner" = "on" ]; then
+    echo -n 'Running SonarQube using SonarQube Scanner'
+    if hash /dev/stdout sonar-scanner 2>/dev/null; then
+        runCommand /dev/stdout sonar-scanner
+    else
+        echo 'Skipping sonar-scanner (not installed!)'
+    fi
+else
+    echo -n 'Running SonarQube using SonarQube Runner'
+    if hash /dev/stdout sonar-runner 2>/dev/null; then
+        runCommand /dev/stdout sonar-runner 
+    else
+        runCommand /dev/stdout sonar-scanner
+    fi
+fi
 
 # Kill progress indicator
 stopProgress
