@@ -150,7 +150,6 @@ echo "Running run-sonar.sh..."
 # xctool, oclint installed
 testIsInstalled xcodebuild
 testIsInstalled oclint
-testIsInstalled oclint-xcodebuild
 
 # sonar-project.properties in current directory
 if [ ! -f sonar-project.properties ]; then
@@ -244,8 +243,8 @@ if [[ ! -z "$destinationSimulator" ]]; then
     buildCmd+=(-destination "$destinationSimulator" -destination-timeout 360)
 fi
 runCommand  xcodebuild.log "${buildCmd[@]}"
-oclint-xcodebuild # Transform the xcodebuild.log file into a compile_command.json file
-
+#oclint-xcodebuild # Transform the xcodebuild.log file into a compile_command.json file
+cat xcodebuild.log | xcpretty -r json-compilation-database -o compile_commands.json
 
 # Unit tests and coverage
 if [ "$testScheme" = "" ]; then
