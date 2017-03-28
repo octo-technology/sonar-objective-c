@@ -244,7 +244,7 @@ if [[ ! -z "$destinationSimulator" ]]; then
 fi
 runCommand  xcodebuild.log "${buildCmd[@]}"
 #oclint-xcodebuild # Transform the xcodebuild.log file into a compile_command.json file
-cat xcodebuild.log | XCPRETTY_CMD -r json-compilation-database -o compile_commands.json
+cat xcodebuild.log | $XCPRETTY_CMD -r json-compilation-database -o compile_commands.json
 
 # Unit tests and coverage
 if [ "$testScheme" = "" ]; then
