@@ -51,9 +51,9 @@ Binary packages are available in the release section.
 ### Release history
 
 ### 0.6.1
-- Replaced oclint-xcodebuild by xcpretty (see https://github.com/Backelite/sonar-objective-c/pull/25).
-- Added -nounittests and -usesonarscanner parameters to run-sonar.sh script (see https://github.com/Backelite/sonar-objective-c/pull/23).
-
+- Replaced oclint-xcodebuild by xcpretty (see https://github.com/Backelite/sonar-objective-c/pull/25 thanks to [davidy4ng](https://github.com/davidy4ng)).
+- Added -nounittests and -usesonarscanner parameters to run-sonar.sh script (see https://github.com/Backelite/sonar-objective-c/pull/23 thanks to [davidy4ng](https://github.com/davidy4ng)).
+- Sonar 6 fix for Faux Pas (see https://github.com/Backelite/sonar-objective-c/pull/20 thanks to [macostea](https://github.com/macostea)).
 
 ### 0.6.0
 - SonarQube 6 support. Important : will work with SonarQube 5.x and above only. Will not work anymore with SonarQube 4.5.x anymore.
