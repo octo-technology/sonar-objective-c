@@ -104,6 +104,10 @@ final class OCLintXMLStreamHandler implements XmlStreamHandler {
     }
 
     private boolean fileExists(InputFile file) {
+        if (file == null) {
+            return false;
+        }
+
         return context.getResource(file) != null;
     }
 
