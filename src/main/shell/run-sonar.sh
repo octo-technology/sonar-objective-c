@@ -7,7 +7,7 @@
 #
 
 # Global parameters
-XCTOOL_CMD=xcodebuild
+XCODEBUILD_CMD=xcodebuild
 SLATHER_CMD=slather
 XCPRETTY_CMD=xcpretty
 LIZARD_CMD=lizard
@@ -34,6 +34,15 @@ function testIsInstalled() {
 	if [ $? -eq 1 ]; then
 		echo >&2 "ERROR - $1 is not installed or not in your PATH"; exit 1;
 	fi
+}
+
+function testIsXcodeMinMajorVersionAvailable() {
+    XCODE_VERSION="$($XCODEBUILD_CMD -version | grep -a -A 1 "Xcode" | head -n1 | sed "s/Xcode \([0-9]*\)\..*/\1/")"
+    if (( "$1" <= "$XCODE_VERSION" )); then
+        return 0
+    else
+        return 1
+    fi
 }
 
 function readParameter() {
@@ -153,7 +162,7 @@ echo "Running run-sonar.sh..."
 ## CHECK PREREQUISITES
 
 # xctool, oclint installed
-testIsInstalled xcodebuild
+testIsInstalled $XCODEBUILD_CMD
 testIsInstalled oclint
 
 # sonar-project.properties in current directory
@@ -238,15 +247,14 @@ mkdir sonar-reports
 
 # Extracting project information needed later
 echo -n 'Extracting Xcode project information'
-buildCmd=(xcodebuild clean build)
 if [[ "$workspaceFile" != "" ]] ; then
-    buildCmd+=(-workspace "$workspaceFile")
+    buildCmdPrefix="-workspace $workspaceFile"
 else
-	buildCmd+=(-project "$projectFile")
+    buildCmdPrefix="-project $projectFile"
 fi
-buildCmd+=( -scheme "$appScheme")
+buildCmd=(xcodebuild clean build $buildCmdPrefix -scheme $appScheme)
 if [[ ! -z "$destinationSimulator" ]]; then
-    buildCmd+=(-destination "$destinationSimulator" -destination-timeout 360)
+    buildCmd+=(-destination "$destinationSimulator" -destination-timeout 360 COMPILER_INDEX_STORE_ENABLE=NO)
 fi
 runCommand  xcodebuild.log "${buildCmd[@]}"
 #oclint-xcodebuild # Transform the xcodebuild.log file into a compile_command.json file
@@ -265,16 +273,32 @@ else
 
     if [ "$coverageType" = "profdata" -o "$coverageType" = "" ]; then
     	# profdata
-    	buildCmd=(xcodebuild test $buildCmdPrefix -scheme "$testScheme" -configuration Debug -enableCodeCoverage YES)
+    	buildCmd=($XCODEBUILD_CMD test $buildCmdPrefix -scheme "$testScheme" -configuration Debug -enableCodeCoverage YES)
+        xcode8BuildForTestingCmd=($XCODEBUILD_CMD build-for-testing $buildCmdPrefix -scheme "$testScheme" -configuration Debug -enableCodeCoverage YES)
+        xcode8TestCmd=($XCODEBUILD_CMD test-without-building $buildCmdPrefix -scheme "$testScheme" -configuration Debug -enableCodeCoverage YES)
     else
     	# Legacy coverage
-    	buildCmd=(xcodebuild test $buildCmdPrefix -scheme "$testScheme" -configuration Debug)
+    	buildCmd=($XCODEBUILD_CMD test $buildCmdPrefix -scheme "$testScheme" -configuration Debug)
+    	xcode8BuildForTestingCmd=($XCODEBUILD_CMD build-for-testing $buildCmdPrefix -scheme "$testScheme" -configuration Debug)
+        xcode8TestCmd=($XCODEBUILD_CMD test-without-building $buildCmdPrefix -scheme "$testScheme" -configuration Debug)
     fi
 
     if [[ ! -z "$destinationSimulator" ]]; then
         buildCmd+=(-destination "$destinationSimulator" -destination-timeout 360)
+        xcode8BuildForTestingCmd+=(-destination "$destinationSimulator" -destination-timeout 360)
+        xcode8TestCmd+=(-destination "$destinationSimulator" -destination-timeout 360)
     fi
-    "${buildCmd[@]}"  | $XCPRETTY_CMD -t --report junit
+
+    if testIsXcodeMinMajorVersionAvailable 8 ; then
+        echo "Running build-for-testing"
+        "${xcode8BuildForTestingCmd[@]}"  | $XCPRETTY_CMD
+        echo "Running test-without-building"
+        "${xcode8TestCmd[@]}"  | $XCPRETTY_CMD -t --report junit
+    else
+        echo "Testing"
+        "${buildCmd[@]}"  | $XCPRETTY_CMD -t --report junit
+    fi
+
     mv build/reports/junit.xml sonar-reports/TEST-report.xml
 
 	echo -n 'Computing coverage report'
@@ -389,7 +413,7 @@ if [ "$fauxpas" = "on" ]; then
             echo $projectFile | sed -n 1'p' | tr ',' '\n' > tmpFileRunSonarSh
             while read projectName; do
 
-                xcodebuild -list -project $projectName | sed -n '/Schemes/,$p' | while read scheme
+                $XCODEBUILD_CMD -list -project $projectName | sed -n '/Schemes/,$p' | while read scheme
                 do
 
                 if [ "$scheme" = "" ]

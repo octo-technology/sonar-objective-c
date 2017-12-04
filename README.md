@@ -52,6 +52,7 @@ Binary packages are available in the release section.
 
 ### 0.6.2
 - Update run-sonar.sh : xcodebuild optimization (see https://github.com/Backelite/sonar-objective-c/pull/26 thanks to [davidy4ng](https://github.com/davidy4ng)).
+- Fix for properties with space (see https://github.com/Backelite/sonar-objective-c/pull/29 thanks to [Branlute](https://github.com/Branlute))
 
 
 ### 0.6.1
@@ -95,9 +96,9 @@ Binary packages are available in the release section.
 - [SonarQube](http://docs.codehaus.org/display/SONAR/Setup+and+Upgrade) and [SonarQube Runner](http://docs.codehaus.org/display/SONAR/Installing+and+Configuring+SonarQube+Runner) installed ([HomeBrew](http://brew.sh) installed and ```brew install sonar-runner```)
 - [xcpretty](https://github.com/supermarin/xcpretty) (see instructions below)
 - [xctool](https://github.com/facebook/xctool) ([HomeBrew](http://brew.sh) installed and ```brew install xctool```). If you are using Xcode 6, make sure to update xctool (```brew upgrade xctool```) to a version > 0.2.2.
-- [OCLint](http://oclint-docs.readthedocs.io/en/stable/) installed. Version 0.11.0 recommended. 
+- [OCLint](http://oclint-docs.readthedocs.io/en/stable/) installed. Version 0.11.0 recommended (0.13.0 since Xcode 9). 
 - [gcovr](http://gcovr.com) installed for legacy (pre Xcode 7 coverage)
-- [slather](https://github.com/SlatherOrg/slather) (```gem install slather```). Version 2.1.0 or above.
+- [slather](https://github.com/SlatherOrg/slather) (```gem install slather```). Version 2.1.0 or above (2.4.4 since Xcode 9).
 - [lizard](https://github.com/terryyin/lizard) ([PIP](https://pip.pypa.io/en/stable/installing/) installed and ```sudo pip install lizard```)
 - [Faux Pas](http://fauxpasapp.com/) command line tools installed (optional)
 
