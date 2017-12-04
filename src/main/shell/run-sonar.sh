@@ -238,12 +238,13 @@ mkdir sonar-reports
 
 # Extracting project information needed later
 echo -n 'Extracting Xcode project information'
+buildCmd=(xcodebuild clean build)
 if [[ "$workspaceFile" != "" ]] ; then
-    buildCmdPrefix="-workspace $workspaceFile"
+    buildCmd+=(-workspace "$workspaceFile")
 else
-    buildCmdPrefix="-project $projectFile"
+	buildCmd+=(-project "$projectFile")
 fi
-buildCmd=(xcodebuild clean build $buildCmdPrefix -scheme $appScheme)
+buildCmd+=( -scheme "$appScheme")
 if [[ ! -z "$destinationSimulator" ]]; then
     buildCmd+=(-destination "$destinationSimulator" -destination-timeout 360)
 fi
@@ -298,14 +299,13 @@ else
         fi
 
 
-		projectArray=(${projectFile//,/ })
-		firstProject=${projectArray[0]}
+		firstProject=$(echo $projectFile | sed -n 1'p' | tr ',' '\n' | head -n 1)
 
         slatherCmd=($SLATHER_CMD coverage --input-format profdata $excludedCommandLineFlags --cobertura-xml --output-directory sonar-reports)
 		if [[ ! -z "$workspaceFile" ]]; then
-			slatherCmd+=( --workspace $workspaceFile)
+			slatherCmd+=( --workspace "$workspaceFile")
 		fi
-		slatherCmd+=( --scheme "$appScheme" $firstProject)
+		slatherCmd+=( --scheme "$appScheme" "$firstProject")
 
 		runCommand /dev/stdout "${slatherCmd[@]}"
 		mv sonar-reports/cobertura.xml sonar-reports/coverage.xml
