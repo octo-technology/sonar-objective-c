@@ -50,6 +50,10 @@ Binary packages are available in the release section.
 
 ### Release history
 
+### 0.6.2
+- Update run-sonar.sh : xcodebuild optimization (see https://github.com/Backelite/sonar-objective-c/pull/26 thanks to [davidy4ng](https://github.com/davidy4ng)).
+
+
 ### 0.6.1
 - Replaced oclint-xcodebuild by xcpretty (see https://github.com/Backelite/sonar-objective-c/pull/25 thanks to [davidy4ng](https://github.com/davidy4ng)).
 - Added -nounittests and -usesonarscanner parameters to run-sonar.sh script (see https://github.com/Backelite/sonar-objective-c/pull/23 thanks to [davidy4ng](https://github.com/davidy4ng)).
