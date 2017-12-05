@@ -771,6 +771,19 @@
         <chc>
             <key>INSTRUCTION_RELIABILITY</key>
             <name>Instruction</name>
+            <chc>
+                <rule-repo>OCLint</rule-repo>
+                <rule-key>must override hash with isEqual</rule-key>
+                <prop>
+                    <key>remediationFunction</key>
+                    <txt>CONSTANT_ISSUE</txt>
+                </prop>
+                <prop>
+                    <key>offset</key>
+                    <val>5</val>
+                    <txt>min</txt>
+                </prop>
+            </chc>
 			<chc>
 				<rule-repo>OCLint</rule-repo>
 				<rule-key>calling protected method</rule-key>

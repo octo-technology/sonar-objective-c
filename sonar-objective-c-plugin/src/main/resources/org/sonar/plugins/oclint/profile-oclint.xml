@@ -5,10 +5,6 @@
   <rules>
     <rule>
       <repositoryKey>OCLint</repositoryKey>
-      <key>use early exits and continue</key>
-    </rule>
-    <rule>
-      <repositoryKey>OCLint</repositoryKey>
       <key>avoid branching statement as last in loop</key>
     </rule>
     <rule>
@@ -46,10 +42,6 @@
     <rule>
       <repositoryKey>OCLint</repositoryKey>
       <key>dead code</key>
-    </rule>
-    <rule>
-      <repositoryKey>OCLint</repositoryKey>
-      <key>default label not last in switch statement</key>
     </rule>
     <rule>
       <repositoryKey>OCLint</repositoryKey>
@@ -145,6 +137,10 @@
     </rule>
     <rule>
       <repositoryKey>OCLint</repositoryKey>
+      <key>must override hash with isEqual</key>
+    </rule>
+    <rule>
+      <repositoryKey>OCLint</repositoryKey>
       <key>high ncss method</key>
     </rule>
     <rule>
@@ -158,22 +154,6 @@
     <rule>
       <repositoryKey>OCLint</repositoryKey>
       <key>high npath complexity</key>
-    </rule>
-    <rule>
-      <repositoryKey>OCLint</repositoryKey>
-      <key>replace with boxed expression</key>
-    </rule>
-    <rule>
-      <repositoryKey>OCLint</repositoryKey>
-      <key>replace with container literal</key>
-    </rule>
-    <rule>
-      <repositoryKey>OCLint</repositoryKey>
-      <key>replace with number literal</key>
-    </rule>
-    <rule>
-      <repositoryKey>OCLint</repositoryKey>
-      <key>replace with object subscripting</key>
     </rule>
     <rule>
       <repositoryKey>OCLint</repositoryKey>
@@ -206,10 +186,6 @@
     <rule>
       <repositoryKey>OCLint</repositoryKey>
       <key>switch statements don't need default when fully covered</key>
-    </rule>
-    <rule>
-      <repositoryKey>OCLint</repositoryKey>
-      <key>switch statements should have default</key>
     </rule>
     <rule>
       <repositoryKey>OCLint</repositoryKey>
@@ -253,10 +229,6 @@
     </rule>
     <rule>
       <repositoryKey>OCLint</repositoryKey>
-      <key>covered switch statements dont need default</key>
-    </rule>
-    <rule>
-      <repositoryKey>OCLint</repositoryKey>
       <key>class</key>
     </rule>
     <rule>
@@ -281,10 +253,6 @@
     </rule>
     <rule>
       <repositoryKey>OCLint</repositoryKey>
-      <key>use object subscripting</key>
-    </rule>
-    <rule>
-      <repositoryKey>OCLint</repositoryKey>
       <key>use boxed expression</key>
     </rule>
     <rule>
@@ -295,21 +263,25 @@
       <repositoryKey>OCLint</repositoryKey>
       <key>use number literal</key>
     </rule>
-	<rule>
-		<repositoryKey>OCLint</repositoryKey>
-		<key>missing hash method</key>
-	</rule>
-	<rule>
-		<repositoryKey>OCLint</repositoryKey>
-		<key>missing call to base method</key>
-	</rule>
-	<rule>
-		<repositoryKey>OCLint</repositoryKey>
-		<key>calling prohibited method</key>
-	</rule>
-	<rule>
-		<repositoryKey>OCLint</repositoryKey>
-		<key>missing abstract method implementation</key>
-	</rule>
+    <rule>
+      <repositoryKey>OCLint</repositoryKey>
+      <key>use object subscripting</key>
+    </rule>
+    <rule>
+      <repositoryKey>OCLint</repositoryKey>
+      <key>missing hash method</key>
+    </rule>
+    <rule>
+      <repositoryKey>OCLint</repositoryKey>
+      <key>missing call to base method</key>
+    </rule>
+    <rule>
+      <repositoryKey>OCLint</repositoryKey>
+      <key>calling prohibited method</key>
+    </rule>
+    <rule>
+      <repositoryKey>OCLint</repositoryKey>
+      <key>missing abstract method implementation</key>
+    </rule>
   </rules>
 </profile>

@@ -470,7 +470,7 @@ Category: OCLint
 unnecessary default statement in covered switch statement
 ----------
 
-Summary: When a switch statement covers all possible cases, a default label is not needed and should be removed. If the switch is not fully covered, the SwitchStatementsShouldHaveDefault rule will report.
+Summary: Name: unnecessary default statement in covered switch statement
 
 Severity: 2
 Category: OCLint
@@ -478,7 +478,7 @@ Category: OCLint
 ill-placed default label in switch statement
 ----------
 
-Summary: It is very confusing when default label is not the last label in a switch statement.
+Summary: Name: ill-placed default label in switch statement
 
 Severity: 2
 Category: OCLint
@@ -486,7 +486,7 @@ Category: OCLint
 prefer early exits and continue
 ----------
 
-Summary: Early exits can reduce the indentation of a block of code, so that reader do not have to remember all the previous decisions, therefore, makes it easier to understand the code.
+Summary: Name: prefer early exits and continue
 
 Severity: 2
 Category: OCLint
@@ -494,7 +494,7 @@ Category: OCLint
 missing default in switch statements
 ----------
 
-Summary: Switch statements should have a default statement.
+Summary: Name: missing default in switch statements
 
 Severity: 2
 Category: OCLint
@@ -502,7 +502,7 @@ Category: OCLint
 use boxed expression
 ----------
 
-Summary: This rule locates the places that can be migrated to the new Objective-C literals with boxed expressions.
+Summary: Name: use boxed expression
 
 Severity: 1
 Category: OCLint
@@ -510,7 +510,7 @@ Category: OCLint
 use container literal
 ----------
 
-Summary: This rule locates the places that can be migrated to the new Objective-C literals with container literals.
+Summary: Name: use container literal
 
 Severity: 1
 Category: OCLint
@@ -518,7 +518,7 @@ Category: OCLint
 use number literal
 ----------
 
-Summary: This rule locates the places that can be migrated to the new Objective-C literals with number literals.
+Summary: Name: use number literal
 
 Severity: 1
 Category: OCLint
@@ -526,7 +526,7 @@ Category: OCLint
 use object subscripting
 ----------
 
-Summary: Name: use object subscripting
+Summary: 
 
 Severity: 1
 Category: OCLint
@@ -562,5 +562,4 @@ Summary: Name: missing abstract method implementation
 
 Severity: 1
 Category: OCLint
-
 
