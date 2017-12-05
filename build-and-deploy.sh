@@ -10,7 +10,7 @@ fi
 
 # Deploy new verion of plugin in Sonar dir
 rm -rf $SONARQUBE_HOME/extensions/plugins/*sonar-objective-c-*
-cp target/*.jar $SONARQUBE_HOME/extensions/plugins
+cp sonar-objective-c-plugin/target/*.jar $SONARQUBE_HOME/extensions/plugins
 rm $SONARQUBE_HOME/extensions/plugins/*sources.jar
 
 # Stop/start Sonar
