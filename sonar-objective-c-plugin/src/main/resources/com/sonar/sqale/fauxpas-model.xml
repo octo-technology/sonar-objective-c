@@ -166,6 +166,32 @@
             <name>Readability</name>
             <chc>
                 <rule-repo>FauxPas</rule-repo>
+                <rule-key>SourceFileHeaderComment</rule-key>
+                <prop>
+                    <key>remediationFunction</key>
+                    <txt>CONSTANT_ISSUE</txt>
+                </prop>
+                <prop>
+                    <key>offset</key>
+                    <val>5</val>
+                    <txt>min</txt>
+                </prop>
+            </chc>
+            <chc>
+                <rule-repo>FauxPas</rule-repo>
+                <rule-key>Spelling</rule-key>
+                <prop>
+                    <key>remediationFunction</key>
+                    <txt>CONSTANT_ISSUE</txt>
+                </prop>
+                <prop>
+                    <key>offset</key>
+                    <val>5</val>
+                    <txt>min</txt>
+                </prop>
+            </chc>
+            <chc>
+                <rule-repo>FauxPas</rule-repo>
                 <rule-key>SuspiciousDateTimeFormat</rule-key>
                 <prop>
                     <key>remediationFunction</key>
@@ -298,6 +324,19 @@
         <chc>
             <key>UNDERSTANDABILITY</key>
             <name>Understandability</name>
+            <chc>
+                <rule-repo>FauxPas</rule-repo>
+                <rule-key>CyclomaticComplexity</rule-key>
+                <prop>
+                    <key>remediationFunction</key>
+                    <txt>CONSTANT_ISSUE</txt>
+                </prop>
+                <prop>
+                    <key>offset</key>
+                    <val>10</val>
+                    <txt>min</txt>
+                </prop>
+            </chc>
             <chc>
                 <rule-repo>FauxPas</rule-repo>
                 <rule-key>MissingAPIUsageDescription</rule-key>
@@ -461,6 +500,20 @@
         <chc>
             <key>INSTRUCTION_RELIABILITY</key>
             <name>Instruction</name>
+            <chc>
+                <rule-repo>FauxPas</rule-repo>
+                <rule-key>ViewLayoutInXIB</rule-key>
+                <prop>
+                    <key>remediationFunction</key>
+                    <txt>CONSTANT_ISSUE</txt>
+                </prop>
+                <prop>
+                    <key>offset</key>
+                    <val>10</val>
+                    <txt>min</txt>
+                </prop>
+            </chc>
+
             <chc>
                 <rule-repo>FauxPas</rule-repo>
                 <rule-key>CompleteNotificationCenterDetachment</rule-key>

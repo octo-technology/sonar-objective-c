@@ -209,6 +209,10 @@
     </rule>
     <rule>
       <repositoryKey>FauxPas</repositoryKey>
+      <key>ViewLayoutInXIB</key>
+    </rule>
+    <rule>
+      <repositoryKey>FauxPas</repositoryKey>
       <key>BasicProjectSettings</key>
     </rule>
     <rule>
@@ -365,6 +369,14 @@
     </rule>
     <rule>
       <repositoryKey>FauxPas</repositoryKey>
+      <key>Spelling</key>
+    </rule>
+    <rule>
+      <repositoryKey>FauxPas</repositoryKey>
+      <key>SourceFileHeaderComment</key>
+    </rule>
+    <rule>
+      <repositoryKey>FauxPas</repositoryKey>
       <key>UnprefixedClass</key>
     </rule>
     <rule>
@@ -390,6 +402,10 @@
     <rule>
       <repositoryKey>FauxPas</repositoryKey>
       <key>ReservedIdentifierNaming</key>
+    </rule>
+    <rule>
+      <repositoryKey>FauxPas</repositoryKey>
+      <key>CyclomaticComplexity</key>
     </rule>
     <rule>
       <repositoryKey>FauxPas</repositoryKey>

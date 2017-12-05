@@ -353,7 +353,14 @@
         "category": "Config",
         "key": "MissingAPIUsageDescription",
         "name": "Missing API usage description",
-        "description": "Some APIs (that access e.g. contacts or calendars) require a usage description in the application metadata. This will be shown to the user when the system asks them to allow the application access to the related user data or system resource. This rule warns when some such APIs are used, but the associated usage description is missing.",
+        "description": "Some APIs (that access e.g. contacts or calendars) require a usage description (\u201cpurpose string\u201d) in the application metadata. This will be shown to the user when the system asks them to allow the application access to the related user data or system resource. This rule warns when some such APIs are used, but the associated usage description is missing.",
+        "severity": "MINOR"
+    },
+    {
+        "category": "Config",
+        "key": "ViewLayoutInXIB",
+        "name": "Erroneous view layout in XIB",
+        "description": "Warns about views that are marked as \u2018misplaced\u2019 or \u2018ambiguous\u2019 in XIBs or storyboards that use autolayout.This rule relies on XIB annotations added by Xcode, which means that no diagnostics will be emitted for misplaced or ambiguous views that have not (yet) been annotated by Xcode.",
         "severity": "MINOR"
     },
     {
@@ -631,6 +638,20 @@
     },
     {
         "category": "Style",
+        "key": "Spelling",
+        "name": "error Spelling",
+        "description": "Warns if some words in code symbol names are spelled incorrectly.This rule expects code symbol names to be in English (US and/or GB).",
+        "severity": "MAJOR"
+    },
+    {
+        "category": "Style",
+        "key": "SourceFileHeaderComment",
+        "name": "Source file header comment format",
+        "description": "Warns about errors in source file header comments (that are formatted using the default Xcode template), for example if the file name in the comment does not match the actual file name, or if the placeholder __MyCompanyName__ is present.",
+        "severity": "MAJOR"
+    },
+    {
+        "category": "Style",
         "key": "UnprefixedClass",
         "name": "Unprefixed Objective-C class",
         "description": "Warns when an Objective-C class name has no prefix (e.g. Thing instead of FPXThing).",
@@ -676,6 +697,13 @@
         "key": "ReservedIdentifierNaming",
         "name": "Reserved identifier name",
         "description": "Warns when identifiers are named using conventions reserved by the C standard or POSIX.",
+        "severity": "MINOR"
+    },
+    {
+        "category": "Pedantic",
+        "key": "CyclomaticComplexity",
+        "name": "Cyclomatic complexity",
+        "description": "Warns if a routine has high cyclomatic complexity (that is, the number of linearly independent paths through the routine\u2019s source code).",
         "severity": "MINOR"
     },
     {
