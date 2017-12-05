@@ -51,6 +51,7 @@ Binary packages are available in the release section.
 ### Release history
 
 ### 0.6.2
+- SonarQube 6.5 support
 - Update run-sonar.sh : xcodebuild optimization (see https://github.com/Backelite/sonar-objective-c/pull/26 thanks to [davidy4ng](https://github.com/davidy4ng)).
 - Fix for properties with space (see https://github.com/Backelite/sonar-objective-c/pull/29 thanks to [Branlute](https://github.com/Branlute))
 
