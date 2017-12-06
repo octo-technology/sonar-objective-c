@@ -54,11 +54,8 @@ function testIsInstalled() {
 	fi
 }
 
-<<<<<<< HEAD:src/main/shell/run-sonar.sh
 function testIsXcodeMinMajorVersionAvailable() {    
-=======
-function testIsXcodeMinMajorVersionAvailable() {
->>>>>>> develop:sonar-objective-c-plugin/src/main/shell/run-sonar.sh
+
     XCODE_VERSION="$($XCODEBUILD_CMD -version | grep -a -A 1 "Xcode" | head -n1 | sed "s/Xcode \([0-9]*\)\..*/\1/")"
     if (( "$1" <= "$XCODE_VERSION" )); then
         return 0
