@@ -51,7 +51,7 @@ Binary packages are available in the release section.
 ### Release history
 
 ### 0.6.2
-- SonarQube 6.5 support
+- SonarQube 6.7 support
 - FauxPas 1.7.2 support (4 new rules added)
 - OCLint 0.13 support (1 new rule added)
 - Update run-sonar.sh : xcodebuild optimization (see https://github.com/Backelite/sonar-objective-c/pull/26 thanks to [davidy4ng](https://github.com/davidy4ng)).
