@@ -306,7 +306,6 @@ else
         buildCmd+=(-destination "$destinationSimulator" -destination-timeout 360)
         xcode8BuildForTestingCmd+=(-destination "$destinationSimulator" -destination-timeout 360)
         xcode8TestCmd+=(-destination "$destinationSimulator" -destination-timeout 360)
-<<<<<<< HEAD:src/main/shell/run-sonar.sh
     fi
     
     if testIsXcodeMinMajorVersionAvailable 8 ; then
@@ -318,21 +317,7 @@ else
         echo "Testing"
         "${buildCmd[@]}"  | $XCPRETTY_CMD -t --report junit
     fi
-    
-=======
-    fi
 
-    if testIsXcodeMinMajorVersionAvailable 8 ; then
-        echo "Running build-for-testing"
-        "${xcode8BuildForTestingCmd[@]}"  | $XCPRETTY_CMD
-        echo "Running test-without-building"
-        "${xcode8TestCmd[@]}"  | $XCPRETTY_CMD -t --report junit
-    else
-        echo "Testing"
-        "${buildCmd[@]}"  | $XCPRETTY_CMD -t --report junit
-    fi
-
->>>>>>> develop:sonar-objective-c-plugin/src/main/shell/run-sonar.sh
     mv build/reports/junit.xml sonar-reports/TEST-report.xml
 
 	echo -n 'Computing coverage report'
