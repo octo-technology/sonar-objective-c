@@ -168,7 +168,7 @@ public class LizardReportParserTest {
 
         Assert.assertTrue("Key is not there", report.containsKey("App/Controller/Accelerate/AccelerationViewController.h"));
         List<Measure> list1 = report.get("App/Controller/Accelerate/AccelerationViewController.h");
-        Assert.assertEquals(4, list1.size());
+        Assert.assertEquals(3, list1.size());
 
         for (Measure measure : list1) {
             String s = measure.getMetric().getKey();
@@ -189,7 +189,7 @@ public class LizardReportParserTest {
         Assert.assertTrue("Key is not there", report.containsKey("App/Controller/Accelerate/AccelerationViewController.m"));
 
         List<Measure> list2 = report.get("App/Controller/Accelerate/AccelerationViewController.m");
-        Assert.assertEquals(7, list2.size());
+        Assert.assertEquals(5, list2.size());
         for (Measure measure : list2) {
             String s = measure.getMetric().getKey();
 

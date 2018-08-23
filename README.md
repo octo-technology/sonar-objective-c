@@ -50,6 +50,9 @@ Binary packages are available in the release section.
 
 ### Release history
 
+### 0.6.3
+- SonarQube 7.0 support
+
 ### 0.6.2
 - SonarQube 6.7 support
 - FauxPas 1.7.2 support (4 new rules added)
