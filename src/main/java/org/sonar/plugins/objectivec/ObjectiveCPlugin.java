@@ -25,6 +25,7 @@ import org.sonar.api.Extension;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.api.SonarPlugin;
+import org.sonar.plugins.objectivec.complexity.LizardSensor;
 import org.sonar.plugins.objectivec.coverage.CoberturaSensor;
 import org.sonar.plugins.objectivec.colorizer.ObjectiveCColorizerFormat;
 import org.sonar.plugins.objectivec.core.ObjectiveC;
@@ -53,11 +54,17 @@ public class ObjectiveCPlugin extends SonarPlugin {
 
                 ObjectiveCSquidSensor.class,
                 ObjectiveCProfile.class,
+
                 SurefireSensor.class,
+
                 CoberturaSensor.class,
+
                 OCLintRuleRepository.class,
-                OCLintSensor.class, OCLintProfile.class,
-                OCLintProfileImporter.class
+                OCLintSensor.class,
+                OCLintProfile.class,
+                OCLintProfileImporter.class,
+
+                LizardSensor.class
                 );
     }
 

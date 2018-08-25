@@ -52,9 +52,6 @@ import org.sonar.squidbridge.measures.Metric;
 
 public class ObjectiveCSquidSensor implements Sensor {
 
-    private final Number[] FUNCTIONS_DISTRIB_BOTTOM_LIMITS = {1, 2, 4, 6, 8, 10, 12, 20, 30};
-    private final Number[] FILES_DISTRIB_BOTTOM_LIMITS = {0, 5, 10, 20, 30, 60, 90};
-
     private final AnnotationCheckFactory annotationCheckFactory;
 
     private Project project;
@@ -91,8 +88,12 @@ public class ObjectiveCSquidSensor implements Sensor {
 
             File sonarFile = File.fromIOFile(new java.io.File(squidFile.getKey()), project);
 
-            saveFilesComplexityDistribution(sonarFile, squidFile);
-            saveFunctionsComplexityDistribution(sonarFile, squidFile);
+            /*
+             * Distribution is saved in the Lizard sensor and therefore it is not possible to save the complexity
+             * distribution here. The functionality has been moved to LizardParser.
+            */
+            //saveFilesComplexityDistribution(sonarFile, squidFile);
+            //saveFunctionsComplexityDistribution(sonarFile, squidFile);
             saveMeasures(sonarFile, squidFile);
             saveViolations(sonarFile, squidFile);
         }
@@ -102,25 +103,16 @@ public class ObjectiveCSquidSensor implements Sensor {
         context.saveMeasure(sonarFile, CoreMetrics.FILES, squidFile.getDouble(ObjectiveCMetric.FILES));
         context.saveMeasure(sonarFile, CoreMetrics.LINES, squidFile.getDouble(ObjectiveCMetric.LINES));
         context.saveMeasure(sonarFile, CoreMetrics.NCLOC, squidFile.getDouble(ObjectiveCMetric.LINES_OF_CODE));
-        context.saveMeasure(sonarFile, CoreMetrics.FUNCTIONS, squidFile.getDouble(ObjectiveCMetric.FUNCTIONS));
+        /**
+         * Saving the same measure more than once per file throws  exception. That is why
+         * CoreMetrics.FUNCTIONS and CoreMetrics.COMPLEXITY are not allowed to be saved here. In order for the
+         * LizardSensor to be able to to its job and save the values for those metrics the functionality has been
+         * moved to Lizard classes.
+         */
+        //context.saveMeasure(sonarFile, CoreMetrics.FUNCTIONS, squidFile.getDouble(ObjectiveCMetric.FUNCTIONS));
         context.saveMeasure(sonarFile, CoreMetrics.STATEMENTS, squidFile.getDouble(ObjectiveCMetric.STATEMENTS));
-        context.saveMeasure(sonarFile, CoreMetrics.COMPLEXITY, squidFile.getDouble(ObjectiveCMetric.COMPLEXITY));
+        //context.saveMeasure(sonarFile, CoreMetrics.COMPLEXITY, squidFile.getDouble(ObjectiveCMetric.COMPLEXITY));
         context.saveMeasure(sonarFile, CoreMetrics.COMMENT_LINES, squidFile.getDouble(ObjectiveCMetric.COMMENT_LINES));
-    }
-
-    private void saveFunctionsComplexityDistribution(File sonarFile, SourceFile squidFile) {
-        Collection<SourceCode> squidFunctionsInFile = scanner.getIndex().search(new QueryByParent(squidFile), new QueryByType(SourceFunction.class));
-        RangeDistributionBuilder complexityDistribution = new RangeDistributionBuilder(CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION, FUNCTIONS_DISTRIB_BOTTOM_LIMITS);
-        for (SourceCode squidFunction : squidFunctionsInFile) {
-            complexityDistribution.add(squidFunction.getDouble(ObjectiveCMetric.COMPLEXITY));
-        }
-        context.saveMeasure(sonarFile, complexityDistribution.build().setPersistenceMode(PersistenceMode.MEMORY));
-    }
-
-    private void saveFilesComplexityDistribution(File sonarFile, SourceFile squidFile) {
-        RangeDistributionBuilder complexityDistribution = new RangeDistributionBuilder(CoreMetrics.FILE_COMPLEXITY_DISTRIBUTION, FILES_DISTRIB_BOTTOM_LIMITS);
-        complexityDistribution.add(squidFile.getDouble(ObjectiveCMetric.COMPLEXITY));
-        context.saveMeasure(sonarFile, complexityDistribution.build().setPersistenceMode(PersistenceMode.MEMORY));
     }
 
     private void saveViolations(File sonarFile, SourceFile squidFile) {
