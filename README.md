@@ -1,3 +1,7 @@
+# Important : this plugin is not maintained anymore. Please switch to our (Swift plugin)[https://github.com/Backelite/sonar-swift] which now supports Swift and Objective-C
+
+
+
 <p align="left">
   <img src="https://www.backelite.com/wp-content/uploads/2016/09/logo-backelite-square.png" width="100"/>
 </p>
